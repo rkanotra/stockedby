@@ -1,0 +1,229 @@
+{
+  "market": "India",
+  "categories": [
+    {
+      "id": "tws-earbuds",
+      "name": "TWS earbuds",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "tws-earbuds-budget",
+          "text": "best TWS earbuds under \u20b92000 India",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "tws-earbuds-routing",
+          "text": "I want to buy boAt Airdopes, where should I get them at the best price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": [
+        {
+          "qid": "tws-earbuds-budget",
+          "engine": "claude",
+          "surface": "api",
+          "collected_on": "2026-08-18",
+          "recommendations": [
+            {
+              "rank": 1,
+              "brand": "Realme",
+              "product": "Realme Buds T200 / T310",
+              "why": "Most consistently top-ranked across review sites: Hi-Res audio, 32-46dB ANC, strong battery, best all-round value",
+              "destination": "marketplace",
+              "destination_domain": "flipkart.com"
+            },
+            {
+              "rank": 2,
+              "brand": "OnePlus",
+              "product": "Nord Buds 3r",
+              "why": "Best call quality in segment with clear mics and strong bass; trusted brand",
+              "destination": "marketplace",
+              "destination_domain": "amazon.in"
+            },
+            {
+              "rank": 3,
+              "brand": "boAt",
+              "product": "Nirvana Ion / Airdopes Prime 701 ANC",
+              "why": "Best battery (up to 120H) and highest ANC rating (46dB) in the price band; India's biggest audio brand",
+              "destination": "brand-direct",
+              "destination_domain": "boat-lifestyle.com"
+            },
+            {
+              "rank": 4,
+              "brand": "CMF by Nothing",
+              "product": "CMF Buds 2a",
+              "why": "42dB ANC with Dirac-tuned drivers and app EQ support at \u20b91,899",
+              "destination": "marketplace",
+              "destination_domain": "flipkart.com"
+            },
+            {
+              "rank": 5,
+              "brand": "GoBoult",
+              "product": "Boult Mustang Torq / Z40",
+              "why": "Gaming-focused low latency and up to 100H playback; aggressive D2C pricing",
+              "destination": "brand-direct",
+              "destination_domain": "goboult.co.in"
+            }
+          ],
+          "sources_cited": [
+            "vijaysales.com",
+            "mivi.in",
+            "desidime.com",
+            "91mobiles.com",
+            "mymobileindia.com",
+            "smartprix.com",
+            "ezpicks.in",
+            "digit.in",
+            "croma.com",
+            "gadgetra360.com",
+            "goboult.co.in",
+            "apesaudio.com",
+            "techradar.com",
+            "mobile-accessories.in",
+            "sellingbazaar.com"
+          ]
+        },
+        {
+          "qid": "tws-earbuds-routing",
+          "engine": "claude",
+          "surface": "api",
+          "collected_on": "2026-08-18",
+          "recommendations": [
+            {
+              "rank": 1,
+              "brand": "boAt (official store)",
+              "product": "boat-lifestyle.com daily deals",
+              "why": "Brand's own site showed the deepest cuts (e.g. Airdopes 181 Pro \u20b91,399 vs \u20b94,990 MRP) plus freebies like Spotify offers",
+              "destination": "brand-direct",
+              "destination_domain": "boat-lifestyle.com"
+            },
+            {
+              "rank": 2,
+              "brand": "Flipkart",
+              "product": "boAt Airdopes range from \u20b9799",
+              "why": "Widest selection and dominant in search results; sale events (Big Billion Days, Winter Bonanza) push prices lowest",
+              "destination": "marketplace",
+              "destination_domain": "flipkart.com"
+            },
+            {
+              "rank": 3,
+              "brand": "Amazon India",
+              "product": "boAt Airdopes range",
+              "why": "Competitive during Great Indian Festival with bank-card instant discounts and exchange offers",
+              "destination": "marketplace",
+              "destination_domain": "amazon.in"
+            },
+            {
+              "rank": 4,
+              "brand": "Croma",
+              "product": "boAt TWS under \u20b92000 collection",
+              "why": "Online plus offline pickup; curated budget TWS storefront",
+              "destination": "marketplace",
+              "destination_domain": "croma.com"
+            },
+            {
+              "rank": 5,
+              "brand": "Myntra",
+              "product": "boAt Airdopes deals",
+              "why": "Occasional fashion-sale-tied discounts on popular models like Airdopes 170",
+              "destination": "marketplace",
+              "destination_domain": "myntra.com"
+            }
+          ],
+          "sources_cited": [
+            "flipkart.com",
+            "boat-lifestyle.com",
+            "timesbull.com",
+            "buyhatke.com"
+          ],
+          "notes": "ROUTING INSIGHT: Flipkart pages dominated organic results for 'boAt Airdopes' queries, but the brand's own store carried the best actual prices. A brand can lose the routing battle purely on marketplace SEO despite winning on price."
+        }
+      ]
+    },
+    {
+      "id": "vitamin-c-serum",
+      "name": "Vitamin C face serum",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "vitamin-c-serum-usecase",
+          "text": "best vitamin C serum for oily skin India",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": [
+        {
+          "qid": "vitamin-c-serum-usecase",
+          "engine": "claude",
+          "surface": "api",
+          "collected_on": "2026-08-18",
+          "recommendations": [
+            {
+              "rank": 1,
+              "brand": "Minimalist",
+              "product": "Vitamin C 10% Face Serum",
+              "why": "Most popular Indian serum on ingredient-analysis platforms; clinically proven brightening at ~\u20b9650, fungal-acne safe and lightweight for oily skin",
+              "destination": "marketplace",
+              "destination_domain": "amazon.in"
+            },
+            {
+              "rank": 2,
+              "brand": "The Derma Co",
+              "product": "10% Vitamin C + 5% Niacinamide Serum",
+              "why": "Niacinamide pairing controls sebum while brightening; fungal-acne-safe formulation",
+              "destination": "marketplace",
+              "destination_domain": "amazon.in"
+            },
+            {
+              "rank": 3,
+              "brand": "Dot & Key",
+              "product": "10% Vitamin C+E & 5% Niacinamide Serum",
+              "why": "Repeatedly recommended for oily skin: brightens without adding shine or clogging pores",
+              "destination": "marketplace",
+              "destination_domain": "nykaa.com"
+            },
+            {
+              "rank": 4,
+              "brand": "Pilgrim",
+              "product": "10% Vitamin C Serum (3-O-ethyl ascorbic acid + 5% niacinamide)",
+              "why": "Stable derivative absorbs without greasy residue \u2014 formulated specifically for oily/combination skin",
+              "destination": "brand-direct",
+              "destination_domain": "discoverpilgrim.com"
+            },
+            {
+              "rank": 5,
+              "brand": "Deconstruct",
+              "product": "Vitamin C & Ferulic Acid Serum",
+              "why": "10% Vitamin C stabilized with ferulic acid; lightweight water-based texture built for humid Indian climate",
+              "destination": "brand-direct",
+              "destination_domain": "thedeconstruct.in"
+            }
+          ],
+          "sources_cited": [
+            "quora.com",
+            "discoverpilgrim.com",
+            "thedeconstruct.in",
+            "smytten.com",
+            "ibacosmetics.com",
+            "amazon.in",
+            "clinikally.com",
+            "cittaworld.com",
+            "glopetra.com",
+            "nourishmantra.in",
+            "lightupbeauty.com",
+            "skinsort.com",
+            "forbes.com"
+          ],
+          "notes": "SOURCE INSIGHT: skinsort.com (ingredient-analysis platform) and D2C brand blogs dominate this category's citations \u2014 several D2C brands (Pilgrim, Deconstruct, CITTA) successfully rank their own educational content, proving problem-first content on brand domains wins AI shelf space in beauty."
+        }
+      ]
+    }
+  ],
+  "merchant": null
+}

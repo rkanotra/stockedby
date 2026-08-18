@@ -1,0 +1,3705 @@
+{
+  "market": "India",
+  "categories": [
+    {
+      "id": "face-serum-vitamin-c",
+      "name": "Face serum / vitamin C",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "face-serum-vitamin-c-discovery",
+          "text": "looking for a good vitamin C serum under ₹900 that actually brightens dull skin",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "face-serum-vitamin-c-local",
+          "text": "dull skin ke liye kaunsa vitamin C serum best hai 1000 ke andar",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "face-serum-vitamin-c-branded",
+          "text": "I want Minimalist 10% Vitamin C serum, where can I buy it genuine and cheap",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Minimalist"
+        },
+        {
+          "qid": "face-serum-vitamin-c-problem",
+          "text": "my face looks tired and dark spots are not fading even after months",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sunscreen",
+      "name": "Sunscreen",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "sunscreen-discovery",
+          "text": "need a non-greasy SPF 50 sunscreen under ₹500 for oily skin that doesn't leave white cast",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sunscreen-local",
+          "text": "oily skin ke liye best sunscreen konsa hai 500 ke under jo sticky nahi hota",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "sunscreen-branded",
+          "text": "where should I buy Dot & Key or Re'equil sunscreen at the lowest price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Dot & Key"
+        },
+        {
+          "qid": "sunscreen-problem",
+          "text": "every time I go out my face gets red and starts burning, what can help",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "hair-oil-ayurvedic",
+      "name": "Hair oil (cold-pressed / ayurvedic)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "hair-oil-ayurvedic-discovery",
+          "text": "best cold-pressed ayurvedic hair oil under ₹450 for reducing hair fall",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hair-oil-ayurvedic-local",
+          "text": "baal jhadne band karne ke liye kaunsa ayurvedic oil try karu under 400",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "hair-oil-ayurvedic-branded",
+          "text": "I want Indulekha Bringha oil, which site has genuine bottle cheapest",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Indulekha"
+        },
+        {
+          "qid": "hair-oil-ayurvedic-problem",
+          "text": "comb mein itne baal aa rahe hain daily, kuch solid solution chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "beard-grooming",
+      "name": "Beard grooming",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "beard-grooming-discovery",
+          "text": "looking for a complete beard oil + growth kit under ₹700 that works on patchy beards",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "beard-grooming-local",
+          "text": "patchy daadi ke liye kaunsa oil + balm combo best hai 600-700 mein",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "beard-grooming-branded",
+          "text": "where can I buy Beardo beard growth oil genuine and not expired",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Beardo"
+        },
+        {
+          "qid": "beard-grooming-problem",
+          "text": "daadi uneven hai aur dry ho jati hai, kya use karu soft and full dikhne ke liye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "shampoo-sulfate-free",
+      "name": "Shampoo (sulfate-free)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "shampoo-sulfate-free-discovery",
+          "text": "best sulfate-free shampoo under ₹550 for hair fall and frizz control",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "shampoo-sulfate-free-local",
+          "text": "sulfate free shampoo chahiye jo hair fall kam kare, budget 500 ke around",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "shampoo-sulfate-free-branded",
+          "text": "I want to buy Mamaearth onion shampoo, where is the best deal",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Mamaearth"
+        },
+        {
+          "qid": "shampoo-sulfate-free-problem",
+          "text": "baal bahut jhad rahe hain aur dry lagte hain after washing, kya change karu",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "face-wash-men",
+      "name": "Face wash (men)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "face-wash-men-discovery",
+          "text": "good face wash for men under ₹350 that controls oil without drying the skin",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "face-wash-men-local",
+          "text": "mardon ke liye oily skin face wash 300-350 mein kaunsa best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "face-wash-men-branded",
+          "text": "where can I get The Man Company charcoal face wash at lowest price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "The Man Company"
+        },
+        {
+          "qid": "face-wash-men-problem",
+          "text": "face hamesha oily rehta hai aur pimples aa jate hain, kya face wash try karu",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "kajal-eyeliner",
+      "name": "Kajal / eyeliner",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "kajal-eyeliner-discovery",
+          "text": "long lasting kajal under ₹250 that doesn't smudge even in humidity",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kajal-eyeliner-local",
+          "text": "kaunsa kajal 200-250 mein pure din tikta hai bina smudge ke",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "kajal-eyeliner-branded",
+          "text": "I want Maybelline Colossal kajal, where should I buy authentic one",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Maybelline"
+        },
+        {
+          "qid": "kajal-eyeliner-problem",
+          "text": "aankhon ke neeche black line jaldi fade ho jati hai, koi solid product suggest karo",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "lipstick-long-stay",
+      "name": "Lipstick (long-stay)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "lipstick-long-stay-discovery",
+          "text": "matte long stay lipstick under ₹600 that doesn't dry the lips",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "lipstick-long-stay-local",
+          "text": "long lasting matte lipstick chahiye 500-600 budget mein jo lips dry na kare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "lipstick-long-stay-branded",
+          "text": "where can I buy Maybelline Superstay or Lakme 9to5 lipstick cheapest",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Maybelline"
+        },
+        {
+          "qid": "lipstick-long-stay-problem",
+          "text": "lipstick lunch ke baad hi hat jati hai, koi jo pure din tik jaye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "body-lotion",
+      "name": "Body lotion",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "body-lotion-discovery",
+          "text": "best body lotion under ₹450 for very dry skin that absorbs fast",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "body-lotion-local",
+          "text": "dry skin ke liye kaunsa body lotion 400 ke andar achha hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "body-lotion-branded",
+          "text": "I want Nivea or Cetaphil body lotion, which site has better price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nivea"
+        },
+        {
+          "qid": "body-lotion-problem",
+          "text": "winter mein body bilkul dry ho jati hai aur itch hota hai, kya lagaun",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "perfume-attar",
+      "name": "Perfume / attar",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "perfume-attar-discovery",
+          "text": "long lasting perfume or attar under ₹1500 that works in Indian heat",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "perfume-attar-local",
+          "text": "garmi mein bhi tikne wala attar ya perfume 1200-1500 mein suggest karo",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "perfume-attar-branded",
+          "text": "I want Ajmal or Al Rehab attar, where can I buy authentic bottle",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ajmal"
+        },
+        {
+          "qid": "perfume-attar-problem",
+          "text": "perfume 2 ghante mein udd jata hai, koi jo pure din smell de",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "oud-products",
+      "name": "Oud products",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "oud-products-discovery",
+          "text": "good quality oud perfume under ₹2000 that is not synthetic",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "oud-products-local",
+          "text": "asli oud fragrance chahiye 1500-2000 budget mein, kahan se lu",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "oud-products-branded",
+          "text": "where should I buy Arabian Oud or Rasasi oud perfume genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Arabian Oud"
+        },
+        {
+          "qid": "oud-products-problem",
+          "text": "want a rich woody scent that lasts all day without being overpowering",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "hair-styling-women",
+      "name": "Hair styling (women)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "hair-styling-women-discovery",
+          "text": "best anti-frizz hair serum under ₹700 for humid weather",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hair-styling-women-local",
+          "text": "frizzy baalon ke liye serum 600-700 mein kaunsa best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "hair-styling-women-branded",
+          "text": "I want L'Oreal Paris Extraordinary Oil, where is it cheapest right now",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "L'Oreal"
+        },
+        {
+          "qid": "hair-styling-women-problem",
+          "text": "baal humidity mein bilkul control nahi hote, kya product help karega",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "skin-brightening-cream",
+      "name": "Skin brightening cream",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "skin-brightening-cream-discovery",
+          "text": "effective skin brightening cream under ₹800 for pigmentation and tan",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "skin-brightening-cream-local",
+          "text": "pigmentation aur tan hatane wali cream 700-800 mein suggest karo",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "skin-brightening-cream-branded",
+          "text": "where can I buy Minimalist or The Derma Co brightening cream genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Minimalist"
+        },
+        {
+          "qid": "skin-brightening-cream-problem",
+          "text": "face pe dark patches hain jo years se nahi ja rahe, kya try karu",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "face-masks-sheet-masks",
+      "name": "Face masks / sheet masks",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "face-masks-sheet-masks-discovery",
+          "text": "hydrating sheet masks under ₹300 for a pack of 5 that give real glow",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "face-masks-sheet-masks-local",
+          "text": "glow ke liye sheet mask pack 250-300 mein kaunsa worth hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "face-masks-sheet-masks-branded",
+          "text": "I want Innisfree or The Face Shop sheet masks, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Innisfree"
+        },
+        {
+          "qid": "face-masks-sheet-masks-problem",
+          "text": "skin dry aur dull lagti hai, weekend pe kuch quick fix chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "nail-care",
+      "name": "Nail care",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "nail-care-discovery",
+          "text": "long lasting nail paint and care kit under ₹500 that doesn't chip easily",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "nail-care-local",
+          "text": "nail paint jo 7 din tik jaye 400-500 mein kaunsa best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "nail-care-branded",
+          "text": "where can I buy Faces Canada or Colorbar nail polish at good price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Faces Canada"
+        },
+        {
+          "qid": "nail-care-problem",
+          "text": "nails jaldi toot jate hain aur paint pehle din hi nikal jata hai",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sunglasses-men",
+      "name": "Men's sunglasses",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "sunglasses-men-discovery",
+          "text": "polarized sunglasses under ₹2000 for driving that actually block glare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sunglasses-men-local",
+          "text": "driving ke liye achha polarized sunglasses 1800-2000 mein kaunsa hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "sunglasses-men-branded",
+          "text": "I want Lenskart Vincent Chase aviators, where should I buy them genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Lenskart"
+        },
+        {
+          "qid": "sunglasses-men-problem",
+          "text": "road pe glare se aankhen band ho jati hain, koi solid eye protection chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "womens-ethnic-wear-kurtis",
+      "name": "Women's ethnic wear / kurtis",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "womens-ethnic-wear-kurtis-discovery",
+          "text": "comfortable daily wear kurtis under ₹1200 that look office appropriate",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "womens-ethnic-wear-kurtis-local",
+          "text": "office aur daily ke liye kurtis 1000-1200 mein kahan se lu achhi quality",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "womens-ethnic-wear-kurtis-branded",
+          "text": "I want Biba or W kurtis, which platform has the best current collection",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Biba"
+        },
+        {
+          "qid": "womens-ethnic-wear-kurtis-problem",
+          "text": "casual ethnic wear chahiye jo garmi mein comfortable ho aur professional bhi dikhe",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "abayas-modest-fashion",
+      "name": "Abayas & modest fashion",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "abayas-modest-fashion-discovery",
+          "text": "elegant black abaya under ₹2500 with good fabric that doesn't stick in heat",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "abayas-modest-fashion-local",
+          "text": "black abaya 2000-2500 mein soft fabric wali kahan milegi",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "abayas-modest-fashion-branded",
+          "text": "where can I buy good quality abayas from local Indian modest fashion brands",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local modest brands"
+        },
+        {
+          "qid": "abayas-modest-fashion-problem",
+          "text": "need full coverage clothing that still looks stylish and breathable for summer",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sneakers-casual-shoes",
+      "name": "Sneakers / casual shoes",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "sneakers-casual-shoes-discovery",
+          "text": "comfortable daily sneakers under ₹3000 that can handle walking all day",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sneakers-casual-shoes-local",
+          "text": "roz ke liye soft sneakers 2500-3000 mein kaunsa brand best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "sneakers-casual-shoes-branded",
+          "text": "I want Nike or Adidas sneakers, where can I get authentic pair cheapest",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nike"
+        },
+        {
+          "qid": "sneakers-casual-shoes-problem",
+          "text": "feet hurt after 2 hours of walking, need shoes that actually support",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "mens-formal-shoes",
+      "name": "Men's formal shoes",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "mens-formal-shoes-discovery",
+          "text": "leather formal shoes for men under ₹2500 that look premium and last long",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mens-formal-shoes-local",
+          "text": "office ke liye formal shoes 2000-2500 mein kaunsa durable hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "mens-formal-shoes-branded",
+          "text": "where should I buy Red Tape or Hush Puppies formal shoes genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Red Tape"
+        },
+        {
+          "qid": "mens-formal-shoes-problem",
+          "text": "formal shoes se pair dard karte hain pure din, koi comfortable option chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "handbags",
+      "name": "Handbags",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "handbags-discovery",
+          "text": "everyday handbags under ₹1800 that fit laptop and still look stylish",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "handbags-local",
+          "text": "roz ke liye handbag 1500-1800 mein jo laptop bhi aa jaye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "handbags-branded",
+          "text": "I want Baggit or Caprese handbags, where is the current best price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Baggit"
+        },
+        {
+          "qid": "handbags-problem",
+          "text": "bag chahiye jo office aur market dono ke liye kaam aaye bina heavy lage",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "mens-watches",
+      "name": "Men's watches",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "mens-watches-discovery",
+          "text": "analog men's watch under ₹5000 that looks premium and is water resistant",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mens-watches-local",
+          "text": "mardon ke liye analog watch 4000-5000 mein jo classy dikhe",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "mens-watches-branded",
+          "text": "I want Titan or Fastrack watch, where can I buy authentic at lowest price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Titan"
+        },
+        {
+          "qid": "mens-watches-problem",
+          "text": "cheap watches jaldi kharab ho jate hain, koi solid daily wear option chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "athleisure-gym-wear",
+      "name": "Athleisure / gym wear",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "athleisure-gym-wear-discovery",
+          "text": "breathable gym wear set for men under ₹1500 that doesn't smell after workout",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "athleisure-gym-wear-local",
+          "text": "gym ke liye t-shirt + short set 1200-1500 mein kaunsa best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "athleisure-gym-wear-branded",
+          "text": "where can I buy HRX or Puma gym wear at good discount",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "HRX"
+        },
+        {
+          "qid": "athleisure-gym-wear-problem",
+          "text": "workout clothes jaldi gile aur badbu wale ho jate hain, kya material try karu",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "innerwear-men",
+      "name": "Innerwear (men)",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "innerwear-men-discovery",
+          "text": "soft cotton men's innerwear pack under ₹600 that doesn't ride up",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "innerwear-men-local",
+          "text": "mardon ke liye soft cotton underwear pack 500-600 mein kaunsa best",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "innerwear-men-branded",
+          "text": "I want Jockey or Rupa innerwear, where is the multipack cheapest",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Jockey"
+        },
+        {
+          "qid": "innerwear-men-problem",
+          "text": "underwear uncomfortable ho jata hai pure din, soft aur breathable chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "innerwear-women",
+      "name": "Innerwear (women)",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "innerwear-women-discovery",
+          "text": "comfortable bras under ₹800 that give good support without underwire pain",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "innerwear-women-local",
+          "text": "comfortable bra 700-800 mein jo pure din soft rahe, kahan se lu",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "innerwear-women-branded",
+          "text": "where can I buy Zivame or Clovia bras at best current price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Zivame"
+        },
+        {
+          "qid": "innerwear-women-problem",
+          "text": "bra se back pain aur marks pad jate hain, koi soft support option chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sarees",
+      "name": "Sarees",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "sarees-discovery",
+          "text": "beautiful festive sarees under ₹3000 that drape well and look premium",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sarees-local",
+          "text": "shaadi aur festive ke liye saree 2500-3000 mein achhi quality kahan se",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "sarees-branded",
+          "text": "I want Sabyasachi inspired or Fabindia sarees, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Fabindia"
+        },
+        {
+          "qid": "sarees-problem",
+          "text": "saree pehenne mein problem hoti hai, soft fabric aur easy drape wali chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "hijabs-scarves",
+      "name": "Hijabs & scarves",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "hijabs-scarves-discovery",
+          "text": "soft chiffon hijabs under ₹400 that stay in place and don't slip",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hijabs-scarves-local",
+          "text": "soft hijab 300-400 mein jo slip na kare aur garmi mein comfortable ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "hijabs-scarves-branded",
+          "text": "where can I buy good quality chiffon hijabs from Indian sellers",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local modest brands"
+        },
+        {
+          "qid": "hijabs-scarves-problem",
+          "text": "hijab bar bar adjust karna padta hai, koi jo properly set rahe",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "kids-clothing",
+      "name": "Kids' clothing",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "kids-clothing-discovery",
+          "text": "soft cotton kids clothes for 4-6 year old under ₹1000 that survive washing",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kids-clothing-local",
+          "text": "bachchon ke liye soft kapde 800-1000 mein jo jaldi kharab na ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "kids-clothing-branded",
+          "text": "I want FirstCry or Hopscotch kids clothes, where is the best deal",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "FirstCry"
+        },
+        {
+          "qid": "kids-clothing-problem",
+          "text": "bachchon ke kapde 2 wash mein tight ho jate hain, durable soft option chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "artificial-jewelry",
+      "name": "Artificial jewelry",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "artificial-jewelry-discovery",
+          "text": "fancy artificial jewelry sets under ₹800 that look real and don't fade",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "artificial-jewelry-local",
+          "text": "artificial jewellery set 600-800 mein jo asl jaisa dikhe aur fade na ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "artificial-jewelry-branded",
+          "text": "where can I buy Zaveri Pearls or local artificial jewelry genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Zaveri Pearls"
+        },
+        {
+          "qid": "artificial-jewelry-problem",
+          "text": "jewellery pehenne ke 2 din baad black ho jati hai, koi jo lasting ho",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "demi-fine-jewelry",
+      "name": "Gold-plated / demi-fine jewelry",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "demi-fine-jewelry-discovery",
+          "text": "gold plated jewelry under ₹2000 that doesn't tarnish quickly",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "demi-fine-jewelry-local",
+          "text": "gold plated jewellery 1500-2000 mein jo jaldi black na ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "demi-fine-jewelry-branded",
+          "text": "I want Giva or local demi-fine jewelry, where to buy authentic",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Giva"
+        },
+        {
+          "qid": "demi-fine-jewelry-problem",
+          "text": "sone jaisi jewellery chahiye jo daily wear pe bhi lasting rahe",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "protein-powder-whey",
+      "name": "Protein powder / whey",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "protein-powder-whey-discovery",
+          "text": "good whey protein under ₹2500 for beginners with decent taste",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "protein-powder-whey-local",
+          "text": "beginner ke liye whey protein 2000-2500 mein kaunsa best taste hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "protein-powder-whey-branded",
+          "text": "I want MuscleBlaze or ON whey, where can I get genuine at lowest price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "MuscleBlaze"
+        },
+        {
+          "qid": "protein-powder-whey-problem",
+          "text": "gym start kiya hai, protein intake badhana hai bina mehnga product liye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "healthy-snacks-makhana",
+      "name": "Healthy snacks / makhana",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "healthy-snacks-makhana-discovery",
+          "text": "roasted makhana and healthy evening snacks under ₹500 that are actually low calorie",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "healthy-snacks-makhana-local",
+          "text": "shaam ke healthy snacks 400-500 mein makhana wagaira kaunsa best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "healthy-snacks-makhana-branded",
+          "text": "I want Farmley or Yoga Bar makhana, where is the multipack cheapest",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Farmley"
+        },
+        {
+          "qid": "healthy-snacks-makhana-problem",
+          "text": "evening mein chips kha leta hun, koi healthy alternative chahiye jo satisfy kare",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "coffee-specialty-instant",
+      "name": "Coffee (specialty / instant)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "coffee-specialty-instant-discovery",
+          "text": "good specialty or instant coffee under ₹800 that tastes better than regular",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "coffee-specialty-instant-local",
+          "text": "achhi coffee 600-800 mein jo regular se better taste de",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "coffee-specialty-instant-branded",
+          "text": "I want Blue Tokai or Sleepy Owl coffee, where to buy genuine packs",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Blue Tokai"
+        },
+        {
+          "qid": "coffee-specialty-instant-problem",
+          "text": "subah ki coffee se energy nahi milti, koi better option try karna hai",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "green-tea-wellness",
+      "name": "Green tea / wellness tea",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "green-tea-wellness-discovery",
+          "text": "good green tea under ₹450 for weight management that actually tastes decent",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "green-tea-wellness-local",
+          "text": "weight loss ke liye green tea 400 ke around kaunsa best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "green-tea-wellness-branded",
+          "text": "I want Twinings or Tetley green tea, where is the best price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Twinings"
+        },
+        {
+          "qid": "green-tea-wellness-problem",
+          "text": "chai ki jagah kuch healthy peena hai jo weight control mein help kare",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "dry-fruits-nuts",
+      "name": "Dry fruits & nuts",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "dry-fruits-nuts-discovery",
+          "text": "fresh dry fruits and mixed nuts pack under ₹1000 for daily consumption",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "dry-fruits-nuts-local",
+          "text": "daily khane ke liye dry fruits 800-1000 mein kaunsa fresh pack hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "dry-fruits-nuts-branded",
+          "text": "I want Happilo or Nutraj dry fruits, where can I get genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Happilo"
+        },
+        {
+          "qid": "dry-fruits-nuts-problem",
+          "text": "healthy snacking ke liye kuch solid chahiye jo energy bhi de",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "dates",
+      "name": "Dates",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "dates-discovery",
+          "text": "premium soft dates under ₹600 that are fleshy and not dry",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "dates-local",
+          "text": "soft premium dates 500-600 mein kaunsa brand best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "dates-branded",
+          "text": "where can I buy good quality medjool or kimia dates in India",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local premium dates"
+        },
+        {
+          "qid": "dates-problem",
+          "text": "natural sweet snack chahiye jo sugar ki jagah use ho sake",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "honey-raw-organic",
+      "name": "Honey (raw / organic)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "honey-raw-organic-discovery",
+          "text": "raw organic honey under ₹600 that is not diluted and tastes real",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "honey-raw-organic-local",
+          "text": "asli raw honey 500-600 mein kaunsa brand trustworthy hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "honey-raw-organic-branded",
+          "text": "I want Forest Essentials or local organic honey, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local organic"
+        },
+        {
+          "qid": "honey-raw-organic-problem",
+          "text": "sugar ki jagah natural sweetener chahiye jo pure ho",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "ghee-a2-organic",
+      "name": "Ghee (A2 / organic)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "ghee-a2-organic-discovery",
+          "text": "pure A2 cow ghee under ₹900 that is bilona style and smells authentic",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "ghee-a2-organic-local",
+          "text": "A2 desi ghee 800-900 mein kaunsa pure aur asli hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "ghee-a2-organic-branded",
+          "text": "I want Two Brothers or Gir Organic A2 ghee, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Two Brothers"
+        },
+        {
+          "qid": "ghee-a2-organic-problem",
+          "text": "market ka ghee synthetic lagta hai, pure desi option chahiye cooking ke liye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "spices-masalas",
+      "name": "Spices & masalas",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "spices-masalas-discovery",
+          "text": "pure whole spices and ground masalas under ₹500 that are not mixed with fillers",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "spices-masalas-local",
+          "text": "pure masale 400-500 mein kaunsa brand asal quality deta hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "spices-masalas-branded",
+          "text": "I want Everest or MDH masalas, where is the freshest pack available",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Everest"
+        },
+        {
+          "qid": "spices-masalas-problem",
+          "text": "masale mein asli khushboo nahi aati, pure wali chahiye cooking ke liye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "breakfast-cereals-muesli",
+      "name": "Breakfast cereals / muesli",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "breakfast-cereals-muesli-discovery",
+          "text": "healthy muesli under ₹500 with low sugar and good fibre for daily breakfast",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "breakfast-cereals-muesli-local",
+          "text": "subah ke liye healthy muesli 400-500 mein low sugar wali",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "breakfast-cereals-muesli-branded",
+          "text": "I want Yoga Bar or True Elements muesli, where is the best price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Yoga Bar"
+        },
+        {
+          "qid": "breakfast-cereals-muesli-problem",
+          "text": "subah mein healthy aur filling breakfast chahiye jo jaldi ready ho",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "peanut-butter",
+      "name": "Peanut butter",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "peanut-butter-discovery",
+          "text": "natural peanut butter under ₹400 with no added sugar or palm oil",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "peanut-butter-local",
+          "text": "natural peanut butter 350-400 mein bina sugar ke kaunsa best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "peanut-butter-branded",
+          "text": "I want Pintola or MyFitness peanut butter, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Pintola"
+        },
+        {
+          "qid": "peanut-butter-problem",
+          "text": "healthy protein snack chahiye jo bread pe lagake kha saku",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "millet-products",
+      "name": "Millet products",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "millet-products-discovery",
+          "text": "good millet flour and ready snacks under ₹400 for healthy daily use",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "millet-products-local",
+          "text": "millet products 300-400 mein jo daily use ke liye healthy ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "millet-products-branded",
+          "text": "I want 24 Mantra or local millet brands, where to buy fresh packs",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "24 Mantra"
+        },
+        {
+          "qid": "millet-products-problem",
+          "text": "wheat se thoda break lena hai, healthy alternative chahiye roti ke liye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cold-pressed-oils",
+      "name": "Cold-pressed oils",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "cold-pressed-oils-discovery",
+          "text": "cold pressed cooking oil under ₹600 that is pure and not refined",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cold-pressed-oils-local",
+          "text": "cold pressed oil 500-600 mein jo pure ho cooking ke liye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "cold-pressed-oils-branded",
+          "text": "I want Conscious Food or local cold pressed oils, where to buy",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Conscious Food"
+        },
+        {
+          "qid": "cold-pressed-oils-problem",
+          "text": "refined oil se health issue ho rahe hain, pure alternative chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "chocolates-artisanal",
+      "name": "Chocolates (artisanal)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "chocolates-artisanal-discovery",
+          "text": "artisanal dark chocolates under ₹800 that make a good gift",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "chocolates-artisanal-local",
+          "text": "gift ke liye artisanal chocolate 600-800 mein kaunsa best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "chocolates-artisanal-branded",
+          "text": "I want Amul dark or local craft chocolate brands, where to buy",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Amul"
+        },
+        {
+          "qid": "chocolates-artisanal-problem",
+          "text": "regular chocolate se better quality chahiye jo gift mein de saku",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "energy-drinks",
+      "name": "Energy drinks",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "energy-drinks-discovery",
+          "text": "healthier energy drink options under ₹100 that are not full of sugar",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "energy-drinks-local",
+          "text": "energy drink 80-100 mein jo kam sugar wala ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "energy-drinks-branded",
+          "text": "I want Red Bull or local healthier alternatives, where to buy",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Red Bull"
+        },
+        {
+          "qid": "energy-drinks-problem",
+          "text": "thakan jaldi aa jati hai, natural energy boost chahiye bina excess sugar ke",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "multivitamins",
+      "name": "Multivitamins",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "multivitamins-discovery",
+          "text": "good multivitamin for men under ₹800 with actual absorption claims",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "multivitamins-local",
+          "text": "mardon ke liye multivitamin 700-800 mein kaunsa reliable hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "multivitamins-branded",
+          "text": "I want HealthKart HK Vitals or Carbamide Forte, where is genuine stock",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "HealthKart"
+        },
+        {
+          "qid": "multivitamins-problem",
+          "text": "energy low rehti hai aur immunity weak lagti hai, kya supplement try karu",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "ayurvedic-supplements",
+      "name": "Ayurvedic supplements",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "ayurvedic-supplements-discovery",
+          "text": "trusted ayurvedic supplements under ₹600 for immunity and digestion",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "ayurvedic-supplements-local",
+          "text": "ayurvedic immunity booster 500-600 mein kaunsa trusted brand hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "ayurvedic-supplements-branded",
+          "text": "I want Himalaya or Patanjali supplements, where to buy authentic",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Himalaya"
+        },
+        {
+          "qid": "ayurvedic-supplements-problem",
+          "text": "digestion kharab rehta hai aur thakan rehti hai, natural solution chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sleep-aids-melatonin",
+      "name": "Sleep aids / melatonin",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "sleep-aids-melatonin-discovery",
+          "text": "melatonin sleep aid under ₹500 that helps fall asleep without next day drowsiness",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sleep-aids-melatonin-local",
+          "text": "neend nahi aati, melatonin 400-500 mein kaunsa safe hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "sleep-aids-melatonin-branded",
+          "text": "I want Carbamide Forte or HealthKart melatonin, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Carbamide Forte"
+        },
+        {
+          "qid": "sleep-aids-melatonin-problem",
+          "text": "raat bhar so nahi pata, subah thakan rehti hai, kya help karega",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "hair-growth-supplements",
+      "name": "Hair growth supplements",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "hair-growth-supplements-discovery",
+          "text": "hair growth tablets under ₹700 that actually show results in 2-3 months",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hair-growth-supplements-local",
+          "text": "baal ugane wali tablets 600-700 mein kaunsi effective hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "hair-growth-supplements-branded",
+          "text": "I want Man Matters or Pilgrim hair growth supplements, where to buy",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Man Matters"
+        },
+        {
+          "qid": "hair-growth-supplements-problem",
+          "text": "baal patle ho rahe hain aur growth ruk gaya hai, andar se kuch try karna hai",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "omega3-fish-oil",
+      "name": "Omega-3 / fish oil",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "omega3-fish-oil-discovery",
+          "text": "high EPA DHA fish oil capsules under ₹700 that don't leave fishy burps",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "omega3-fish-oil-local",
+          "text": "omega 3 fish oil 600-700 mein jo burp na kare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "omega3-fish-oil-branded",
+          "text": "I want Carbamide Forte or Wellbeing Nutrition omega 3, where to buy",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Carbamide Forte"
+        },
+        {
+          "qid": "omega3-fish-oil-problem",
+          "text": "joint pain aur focus issue hai, natural oil supplement try karna hai",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "apple-cider-vinegar",
+      "name": "Apple cider vinegar",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "apple-cider-vinegar-discovery",
+          "text": "raw apple cider vinegar with mother under ₹400 for daily use",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "apple-cider-vinegar-local",
+          "text": "apple cider vinegar with mother 300-400 mein kaunsa pure hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "apple-cider-vinegar-branded",
+          "text": "I want Bragg or local ACV with mother, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Bragg"
+        },
+        {
+          "qid": "apple-cider-vinegar-problem",
+          "text": "digestion slow hai aur weight control karna hai, natural liquid try karna hai",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "diabetic-care-foods",
+      "name": "Diabetic care foods",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "diabetic-care-foods-discovery",
+          "text": "sugar free and diabetic friendly snacks under ₹500 that taste acceptable",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "diabetic-care-foods-local",
+          "text": "diabetic ke liye sugar free snacks 400-500 mein kaunse best hain",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "diabetic-care-foods-branded",
+          "text": "I want Sugar Free or local diabetic care brands, where to buy",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Sugar Free"
+        },
+        {
+          "qid": "diabetic-care-foods-problem",
+          "text": "sugar level control mein rakhna hai, mithas ki craving bhi hoti hai",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "immunity-boosters",
+      "name": "Immunity boosters",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "immunity-boosters-discovery",
+          "text": "effective immunity booster under ₹600 for daily use during season change",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "immunity-boosters-local",
+          "text": "immunity booster 500-600 mein jo season change mein help kare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "immunity-boosters-branded",
+          "text": "I want Himalaya or Dabur immunity products, where to buy authentic",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Himalaya"
+        },
+        {
+          "qid": "immunity-boosters-problem",
+          "text": "baar baar sardi khansi lagti hai, andar se immunity badhani hai",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "period-care-menstrual-cups",
+      "name": "Period care / menstrual cups",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "period-care-menstrual-cups-discovery",
+          "text": "comfortable menstrual cup under ₹800 that is easy for beginners",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "period-care-menstrual-cups-local",
+          "text": "menstrual cup 600-800 mein beginners ke liye kaunsa easy hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "period-care-menstrual-cups-branded",
+          "text": "I want Sirona or Pee Safe menstrual cup, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Sirona"
+        },
+        {
+          "qid": "period-care-menstrual-cups-problem",
+          "text": "pads se irritation hoti hai, reusable comfortable alternative chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "pain-relief-topical",
+      "name": "Pain relief (topical)",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "pain-relief-topical-discovery",
+          "text": "effective pain relief balm or spray under ₹300 for muscle and joint pain",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "pain-relief-topical-local",
+          "text": "muscle pain ke liye balm ya spray 250-300 mein kaunsa effective hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "pain-relief-topical-branded",
+          "text": "I want Moov or Volini, where can I get the current best pack",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Moov"
+        },
+        {
+          "qid": "pain-relief-topical-problem",
+          "text": "shoulder aur back pain rehta hai, local application se relief chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "baby-skincare",
+      "name": "Baby skincare",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "baby-skincare-discovery",
+          "text": "gentle baby lotion and skincare under ₹500 for newborns with sensitive skin",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "baby-skincare-local",
+          "text": "newborn ke liye soft lotion 400-500 mein kaunsa safe hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "baby-skincare-branded",
+          "text": "I want Himalaya or Johnson baby products, where is genuine stock",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Himalaya"
+        },
+        {
+          "qid": "baby-skincare-problem",
+          "text": "baby ki skin dry aur sensitive ho rahi hai, kya lagaun jo safe ho",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "diapers",
+      "name": "Diapers",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "diapers-discovery",
+          "text": "absorbent baby diapers under ₹1000 for medium size that don't leak at night",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "diapers-local",
+          "text": "baby diapers 800-1000 mein jo raat mein leak na kare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "diapers-branded",
+          "text": "I want Pampers or Huggies, where is the multipack cheapest right now",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Pampers"
+        },
+        {
+          "qid": "diapers-problem",
+          "text": "raat mein diaper leak ho jata hai, koi jo pure raat control kare",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "baby-food",
+      "name": "Baby food",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "baby-food-discovery",
+          "text": "stage 1 baby cereal under ₹400 that is easy to digest for 6 month old",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "baby-food-local",
+          "text": "6 month baby ke liye cereal 300-400 mein kaunsa safe hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "baby-food-branded",
+          "text": "I want Cerelac or Nestle baby food, where to buy genuine packs",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Cerelac"
+        },
+        {
+          "qid": "baby-food-problem",
+          "text": "baby solid start kar raha hai, pehla food soft aur safe chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "kids-toys-educational",
+      "name": "Kids' toys (educational)",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "kids-toys-educational-discovery",
+          "text": "educational toys for 3-5 year olds under ₹1500 that actually teach something",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kids-toys-educational-local",
+          "text": "3-5 saal ke bachchon ke liye educational toys 1200-1500 mein",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "kids-toys-educational-branded",
+          "text": "I want Melissa & Doug or local educational toys, where to buy",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local educational brands"
+        },
+        {
+          "qid": "kids-toys-educational-problem",
+          "text": "bachcha screen pe zyada time spend karta hai, offline learning toy chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "school-bags",
+      "name": "School bags",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "school-bags-discovery",
+          "text": "lightweight school bag under ₹1500 with good back support for class 3-5",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "school-bags-local",
+          "text": "school bag 1200-1500 mein jo halka ho aur peeth na dard kare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "school-bags-branded",
+          "text": "I want American Tourister or Skybags school bag, where is best price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "American Tourister"
+        },
+        {
+          "qid": "school-bags-problem",
+          "text": "bachche ka bag heavy ho jata hai, halka aur support wala chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "baby-carriers",
+      "name": "Baby carriers",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "baby-carriers-discovery",
+          "text": "comfortable baby carrier under ₹2000 that is safe for newborns and toddlers",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "baby-carriers-local",
+          "text": "baby carrier 1500-2000 mein jo newborn se toddler tak kaam aaye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "baby-carriers-branded",
+          "text": "I want BabyBjorn or local carrier brands, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local trusted brands"
+        },
+        {
+          "qid": "baby-carriers-problem",
+          "text": "baby ko haath mein leke ghumna mushkil ho raha hai, hands free option chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "kids-nutrition-drinks",
+      "name": "Kids' nutrition drinks",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "kids-nutrition-drinks-discovery",
+          "text": "nutrition drink for kids under ₹500 that helps with growth and taste is good",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kids-nutrition-drinks-local",
+          "text": "bachchon ke liye nutrition drink 400-500 mein jo taste bhi achha ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "kids-nutrition-drinks-branded",
+          "text": "I want Pediasure or Horlicks, where is the current best deal",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Pediasure"
+        },
+        {
+          "qid": "kids-nutrition-drinks-problem",
+          "text": "bachcha khaana kam karta hai, nutrition supplement se help chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "bedsheets-bedding",
+      "name": "Bedsheets / bedding",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "bedsheets-bedding-discovery",
+          "text": "soft cotton king size bedsheets under ₹1500 that don't fade after wash",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "bedsheets-bedding-local",
+          "text": "king size bedsheet 1200-1500 mein soft cotton wali jo fade na ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "bedsheets-bedding-branded",
+          "text": "I want Bombay Dyeing or Spaces bedsheets, where is the best price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Bombay Dyeing"
+        },
+        {
+          "qid": "bedsheets-bedding-problem",
+          "text": "bedsheet 2 wash mein rough ho jati hai, soft aur lasting chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cookware-non-toxic",
+      "name": "Cookware (non-toxic / cast iron)",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "cookware-non-toxic-discovery",
+          "text": "non toxic cookware set under ₹3000 that works on induction and is durable",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cookware-non-toxic-local",
+          "text": "induction friendly non toxic cookware 2500-3000 mein kaunsa best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "cookware-non-toxic-branded",
+          "text": "I want Hawkins or Prestige cookware, where can I get genuine set",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Hawkins"
+        },
+        {
+          "qid": "cookware-non-toxic-problem",
+          "text": "non stick coating nikal rahi hai, healthy material wala cookware chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "home-fragrance-candles",
+      "name": "Home fragrance / candles",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "home-fragrance-candles-discovery",
+          "text": "scented candles under ₹800 that last long and smell natural",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "home-fragrance-candles-local",
+          "text": "scented candles 600-800 mein jo der tak jale aur natural smell de",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "home-fragrance-candles-branded",
+          "text": "I want Iris or local candle brands, where to buy good quality",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Iris"
+        },
+        {
+          "qid": "home-fragrance-candles-problem",
+          "text": "ghar mein fresh smell chahiye jo chemical jaisa na lage",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "wall-decor",
+      "name": "Wall decor",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "wall-decor-discovery",
+          "text": "wall frames and decor pieces under ₹1500 that make the room look premium",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "wall-decor-local",
+          "text": "wall decor 1200-1500 mein jo room ko classy banaye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "wall-decor-branded",
+          "text": "where can I buy good wall art and frames from Indian sellers",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local decor brands"
+        },
+        {
+          "qid": "wall-decor-problem",
+          "text": "khali deewar dull lagti hai, kuch simple aur stylish lagana hai",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "storage-organizers",
+      "name": "Storage & organizers",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "storage-organizers-discovery",
+          "text": "sturdy storage organizers under ₹1000 for wardrobe and kitchen",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "storage-organizers-local",
+          "text": "storage boxes 800-1000 mein jo strong ho kitchen aur wardrobe ke liye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "storage-organizers-branded",
+          "text": "I want Homecentre or local organizer brands, where is best price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Homecentre"
+        },
+        {
+          "qid": "storage-organizers-problem",
+          "text": "samaan scattered rehta hai, space save karne wale organizers chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "water-bottles-flasks",
+      "name": "Water bottles / flasks",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "water-bottles-flasks-discovery",
+          "text": "insulated water bottle under ₹800 that keeps water cold for 12 hours",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "water-bottles-flasks-local",
+          "text": "insulated bottle 600-800 mein jo 12 ghante thanda rakhe",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "water-bottles-flasks-branded",
+          "text": "I want Milton or Borosil flask, where can I get genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Milton"
+        },
+        {
+          "qid": "water-bottles-flasks-problem",
+          "text": "paani jaldi garam ho jata hai bottle mein, thanda rakhne wala chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "air-purifiers",
+      "name": "Air purifiers",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "air-purifiers-discovery",
+          "text": "effective air purifier under ₹15000 for 300-400 sq ft room with HEPA",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "air-purifiers-local",
+          "text": "air purifier 12000-15000 mein jo 300 sq ft ke liye kaafi ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "air-purifiers-branded",
+          "text": "I want Philips or Xiaomi air purifier, where is the best current deal",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Philips"
+        },
+        {
+          "qid": "air-purifiers-problem",
+          "text": "ghar mein dust aur pollution se breathing issue ho raha hai",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "mattresses",
+      "name": "Mattresses",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "mattresses-discovery",
+          "text": "orthopaedic mattress under ₹15000 for back pain relief queen size",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mattresses-local",
+          "text": "back pain ke liye mattress 12000-15000 mein queen size kaunsa best",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "mattresses-branded",
+          "text": "I want Sleepyhead or Wakefit mattress, where can I buy with trial",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Wakefit"
+        },
+        {
+          "qid": "mattresses-problem",
+          "text": "subah uthte hi back dard karta hai, mattress change karna hai",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "curtains",
+      "name": "Curtains",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "curtains-discovery",
+          "text": "blackout curtains under ₹2000 that actually block light and look decent",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "curtains-local",
+          "text": "blackout curtains 1500-2000 mein jo light bilkul na aane de",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "curtains-branded",
+          "text": "where can I buy good quality blackout curtains from Indian brands",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local curtain brands"
+        },
+        {
+          "qid": "curtains-problem",
+          "text": "subah jaldi light aa jati hai, pure dark rakhne wale curtains chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "prayer-mats",
+      "name": "Prayer mats",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "prayer-mats-discovery",
+          "text": "soft thick prayer mat under ₹800 that is comfortable for long prayers",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "prayer-mats-local",
+          "text": "namaz ke liye soft jaaye namaz 600-800 mein jo mota aur comfortable ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "prayer-mats-branded",
+          "text": "where can I buy good quality prayer mats in India",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local Islamic stores"
+        },
+        {
+          "qid": "prayer-mats-problem",
+          "text": "floor hard lagta hai namaz mein, soft thick mat chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "kitchen-appliances-small",
+      "name": "Kitchen appliances (small)",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "kitchen-appliances-small-discovery",
+          "text": "reliable mixer grinder under ₹5000 that can handle daily Indian cooking",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kitchen-appliances-small-local",
+          "text": "mixer grinder 4000-5000 mein jo daily use ke liye strong ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "kitchen-appliances-small-branded",
+          "text": "I want Prestige or Philips mixer, where is the best current offer",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Prestige"
+        },
+        {
+          "qid": "kitchen-appliances-small-problem",
+          "text": "purana mixer jaldi garam ho jata hai, naya durable chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "plants-gardening-kits",
+      "name": "Plants / gardening kits",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "plants-gardening-kits-discovery",
+          "text": "indoor plants and starter gardening kit under ₹800 that survive in apartments",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "plants-gardening-kits-local",
+          "text": "apartment ke liye indoor plants 600-800 mein jo easily survive kare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "plants-gardening-kits-branded",
+          "text": "where can I buy healthy indoor plants and kits from good sellers",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local plant nurseries"
+        },
+        {
+          "qid": "plants-gardening-kits-problem",
+          "text": "ghar mein greenery chahiye lekin plants jaldi mar jate hain",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "tws-earbuds",
+      "name": "TWS earbuds",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "tws-earbuds-discovery",
+          "text": "TWS earbuds under ₹2000 with good battery and clear calls for daily use",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "tws-earbuds-local",
+          "text": "earbuds 1500-2000 mein jo battery achhi ho aur call clear aaye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "tws-earbuds-branded",
+          "text": "I want boAt or Noise earbuds, where can I get genuine at lowest price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "boAt"
+        },
+        {
+          "qid": "tws-earbuds-problem",
+          "text": "wired earphones tang karte hain, wireless chahiye jo long lasting ho",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "smartwatches",
+      "name": "Smartwatches",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "smartwatches-discovery",
+          "text": "smartwatch under ₹3000 with AMOLED and accurate heart rate tracking",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "smartwatches-local",
+          "text": "smartwatch 2500-3000 mein AMOLED display wali kaunsi best hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "smartwatches-branded",
+          "text": "I want Fire-Boltt or Noise smartwatch, where is genuine stock cheapest",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Fire-Boltt"
+        },
+        {
+          "qid": "smartwatches-problem",
+          "text": "fitness track karna hai lekin phone bar bar nikalna nahi hai",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "phone-cases",
+      "name": "Phone cases",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "phone-cases-discovery",
+          "text": "protective phone case under ₹500 that looks premium and survives drops",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "phone-cases-local",
+          "text": "phone case 400-500 mein jo drop se bachaaye aur stylish ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "phone-cases-branded",
+          "text": "I want Spigen or local premium cases, where to buy for my model",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Spigen"
+        },
+        {
+          "qid": "phone-cases-problem",
+          "text": "phone girne se scratch aa jate hain, solid protection chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "power-banks",
+      "name": "Power banks",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "power-banks-discovery",
+          "text": "20000mAh power bank under ₹1500 with fast charging that is reliable",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "power-banks-local",
+          "text": "power bank 20000mAh 1200-1500 mein jo fast charge kare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "power-banks-branded",
+          "text": "I want Mi or Ambrane power bank, where is the best current price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Mi"
+        },
+        {
+          "qid": "power-banks-problem",
+          "text": "phone battery jaldi khatam ho jati hai bahar, backup chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "mobile-chargers-cables",
+      "name": "Mobile chargers / cables",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "mobile-chargers-cables-discovery",
+          "text": "fast charger and cable under ₹800 that supports 30W+ and lasts long",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mobile-chargers-cables-local",
+          "text": "fast charger + cable 600-800 mein jo 30W support kare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "mobile-chargers-cables-branded",
+          "text": "I want Spigen or Boat charger, where can I get genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Spigen"
+        },
+        {
+          "qid": "mobile-chargers-cables-problem",
+          "text": "cable 2 mahine mein kharab ho jata hai, durable fast charging chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "bluetooth-speakers",
+      "name": "Bluetooth speakers",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "bluetooth-speakers-discovery",
+          "text": "portable bluetooth speaker under ₹2000 with good bass for outdoor use",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "bluetooth-speakers-local",
+          "text": "bluetooth speaker 1500-2000 mein jo outdoor ke liye bass achha de",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "bluetooth-speakers-branded",
+          "text": "I want JBL or boAt speaker, where is the genuine best deal",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "JBL"
+        },
+        {
+          "qid": "bluetooth-speakers-problem",
+          "text": "phone speaker se volume kam padta hai, portable loud option chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "laptop-bags-sleeves",
+      "name": "Laptop bags & sleeves",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "laptop-bags-sleeves-discovery",
+          "text": "padded laptop bag under ₹1500 for 15 inch that has good compartments",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "laptop-bags-sleeves-local",
+          "text": "15 inch laptop bag 1200-1500 mein jo padded ho aur compartments ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "laptop-bags-sleeves-branded",
+          "text": "I want American Tourister or Wildcraft laptop bag, where to buy",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "American Tourister"
+        },
+        {
+          "qid": "laptop-bags-sleeves-problem",
+          "text": "laptop bag se protection nahi milti, padded aur organised chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "gaming-accessories",
+      "name": "Gaming accessories",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "gaming-accessories-discovery",
+          "text": "gaming mouse and keyboard combo under ₹2000 that is responsive for casual gaming",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "gaming-accessories-local",
+          "text": "gaming mouse + keyboard 1500-2000 mein casual ke liye kaunsa best",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "gaming-accessories-branded",
+          "text": "I want Logitech or Redgear gaming gear, where is the best deal",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Logitech"
+        },
+        {
+          "qid": "gaming-accessories-problem",
+          "text": "normal mouse se gaming mein lag hota hai, better response chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "smart-home-devices",
+      "name": "Smart home devices",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "smart-home-devices-discovery",
+          "text": "smart bulbs and plugs under ₹1500 that work with Alexa and Google",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "smart-home-devices-local",
+          "text": "smart bulb aur plug 1200-1500 mein jo Alexa se chal jaye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "smart-home-devices-branded",
+          "text": "I want Syska or Wipro smart devices, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Syska"
+        },
+        {
+          "qid": "smart-home-devices-problem",
+          "text": "lights aur plugs ko phone se control karna hai, simple start chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "yoga-mats",
+      "name": "Yoga mats",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "yoga-mats-discovery",
+          "text": "thick non-slip yoga mat under ₹1000 that stays in place on tiles",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "yoga-mats-local",
+          "text": "yoga mat 800-1000 mein jo tiles pe slip na kare aur mota ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "yoga-mats-branded",
+          "text": "I want Strauss or Boldfit yoga mat, where is the best price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Strauss"
+        },
+        {
+          "qid": "yoga-mats-problem",
+          "text": "yoga karte time mat slip ho jata hai, grip wala chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "home-gym-equipment",
+      "name": "Home gym equipment",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "home-gym-equipment-discovery",
+          "text": "adjustable dumbbells and basic home gym set under ₹5000",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "home-gym-equipment-local",
+          "text": "ghar ke liye dumbbells 4000-5000 mein adjustable wali",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "home-gym-equipment-branded",
+          "text": "I want Cultsport or local home gym brands, where to buy",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Cultsport"
+        },
+        {
+          "qid": "home-gym-equipment-problem",
+          "text": "gym nahi ja pata, ghar pe basic strength training setup chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cricket-gear",
+      "name": "Cricket gear",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "cricket-gear-discovery",
+          "text": "beginner cricket bat and kit under ₹3000 that is good for tennis ball",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cricket-gear-local",
+          "text": "cricket bat 2500-3000 mein beginners ke liye tennis ball ke liye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "cricket-gear-branded",
+          "text": "I want SS or GM cricket bat, where can I get genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "SS"
+        },
+        {
+          "qid": "cricket-gear-problem",
+          "text": "gully cricket khelna hai, basic solid kit chahiye bina mehnga liye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cycling-accessories",
+      "name": "Cycling accessories",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "cycling-accessories-discovery",
+          "text": "cycling helmet and basic accessories under ₹2000 for safety",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cycling-accessories-local",
+          "text": "cycling helmet 1500-2000 mein jo safe aur comfortable ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "cycling-accessories-branded",
+          "text": "I want Decathlon cycling gear, where is the best current stock",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Decathlon"
+        },
+        {
+          "qid": "cycling-accessories-problem",
+          "text": "cycle chalate time safety gear nahi hai, basic protection chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "running-gear",
+      "name": "Running gear",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "running-gear-discovery",
+          "text": "running shoes under ₹3000 with good cushioning for daily 5k runs",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "running-gear-local",
+          "text": "running shoes 2500-3000 mein jo cushioning achhi de daily run ke liye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "running-gear-branded",
+          "text": "I want Asics or Nike running shoes, where can I get authentic pair",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Asics"
+        },
+        {
+          "qid": "running-gear-problem",
+          "text": "running ke baad knees dard karti hain, better shoes chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sports-nutrition",
+      "name": "Sports nutrition",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "sports-nutrition-discovery",
+          "text": "pre workout and BCAA under ₹1500 that gives energy without crash",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sports-nutrition-local",
+          "text": "pre workout 1200-1500 mein jo energy de bina crash ke",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "sports-nutrition-branded",
+          "text": "I want MuscleBlaze or ON pre workout, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "MuscleBlaze"
+        },
+        {
+          "qid": "sports-nutrition-problem",
+          "text": "workout se pehle energy nahi rehti, natural boost chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "pet-food-dogs",
+      "name": "Pet food (dogs)",
+      "group": "Pets",
+      "queries": [
+        {
+          "qid": "pet-food-dogs-discovery",
+          "text": "good dry dog food under ₹1000 for adult dogs that is not full of fillers",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "pet-food-dogs-local",
+          "text": "adult dog ke liye dry food 800-1000 mein kaunsa quality wala hai",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "pet-food-dogs-branded",
+          "text": "I want Pedigree or Royal Canin, where is the current best pack price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Pedigree"
+        },
+        {
+          "qid": "pet-food-dogs-problem",
+          "text": "kutta ghar ka khana nahi kha raha properly, balanced dog food chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "pet-food-cats",
+      "name": "Pet food (cats)",
+      "group": "Pets",
+      "queries": [
+        {
+          "qid": "pet-food-cats-discovery",
+          "text": "wet and dry cat food under ₹800 that cats actually like eating",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "pet-food-cats-local",
+          "text": "cat food 600-800 mein wet + dry jo billi khaye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "pet-food-cats-branded",
+          "text": "I want Whiskas or Sheba, where can I get multipacks cheapest",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Whiskas"
+        },
+        {
+          "qid": "pet-food-cats-problem",
+          "text": "billi khaana picky hai, aisa food chahiye jo regularly khaye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "pet-grooming",
+      "name": "Pet grooming",
+      "group": "Pets",
+      "queries": [
+        {
+          "qid": "pet-grooming-discovery",
+          "text": "gentle pet shampoo and grooming kit under ₹600 for dogs and cats",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "pet-grooming-local",
+          "text": "pet shampoo 400-600 mein jo soft ho aur smell achhi de",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "pet-grooming-branded",
+          "text": "I want Himalaya or local pet grooming products, where to buy",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Himalaya"
+        },
+        {
+          "qid": "pet-grooming-problem",
+          "text": "pet ki skin itchy ho rahi hai, soft shampoo chahiye jo soothe kare",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "fragrance-free-sensitive-skincare",
+      "name": "Fragrance-free / sensitive skincare",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "fragrance-free-sensitive-skincare-discovery",
+          "text": "fragrance free skincare under ₹800 that is safe for very sensitive skin",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "fragrance-free-sensitive-skincare-local",
+          "text": "sensitive skin ke liye fragrance free products 600-800 mein",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "fragrance-free-sensitive-skincare-branded",
+          "text": "I want Cetaphil or Simple sensitive range, where to buy genuine",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Cetaphil"
+        },
+        {
+          "qid": "fragrance-free-sensitive-skincare-problem",
+          "text": "skin products se irritation ho jati hai, kuch bilkul mild chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "stationery-planners",
+      "name": "Stationery & planners",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "stationery-planners-discovery",
+          "text": "good quality planners and stationery set under ₹800 for daily productivity",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "stationery-planners-local",
+          "text": "planner aur stationery 600-800 mein jo daily use ke liye quality wala ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "stationery-planners-branded",
+          "text": "I want Classmate or local planner brands, where to buy good ones",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Classmate"
+        },
+        {
+          "qid": "stationery-planners-problem",
+          "text": "tasks track nahi ho paate, physical planner chahiye jo simple ho",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "backpacks",
+      "name": "Backpacks",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "backpacks-discovery",
+          "text": "durable backpack under ₹2000 for college and short travel with laptop sleeve",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "backpacks-local",
+          "text": "backpack 1500-2000 mein jo college aur travel dono ke liye kaam aaye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "backpacks-branded",
+          "text": "I want American Tourister or Wildcraft backpack, where is best price",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "American Tourister"
+        },
+        {
+          "qid": "backpacks-problem",
+          "text": "bag jaldi tear ho jata hai, durable everyday backpack chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "travel-accessories",
+      "name": "Travel accessories",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "travel-accessories-discovery",
+          "text": "travel organizers and packing cubes under ₹1000 that actually save space",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "travel-accessories-local",
+          "text": "travel organizers 800-1000 mein jo packing easy banaye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "travel-accessories-branded",
+          "text": "where can I buy good quality packing cubes and travel kits",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local travel brands"
+        },
+        {
+          "qid": "travel-accessories-problem",
+          "text": "suitcase mein samaan mess ho jata hai, organise karne wale accessories chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "grooming-kits-gifting",
+      "name": "Grooming kits (gifting)",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "grooming-kits-gifting-discovery",
+          "text": "men's grooming gift kit under ₹1500 that looks premium and is useful",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "grooming-kits-gifting-local",
+          "text": "mardon ke liye grooming gift kit 1200-1500 mein jo premium lage",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "grooming-kits-gifting-branded",
+          "text": "I want Beardo or The Man Company gift kit, where to buy",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Beardo"
+        },
+        {
+          "qid": "grooming-kits-gifting-problem",
+          "text": "bhai ya dost ke liye useful gift chahiye jo grooming se related ho",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "festive-gifting-hampers",
+      "name": "Festive gifting hampers",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "festive-gifting-hampers-discovery",
+          "text": "Diwali gift hampers under ₹2000 that look thoughtful and not generic",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "festive-gifting-hampers-local",
+          "text": "Diwali gift hamper 1500-2000 mein jo unique aur useful ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "festive-gifting-hampers-branded",
+          "text": "where can I buy ready Diwali hampers from good Indian brands",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local festive brands"
+        },
+        {
+          "qid": "festive-gifting-hampers-problem",
+          "text": "office aur relatives ke liye festive gift chahiye jo budget mein ho",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "car-accessories",
+      "name": "Car accessories",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "car-accessories-discovery",
+          "text": "useful car organizers and accessories under ₹1000 for daily driving",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "car-accessories-local",
+          "text": "car accessories 800-1000 mein jo daily driving ke liye useful ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "car-accessories-branded",
+          "text": "where can I buy good quality car organizers and phone mounts",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Local auto brands"
+        },
+        {
+          "qid": "car-accessories-problem",
+          "text": "car mein saman mess rehta hai, organise karne wale accessories chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "eyewear-prescription-blue-light",
+      "name": "Eyewear (prescription / blue-light)",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "eyewear-prescription-blue-light-discovery",
+          "text": "blue light blocking glasses under ₹1500 that are comfortable for long screen time",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "eyewear-prescription-blue-light-local",
+          "text": "blue light glasses 1200-1500 mein jo long screen time ke liye comfortable ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "eyewear-prescription-blue-light-branded",
+          "text": "I want Lenskart blue light glasses, where should I buy them",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Lenskart"
+        },
+        {
+          "qid": "eyewear-prescription-blue-light-problem",
+          "text": "laptop pe kaam karke aankhen dard karti hain, protection chahiye",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "hi-en"
+        }
+      ],
+      "snapshots": []
+    }
+  ]
+}

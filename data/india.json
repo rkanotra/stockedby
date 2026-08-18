@@ -1,0 +1,3705 @@
+{
+  "market": "India",
+  "categories": [
+    {
+      "id": "face-serum-vitamin-c",
+      "name": "Face serum / vitamin C",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "face-serum-vitamin-c-discovery",
+          "text": "Under ₹700, what vitamin C serum works best for oily acne-prone skin and fading post-acne marks?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "face-serum-vitamin-c-local",
+          "text": "₹700 ke andar dull skin ke liye beginner-friendly option — kaunsa vitamin C serum lena sahi rahega?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "face-serum-vitamin-c-branded",
+          "text": "Where can I buy genuine Minimalist vitamin C serum at the best price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Minimalist"
+        },
+        {
+          "qid": "face-serum-vitamin-c-problem",
+          "text": "My face looks dull and the dark marks left after pimples are not fading. What should I use?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sunscreen",
+      "name": "Sunscreen",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "sunscreen-discovery",
+          "text": "I have ₹500 to spend on sunscreen for daily office commute in strong summer sun without white cast; what should I shortlist?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sunscreen-local",
+          "text": "sweaty skin aur outdoor travel chahiye; ₹500 tak ka sunscreen suggest karo.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "sunscreen-branded",
+          "text": "I'm set on Minimalist for sunscreen; which site should I use to get an authentic one for less?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Minimalist"
+        },
+        {
+          "qid": "sunscreen-problem",
+          "text": "I tan within minutes outdoors and most creams feel sticky on my face. What can protect me without feeling heavy?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "hair-oil",
+      "name": "Hair oil (cold-pressed / ayurvedic)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "hair-oil-discovery",
+          "text": "Need cold-pressed hair oil for weekly scalp massage for dry hair and breakage and want to stay below ₹600 — which options are worth it?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hair-oil-local",
+          "text": "Mera budget ₹600 hai, hair fall aur dry scalp ke liye kaunsa cold-pressed hair oil dekhun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "hair-oil-branded",
+          "text": "For Indulekha cold-pressed hair oil, should I order from the brand site or another trusted seller in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Indulekha"
+        },
+        {
+          "qid": "hair-oil-problem",
+          "text": "My scalp feels dry and my hair keeps snapping when I comb it. What can I add to my weekly routine?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "beard-grooming",
+      "name": "Beard grooming",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "beard-grooming-discovery",
+          "text": "Which beard grooming kit under ₹1000 is good for keeping a short beard neat without making it greasy?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "beard-grooming-local",
+          "text": "patchy beard ko tidy rakhna ke liye ₹1000 ke aas-paas koi achha beard grooming kit hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "beard-grooming-branded",
+          "text": "I already want Beardo beard grooming kit — where is the safest place to buy it without overpaying?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Beardo"
+        },
+        {
+          "qid": "beard-grooming-problem",
+          "text": "My facial hair grows unevenly and gets rough by evening. What can help it look cleaner and softer?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "shampoo",
+      "name": "Shampoo (sulfate-free)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "shampoo-discovery",
+          "text": "₹700 budget: suggest sulfate-free shampoo that suits colour-treated hair that gets frizzy after washing.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "shampoo-local",
+          "text": "₹700 max spend karna hai — frizzy baal aur gentle wash wala sulfate-free shampoo batao.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "shampoo-branded",
+          "text": "What's the best place online to get authentic Plum sulfate-free shampoo in India right now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Plum"
+        },
+        {
+          "qid": "shampoo-problem",
+          "text": "My hair colour fades quickly and every wash leaves the lengths rough. What should I switch to?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "face-wash",
+      "name": "Face wash (men)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "face-wash-discovery",
+          "text": "For oily skin after gym and daily commute, what men's face wash can I get within ₹500?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "face-wash-local",
+          "text": "India mein ₹500 budget mein gym ke baad oily face; men's face wash mein kya worth it hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "face-wash-branded",
+          "text": "Can you point me to a genuine NIVEA Men men's face wash deal and tell me where I should actually buy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "NIVEA Men"
+        },
+        {
+          "qid": "face-wash-problem",
+          "text": "My face gets greasy after workouts and by afternoon, but strong cleansers make it feel tight. What should I use?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "kajal-eyeliner",
+      "name": "Kajal / eyeliner",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "kajal-eyeliner-discovery",
+          "text": "Looking for kajal around ₹350, mainly for all-day office wear that should not smudge; what would you pick?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kajal-eyeliner-local",
+          "text": "waterline pe long-lasting dark look ke liye kajal chahiye, budget roughly ₹350 — options?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "kajal-eyeliner-branded",
+          "text": "I don't need brand suggestions — I want Lakmé kajal. Which Indian store should I buy from?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Lakmé"
+        },
+        {
+          "qid": "kajal-eyeliner-problem",
+          "text": "My eye makeup keeps spreading under my eyes by lunchtime. What can stay dark without smudging?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "lipstick",
+      "name": "Lipstick (long-stay)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "lipstick-discovery",
+          "text": "Can you recommend long-stay lipstick below ₹800 for wedding functions and meals without frequent touch-ups?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "lipstick-local",
+          "text": "₹800 tak mein long-stay lipstick dekh raha/rahi hoon; focus shaadi function ke liye transfer-proof shade pe hai.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "lipstick-branded",
+          "text": "Where would you route me for a real Maybelline long-stay lipstick: its own site or a marketplace?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Maybelline"
+        },
+        {
+          "qid": "lipstick-problem",
+          "text": "I need lip colour that survives dinner and photos without constant touch-ups. What should I look for?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "body-lotion",
+      "name": "Body lotion",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "body-lotion-discovery",
+          "text": "What's a reliable body lotion for very dry legs in winter without a sticky finish if my limit is ₹600?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "body-lotion-local",
+          "text": "Koi body lotion ₹600 se kam jo dry skin ke liye non-chipchipa option ke kaam aaye?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "body-lotion-branded",
+          "text": "I'm buying NIVEA body lotion; who has the best genuine listing and price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "NIVEA"
+        },
+        {
+          "qid": "body-lotion-problem",
+          "text": "My arms and legs turn ashy after a shower and feel dry again within hours. What can keep them comfortable longer?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "perfume-attar",
+      "name": "Perfume / attar",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "perfume-attar-discovery",
+          "text": "Help me choose perfume for daily office wear with noticeable but not overpowering projection; budget is ₹1500 max.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "perfume-attar-local",
+          "text": "office ke liye long-lasting fragrance sabse important hai aur budget ₹1500; kaunsa perfume choose karun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "perfume-attar-branded",
+          "text": "Which trusted site is best for ordering Bella Vita perfume in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Bella Vita"
+        },
+        {
+          "qid": "perfume-attar-problem",
+          "text": "I want to smell fresh through a workday, but strong scents give people around me a headache. What kind of option should I try?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "oud-products",
+      "name": "Oud products",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "oud-products-discovery",
+          "text": "Under ₹2500, what oud fragrance works best for evening occasions with a warm woody profile?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "oud-products-local",
+          "text": "₹2500 ke andar shaadi ya evening ke liye woody scent — kaunsa oud fragrance lena sahi rahega?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "oud-products-branded",
+          "text": "Where can I buy genuine Ajmal oud fragrance at the best price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ajmal"
+        },
+        {
+          "qid": "oud-products-problem",
+          "text": "I like deep woody Middle Eastern scents and want something that lasts through an evening event. What should I try?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "hair-styling",
+      "name": "Hair styling (women)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "hair-styling-discovery",
+          "text": "I have ₹1000 to spend on women's hair styling product for controlling frizz before parties without stiff hair; what should I shortlist?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hair-styling-local",
+          "text": "humidity mein smooth styling chahiye; ₹1000 tak ka women's hair styling product suggest karo.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "hair-styling-branded",
+          "text": "I'm set on BBlunt for women's hair styling product; which site should I use to get an authentic one for less?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "BBlunt"
+        },
+        {
+          "qid": "hair-styling-problem",
+          "text": "My hair puffs up as soon as I step outside and I hate the crunchy feel of strong hold products. What can help?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "skin-brightening-cream",
+      "name": "Skin brightening cream",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "skin-brightening-cream-discovery",
+          "text": "Need brightening cream for uneven tone and dullness on combination skin and want to stay below ₹1000 — which options are worth it?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "skin-brightening-cream-local",
+          "text": "Mera budget ₹1000 hai, uneven skin tone ke liye daily option ke liye kaunsa brightening cream dekhun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "skin-brightening-cream-branded",
+          "text": "For Olay brightening cream, should I order from the brand site or another trusted seller in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Olay"
+        },
+        {
+          "qid": "skin-brightening-cream-problem",
+          "text": "My complexion looks uneven and tired even when I sleep well. What can I use daily to make it look more even?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "face-masks-sheet-masks",
+      "name": "Face masks / sheet masks",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "face-masks-sheet-masks-discovery",
+          "text": "Which sheet mask under ₹500 is good for quick hydration before an event for dehydrated skin?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "face-masks-sheet-masks-local",
+          "text": "event se pehle instant hydration ke liye ₹500 ke aas-paas koi achha sheet mask hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "face-masks-sheet-masks-branded",
+          "text": "I already want Nykaa sheet mask — where is the safest place to buy it without overpaying?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nykaa"
+        },
+        {
+          "qid": "face-masks-sheet-masks-problem",
+          "text": "My face looks dehydrated and flat before a function tomorrow. Is there something simple I can use for a quick moisture boost?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "nail-care",
+      "name": "Nail care",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "nail-care-discovery",
+          "text": "₹800 budget: suggest nail-care kit that suits brittle nails and home manicure maintenance.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "nail-care-local",
+          "text": "₹800 max spend karna hai — ghar pe weak nails manage karna wala nail-care kit batao.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "nail-care-branded",
+          "text": "What's the best place online to get authentic Nykaa nail-care kit in India right now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nykaa"
+        },
+        {
+          "qid": "nail-care-problem",
+          "text": "My nails peel at the edges and break before they grow. What can I use at home to keep them stronger and neater?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "men-s-sunglasses",
+      "name": "Men's sunglasses",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "men-s-sunglasses-discovery",
+          "text": "For driving in harsh afternoon glare with polarized lenses, what men's sunglasses can I get within ₹2000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "men-s-sunglasses-local",
+          "text": "India mein ₹2000 budget mein driving ke liye polarized shades; men's sunglasses mein kya worth it hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "men-s-sunglasses-branded",
+          "text": "Can you point me to a genuine Vincent Chase men's sunglasses deal and tell me where I should actually buy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Vincent Chase"
+        },
+        {
+          "qid": "men-s-sunglasses-problem",
+          "text": "Afternoon glare while driving strains my eyes and cheap shades distort the road. What should I look for?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "women-s-ethnic-wear-kurtis",
+      "name": "Women's ethnic wear / kurtis",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "women-s-ethnic-wear-kurtis-discovery",
+          "text": "Looking for women's kurti around ₹2500, mainly for office wear that can also work for casual dinners; what would you pick?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "women-s-ethnic-wear-kurtis-local",
+          "text": "office aur casual dono ke liye kurti ke liye women's kurti chahiye, budget roughly ₹2500 — options?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "women-s-ethnic-wear-kurtis-branded",
+          "text": "I don't need brand suggestions — I want Libas women's kurti. Which Indian store should I buy from?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Libas"
+        },
+        {
+          "qid": "women-s-ethnic-wear-kurtis-problem",
+          "text": "Mujhe aisa ethnic outfit chahiye jo office mein formal lage aur dinner pe bhi boring na lage. Kya dekhun?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "abayas-and-modest-fashion",
+      "name": "Abayas & modest fashion",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "abayas-and-modest-fashion-discovery",
+          "text": "Can you recommend abaya below ₹3000 for breathable everyday wear in hot Indian weather?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "abayas-and-modest-fashion-local",
+          "text": "₹3000 tak mein abaya dekh raha/rahi hoon; focus daily wear ke liye light modest outfit pe hai.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "abayas-and-modest-fashion-branded",
+          "text": "Where would you route me for a real Modest Essentials abaya: its own site or a marketplace?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Modest Essentials"
+        },
+        {
+          "qid": "abayas-and-modest-fashion-problem",
+          "text": "I need a loose full-length outfit for hot weather that is opaque, comfortable and easy to wear every day. Where should I look?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sneakers-casual-shoes",
+      "name": "Sneakers / casual shoes",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "sneakers-casual-shoes-discovery",
+          "text": "What's a reliable casual sneakers for daily walking and office-casual use with soft cushioning if my limit is ₹4000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sneakers-casual-shoes-local",
+          "text": "Koi casual sneakers ₹4000 se kam jo roz ke walking aur college use ke kaam aaye?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "sneakers-casual-shoes-branded",
+          "text": "I'm buying Puma casual sneakers; who has the best genuine listing and price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Puma"
+        },
+        {
+          "qid": "sneakers-casual-shoes-problem",
+          "text": "My feet ache after a full day of walking and I still want shoes that look good with jeans. What should I choose?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "men-s-formal-shoes",
+      "name": "Men's formal shoes",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "men-s-formal-shoes-discovery",
+          "text": "Help me choose men's formal shoes for long office days with a suit and occasional events; budget is ₹3500 max.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "men-s-formal-shoes-local",
+          "text": "office mein 8 ghante comfortable formal pair sabse important hai aur budget ₹3500; kaunsa men's formal shoes choose karun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "men-s-formal-shoes-branded",
+          "text": "Which trusted site is best for ordering Bata men's formal shoes in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Bata"
+        },
+        {
+          "qid": "men-s-formal-shoes-problem",
+          "text": "I spend most of the day on my feet in office clothes and my current pair pinches near the toes. What would be more comfortable?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "handbags",
+      "name": "Handbags",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "handbags-discovery",
+          "text": "Under ₹3000, what handbag works best for daily office use with room for essentials and a small tablet?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "handbags-local",
+          "text": "₹3000 ke andar office daily use ke liye roomy bag — kaunsa handbag lena sahi rahega?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "handbags-branded",
+          "text": "Where can I buy genuine Lavie handbag at the best price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Lavie"
+        },
+        {
+          "qid": "handbags-problem",
+          "text": "I carry a wallet, charger, bottle and small tablet every day but don't want a bulky tote. What type of bag would suit me?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "men-s-watches",
+      "name": "Men's watches",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "men-s-watches-discovery",
+          "text": "I have ₹5000 to spend on men's watch for smart-casual office wear with an analogue look; what should I shortlist?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "men-s-watches-local",
+          "text": "office aur weekend dono ke liye watch chahiye; ₹5000 tak ka men's watch suggest karo.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "men-s-watches-branded",
+          "text": "I'm set on Titan for men's watch; which site should I use to get an authentic one for less?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Titan"
+        },
+        {
+          "qid": "men-s-watches-problem",
+          "text": "I want one accessory that looks polished with shirts but not too dressy with jeans. What should I buy?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "athleisure-gym-wear",
+      "name": "Athleisure / gym wear",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "athleisure-gym-wear-discovery",
+          "text": "Need gym wear for strength training and sweaty cardio sessions and want to stay below ₹2000 — which options are worth it?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "athleisure-gym-wear-local",
+          "text": "Mera budget ₹2000 hai, workout ke liye sweat-friendly clothes ke liye kaunsa gym wear dekhun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "athleisure-gym-wear-branded",
+          "text": "For HRX gym wear, should I order from the brand site or another trusted seller in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "HRX"
+        },
+        {
+          "qid": "athleisure-gym-wear-problem",
+          "text": "My T-shirts get soaked during cardio and cling badly during lifting. What fabric and fit should I look for?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "innerwear-men",
+      "name": "Innerwear (men)",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "innerwear-men-discovery",
+          "text": "Which men's innerwear under ₹1000 is good for all-day comfort in humid weather without chafing?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "innerwear-men-local",
+          "text": "garmi mein comfortable daily wear ke liye ₹1000 ke aas-paas koi achha men's innerwear hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "innerwear-men-branded",
+          "text": "I already want XYXX men's innerwear — where is the safest place to buy it without overpaying?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "XYXX"
+        },
+        {
+          "qid": "innerwear-men-problem",
+          "text": "I get uncomfortable and sweaty during long commutes, especially around the thighs. What can reduce rubbing and stay breathable?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "innerwear-women",
+      "name": "Innerwear (women)",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "innerwear-women-discovery",
+          "text": "₹1500 budget: suggest women's lingerie that suits comfortable everyday support under office clothes.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "innerwear-women-local",
+          "text": "₹1500 max spend karna hai — daily wear ke liye comfortable fit wala women's lingerie batao.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "innerwear-women-branded",
+          "text": "What's the best place online to get authentic Zivame women's lingerie in India right now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Zivame"
+        },
+        {
+          "qid": "innerwear-women-problem",
+          "text": "My current bras dig into my shoulders by evening and show lines under fitted tops. What should I try instead?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sarees",
+      "name": "Sarees",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "sarees-discovery",
+          "text": "For a lightweight festive look that is easy for a beginner to drape, what saree can I get within ₹3000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sarees-local",
+          "text": "India mein ₹3000 budget mein festival ke liye easy drape saree; saree mein kya worth it hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "sarees-branded",
+          "text": "Can you point me to a genuine Suta saree deal and tell me where I should actually buy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Suta"
+        },
+        {
+          "qid": "sarees-problem",
+          "text": "I have to dress traditionally for a family function but I am not confident managing heavy fabric. What would be easy to wear?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "hijabs-and-scarves",
+      "name": "Hijabs & scarves",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "hijabs-and-scarves-discovery",
+          "text": "Looking for hijab around ₹1200, mainly for breathable everyday styling that stays in place; what would you pick?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hijabs-and-scarves-local",
+          "text": "daily college wear ke liye light scarf ke liye hijab chahiye, budget roughly ₹1200 — options?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "hijabs-and-scarves-branded",
+          "text": "I don't need brand suggestions — I want Little Black Hijab hijab. Which Indian store should I buy from?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Little Black Hijab"
+        },
+        {
+          "qid": "hijabs-and-scarves-problem",
+          "text": "I need a head covering that won't slip during a long college day and doesn't feel too warm. What fabric should I choose?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "kids-clothing",
+      "name": "Kids' clothing",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "kids-clothing-discovery",
+          "text": "Can you recommend kids' clothes below ₹2000 for comfortable birthday outfit for a six-year-old?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kids-clothing-local",
+          "text": "₹2000 tak mein kids' clothes dekh raha/rahi hoon; focus 6 saal ke bacche ka party outfit pe hai.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "kids-clothing-branded",
+          "text": "Where would you route me for a real Hopscotch kids' clothes: its own site or a marketplace?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Hopscotch"
+        },
+        {
+          "qid": "kids-clothing-problem",
+          "text": "My child has a birthday party and refuses anything itchy or stiff. What kind of outfit can look festive but stay comfortable?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "artificial-jewelry",
+      "name": "Artificial jewelry",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "artificial-jewelry-discovery",
+          "text": "What's a reliable fashion jewellery for wedding guest styling without spending on precious metal if my limit is ₹1000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "artificial-jewelry-local",
+          "text": "Koi fashion jewellery ₹1000 se kam jo shaadi ke liye budget jewellery ke kaam aaye?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "artificial-jewelry-branded",
+          "text": "I'm buying Yellow Chimes fashion jewellery; who has the best genuine listing and price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Yellow Chimes"
+        },
+        {
+          "qid": "artificial-jewelry-problem",
+          "text": "I need statement pieces for a wedding next week but don't want to spend on gold or silver. What should I consider?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "gold-plated-demi-fine-jewelry",
+      "name": "Gold-plated / demi-fine jewelry",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "gold-plated-demi-fine-jewelry-discovery",
+          "text": "Help me choose gold-plated jewellery for everyday office pieces that look refined and resist quick tarnish; budget is ₹3000 max.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "gold-plated-demi-fine-jewelry-local",
+          "text": "daily office ke liye subtle jewellery sabse important hai aur budget ₹3000; kaunsa gold-plated jewellery choose karun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "gold-plated-demi-fine-jewelry-branded",
+          "text": "Which trusted site is best for ordering Palmonas gold-plated jewellery in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Palmonas"
+        },
+        {
+          "qid": "gold-plated-demi-fine-jewelry-problem",
+          "text": "I want delicate pieces that look premium with workwear but won't lose their finish after a few wears. What should I buy?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "protein-powder-whey",
+      "name": "Protein powder / whey",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "protein-powder-whey-discovery",
+          "text": "Under ₹2500, what whey protein works best for post-workout protein for a beginner doing strength training?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "protein-powder-whey-local",
+          "text": "₹2500 ke andar gym shuru kiya hai protein ka simple option — kaunsa whey protein lena sahi rahega?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "protein-powder-whey-branded",
+          "text": "Where can I buy genuine MuscleBlaze whey protein at the best price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "MuscleBlaze"
+        },
+        {
+          "qid": "protein-powder-whey-problem",
+          "text": "I recently started lifting and struggle to hit my daily protein target through meals. What is a convenient option?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "healthy-snacks-makhana",
+      "name": "Healthy snacks / makhana",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "healthy-snacks-makhana-discovery",
+          "text": "I have ₹500 to spend on makhana snacks for evening snacking with lower oil and controlled portions; what should I shortlist?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "healthy-snacks-makhana-local",
+          "text": "chai ke saath healthy crunchy snack chahiye; ₹500 tak ka makhana snacks suggest karo.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "healthy-snacks-makhana-branded",
+          "text": "I'm set on Farmley for makhana snacks; which site should I use to get an authentic one for less?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Farmley"
+        },
+        {
+          "qid": "healthy-snacks-makhana-problem",
+          "text": "I get hungry around 5 pm and end up eating chips every day. What crunchy alternative can I keep at my desk?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "coffee",
+      "name": "Coffee (specialty / instant)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "coffee-discovery",
+          "text": "Need coffee for strong morning brew at home without an espresso machine and want to stay below ₹800 — which options are worth it?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "coffee-local",
+          "text": "Mera budget ₹800 hai, ghar pe cafe jaisa coffee taste ke liye kaunsa coffee dekhun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "coffee-branded",
+          "text": "For Sleepy Owl coffee, should I order from the brand site or another trusted seller in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Sleepy Owl"
+        },
+        {
+          "qid": "coffee-problem",
+          "text": "I want café-style flavour in the morning but only have a basic kettle and mug. What can I make easily?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "green-tea-wellness-tea",
+      "name": "Green tea / wellness tea",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "green-tea-wellness-tea-discovery",
+          "text": "Which green tea under ₹600 is good for a light unsweetened drink for afternoon office breaks?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "green-tea-wellness-tea-local",
+          "text": "office mein chai kam karne ka option ke liye ₹600 ke aas-paas koi achha green tea hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "green-tea-wellness-tea-branded",
+          "text": "I already want Organic India green tea — where is the safest place to buy it without overpaying?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Organic India"
+        },
+        {
+          "qid": "green-tea-wellness-tea-problem",
+          "text": "I drink too many sugary cups at work and want a lighter hot drink for the afternoon. What should I switch to?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "dry-fruits-and-nuts",
+      "name": "Dry fruits & nuts",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "dry-fruits-and-nuts-discovery",
+          "text": "₹1000 budget: suggest dry fruits that suits daily family snacking with almonds, cashews and raisins.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "dry-fruits-and-nuts-local",
+          "text": "₹1000 max spend karna hai — ghar ke liye mixed nuts value pack wala dry fruits batao.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "dry-fruits-and-nuts-branded",
+          "text": "What's the best place online to get authentic Happilo dry fruits in India right now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Happilo"
+        },
+        {
+          "qid": "dry-fruits-and-nuts-problem",
+          "text": "Instead of biscuits, I want something shelf-stable the whole family can nibble in small portions. What would work?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "dates",
+      "name": "Dates",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "dates-discovery",
+          "text": "For Ramadan and everyday snacking with soft texture, what dates can I get within ₹800?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "dates-local",
+          "text": "India mein ₹800 budget mein iftar ke liye soft khajoor; dates mein kya worth it hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "dates-branded",
+          "text": "Can you point me to a genuine Happilo dates deal and tell me where I should actually buy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Happilo"
+        },
+        {
+          "qid": "dates-problem",
+          "text": "I want naturally sweet bites for iftar that are soft, not overly dry, and easy for elders to eat. What should I look for?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "honey",
+      "name": "Honey (raw / organic)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "honey-discovery",
+          "text": "Looking for raw honey around ₹700, mainly for morning use in tea and toast with reliable quality; what would you pick?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "honey-local",
+          "text": "chai aur breakfast ke liye asli shahad ke liye raw honey chahiye, budget roughly ₹700 — options?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "honey-branded",
+          "text": "I don't need brand suggestions — I want Dabur raw honey. Which Indian store should I buy from?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Dabur"
+        },
+        {
+          "qid": "honey-problem",
+          "text": "Breakfast needs a natural sweetener, but adulteration worries me. How can I choose a trustworthy option?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "ghee",
+      "name": "Ghee (A2 / organic)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "ghee-discovery",
+          "text": "Can you recommend A2 ghee below ₹1500 for daily home cooking in small quantities with strong aroma?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "ghee-local",
+          "text": "₹1500 tak mein A2 ghee dekh raha/rahi hoon; focus ghar ke tadke ke liye achha ghee pe hai.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "ghee-branded",
+          "text": "Where would you route me for a real Two Brothers Organic Farms A2 ghee: its own site or a marketplace?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Two Brothers Organic Farms"
+        },
+        {
+          "qid": "ghee-problem",
+          "text": "I use a spoonful for dal and rotis and want a rich traditional aroma without buying a huge tin. What should I try?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "spices-and-masalas",
+      "name": "Spices & masalas",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "spices-and-masalas-discovery",
+          "text": "What's a reliable masala for quick weekday Indian cooking with consistent flavour if my limit is ₹500?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "spices-and-masalas-local",
+          "text": "Koi masala ₹500 se kam jo roz ki sabzi ke liye masala combo ke kaam aaye?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "spices-and-masalas-branded",
+          "text": "I'm buying Tata Sampann masala; who has the best genuine listing and price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Tata Sampann"
+        },
+        {
+          "qid": "spices-and-masalas-problem",
+          "text": "I cook after work and want reliable flavour without measuring five different powders every night. What can simplify this?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "breakfast-cereals-muesli",
+      "name": "Breakfast cereals / muesli",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "breakfast-cereals-muesli-discovery",
+          "text": "Help me choose muesli for quick breakfast with milk before an early commute; budget is ₹600 max.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "breakfast-cereals-muesli-local",
+          "text": "subah jaldi breakfast ka easy option sabse important hai aur budget ₹600; kaunsa muesli choose karun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "breakfast-cereals-muesli-branded",
+          "text": "Which trusted site is best for ordering Yoga Bar muesli in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Yoga Bar"
+        },
+        {
+          "qid": "breakfast-cereals-muesli-problem",
+          "text": "I leave home early and skip breakfast because cooking takes too long. What can I keep ready for a filling bowl in minutes?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "peanut-butter",
+      "name": "Peanut butter",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "peanut-butter-discovery",
+          "text": "Under ₹500, what peanut butter works best for high-protein toast and smoothies without excessive sugar?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "peanut-butter-local",
+          "text": "₹500 ke andar gym ke baad toast ke liye peanut butter — kaunsa peanut butter lena sahi rahega?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "peanut-butter-branded",
+          "text": "Where can I buy genuine Pintola peanut butter at the best price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Pintola"
+        },
+        {
+          "qid": "peanut-butter-problem",
+          "text": "I want an easy spread for toast that adds protein but isn't loaded with sweetness. What should I check on the label?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "millet-products",
+      "name": "Millet products",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "millet-products-discovery",
+          "text": "I have ₹600 to spend on millet snack for school tiffin and evening snacking with familiar Indian flavours; what should I shortlist?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "millet-products-local",
+          "text": "bacche ke tiffin mein millet wala snack chahiye; ₹600 tak ka millet snack suggest karo.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "millet-products-branded",
+          "text": "I'm set on Slurrp Farm for millet snack; which site should I use to get an authentic one for less?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Slurrp Farm"
+        },
+        {
+          "qid": "millet-products-problem",
+          "text": "My child's snack box has too much refined flour, but they reject anything that tastes too 'healthy'. What are some better options?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cold-pressed-oils",
+      "name": "Cold-pressed oils",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "cold-pressed-oils-discovery",
+          "text": "Need cold-pressed cooking oil for everyday Indian cooking with a traditional extraction method and want to stay below ₹1000 — which options are worth it?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cold-pressed-oils-local",
+          "text": "Mera budget ₹1000 hai, ghar ke cooking ke liye cold pressed tel ke liye kaunsa cold-pressed cooking oil dekhun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "cold-pressed-oils-branded",
+          "text": "For Anveshan cold-pressed cooking oil, should I order from the brand site or another trusted seller in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Anveshan"
+        },
+        {
+          "qid": "cold-pressed-oils-problem",
+          "text": "For everyday tadka and sautéing, I want to move away from heavily refined cooking fat without making meals impractical. What should I try?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "chocolates",
+      "name": "Chocolates (artisanal)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "chocolates-discovery",
+          "text": "Which artisanal chocolate under ₹1200 is good for premium gifting for a birthday without a huge hamper?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "chocolates-local",
+          "text": "birthday gift ke liye premium chocolate ke liye ₹1200 ke aas-paas koi achha artisanal chocolate hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "chocolates-branded",
+          "text": "I already want SMOOR artisanal chocolate — where is the safest place to buy it without overpaying?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "SMOOR"
+        },
+        {
+          "qid": "chocolates-problem",
+          "text": "I need a small but impressive edible gift for someone who likes rich desserts. What can I order?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "energy-drinks",
+      "name": "Energy drinks",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "energy-drinks-discovery",
+          "text": "₹700 budget: suggest energy drink pack that suits occasional late-night work sessions in a small pack.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "energy-drinks-local",
+          "text": "₹700 max spend karna hai — late shift ke liye energy drink pack wala energy drink pack batao.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "energy-drinks-branded",
+          "text": "What's the best place online to get authentic Red Bull energy drink pack in India right now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Red Bull"
+        },
+        {
+          "qid": "energy-drinks-problem",
+          "text": "I sometimes need a quick pick-me-up during late shifts but don't want a large case sitting at home. What pack size makes sense?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "multivitamins",
+      "name": "Multivitamins",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "multivitamins-discovery",
+          "text": "For daily nutrition support for a busy adult with an inconsistent diet, what multivitamin can I get within ₹1000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "multivitamins-local",
+          "text": "India mein ₹1000 budget mein busy routine mein daily vitamin support; multivitamin mein kya worth it hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "multivitamins-branded",
+          "text": "Can you point me to a genuine HK Vitals multivitamin deal and tell me where I should actually buy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "HK Vitals"
+        },
+        {
+          "qid": "multivitamins-problem",
+          "text": "My meals are irregular because of work and I worry I'm missing basic nutrients. What kind of daily support is reasonable?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "ayurvedic-supplements",
+      "name": "Ayurvedic supplements",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "ayurvedic-supplements-discovery",
+          "text": "Looking for ayurvedic supplement around ₹700, mainly for general wellness from a familiar Indian brand without complex dosing; what would you pick?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "ayurvedic-supplements-local",
+          "text": "simple ayurvedic wellness option ke liye ayurvedic supplement chahiye, budget roughly ₹700 — options?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "ayurvedic-supplements-branded",
+          "text": "I don't need brand suggestions — I want Himalaya ayurvedic supplement. Which Indian store should I buy from?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Himalaya"
+        },
+        {
+          "qid": "ayurvedic-supplements-problem",
+          "text": "I prefer traditional Indian wellness products but don't want a complicated routine with many powders and pills. What is easy to start with?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sleep-aids-melatonin",
+      "name": "Sleep aids / melatonin",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "sleep-aids-melatonin-discovery",
+          "text": "Can you recommend melatonin supplement below ₹1500 for occasional jet lag and trouble falling asleep after travel?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sleep-aids-melatonin-local",
+          "text": "₹1500 tak mein melatonin supplement dekh raha/rahi hoon; focus travel ke baad sleep cycle set karna pe hai.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "sleep-aids-melatonin-branded",
+          "text": "Where would you route me for a real Wellbeing Nutrition melatonin supplement: its own site or a marketplace?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Wellbeing Nutrition"
+        },
+        {
+          "qid": "sleep-aids-melatonin-problem",
+          "text": "After late flights my body clock stays off for days and I lie awake even when I'm tired. What can help me reset?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "hair-growth-supplements",
+      "name": "Hair growth supplements",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "hair-growth-supplements-discovery",
+          "text": "What's a reliable hair-growth supplement for adult men noticing increased shedding and wanting a convenient daily format if my limit is ₹1200?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hair-growth-supplements-local",
+          "text": "Koi hair-growth supplement ₹1200 se kam jo hair fall ke liye daily supplement ke kaam aaye?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "hair-growth-supplements-branded",
+          "text": "I'm buying Man Matters hair-growth supplement; who has the best genuine listing and price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Man Matters"
+        },
+        {
+          "qid": "hair-growth-supplements-problem",
+          "text": "I'm seeing more strands on my pillow and in the shower than before. Is there a convenient daily option worth considering?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "omega-3-fish-oil",
+      "name": "Omega-3 / fish oil",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "omega-3-fish-oil-discovery",
+          "text": "Help me choose omega-3 capsules for daily fish-oil supplementation with easy-to-swallow capsules; budget is ₹1200 max.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "omega-3-fish-oil-local",
+          "text": "fish oil capsule ka reliable option sabse important hai aur budget ₹1200; kaunsa omega-3 capsules choose karun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "omega-3-fish-oil-branded",
+          "text": "Which trusted site is best for ordering TrueBasics omega-3 capsules in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "TrueBasics"
+        },
+        {
+          "qid": "omega-3-fish-oil-problem",
+          "text": "I rarely eat fatty fish and want a simple way to add those nutrients without a strong fishy aftertaste. What should I choose?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "apple-cider-vinegar",
+      "name": "Apple cider vinegar",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "apple-cider-vinegar-discovery",
+          "text": "Under ₹800, what apple cider vinegar works best for diluting in water as part of a simple morning routine?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "apple-cider-vinegar-local",
+          "text": "₹800 ke andar morning routine ke liye ACV — kaunsa apple cider vinegar lena sahi rahega?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "apple-cider-vinegar-branded",
+          "text": "Where can I buy genuine Kapiva apple cider vinegar at the best price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Kapiva"
+        },
+        {
+          "qid": "apple-cider-vinegar-problem",
+          "text": "I want a tangy vinegar drink I can dilute at home, but I don't want anything harsh or overly processed. What should I look for?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "diabetic-care-foods",
+      "name": "Diabetic care foods",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "diabetic-care-foods-discovery",
+          "text": "I have ₹1000 to spend on diabetic-friendly snack for tea-time snacking with lower sugar for a diabetic household; what should I shortlist?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "diabetic-care-foods-local",
+          "text": "sugar control wale ghar ke liye snack chahiye; ₹1000 tak ka diabetic-friendly snack suggest karo.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "diabetic-care-foods-branded",
+          "text": "I'm set on Diabexy for diabetic-friendly snack; which site should I use to get an authentic one for less?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Diabexy"
+        },
+        {
+          "qid": "diabetic-care-foods-problem",
+          "text": "Someone at home needs to watch blood sugar but still wants something crunchy with evening tea. What are sensible options?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "immunity-boosters",
+      "name": "Immunity boosters",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "immunity-boosters-discovery",
+          "text": "Need immunity tonic for seasonal family use during monsoon with familiar ingredients and want to stay below ₹600 — which options are worth it?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "immunity-boosters-local",
+          "text": "Mera budget ₹600 hai, monsoon mein family wellness ke liye ke liye kaunsa immunity tonic dekhun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "immunity-boosters-branded",
+          "text": "For Dabur immunity tonic, should I order from the brand site or another trusted seller in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Dabur"
+        },
+        {
+          "qid": "immunity-boosters-problem",
+          "text": "Every monsoon someone at home catches a cold and we want a simple traditional product for the family routine. What can we consider?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "period-care-menstrual-cups",
+      "name": "Period care / menstrual cups",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "period-care-menstrual-cups-discovery",
+          "text": "Which menstrual cup under ₹1000 is good for first-time use with clear sizing guidance and a soft material?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "period-care-menstrual-cups-local",
+          "text": "pehli baar cup try karna hai size kaise choose karun ke liye ₹1000 ke aas-paas koi achha menstrual cup hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "period-care-menstrual-cups-branded",
+          "text": "I already want Sirona menstrual cup — where is the safest place to buy it without overpaying?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Sirona"
+        },
+        {
+          "qid": "period-care-menstrual-cups-problem",
+          "text": "Pads feel uncomfortable during long workdays and I want a reusable option, but sizing and insertion make me nervous. What should I start with?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "pain-relief",
+      "name": "Pain relief (topical)",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "pain-relief-discovery",
+          "text": "₹500 budget: suggest pain-relief gel that suits muscle soreness after gym and occasional back strain.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "pain-relief-local",
+          "text": "₹500 max spend karna hai — gym ke baad muscle pain ke liye gel wala pain-relief gel batao.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "pain-relief-branded",
+          "text": "What's the best place online to get authentic Volini pain-relief gel in India right now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Volini"
+        },
+        {
+          "qid": "pain-relief-problem",
+          "text": "My shoulders and lower back ache after workouts and long laptop sessions. What can I keep at home for quick local relief?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "baby-skincare",
+      "name": "Baby skincare",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "baby-skincare-discovery",
+          "text": "For newborn bath and moisturising routine for sensitive skin, what baby skincare set can I get within ₹800?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "baby-skincare-local",
+          "text": "India mein ₹800 budget mein baby ke sensitive skin ke liye gentle routine; baby skincare set mein kya worth it hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "baby-skincare-branded",
+          "text": "Can you point me to a genuine Mamaearth baby skincare set deal and tell me where I should actually buy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Mamaearth"
+        },
+        {
+          "qid": "baby-skincare-problem",
+          "text": "My baby's skin gets dry after baths and I want a very simple routine with gentle products. What should I use?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "diapers",
+      "name": "Diapers",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "diapers-discovery",
+          "text": "Looking for diapers around ₹1200, mainly for overnight use for a toddler with fewer leaks; what would you pick?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "diapers-local",
+          "text": "raat bhar leak na ho toddler ke liye ke liye diapers chahiye, budget roughly ₹1200 — options?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "diapers-branded",
+          "text": "I don't need brand suggestions — I want Pampers diapers. Which Indian store should I buy from?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Pampers"
+        },
+        {
+          "qid": "diapers-problem",
+          "text": "My toddler wakes up with wet clothes even after a late-night change. What should I try for better overnight protection?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "baby-food",
+      "name": "Baby food",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "baby-food-discovery",
+          "text": "Can you recommend baby cereal below ₹800 for easy breakfast for an eight-month-old starting solids?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "baby-food-local",
+          "text": "₹800 tak mein baby cereal dekh raha/rahi hoon; focus 8 month baby ke solids ka easy option pe hai.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "baby-food-branded",
+          "text": "Where would you route me for a real Cerelac baby cereal: its own site or a marketplace?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Cerelac"
+        },
+        {
+          "qid": "baby-food-problem",
+          "text": "My eight-month-old has started solids and I need something quick for busy mornings with an age-appropriate texture. What can I consider?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "kids-toys",
+      "name": "Kids' toys (educational)",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "kids-toys-discovery",
+          "text": "What's a reliable educational toy for screen-free STEM play for an eight-year-old if my limit is ₹2000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kids-toys-local",
+          "text": "Koi educational toy ₹2000 se kam jo 8 saal ke bacche ke liye screen-free learning toy ke kaam aaye?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "kids-toys-branded",
+          "text": "I'm buying Smartivity educational toy; who has the best genuine listing and price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Smartivity"
+        },
+        {
+          "qid": "kids-toys-problem",
+          "text": "My child gets bored with worksheets but loves building things with their hands. What gift can keep them learning without a screen?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "school-bags",
+      "name": "School bags",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "school-bags-discovery",
+          "text": "Help me choose school bag for daily primary-school use with padded straps and bottle pockets; budget is ₹2000 max.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "school-bags-local",
+          "text": "class 1 ke bacche ke liye light school bag sabse important hai aur budget ₹2000; kaunsa school bag choose karun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "school-bags-branded",
+          "text": "Which trusted site is best for ordering Skybags school bag in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Skybags"
+        },
+        {
+          "qid": "school-bags-problem",
+          "text": "My child complains that the bag hurts their shoulders and the water bottle keeps falling out. What features should I prioritise?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "baby-carriers",
+      "name": "Baby carriers",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "baby-carriers-discovery",
+          "text": "Under ₹3000, what baby carrier works best for hands-free walks with a six-month-old and good back support?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "baby-carriers-local",
+          "text": "₹3000 ke andar 6 month baby ke saath walk ke liye carrier — kaunsa baby carrier lena sahi rahega?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "baby-carriers-branded",
+          "text": "Where can I buy genuine R for Rabbit baby carrier at the best price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "R for Rabbit"
+        },
+        {
+          "qid": "baby-carriers-problem",
+          "text": "I want both hands free on short walks, but carrying my baby for long hurts my back. What design would be comfortable for both of us?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "kids-nutrition-drinks",
+      "name": "Kids' nutrition drinks",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "kids-nutrition-drinks-discovery",
+          "text": "I have ₹1000 to spend on kids' nutrition drink for school-age child who is a picky eater and needs an easy milk mix; what should I shortlist?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kids-nutrition-drinks-local",
+          "text": "picky eater bacche ke milk mein kya add karun chahiye; ₹1000 tak ka kids' nutrition drink suggest karo.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "kids-nutrition-drinks-branded",
+          "text": "I'm set on Horlicks for kids' nutrition drink; which site should I use to get an authentic one for less?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Horlicks"
+        },
+        {
+          "qid": "kids-nutrition-drinks-problem",
+          "text": "My child is fussy with meals and often leaves breakfast unfinished. Is there an easy drink option I can discuss with the family?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "bedsheets-bedding",
+      "name": "Bedsheets / bedding",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "bedsheets-bedding-discovery",
+          "text": "Need bedsheet set for king-size bed with breathable cotton for hot nights and want to stay below ₹2500 — which options are worth it?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "bedsheets-bedding-local",
+          "text": "Mera budget ₹2500 hai, garmi mein cotton bedsheet king size ke liye kaunsa bedsheet set dekhun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "bedsheets-bedding-branded",
+          "text": "For Wakefit bedsheet set, should I order from the brand site or another trusted seller in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Wakefit"
+        },
+        {
+          "qid": "bedsheets-bedding-problem",
+          "text": "My bedroom gets warm at night and synthetic fabric feels sweaty. What material would sleep cooler?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cookware",
+      "name": "Cookware (non-toxic / cast iron)",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "cookware-discovery",
+          "text": "Which cast-iron cookware under ₹4000 is good for daily Indian cooking on gas with a naturally seasoned surface?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cookware-local",
+          "text": "gas stove ke liye cast iron kadai ke liye ₹4000 ke aas-paas koi achha cast-iron cookware hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "cookware-branded",
+          "text": "I already want The Indus Valley cast-iron cookware — where is the safest place to buy it without overpaying?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "The Indus Valley"
+        },
+        {
+          "qid": "cookware-problem",
+          "text": "I want to move away from scratched non-stick pans and need something durable for sabzi and frying. What should I get?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "home-fragrance-candles",
+      "name": "Home fragrance / candles",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "home-fragrance-candles-discovery",
+          "text": "₹1200 budget: suggest scented candle that suits relaxing bedroom fragrance that is not too sweet.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "home-fragrance-candles-local",
+          "text": "₹1200 max spend karna hai — bedroom ke liye mild fragrance candle wala scented candle batao.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "home-fragrance-candles-branded",
+          "text": "What's the best place online to get authentic EKAM scented candle in India right now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "EKAM"
+        },
+        {
+          "qid": "home-fragrance-candles-problem",
+          "text": "I want my room to smell calm in the evening, but sugary scents make me feel nauseous. What fragrance style should I try?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "wall-decor",
+      "name": "Wall decor",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "wall-decor-discovery",
+          "text": "For brightening a rental living room without major renovation, what wall decor can I get within ₹3000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "wall-decor-local",
+          "text": "India mein ₹3000 budget mein rented flat ki wall ko stylish banana; wall decor mein kya worth it hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "wall-decor-branded",
+          "text": "Can you point me to a genuine Chumbak wall decor deal and tell me where I should actually buy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Chumbak"
+        },
+        {
+          "qid": "wall-decor-problem",
+          "text": "My living room feels blank but I can't paint or drill much because it's a rental. What can make the wall look finished?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "storage-and-organizers",
+      "name": "Storage & organizers",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "storage-and-organizers-discovery",
+          "text": "Looking for storage organizer around ₹2000, mainly for small apartment wardrobe and under-bed decluttering; what would you pick?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "storage-and-organizers-local",
+          "text": "chhote flat mein storage ka jugaad ke liye storage organizer chahiye, budget roughly ₹2000 — options?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "storage-and-organizers-branded",
+          "text": "I don't need brand suggestions — I want IKEA storage organizer. Which Indian store should I buy from?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "IKEA"
+        },
+        {
+          "qid": "storage-and-organizers-problem",
+          "text": "My cupboards are full but half the space is wasted because small items are piled on top of each other. What can help organise them?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "water-bottles-flasks",
+      "name": "Water bottles / flasks",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "water-bottles-flasks-discovery",
+          "text": "Can you recommend insulated flask below ₹1500 for keeping water cold through an office day and commute?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "water-bottles-flasks-local",
+          "text": "₹1500 tak mein insulated flask dekh raha/rahi hoon; focus office mein poore din thanda paani pe hai.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "water-bottles-flasks-branded",
+          "text": "Where would you route me for a real Milton insulated flask: its own site or a marketplace?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Milton"
+        },
+        {
+          "qid": "water-bottles-flasks-problem",
+          "text": "My water turns warm by lunchtime during the commute. What bottle can keep it cool for most of the day?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "air-purifiers",
+      "name": "Air purifiers",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "air-purifiers-discovery",
+          "text": "What's a reliable air purifier for bedroom use during Delhi pollution season with low night noise if my limit is ₹15000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "air-purifiers-local",
+          "text": "Koi air purifier ₹15000 se kam jo Delhi pollution mein bedroom purifier ke kaam aaye?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "air-purifiers-branded",
+          "text": "I'm buying Coway air purifier; who has the best genuine listing and price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Coway"
+        },
+        {
+          "qid": "air-purifiers-problem",
+          "text": "AQI gets terrible in winter and I need cleaner air in the bedroom without a loud machine running all night. What should I buy?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "mattresses",
+      "name": "Mattresses",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "mattresses-discovery",
+          "text": "Help me choose mattress for medium-firm support for a couple with occasional back stiffness; budget is ₹15000 max.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mattresses-local",
+          "text": "back pain ke liye medium firm mattress sabse important hai aur budget ₹15000; kaunsa mattress choose karun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "mattresses-branded",
+          "text": "Which trusted site is best for ordering Wakefit mattress in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Wakefit"
+        },
+        {
+          "qid": "mattresses-problem",
+          "text": "We wake up stiff on our old bed and want something supportive without feeling rock hard. What firmness and type should we consider?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "curtains",
+      "name": "Curtains",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "curtains-discovery",
+          "text": "Under ₹5000, what curtains works best for blocking harsh afternoon sun in a west-facing bedroom?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "curtains-local",
+          "text": "₹5000 ke andar afternoon sun rokne ke liye blackout curtains — kaunsa curtains lena sahi rahega?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "curtains-branded",
+          "text": "Where can I buy genuine D'Decor curtains at the best price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "D'Decor"
+        },
+        {
+          "qid": "curtains-problem",
+          "text": "My bedroom heats up badly after 2 pm and light still comes through the current fabric. What should I replace it with?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "prayer-mats",
+      "name": "Prayer mats",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "prayer-mats-discovery",
+          "text": "I have ₹1500 to spend on prayer mat for comfortable daily use with soft cushioning and easy storage; what should I shortlist?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "prayer-mats-local",
+          "text": "daily namaz ke liye soft mat chahiye; ₹1500 tak ka prayer mat suggest karo.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "prayer-mats-branded",
+          "text": "I'm set on Modest Essentials for prayer mat; which site should I use to get an authentic one for less?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Modest Essentials"
+        },
+        {
+          "qid": "prayer-mats-problem",
+          "text": "I need a clean, comfortable surface for daily prayer that folds easily and doesn't feel too thin on hard flooring. Where can I find one?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "kitchen-appliances",
+      "name": "Kitchen appliances (small)",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "kitchen-appliances-discovery",
+          "text": "Need mixer grinder for daily chutney, masala and smoothie prep in a small kitchen and want to stay below ₹5000 — which options are worth it?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kitchen-appliances-local",
+          "text": "Mera budget ₹5000 hai, chutney aur masala ke liye mixer ke liye kaunsa mixer grinder dekhun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "kitchen-appliances-branded",
+          "text": "For Prestige mixer grinder, should I order from the brand site or another trusted seller in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Prestige"
+        },
+        {
+          "qid": "kitchen-appliances-problem",
+          "text": "I make chutneys and spice pastes often, but my current machine overheats and takes too much counter space. What should I replace it with?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "plants-gardening-kits",
+      "name": "Plants / gardening kits",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "plants-gardening-kits-discovery",
+          "text": "Which gardening kit under ₹1500 is good for beginner balcony herb growing with compact tools?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "plants-gardening-kits-local",
+          "text": "balcony mein herbs start karne ka kit ke liye ₹1500 ke aas-paas koi achha gardening kit hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "plants-gardening-kits-branded",
+          "text": "I already want Ugaoo gardening kit — where is the safest place to buy it without overpaying?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ugaoo"
+        },
+        {
+          "qid": "plants-gardening-kits-problem",
+          "text": "I have a sunny balcony and want to start growing mint and coriander, but I own no tools or pots. What basic setup do I need?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "tws-earbuds",
+      "name": "TWS earbuds",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "tws-earbuds-discovery",
+          "text": "₹3000 budget: suggest TWS earbuds that suits daily commute and calls with decent battery life.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "tws-earbuds-local",
+          "text": "₹3000 max spend karna hai — metro commute aur calls ke liye earbuds wala TWS earbuds batao.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "tws-earbuds-branded",
+          "text": "What's the best place online to get authentic boAt TWS earbuds in India right now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "boAt"
+        },
+        {
+          "qid": "tws-earbuds-problem",
+          "text": "My wired pair keeps snagging during the commute and I need something compact for calls and music. What should I look for?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "smartwatches",
+      "name": "Smartwatches",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "smartwatches-discovery",
+          "text": "For fitness tracking, notifications and week-long battery for Android, what smartwatch can I get within ₹5000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "smartwatches-local",
+          "text": "India mein ₹5000 budget mein Android phone ke saath fitness watch; smartwatch mein kya worth it hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "smartwatches-branded",
+          "text": "Can you point me to a genuine Noise smartwatch deal and tell me where I should actually buy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Noise"
+        },
+        {
+          "qid": "smartwatches-problem",
+          "text": "I want steps, workouts and notifications on my wrist but I don't want to charge another device every night. What should I choose?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "phone-cases",
+      "name": "Phone cases",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "phone-cases-discovery",
+          "text": "Looking for phone case around ₹1000, mainly for drop protection for an iPhone without making it bulky; what would you pick?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "phone-cases-local",
+          "text": "phone girta rehta hai slim protective cover ke liye phone case chahiye, budget roughly ₹1000 — options?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "phone-cases-branded",
+          "text": "I don't need brand suggestions — I want DailyObjects phone case. Which Indian store should I buy from?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "DailyObjects"
+        },
+        {
+          "qid": "phone-cases-problem",
+          "text": "I keep dropping my phone but hate thick covers that make it hard to fit in a pocket. What kind of protection should I get?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "power-banks",
+      "name": "Power banks",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "power-banks-discovery",
+          "text": "Can you recommend power bank below ₹2000 for two phone charges during travel with fast charging?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "power-banks-local",
+          "text": "₹2000 tak mein power bank dekh raha/rahi hoon; focus travel mein phone do baar charge karna pe hai.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "power-banks-branded",
+          "text": "Where would you route me for a real Ambrane power bank: its own site or a marketplace?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ambrane"
+        },
+        {
+          "qid": "power-banks-problem",
+          "text": "My battery dies on long train journeys and sockets aren't always available. What portable backup should I carry?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "mobile-chargers-cables",
+      "name": "Mobile chargers / cables",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "mobile-chargers-cables-discovery",
+          "text": "What's a reliable fast charger for charging an Android phone and earbuds from one compact adapter if my limit is ₹1500?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mobile-chargers-cables-local",
+          "text": "Koi fast charger ₹1500 se kam jo Android aur earbuds ke liye fast charger ke kaam aaye?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "mobile-chargers-cables-branded",
+          "text": "I'm buying Portronics fast charger; who has the best genuine listing and price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Portronics"
+        },
+        {
+          "qid": "mobile-chargers-cables-problem",
+          "text": "I carry separate adapters for my phone and small gadgets and want one compact unit in my bag. What should I buy?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "bluetooth-speakers",
+      "name": "Bluetooth speakers",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "bluetooth-speakers-discovery",
+          "text": "Help me choose Bluetooth speaker for small house parties with clear sound and splash resistance; budget is ₹5000 max.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "bluetooth-speakers-local",
+          "text": "ghar ki party ke liye portable speaker sabse important hai aur budget ₹5000; kaunsa Bluetooth speaker choose karun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "bluetooth-speakers-branded",
+          "text": "Which trusted site is best for ordering JBL Bluetooth speaker in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "JBL"
+        },
+        {
+          "qid": "bluetooth-speakers-problem",
+          "text": "I want music loud enough for a living-room get-together and something I won't panic about near drinks. What should I pick?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "laptop-bags-and-sleeves",
+      "name": "Laptop bags & sleeves",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "laptop-bags-and-sleeves-discovery",
+          "text": "Under ₹2500, what laptop sleeve works best for protecting a 14-inch laptop inside a backpack during commute?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "laptop-bags-and-sleeves-local",
+          "text": "₹2500 ke andar 14 inch laptop ke liye padded sleeve — kaunsa laptop sleeve lena sahi rahega?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "laptop-bags-and-sleeves-branded",
+          "text": "Where can I buy genuine DailyObjects laptop sleeve at the best price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "DailyObjects"
+        },
+        {
+          "qid": "laptop-bags-and-sleeves-problem",
+          "text": "My laptop goes inside a crowded backpack with chargers and a bottle. What can protect it from scratches and bumps without adding much weight?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "gaming-accessories",
+      "name": "Gaming accessories",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "gaming-accessories-discovery",
+          "text": "I have ₹3000 to spend on gaming accessories for starting a PC gaming setup with a keyboard and mouse; what should I shortlist?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "gaming-accessories-local",
+          "text": "budget PC gaming setup ke accessories chahiye; ₹3000 tak ka gaming accessories suggest karo.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "gaming-accessories-branded",
+          "text": "I'm set on Cosmic Byte for gaming accessories; which site should I use to get an authentic one for less?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Cosmic Byte"
+        },
+        {
+          "qid": "gaming-accessories-problem",
+          "text": "I'm building my first desk setup and want responsive controls without spending enthusiast-level money. What should I buy first?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "smart-home-devices",
+      "name": "Smart home devices",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "smart-home-devices-discovery",
+          "text": "Need smart home device for automating bedroom lights and a fan from phone or voice and want to stay below ₹5000 — which options are worth it?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "smart-home-devices-local",
+          "text": "Mera budget ₹5000 hai, bedroom lights ko phone se control karna ke liye kaunsa smart home device dekhun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "smart-home-devices-branded",
+          "text": "For Wipro smart home device, should I order from the brand site or another trusted seller in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Wipro"
+        },
+        {
+          "qid": "smart-home-devices-problem",
+          "text": "I keep forgetting to switch things off before bed and want simple phone or voice control without rewiring the room. What should I start with?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "yoga-mats",
+      "name": "Yoga mats",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "yoga-mats-discovery",
+          "text": "Which yoga mat under ₹1500 is good for home yoga on tile floors with enough grip and cushioning?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "yoga-mats-local",
+          "text": "ghar ke tile floor pe yoga mat ke liye ₹1500 ke aas-paas koi achha yoga mat hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "yoga-mats-branded",
+          "text": "I already want Boldfit yoga mat — where is the safest place to buy it without overpaying?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Boldfit"
+        },
+        {
+          "qid": "yoga-mats-problem",
+          "text": "My hands slip during downward dog and my knees hurt on the floor. What thickness and material should I choose?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "home-gym-equipment",
+      "name": "Home gym equipment",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "home-gym-equipment-discovery",
+          "text": "₹10000 budget: suggest home gym equipment that suits strength training in a small apartment with adjustable weights.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "home-gym-equipment-local",
+          "text": "₹10000 max spend karna hai — small flat mein strength workout setup wala home gym equipment batao.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "home-gym-equipment-branded",
+          "text": "What's the best place online to get authentic Cultsport home gym equipment in India right now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Cultsport"
+        },
+        {
+          "qid": "home-gym-equipment-problem",
+          "text": "I want to stop missing workouts but only have a corner of the bedroom free. What compact setup can cover basic strength exercises?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cricket-gear",
+      "name": "Cricket gear",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "cricket-gear-discovery",
+          "text": "For weekend leather-ball practice for an adult beginner, what cricket kit can I get within ₹5000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cricket-gear-local",
+          "text": "India mein ₹5000 budget mein weekend cricket ke liye beginner kit; cricket kit mein kya worth it hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "cricket-gear-branded",
+          "text": "Can you point me to a genuine SG cricket kit deal and tell me where I should actually buy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "SG"
+        },
+        {
+          "qid": "cricket-gear-problem",
+          "text": "I've joined weekend net practice and currently borrow everything. What basic gear should I buy first without going overboard?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cycling-accessories",
+      "name": "Cycling accessories",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "cycling-accessories-discovery",
+          "text": "Looking for cycling accessories around ₹3000, mainly for safer city rides with lights, helmet and basic repair items; what would you pick?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cycling-accessories-local",
+          "text": "city cycling ke liye safety accessories ke liye cycling accessories chahiye, budget roughly ₹3000 — options?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "cycling-accessories-branded",
+          "text": "I don't need brand suggestions — I want Decathlon cycling accessories. Which Indian store should I buy from?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Decathlon"
+        },
+        {
+          "qid": "cycling-accessories-problem",
+          "text": "I have started riding early mornings in traffic and realise I don't have lights or anything for a puncture. What essentials should I carry?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "running-gear",
+      "name": "Running gear",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "running-gear-discovery",
+          "text": "Can you recommend running gear below ₹5000 for beginner 5K training in hot weather with comfortable shoes and clothing?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "running-gear-local",
+          "text": "₹5000 tak mein running gear dekh raha/rahi hoon; focus 5K training start karna hai basic gear pe hai.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "running-gear-branded",
+          "text": "Where would you route me for a real Decathlon running gear: its own site or a marketplace?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Decathlon"
+        },
+        {
+          "qid": "running-gear-problem",
+          "text": "I'm training for my first 5K and my regular sneakers make my feet sore after 3 km. What should I upgrade first?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sports-nutrition",
+      "name": "Sports nutrition",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "sports-nutrition-discovery",
+          "text": "What's a reliable sports nutrition for recovering after strength workouts with convenient protein and electrolytes if my limit is ₹2500?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sports-nutrition-local",
+          "text": "Koi sports nutrition ₹2500 se kam jo workout recovery ke liye nutrition ke kaam aaye?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "sports-nutrition-branded",
+          "text": "I'm buying MuscleBlaze sports nutrition; who has the best genuine listing and price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "MuscleBlaze"
+        },
+        {
+          "qid": "sports-nutrition-problem",
+          "text": "I train four evenings a week and feel drained afterward, especially on hot days. What simple recovery products are worth considering?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "pet-food-dogs",
+      "name": "Pet food (dogs)",
+      "group": "Pets",
+      "queries": [
+        {
+          "qid": "pet-food-dogs-discovery",
+          "text": "Help me choose dog food for monthly dry food for an adult medium-size dog; budget is ₹2500 max.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "pet-food-dogs-local",
+          "text": "adult dog ke liye monthly food pack sabse important hai aur budget ₹2500; kaunsa dog food choose karun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "pet-food-dogs-branded",
+          "text": "Which trusted site is best for ordering Pedigree dog food in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Pedigree"
+        },
+        {
+          "qid": "pet-food-dogs-problem",
+          "text": "My adult dog is active but picky and I need a practical everyday diet that is easy to store. What should I compare?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "pet-food-cats",
+      "name": "Pet food (cats)",
+      "group": "Pets",
+      "queries": [
+        {
+          "qid": "pet-food-cats-discovery",
+          "text": "Under ₹2500, what cat food works best for daily meals for an indoor adult cat with wet and dry options?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "pet-food-cats-local",
+          "text": "₹2500 ke andar indoor cat ke liye daily food — kaunsa cat food lena sahi rahega?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "pet-food-cats-branded",
+          "text": "Where can I buy genuine Whiskas cat food at the best price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Whiskas"
+        },
+        {
+          "qid": "pet-food-cats-problem",
+          "text": "My indoor cat gets bored of the same meal and sometimes leaves the bowl untouched. How can I choose a practical mix of textures?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "pet-grooming",
+      "name": "Pet grooming",
+      "group": "Pets",
+      "queries": [
+        {
+          "qid": "pet-grooming-discovery",
+          "text": "I have ₹1500 to spend on pet grooming kit for at-home brushing and nail care for a long-haired dog; what should I shortlist?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "pet-grooming-local",
+          "text": "long hair dog ki home grooming chahiye; ₹1500 tak ka pet grooming kit suggest karo.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "pet-grooming-branded",
+          "text": "I'm set on Heads Up For Tails for pet grooming kit; which site should I use to get an authentic one for less?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Heads Up For Tails"
+        },
+        {
+          "qid": "pet-grooming-problem",
+          "text": "My dog's coat tangles between salon visits and the nails grow quickly. What basic tools should I keep at home?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "fragrance-free-sensitive-skincare",
+      "name": "Fragrance-free / sensitive skincare",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "fragrance-free-sensitive-skincare-discovery",
+          "text": "Need sensitive-skin skincare for fragrance-free daily cleansing and moisturising for reactive skin and want to stay below ₹1000 — which options are worth it?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "fragrance-free-sensitive-skincare-local",
+          "text": "Mera budget ₹1000 hai, sensitive skin ke liye fragrance-free routine ke liye kaunsa sensitive-skin skincare dekhun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "fragrance-free-sensitive-skincare-branded",
+          "text": "For Cetaphil sensitive-skin skincare, should I order from the brand site or another trusted seller in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Cetaphil"
+        },
+        {
+          "qid": "fragrance-free-sensitive-skincare-problem",
+          "text": "My face stings with scented products and turns red easily, even after basic cleansing. What kind of routine should I try?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "stationery-and-planners",
+      "name": "Stationery & planners",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "stationery-and-planners-discovery",
+          "text": "Which planner under ₹1000 is good for weekly work planning with space for tasks and meetings?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "stationery-and-planners-local",
+          "text": "office ka weekly planning notebook ke liye ₹1000 ke aas-paas koi achha planner hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "stationery-and-planners-branded",
+          "text": "I already want Factor Notes planner — where is the safest place to buy it without overpaying?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Factor Notes"
+        },
+        {
+          "qid": "stationery-and-planners-problem",
+          "text": "I keep tasks in random notes and forget follow-ups after meetings. What paper system can help me plan the week in one place?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "backpacks",
+      "name": "Backpacks",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "backpacks-discovery",
+          "text": "₹3000 budget: suggest backpack that suits daily office commute with a 15-inch laptop and rain protection.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "backpacks-local",
+          "text": "₹3000 max spend karna hai — office commute aur laptop ke liye backpack wala backpack batao.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "backpacks-branded",
+          "text": "What's the best place online to get authentic Wildcraft backpack in India right now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Wildcraft"
+        },
+        {
+          "qid": "backpacks-problem",
+          "text": "My current bag has no laptop padding and everything gets damp in sudden rain. What features should I look for in a replacement?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "travel-accessories",
+      "name": "Travel accessories",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "travel-accessories-discovery",
+          "text": "For keeping cables, passport and toiletries organised on short trips, what travel organizer can I get within ₹3000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "travel-accessories-local",
+          "text": "India mein ₹3000 budget mein short trip mein packing organize karna; travel organizer mein kya worth it hai?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "travel-accessories-branded",
+          "text": "Can you point me to a genuine Mokobara travel organizer deal and tell me where I should actually buy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Mokobara"
+        },
+        {
+          "qid": "travel-accessories-problem",
+          "text": "My suitcase turns messy after one day and I waste time searching for chargers and toiletries. What organisers are actually useful?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "grooming-kits",
+      "name": "Grooming kits (gifting)",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "grooming-kits-discovery",
+          "text": "Looking for grooming gift kit around ₹2000, mainly for birthday gift for a man who likes practical self-care products; what would you pick?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "grooming-kits-local",
+          "text": "male friend ke birthday ka grooming gift ke liye grooming gift kit chahiye, budget roughly ₹2000 — options?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "grooming-kits-branded",
+          "text": "I don't need brand suggestions — I want Bombay Shaving Company grooming gift kit. Which Indian store should I buy from?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Bombay Shaving Company"
+        },
+        {
+          "qid": "grooming-kits-problem",
+          "text": "I need a useful birthday present for a guy who already owns the usual wallets and perfumes. What self-care gift would feel complete?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "festive-gifting-hampers",
+      "name": "Festive gifting hampers",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "festive-gifting-hampers-discovery",
+          "text": "Can you recommend festive gift hamper below ₹2500 for Diwali gifting for colleagues with sweets and useful items?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "festive-gifting-hampers-local",
+          "text": "₹2500 tak mein festive gift hamper dekh raha/rahi hoon; focus colleagues ke liye Diwali hamper pe hai.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "festive-gifting-hampers-branded",
+          "text": "Where would you route me for a real Ferns N Petals festive gift hamper: its own site or a marketplace?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ferns N Petals"
+        },
+        {
+          "qid": "festive-gifting-hampers-problem",
+          "text": "I need presentable gifts for several colleagues that feel festive but not too personal. What kind of hamper should I send?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "car-accessories",
+      "name": "Car accessories",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "car-accessories-discovery",
+          "text": "What's a reliable car accessories for keeping a family car cleaner and more organised on road trips if my limit is ₹3000?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "car-accessories-local",
+          "text": "Koi car accessories ₹3000 se kam jo family car ko clean aur organized rakhna ke kaam aaye?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "car-accessories-branded",
+          "text": "I'm buying AutoFurnish car accessories; who has the best genuine listing and price in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "AutoFurnish"
+        },
+        {
+          "qid": "car-accessories-problem",
+          "text": "Our car gets cluttered with bottles, charging cables and kids' things on long drives. What useful add-ons can tidy it up?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "eyewear",
+      "name": "Eyewear (prescription / blue-light)",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "eyewear-discovery",
+          "text": "Help me choose blue-light glasses for long laptop workdays with prescription-ready frames; budget is ₹3000 max.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "eyewear-local",
+          "text": "screen pe 8 ghante kaam ke liye glasses sabse important hai aur budget ₹3000; kaunsa blue-light glasses choose karun?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "eyewear-branded",
+          "text": "Which trusted site is best for ordering Lenskart blue-light glasses in India?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Lenskart"
+        },
+        {
+          "qid": "eyewear-problem",
+          "text": "I spend most of the day on a laptop, my eyes feel strained, and my current frames get uncomfortable after a few hours. What should I look for?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    }
+  ]
+}

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShelfShare — Does AI put you on the shelf?</title>
+<meta name="description" content="AI & agentic commerce intelligence for brands in India, GCC, Pakistan & SEA. Measure how often ChatGPT, Gemini, Claude and Grok recommend you, improve your GEO, and protect your position as AI-driven commerce scales.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --ink: #0E1F18;
+    --card: #14291F;
+    --line: #264434;
+    --line2: #2E5240;
+    --tag: #FFC53D;
+    --coral: #FF6B57;
+    --mint: #5BD6A0;
+    --sky: #4A9FD8;
+    --sage: #9DB4A6;
+    --paper: #F1F5EC;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--ink); color: var(--paper); font-family: 'Archivo', sans-serif; line-height: 1.55; }
+  ::selection { background: var(--tag); color: var(--ink); }
+
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--paper); outline-offset: 3px; border-radius: 4px; }
+
+  /* ---------- nav ---------- */
+  nav { position: sticky; top: 0; z-index: 50; background: rgba(14,31,24,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .nav-in { display: flex; align-items: center; gap: 28px; padding: 14px 20px; max-width: 1080px; margin: 0 auto; }
+  .logo { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 20px; color: var(--paper); text-decoration: none; letter-spacing: -0.01em; }
+  .logo b { color: var(--tag); }
+  .nav-links { display: flex; gap: 22px; margin-left: auto; }
+  .nav-links a { color: var(--sage); text-decoration: none; font-size: 14px; }
+  .nav-links a:hover { color: var(--paper); }
+  .btn { display: inline-block; background: var(--tag); color: var(--ink); font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 15px; padding: 11px 20px; border-radius: 9px; text-decoration: none; border: none; cursor: pointer; }
+  .btn:hover { filter: brightness(1.06); }
+  .btn.ghost { background: transparent; color: var(--tag); border: 1px solid var(--tag); font-weight: 600; }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 72px 0 40px; }
+  .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--tag); margin-bottom: 16px; }
+  h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(38px, 6.4vw, 68px); line-height: 1.0; letter-spacing: -0.02em; max-width: 15ch; }
+  h1 .flip { color: var(--coral); }
+  .hero-sub { color: var(--sage); font-size: 17px; max-width: 52ch; margin: 20px 0 28px; }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .hero-note { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B8A78; }
+
+  /* ---------- live shelf demo (signature) ---------- */
+  .demo { margin: 48px 0 0; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px 22px 26px; }
+  .demo-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .demo-tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mint); }
+  .demo-q { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--paper); min-height: 40px; margin-bottom: 18px; }
+  .demo-q .cursor { display: inline-block; width: 8px; height: 15px; background: var(--tag); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .slots { display: flex; gap: 8px; align-items: flex-end; }
+  .stag { flex: 1; min-width: 0; border-radius: 7px 7px 0 0; padding: 10px 6px 12px; text-align: center; font-size: 12px; font-weight: 600; line-height: 1.25; border: 1px solid var(--line2); border-bottom: none; background: #1B3628; color: #C4D6C9; opacity: 0; transform: translateY(8px); transition: opacity .4s, transform .4s; overflow-wrap: break-word; }
+  .stag.in { opacity: 1; transform: translateY(0); }
+  .stag .rk { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #7FA18C; margin-bottom: 4px; }
+  .stag .dst { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 9px; margin-top: 4px; }
+  .stag.you { background: var(--tag); color: var(--ink); border-color: var(--tag); box-shadow: 0 8px 18px rgba(255,197,61,0.28); }
+  .stag.you.in { transform: translateY(-7px); }
+  .stag.you .rk { color: var(--ink); }
+  .stag.rival { background: #3A2320; color: #FFB3A6; border-color: #6B3A32; }
+  .plank { height: 8px; background: linear-gradient(#4A6B54, #2E4A3A); border-radius: 2px; }
+  .demo-verdict { margin-top: 16px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 22px; min-height: 30px; }
+  .demo-verdict.bad { color: var(--coral); } .demo-verdict.good { color: var(--mint); }
+  @media (prefers-reduced-motion: reduce) {
+    .stag { transition: none; opacity: 1; transform: none; }
+    .demo-q .cursor { animation: none; }
+  }
+
+  /* ---------- engine strip ---------- */
+  .strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 18px 0; margin-top: 56px; }
+  .strip-in { display: flex; gap: 10px 26px; align-items: center; flex-wrap: wrap; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--sage); }
+  .strip-in b { color: var(--paper); font-weight: 500; }
+  .dotm { color: var(--tag); }
+
+  /* ---------- aisles (feature segregation) ---------- */
+  section { padding: 76px 0 8px; }
+  .aisle-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+  .aisle-mark { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink); background: var(--tag); border-radius: 4px; padding: 4px 10px; }
+  .aisle-mark.diag { background: var(--sky); }
+  .aisle-mark.win { background: var(--mint); }
+  .aisle-mark.protect { background: var(--paper); }
+  h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(28px, 4.4vw, 42px); letter-spacing: -0.01em; }
+  .aisle-sub { color: var(--sage); max-width: 60ch; margin: 12px 0 34px; font-size: 16px; }
+  .aisle-plank { height: 8px; background: linear-gradient(#4A6B54, #2E4A3A); border-radius: 2px; margin-bottom: 42px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+  .feat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+  .feat h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 18px; margin-bottom: 8px; }
+  .feat p { color: var(--sage); font-size: 14px; }
+  .feat .flabel { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #7FA18C; display: block; margin-bottom: 10px; }
+  .soon { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); background: var(--mint); border-radius: 999px; padding: 3px 9px; margin-left: 8px; vertical-align: 2px; }
+
+  /* mini visuals inside feature cards */
+  .mini-sov { display: flex; height: 16px; border-radius: 5px; overflow: hidden; margin-top: 14px; }
+  .mini-legend { display: flex; gap: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--sage); margin-top: 8px; flex-wrap: wrap; }
+  .mini-legend i { font-style: normal; }
+  .quote-chip { display: inline-block; margin-top: 14px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 17px; color: var(--tag); }
+  .mini-fan { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #C4D6C9; margin-top: 12px; }
+  .mini-fan div { padding: 4px 0 4px 14px; position: relative; }
+  .mini-fan div::before { content: '↳'; position: absolute; left: 0; color: var(--tag); }
+
+  /* ---------- how it works ---------- */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+  .step .n { font-family: 'IBM Plex Mono', monospace; color: var(--tag); font-size: 12px; letter-spacing: 0.18em; display: block; margin-bottom: 10px; }
+  .step h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 17px; margin-bottom: 6px; }
+  .step p { color: var(--sage); font-size: 14px; }
+
+  /* ---------- markets ---------- */
+  .mkt { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+  .mkt h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 19px; }
+  .mkt .vs { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--coral); margin: 8px 0 6px; }
+  .mkt p { color: var(--sage); font-size: 13px; }
+
+  /* ---------- compare ---------- */
+  .cmp { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .cmp th, .cmp td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: left; }
+  .cmp th { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage); font-weight: 500; }
+  .cmp td:first-child { color: var(--sage); }
+  .cmp .us { background: rgba(255,197,61,0.06); }
+  .cmp th.us { color: var(--tag); }
+  .yes { color: var(--mint); } .no { color: var(--coral); }
+  .cmp-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+
+  /* ---------- CTA / receipt ---------- */
+  .receipt { max-width: 520px; margin: 0 auto; background: var(--paper); color: var(--ink); border-radius: 4px 4px 14px 14px; padding: 30px 28px 26px; position: relative; }
+  .receipt::before { content: ''; position: absolute; top: -8px; left: 0; right: 0; height: 8px;
+    background: linear-gradient(45deg, transparent 33.333%, var(--paper) 33.333%, var(--paper) 66.667%, transparent 66.667%),
+                linear-gradient(-45deg, transparent 33.333%, var(--paper) 33.333%, var(--paper) 66.667%, transparent 66.667%);
+    background-size: 14px 16px; background-position: 0 0; }
+  .receipt h2 { color: var(--ink); font-size: 26px; }
+  .receipt .r-sub { color: #4A6355; font-size: 14px; margin: 8px 0 18px; }
+  .receipt label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #4A6355; display: block; margin: 0 0 6px; }
+  .receipt input, .receipt textarea { width: 100%; box-sizing: border-box; border: 1.5px solid #B8C9BD; border-radius: 8px; padding: 12px; font-size: 15px; font-family: 'Archivo', sans-serif; margin-bottom: 14px; background: #fff; color: var(--ink); }
+  .receipt input:focus, .receipt textarea:focus { outline: none; border-color: var(--ink); }
+  .receipt .btn { width: 100%; font-size: 16px; padding: 14px; }
+  .r-fine { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #7A8F82; margin-top: 12px; text-align: center; }
+  .r-done { text-align: center; padding: 24px 0 10px; display: none; }
+  .r-done h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 22px; margin-bottom: 8px; }
+  .r-done p { color: #4A6355; font-size: 14px; }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--line); margin-top: 84px; padding: 34px 0 44px; }
+  .foot { display: flex; gap: 20px 40px; flex-wrap: wrap; justify-content: space-between; color: var(--sage); font-size: 13px; }
+  .foot a { color: var(--sage); text-decoration: none; }
+  .foot a:hover { color: var(--paper); }
+
+  /* scroll reveal */
+  .rv { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .rv.on { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <a class="logo" href="#top">Shelf<b>Share</b></a>
+    <div class="nav-links">
+      <a href="#monitor">Features</a>
+      <a href="#markets">Markets</a>
+      <a href="#data">Data</a>
+      <a href="#protect">Protect</a>
+      <a href="#compare">Compare</a>
+    </div>
+    <a class="btn" href="#test">Run free shelf test</a>
+  </div>
+</nav>
+
+<header class="hero wrap" id="top">
+  <div class="eyebrow">AI &amp; agentic commerce intelligence · India · GCC · Pakistan · SEA</div>
+  <h1>Does AI put you on the shelf — or <span class="flip">Amazon</span>?</h1>
+  <p class="hero-sub">
+    Your customers now ask ChatGPT, Gemini, Claude and Grok what to buy. ShelfShare runs their real questions,
+    in their real languages, and shows you exactly who gets recommended — you, your rival, or the marketplace giants —
+    and where the AI sends the buyer to check out.
+  </p>
+  <div class="hero-ctas">
+    <a class="btn" href="#test">Test my brand — free</a>
+    <a class="btn ghost" href="#monitor">See what you get</a>
+  </div>
+  <div class="hero-note mono">No card. No signup to see your verdict. 2 minutes.</div>
+
+  <!-- signature: live shelf running real harvested data -->
+  <div class="demo" aria-label="Sample shelf test from real data">
+    <div class="demo-head">
+      <span class="demo-tag">● live sample · from our India dataset · real AI answers</span>
+      <span class="demo-tag" id="demo-engine" style="color:var(--sage)"></span>
+    </div>
+    <div class="demo-q mono"><span id="demo-query"></span><span class="cursor"></span></div>
+    <div class="slots" id="demo-slots"></div>
+    <div class="plank"></div>
+    <div class="demo-verdict" id="demo-verdict"></div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="strip-in wrap">
+    <span>Tested across</span>
+    <b>Claude</b><span class="dotm">·</span><b>ChatGPT</b><span class="dotm">·</span><b>Gemini</b><span class="dotm">·</span><b>Grok</b>
+    <span>|</span>
+    <span>Benchmarked against</span>
+    <b>Amazon</b><span class="dotm">·</span><b>Flipkart</b><span class="dotm">·</span><b>Noon</b><span class="dotm">·</span><b>Daraz</b><span class="dotm">·</span><b>Shopee</b>
+  </div>
+</div>
+
+<!-- ================= AISLE: MONITOR ================= -->
+<section id="monitor" class="wrap">
+  <div class="aisle-head rv"><span class="aisle-mark">Pillar · Measure</span><h2>See every shelf you're on. And every one you're not.</h2></div>
+  <p class="aisle-sub rv">One test, four AI engines, scored against the marketplace giant that actually matters in your market.</p>
+  <div class="aisle-plank rv"></div>
+  <div class="grid">
+    <div class="feat rv">
+      <span class="flabel">Multi-engine shelf test</span>
+      <h3>Four AI shelves, one verdict</h3>
+      <p>Real shopper questions run on Claude live and compared against ChatGPT, Gemini and Grok. A brand that wins on one engine and vanishes on another finds out here.</p>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Share of AI voice</span>
+      <h3>Your slice of every answer</h3>
+      <p>Of all the recommendation slots AI hands out in your category, how many are yours?</p>
+      <div class="mini-sov" role="img" aria-label="Sample share of voice: you 20%, marketplaces 33%, others 47%">
+        <div style="width:20%;background:var(--tag)"></div>
+        <div style="width:33%;background:var(--coral)"></div>
+        <div style="width:47%;background:#3A5A48"></div>
+      </div>
+      <div class="mini-legend"><i style="color:var(--tag)">■ you</i><i style="color:var(--coral)">■ marketplaces</i><i style="color:#5f7a6b">■ everyone else</i></div>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Local rival benchmark</span>
+      <h3>Not just Amazon</h3>
+      <p>India scores you against Flipkart. GCC against Noon. Pakistan against Daraz. SEA against Shopee. Because that's who's actually eating your shelf.</p>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Standardized scoring</span>
+      <h3>Comparable, not vibes</h3>
+      <p>Every brand in a category is tested on the same question set — so your score means something, and category leaderboards become possible.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= AISLE: DIAGNOSE ================= -->
+<section id="diagnose" class="wrap">
+  <div class="aisle-head rv"><span class="aisle-mark diag">Pillar · Measure / Diagnose</span><h2>Know exactly why you're losing — and to whom.</h2></div>
+  <p class="aisle-sub rv">Real telemetry from the AI's own process. Not estimates — the actual searches it ran and sources it trusted.</p>
+  <div class="aisle-plank rv"></div>
+  <div class="grid">
+    <div class="feat rv">
+      <span class="flabel">The checkout battle</span>
+      <h3>Win the mention, lose the sale?</h3>
+      <p>For every recommendation we record where the AI sends the buyer: your store, or a marketplace listing of you — where you pay commission and rent your own customer.</p>
+      <div class="mini-sov" role="img" aria-label="Sample checkout routing: brand-direct 25%, marketplace 55%, aggregator 20%">
+        <div style="width:25%;background:var(--mint)"></div>
+        <div style="width:55%;background:var(--coral)"></div>
+        <div style="width:20%;background:var(--sky)"></div>
+      </div>
+      <div class="mini-legend"><i style="color:var(--mint)">■ brand-direct</i><i style="color:var(--coral)">■ marketplace</i><i style="color:var(--sky)">■ aggregator</i></div>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Brand sentiment</span>
+      <h3>How AI describes you</h3>
+      <p>We analyze the exact language AI uses about your brand and hand you the label it's silently attached to you.</p>
+      <span class="quote-chip">“the budget option”</span>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Query fanout</span>
+      <h3>The searches behind the answer</h3>
+      <p>The literal web searches the AI ran before recommending. Rank for these and you're inside the answer.</p>
+      <div class="mini-fan">
+        <div>best polarized sunglasses under AED 200</div>
+        <div>sunglasses brands UAE review 2026</div>
+      </div>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Trusted sources</span>
+      <h3>The sites that decide the shelf</h3>
+      <p>The domains that fed the AI's answer, ranked. Getting reviewed there matters more than your own homepage. It's your PR target list.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= AISLE: WIN ================= -->
+<section id="win" class="wrap">
+  <div class="aisle-head rv"><span class="aisle-mark win">Pillar · Improve</span><h2>Then take the shelf space back.</h2></div>
+  <p class="aisle-sub rv">Monitoring without fixing is a subscription to bad news. ShelfShare closes the loop.</p>
+  <div class="aisle-plank rv"></div>
+  <div class="grid">
+    <div class="feat rv">
+      <span class="flabel">Fix plan</span>
+      <h3>Ranked by your failure mode</h3>
+      <p>Not stocked, outshelved, or losing checkouts — each verdict gets its own prioritized plan: structured data, content targets, source outreach.</p>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Fix generator<span class="soon">coming soon</span></span>
+      <h3>One-click machine-readability</h3>
+      <p>Auto-generated Product JSON-LD, llms.txt and structured feeds from your catalog — the layer no monitoring tool ships.</p>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Re-test cadence</span>
+      <h3>AI answers shift monthly</h3>
+      <p>Your shelf score is a snapshot, not a certificate. We re-run your category and email you when your position moves.</p>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Agentic-commerce ready</span>
+      <h3>Built for what's next</h3>
+      <p>As agentic checkout standards (UCP, ACP) roll out, being readable stops being enough — agents will transact. We track your readiness.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= PILLAR: PROTECT (roadmap) ================= -->
+<section id="protect" class="wrap">
+  <div class="aisle-head rv"><span class="aisle-mark protect">Pillar · Protect</span><h2>When agents start buying, trust becomes the product.</h2></div>
+  <p class="aisle-sub rv">Agentic checkout (UCP, ACP) means AI agents won't just recommend — they'll transact. That creates a new attack surface, and a new layer of infrastructure. We're building it.</p>
+  <div class="aisle-plank rv"></div>
+  <div class="grid">
+    <div class="feat rv">
+      <span class="flabel">Recommendation fraud<span class="soon">roadmap</span></span>
+      <h3>Fake shelves, hijacked names</h3>
+      <p>Counterfeit listings and impersonator domains riding your brand inside AI answers. We detect when the AI recommends "you" — but routes buyers somewhere that isn't you.</p>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Agent identity &amp; trust<span class="soon">roadmap</span></span>
+      <h3>Know which agents you're selling to</h3>
+      <p>Verify legitimate shopping agents, flag scripted abuse, and decide which agentic traffic your store should trust and transact with.</p>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Transaction risk<span class="soon">roadmap</span></span>
+      <h3>Risk scoring for agentic checkout</h3>
+      <p>When a purchase arrives via an AI agent instead of a human session, fraud looks different. Risk signals purpose-built for agent-initiated orders.</p>
+    </div>
+    <div class="feat rv">
+      <span class="flabel">Brand watch<span class="soon">roadmap</span></span>
+      <h3>Continuous protection, not point checks</h3>
+      <p>Standing monitors on your brand across engines and markets — alerting you when your shelf position, routing, or sentiment is attacked or shifts.</p>
+    </div>
+  </div>
+  <div class="steps" style="margin-top:36px">
+    <div class="step rv"><span class="n">TODAY</span><h3>Free shelf test</h3><p>Measure your AI visibility in 2 minutes. Free forever — it's how brands discover the problem.</p></div>
+    <div class="step rv"><span class="n">NEXT</span><h3>Monitoring &amp; GEO suite</h3><p>Monthly tracking, competitive intelligence, fix generation and Share of AI Voice for teams.</p></div>
+    <div class="step rv"><span class="n">THEN</span><h3>Agentic commerce infrastructure</h3><p>Trust, identity and transaction risk for a world where AI agents do the buying.</p></div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="wrap">
+  <div class="aisle-head rv"><h2>Two minutes to a verdict</h2></div>
+  <div class="aisle-plank rv" style="margin-top:26px"></div>
+  <div class="steps">
+    <div class="step rv"><span class="n">STEP 1</span><h3>Pick your category</h3><p>100+ D2C categories per market, each with standardized real-shopper questions — budgets in local currency, one in your market's language.</p></div>
+    <div class="step rv"><span class="n">STEP 2</span><h3>Approve the questions</h3><p>You see exactly what will be asked and can edit anything. The test only counts if the questions sound like your customers.</p></div>
+    <div class="step rv"><span class="n">STEP 3</span><h3>Get your shelf verdict</h3><p>ON THE SHELF, OUTSHELVED, or NOT STOCKED — with scores per engine, checkout routing, and your fix plan.</p></div>
+  </div>
+</section>
+
+<!-- ================= MARKETS ================= -->
+<section id="markets" class="wrap">
+  <div class="aisle-head rv"><h2>Built for your market, not translated to it</h2></div>
+  <p class="aisle-sub rv">US tools test English queries against Amazon.com. Your shoppers ask in Hinglish, Arabic and Urdu — and your rival is local.</p>
+  <div class="aisle-plank rv"></div>
+  <div class="grid">
+    <div class="mkt rv"><h3>India</h3><div class="vs mono">vs Flipkart · Amazon.in · Meesho · Nykaa</div><p>Hinglish queries, ₹ budgets, festive and wedding-season intent. 100 categories live.</p></div>
+    <div class="mkt rv"><h3>GCC</h3><div class="vs mono">vs Noon · Amazon.ae · Namshi</div><p>Gulf Arabic queries — oud, abayas, attar and the categories where local brands already beat marketplaces.</p></div>
+    <div class="mkt rv"><h3>Pakistan</h3><div class="vs mono">vs Daraz · Amazon</div><p>Roman-Urdu queries and PKR budgets across fashion, grooming and food.</p></div>
+    <div class="mkt rv"><h3>Southeast Asia</h3><div class="vs mono">vs Shopee · Lazada · TikTok Shop</div><p>Bahasa and Thai coverage rolling out, benchmarked against the platforms that own the region.</p></div>
+  </div>
+</section>
+
+<!-- ================= DATA ================= -->
+<section id="data" class="wrap">
+  <div class="aisle-head rv"><h2>Running on a dataset nobody else has</h2></div>
+  <p class="aisle-sub rv">
+    Every test runs on our regional query bank — hundreds of standardized shopper questions across 100+ D2C categories,
+    four intent archetypes (discovery, branded routing, problem-first, replacement), harvested across four AI engines
+    and refreshed monthly. What people ask AI before they buy, in India, the GCC, Pakistan and SEA. It grows with every test.
+  </p>
+  <div class="aisle-plank rv"></div>
+</section>
+
+<!-- ================= COMPARE ================= -->
+<section id="compare" class="wrap">
+  <div class="aisle-head rv"><h2>Why not the US tools?</h2></div>
+  <p class="aisle-sub rv">They're good at what they do. What they do isn't your market.</p>
+  <div class="cmp-scroll rv">
+    <table class="cmp">
+      <thead>
+        <tr><th></th><th class="us">ShelfShare</th><th>Profound</th><th>Otterly</th><th>HubSpot grader</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Local marketplace rivals (Flipkart, Noon, Daraz, Shopee)</td><td class="us yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td></tr>
+        <tr><td>Local-language queries (Hinglish, Arabic, Urdu)</td><td class="us yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td></tr>
+        <tr><td>Checkout routing (brand-direct vs marketplace)</td><td class="us yes">✓</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td></tr>
+        <tr><td>Query fanout & trusted sources</td><td class="us yes">✓</td><td class="yes">✓</td><td class="no">✗</td><td class="no">✗</td></tr>
+        <tr><td>Fix generation (JSON-LD, llms.txt)</td><td class="us yes">soon</td><td class="no">✗</td><td class="no">✗</td><td class="no">✗</td></tr>
+        <tr><td>Free for merchants</td><td class="us yes">✓</td><td class="no">enterprise $</td><td class="no">from $29/mo</td><td class="yes">✓</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= CTA / RECEIPT ================= -->
+<section id="test" class="wrap" style="padding-bottom: 20px;">
+  <div class="receipt rv">
+    <div id="r-form">
+      <h2>Run your free shelf test</h2>
+      <p class="r-sub">Tell us where to send your full report. We read every pain point personally — it decides what we build next.</p>
+      <label for="f-brand">Brand name</label>
+      <input id="f-brand" type="text" placeholder="e.g. Vincent Chase" autocomplete="organization">
+      <label for="f-email">Work email · required</label>
+      <input id="f-email" type="email" placeholder="you@yourbrand.com" autocomplete="email" required>
+      <label for="f-pain">Your biggest pain point selling online</label>
+      <textarea id="f-pain" rows="3" placeholder="e.g. marketplace commissions eating margins, can't get discovered without ads…"></textarea>
+      <button class="btn" id="f-go">Start my test</button>
+      <div class="r-fine">By continuing you agree to receive your report by email. We never sell your data. · Privacy policy</div>
+    </div>
+    <div class="r-done" id="r-done">
+      <h3>You're on the list ✓</h3>
+      <p>Your test link is on its way. Check your inbox in the next few minutes.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot wrap">
+    <div><a class="logo" href="#top" style="font-size:16px">Shelf<b>Share</b></a><br><span style="font-size:12px">The visibility, intelligence and trust layer for AI-driven commerce — starting with the merchants of India, GCC, Pakistan &amp; SEA.</span></div>
+    <div>
+      <a href="#monitor">Measure</a> · <a href="#win">Improve</a> · <a href="#protect">Protect</a><br>
+      <a href="#markets">Markets</a> · <a href="#data">Data</a> · <a href="#compare">Compare</a>
+    </div>
+    <div class="mono" style="font-size:11px">Engines: Claude · ChatGPT · Gemini · Grok<br>© 2026 ShelfShare</div>
+  </div>
+</footer>
+
+<script>
+  // ---------- live hero shelf: cycles REAL harvested snapshots ----------
+  const SAMPLES = [
+    {
+      engine: "Claude · live web search · 18 Aug 2026",
+      query: "best TWS earbuds under ₹2000 India",
+      youBrand: "boAt",
+      shelf: [
+        { b: "Realme", d: "mktpl" },
+        { b: "OnePlus", d: "mktpl" },
+        { b: "boAt", d: "direct", you: true },
+        { b: "CMF", d: "mktpl" },
+        { b: "GoBoult", d: "direct" }
+      ],
+      verdict: { text: "ON THE SHELF — #3", good: true }
+    },
+    {
+      engine: "Claude · live web search · 18 Aug 2026",
+      query: "best long lasting perfume under AED 100 UAE",
+      youBrand: "YourBrand",
+      shelf: [
+        { b: "Lattafa", d: "mktpl", rival: false },
+        { b: "Rasasi", d: "mktpl" },
+        { b: "Ajmal", d: "direct" },
+        { b: "My Perfumes", d: "direct" },
+        { b: "Al Maghribi", d: "direct" }
+      ],
+      verdict: { text: "NOT STOCKED — you're not on this shelf", good: false }
+    },
+    {
+      engine: "Claude · live web search · 18 Aug 2026",
+      query: "best vitamin C serum for oily skin India",
+      youBrand: "Minimalist",
+      shelf: [
+        { b: "Minimalist", d: "mktpl", you: true },
+        { b: "Derma Co", d: "mktpl" },
+        { b: "Dot & Key", d: "mktpl" },
+        { b: "Pilgrim", d: "direct" },
+        { b: "Deconstruct", d: "direct" }
+      ],
+      verdict: { text: "ON THE SHELF — #1, but routed to Amazon", good: true }
+    }
+  ];
+
+  const qEl = document.getElementById("demo-query");
+  const slotsEl = document.getElementById("demo-slots");
+  const verEl = document.getElementById("demo-verdict");
+  const engEl = document.getElementById("demo-engine");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let si = 0;
+
+  function typeQuery(text, done) {
+    if (reduced) { qEl.textContent = text; done(); return; }
+    qEl.textContent = "";
+    let i = 0;
+    const t = setInterval(() => {
+      qEl.textContent = text.slice(0, ++i);
+      if (i >= text.length) { clearInterval(t); done(); }
+    }, 34);
+  }
+
+  function showSample(s) {
+    engEl.textContent = s.engine;
+    verEl.textContent = "";
+    verEl.className = "demo-verdict";
+    slotsEl.innerHTML = "";
+    typeQuery(s.query, () => {
+      s.shelf.forEach((item, i) => {
+        const div = document.createElement("div");
+        div.className = "stag" + (item.you ? " you" : "");
+        div.innerHTML = '<span class="rk">#' + (i + 1) + '</span>' + item.b +
+          '<span class="dst" style="color:' + (item.you ? '#17251F' : (item.d === 'direct' ? '#5BD6A0' : '#FF6B57')) + '">→ ' + item.d + '</span>';
+        slotsEl.appendChild(div);
+        setTimeout(() => div.classList.add("in"), reduced ? 0 : 120 * i + 150);
+      });
+      setTimeout(() => {
+        verEl.textContent = s.verdict.text;
+        verEl.classList.add(s.verdict.good ? "good" : "bad");
+      }, reduced ? 0 : 950);
+    });
+  }
+
+  function cycle() {
+    showSample(SAMPLES[si % SAMPLES.length]);
+    si++;
+    setTimeout(cycle, 6500);
+  }
+  cycle();
+
+  // ---------- scroll reveal ----------
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("on"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".rv").forEach((el) => io.observe(el));
+
+  // ---------- CTA form (front-end only; wire to /api/lead + Resend on the real site) ----------
+  document.getElementById("f-go").addEventListener("click", () => {
+    const email = document.getElementById("f-email").value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      document.getElementById("f-email").style.borderColor = "#FF6B57";
+      return;
+    }
+    const payload = {
+      brand: document.getElementById("f-brand").value.trim(),
+      email,
+      painpoint: document.getElementById("f-pain").value.trim(),
+      source: "landing",
+      ts: new Date().toISOString()
+    };
+    // PRODUCTION: fetch("/api/lead", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(payload)})
+    fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }).catch(() => {});
+    document.getElementById("r-form").style.display = "none";
+    document.getElementById("r-done").style.display = "block";
+  });
+</script>
+</body>
+</html>
