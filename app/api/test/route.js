@@ -37,7 +37,7 @@ export async function POST(request) {
     return badRequest("Invalid JSON body.");
   }
 
-  const { market, categoryId, brand, competitor, queries: queryOverrides } = body || {};
+  const { market, categoryId, brand, competitor, brandWebsite, queries: queryOverrides } = body || {};
 
   if (!market || !listMarkets().includes(market)) {
     return badRequest(`"market" must be one of: ${listMarkets().join(", ")}.`);
@@ -65,6 +65,7 @@ export async function POST(request) {
 
   const brandName = brand.trim();
   const competitorName = typeof competitor === "string" ? competitor.trim() : "";
+  const brandWebsiteInput = typeof brandWebsite === "string" ? brandWebsite.trim() : "";
 
   // Editable queries (phase 3 UI): override text by qid, but only for qids
   // that actually belong to this category.
@@ -175,7 +176,13 @@ export async function POST(request) {
     }
   }
 
-  const report = computeReport({ market, brand: brandName, competitor: competitorName, engineData });
+  const report = computeReport({
+    market,
+    brand: brandName,
+    competitor: competitorName,
+    brandWebsite: brandWebsiteInput,
+    engineData,
+  });
 
   return NextResponse.json({
     ok: true,
@@ -183,6 +190,7 @@ export async function POST(request) {
     category: { id: category.id, name: category.name, group: category.group },
     brand: brandName,
     competitor: competitorName || null,
+    brandWebsite: brandWebsiteInput || null,
     queries: finalQueries,
     liveRuns,
     engines: engineData,

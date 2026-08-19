@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Hero() {
   return (
     <header className="hero" id="top-hero">
@@ -15,7 +17,7 @@ export default function Hero() {
         sends the buyer to check out.
       </p>
       <div className="hero-ctas">
-        <a href="#test" className="btn-primary">Test my brand — free</a>
+        <Link href="/test" className="btn-primary">Test my brand — free</Link>
         <a href="#monitor" className="btn-ghost">See what you get</a>
       </div>
       <div className="hero-note mono">No card. No signup to see your verdict. 2 minutes.</div>

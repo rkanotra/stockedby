@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Nav() {
   return (
     <nav className="nav">
@@ -12,7 +14,7 @@ export default function Nav() {
           <a href="#protect">Protect</a>
           <a href="#compare">Compare</a>
         </div>
-        <a href="#test" className="btn">Run free shelf test</a>
+        <Link href="/test" className="btn">Run free shelf test</Link>
       </div>
     </nav>
   );
