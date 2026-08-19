@@ -5,6 +5,7 @@ import { useState } from "react";
 export default function CtaReceipt() {
   const [showToast, setShowToast] = useState(false);
   const [brand, setBrand] = useState("");
+  const [website, setWebsite] = useState("");
   const [email, setEmail] = useState("");
   const [pain, setPain] = useState("");
 
@@ -13,6 +14,7 @@ export default function CtaReceipt() {
     // MVP stub: no email gate yet, no /api/lead call — see CLAUDE.md hard rule 8.
     console.log("lead form (stub, not sent):", {
       brand: brand.trim(),
+      website: website.trim(),
       email: email.trim(),
       painpoint: pain.trim(),
       source: "landing",
@@ -33,6 +35,15 @@ export default function CtaReceipt() {
           autoComplete="organization"
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
+        />
+        <label htmlFor="f-website">Brand website</label>
+        <input
+          id="f-website"
+          type="url"
+          placeholder="https://yourbrand.com"
+          autoComplete="url"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
         />
         <label htmlFor="f-email">Work email</label>
         <input
