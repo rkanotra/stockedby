@@ -12,10 +12,10 @@ economy, built on three pillars:
   transaction risk for agentic checkout.
 
 The free shelf test is the acquisition wedge; monitoring subscriptions are the
-revenue; commerce trust infrastructure is the long-term moat. Regional focus
-(India, UAE, Saudi Arabia) is the go-to-market advantage; Pakistan and SEA
-are future expansion markets — do not mention them in user-facing copy until
-launched.
+revenue; commerce trust infrastructure is the long-term moat. Markets:
+India, UAE, KSA (Saudi Arabia) — the go-to-market advantage. Pakistan and
+SEA are unannounced future expansion markets — do not mention them in
+user-facing copy until launched.
 
 Current phase: **MVP sprint — domain-live test build**
 MVP scope (build now): landing page + full test flow + /api/test with
@@ -31,14 +31,15 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
    without snapshots show a "harvest in progress" pending state — never
    placeholder results. Live results come only from the Claude API call.
 3. **Mobile-first.** Most visitors are founders on phones. Test at 375px first.
-4. **RTL/Arabic support** is required for GCC market pages and Arabic queries.
+4. **RTL/Arabic support** is required for UAE/KSA market pages and Arabic queries.
 5. **Design source of truth is docs/design/** (Claude Design exports).
    Marketing site is LIGHT theme (cream #FCFBF7, ink #16180F, tag yellow
    #FFC53D, brick #C2471F/#E8503A, greens #1E7A50/#2FA772). The APP/report
    screens are DARK theme (pine #0E1F18, card #14291F, tag yellow #FFC53D) so
    report screenshots pop on social. Fonts: Bricolage Grotesque (display),
    Archivo (body), IBM Plex Mono (labels/data) — load from Google Fonts, do NOT
-   embed woff2 from the design export.
+   embed woff2 from the design export. Favicon: done — app/icon.svg (tag-yellow
+   rounded mark, "by" in ink, matches the nav logo) + app/apple-icon.png.
 6. **Engines.** Test engines: claude, chatgpt, gemini, grok, perplexity,
    copilot. Claude runs live server-side; all others render from harvested
    snapshots in data/*.json. Query-bank GENERATION is Claude/ChatGPT only.
@@ -47,7 +48,7 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
    aux calls (sentiment) on haiku.
 8. [DEFERRED — post-MVP] **Email gate before deep results**: verdict is free to see; full report
    requires work email + pain point. Consent language for DPDP (India) / PDPL
-   (GCC). POST /api/lead → Resend (founder notification + merchant
+   (UAE, KSA). POST /api/lead → Resend (founder notification + merchant
    confirmation) + Supabase insert. See docs/api-lead-resend.ts.
 9. [DEFERRED — post-MVP] **Rate limit**: 1 free test per email per category per
    month. (MVP: cap tests per IP per day at 10 in the API route to protect the
@@ -71,16 +72,19 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
   data-gate rule (#2).
 - docs/api-lead-resend.ts — lead endpoint reference implementation.
 - data/india.json — accepted India query bank (ChatGPT-generated, 100 cats ×
-  4 queries). Known flags: ~10 branded queries use spec word "route me"
-  (reword on touch), verify leader brands "Modest Essentials" and
-  "Nykaa"-as-brand entries.
+  4 queries). Flags resolved: "route me" phrasing reworded; leader brands
+  verified ("Modest Essentials", "Nykaa Cosmetics").
 - data/india-v2-grok.json — accepted Grok variant bank; use as -v2 phrasing
-  variants for answer-stability metrics. Flag: relabel Hinglish problem-first
-  language fields en→hi-en; "Local modest brands" leader needs a real name.
-- data/gcc.json — accepted GCC batch 1 (Gemini, 10 categories). Batches 2–10
-  pending.
-- data/snapshots-*-seed.json — real harvested Claude snapshots (TWS earbuds,
-  boAt routing, vitamin-C serum, GCC perfume) incl. insight notes.
+  variants for answer-stability metrics. Flags resolved: Hinglish
+  problem-first language fields relabeled; "Local modest brands" leader
+  replaced with "Shiddat".
+- data/uae.json — accepted UAE query bank (50 categories). Harvested Claude
+  snapshots ship inline in the bank file (no separate seed file).
+- data/ksa.json — accepted KSA query bank (47 categories). No snapshots
+  harvested yet — engine tabs show "harvest in progress" until harvested.
+- data/snapshots-india-seed.json — real harvested Claude snapshots (TWS
+  earbuds, boAt routing, vitamin-C serum) for India, merged into india.json's
+  categories by lib/bank.js.
 - scripts/check_query_bank.py — acceptance gate for all bank batches.
 
 ## Build phases (one per session, commit after each)

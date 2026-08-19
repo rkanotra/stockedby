@@ -2,6 +2,16 @@
 
 import styles from "./test.module.css";
 
+// Display copy for the market-selector cards. "KSA" stays the internal
+// market key (matches data/ksa.json + lib/bank.js) but reads as "Saudi
+// Arabia" in the UI.
+const MARKET_LABELS = { India: "India", UAE: "UAE", KSA: "Saudi Arabia" };
+const MARKET_VS = {
+  India: "Flipkart / Amazon.in",
+  UAE: "Noon / Amazon.ae",
+  KSA: "Amazon.sa / Jarir",
+};
+
 export default function SetupPanel({ markets, market, onMarket, categories, search, onSearch, onPick }) {
   const filtered = categories.filter(
     (c) =>
@@ -20,8 +30,8 @@ export default function SetupPanel({ markets, market, onMarket, categories, sear
             className={`${styles.marketTab} ${market === m ? styles.active : ""}`}
             onClick={() => onMarket(m)}
           >
-            {m}
-            <span className={styles.st}>vs {m === "GCC" ? "Noon / Amazon.ae" : "Flipkart / Amazon.in"}</span>
+            {MARKET_LABELS[m] || m}
+            <span className={styles.st}>vs {MARKET_VS[m] || ""}</span>
           </button>
         ))}
       </div>

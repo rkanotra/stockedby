@@ -1,0 +1,1698 @@
+{
+  "market": "KSA",
+  "categories": [
+    {
+      "id": "oud-products",
+      "name": "Oud products",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "oud-products-discovery",
+          "text": "good quality oud chips for the majlis under 400 SAR that actually last",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "oud-products-local",
+          "text": "دخون عود فاخر للعزائم ريحته تثبت بالمجلس",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "oud-products-branded",
+          "text": "is Arabian Oud cheaper from their own website or the mall branches? want the Kalemat line",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Arabian Oud"
+        },
+        {
+          "qid": "oud-products-problem",
+          "text": "guests are coming for Eid and I want the house to smell rich and traditional, not like cheap incense",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "perfume-attar",
+      "name": "Perfume / Attar",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "perfume-attar-discovery",
+          "text": "long lasting perfume under 150 SAR for daily office wear in Riyadh heat",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "perfume-attar-local",
+          "text": "عطر رجالي يثبت طول الدوام وسعره مناسب",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "perfume-attar-branded",
+          "text": "where to buy genuine Abdul Samad Al Qurashi safari blend — official store or Amazon.sa?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Abdul Samad Al Qurashi"
+        },
+        {
+          "qid": "perfume-attar-problem",
+          "text": "my cologne disappears within two hours of leaving the house in summer, colleagues never notice it",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "mens-thobes",
+      "name": "Men's thobes",
+      "group": "Fashion",
+      "queries": [
+        {
+          "qid": "mens-thobes-discovery",
+          "text": "summer thobe under 250 SAR that stays crisp through a full work day",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mens-thobes-local",
+          "text": "ثوب صيفي قماشه بارد وما يتكرمش للدوام",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "mens-thobes-branded",
+          "text": "Lomar thobes — order online from their site or better to visit the boutique for fitting?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Lomar"
+        },
+        {
+          "qid": "mens-thobes-problem",
+          "text": "I sweat through everything by noon and end up looking wrinkled in every meeting",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "abayas-modest-fashion",
+      "name": "Abayas & modest fashion",
+      "group": "Fashion",
+      "queries": [
+        {
+          "qid": "abayas-discovery",
+          "text": "everyday black abaya under 300 SAR in a fabric that survives Jeddah humidity",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "abayas-local",
+          "text": "عباية دوام عملية قماشها ما يلصق بالجسم بالحر",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "abayas-branded",
+          "text": "best place to order Hanayen abayas with delivery to Riyadh — site or Instagram?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Hanayen"
+        },
+        {
+          "qid": "abayas-problem",
+          "text": "my work wardrobe feels heavy and hot on the commute and I need something breathable but still formal",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "dates-premium",
+      "name": "Premium dates",
+      "group": "Food & Beverages",
+      "queries": [
+        {
+          "qid": "dates-discovery",
+          "text": "gift box of ajwa or sukkari dates under 200 SAR for a business visit",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "dates-local",
+          "text": "تمر سكري فاخر للضيافة وين أحصله طازج",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "dates-branded",
+          "text": "does Bateel deliver same-day in Riyadh or should I just pick up from the boutique?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Bateel"
+        },
+        {
+          "qid": "dates-problem",
+          "text": "I need an impressive gift for my manager's family visit that feels premium but not flashy",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "sunscreen",
+      "name": "Sunscreen",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "sunscreen-discovery",
+          "text": "sunscreen under 90 SAR with no white cast that survives outdoor site visits",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sunscreen-local",
+          "text": "واقي شمس ما يترك طبقة بيضا ويتحمل الحر",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sunscreen-branded",
+          "text": "is La Roche-Posay Anthelios cheaper at Nahdi or on Amazon.sa right now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "La Roche-Posay"
+        },
+        {
+          "qid": "sunscreen-problem",
+          "text": "my face gets darker and irritated every summer from driving and site work, nothing I try holds up",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "whey-protein",
+      "name": "Protein powder / whey",
+      "group": "Health & Fitness",
+      "queries": [
+        {
+          "qid": "whey-discovery",
+          "text": "trusted whey protein under 250 SAR per kg — gym just opened near me and everyone warns about fakes",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "whey-local",
+          "text": "بروتين أصلي مو مقلد من وين آخذه بسعر زين",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "whey-branded",
+          "text": "Optimum Nutrition gold standard — iHerb, Amazon.sa or a local supplement shop for the genuine one?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Optimum Nutrition"
+        },
+        {
+          "qid": "whey-problem",
+          "text": "six months of gym and no visible progress, trainer says my diet protein is way too low",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "smartwatches",
+      "name": "Smartwatches",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "smartwatch-discovery",
+          "text": "smartwatch under 800 SAR with good battery for gym plus prayer time reminders",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "smartwatch-local",
+          "text": "ساعة ذكية بطاريتها تعيش أسبوع وسعرها معقول",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "smartwatch-branded",
+          "text": "Apple Watch SE — Jarir, Extra or Amazon.sa, where's the best real price this month?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Apple"
+        },
+        {
+          "qid": "smartwatch-problem",
+          "text": "I keep missing my step goals and my old watch dies every single day before maghrib",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "coffee-specialty",
+      "name": "Specialty coffee / Saudi coffee",
+      "group": "Food & Beverages",
+      "queries": [
+        {
+          "qid": "coffee-discovery",
+          "text": "specialty coffee beans under 120 SAR that work for v60 at home",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "coffee-local",
+          "text": "قهوة سعودية بالهيل طعمها أصيل للضيوف",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "coffee-branded",
+          "text": "are Camel Step beans fresher ordered from their site or picked up in store?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Camel Step"
+        },
+        {
+          "qid": "coffee-problem",
+          "text": "my home brew tastes flat and bitter compared to the cafe downstairs no matter what I do",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "skincare-serum",
+      "name": "Face serum / vitamin C",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "serum-discovery",
+          "text": "vitamin C serum under 130 SAR for dull skin that handles AC-dry office air",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "serum-local",
+          "text": "سيروم فيتامين سي يفتح البشرة وما يهيجها",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "serum-branded",
+          "text": "The Ordinary vitamin C — Nice One, Golden Scent or Amazon.sa for the authentic one?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "The Ordinary"
+        },
+        {
+          "qid": "serum-problem",
+          "text": "my skin looks tired and uneven in every photo lately even with good sleep",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "hair-oil",
+      "name": "Hair oil",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "hairoil-discovery",
+          "text": "hair oil under 80 SAR for dryness from daily straightening and hard water",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hairoil-local",
+          "text": "زيت شعر يرطب ويخفف التقصف من غير ما يثقل الشعر",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "hairoil-branded",
+          "text": "Moroccanoil treatment — Nice One, Golden Scent or the salon, where's it genuine and fairly priced?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Moroccanoil"
+        },
+        {
+          "qid": "hairoil-problem",
+          "text": "my ends snap off every time I brush and the salon just keeps selling me expensive treatments",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "shampoo-sulfate-free",
+      "name": "Shampoo (sulfate-free)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "shampoo-discovery",
+          "text": "sulfate free shampoo around 70 SAR that works with Riyadh's hard water",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "shampoo-local",
+          "text": "شامبو خالي من السلفات يناسب الشعر المصبوغ وما ينشف",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "shampoo-branded",
+          "text": "OGX — Nahdi, Al Dawaa or Amazon.sa, anyone running a real offer on it?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "OGX"
+        },
+        {
+          "qid": "shampoo-problem",
+          "text": "my scalp gets itchy and flaky two days after every wash no matter which pharmacy brand I try",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "beard-grooming",
+      "name": "Beard grooming",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "beard-discovery",
+          "text": "beard care kit under 120 SAR that keeps the line sharp between barber visits",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "beard-local",
+          "text": "زيت وبلسم لحية يرتب الشكل ويوقف الحكة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "beard-branded",
+          "text": "is The Beard Struggle worth shipping to KSA or does a local grooming brand match it?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "The Beard Struggle"
+        },
+        {
+          "qid": "beard-problem",
+          "text": "between barber visits my beard turns messy fast and the itch under it drives me crazy",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "lipstick-longstay",
+      "name": "Lipstick (long-stay)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "lipstick-discovery",
+          "text": "matte lipstick under 90 SAR that stays through a full wedding evening",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "lipstick-local",
+          "text": "روج مطفي يثبت للمناسبات وما ينشف الشفايف",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "lipstick-branded",
+          "text": "MAC Retro Matte — Nice One, Sephora KSA or Golden Scent for original stock?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "MAC"
+        },
+        {
+          "qid": "lipstick-problem",
+          "text": "wedding season every weekend and my lip color is gone before the dinner buffet opens",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "skin-brightening",
+      "name": "Skin brightening cream",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "brightening-discovery",
+          "text": "night cream for dark spots under 150 SAR that dermatologists actually approve",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "brightening-local",
+          "text": "كريم تفتيح آمن للبقع الداكنة موصى فيه من أطباء الجلدية",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "brightening-branded",
+          "text": "Eucerin Even Pigment — Nahdi price vs Amazon.sa, and does Whites stock it?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Eucerin"
+        },
+        {
+          "qid": "brightening-problem",
+          "text": "old acne marks on my cheeks show through every foundation and photos make it worse",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "hijabs-scarves",
+      "name": "Hijabs & scarves",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "hijab-discovery",
+          "text": "premium plain hijabs under 70 SAR each in fabrics that survive daily wear",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hijab-local",
+          "text": "طرح شيفون ألوان هادية للدوام خامة تدوم",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "hijab-branded",
+          "text": "do Voile Chic hijabs deliver to Saudi quickly or is a local store the smarter buy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Voile Chic"
+        },
+        {
+          "qid": "hijab-problem",
+          "text": "my everyday scarves fade and pill within a month and I'm replacing them constantly",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "mens-sunglasses",
+      "name": "Men's sunglasses",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "sunglasses-discovery",
+          "text": "polarized sunglasses under 400 SAR for highway driving between Riyadh and Qassim",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sunglasses-local",
+          "text": "نظارة شمسية بولارايزد تخفف لمعة الشارع بالقيادة الطويلة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sunglasses-branded",
+          "text": "Ray-Ban aviators — MAGRABi, eyewa or Amazon.sa, who's legit with the best price?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ray-Ban"
+        },
+        {
+          "qid": "sunglasses-problem",
+          "text": "afternoon glare on the highway gives me headaches and my cheap pair makes it worse",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "sneakers",
+      "name": "Sneakers / casual shoes",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "sneakers-discovery",
+          "text": "comfortable white sneakers under 450 SAR for walking Boulevard and daily wear",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sneakers-local",
+          "text": "شوز أبيض مريح للمشي الطويل وما يتوسخ بسرعة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sneakers-branded",
+          "text": "New Balance 530 — Sun & Sand Sports, Foot Locker KSA or Amazon.sa for real pairs?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "New Balance"
+        },
+        {
+          "qid": "sneakers-problem",
+          "text": "my feet ache after every event at Boulevard and dress shoes are killing me at work too",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "mens-watches",
+      "name": "Men's watches",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "watch-discovery",
+          "text": "classy watch under 1000 SAR that suits thobe for meetings and majlis",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "watch-local",
+          "text": "ساعة رجالية فخمة بسعر معقول تليق مع الثوب",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "watch-branded",
+          "text": "Seiko — Jarir, Extra or a watch boutique in Panorama, where do I get warranty plus fair price?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Seiko"
+        },
+        {
+          "qid": "watch-problem",
+          "text": "I meet clients daily and my old digital watch undercuts the whole look",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "athleisure",
+      "name": "Athleisure / gym wear",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "athleisure-discovery",
+          "text": "modest gym sets under 250 SAR for ladies gyms, breathable not see-through",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "athleisure-local",
+          "text": "ملابس رياضية محتشمة وخفيفة للنادي النسائي",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "athleisure-branded",
+          "text": "Squatwolf ships from UAE — worth it to KSA or does Sun & Sand carry equivalent quality?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Squatwolf"
+        },
+        {
+          "qid": "athleisure-problem",
+          "text": "I skip the gym some days because none of my workout clothes feel right to move in",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "kids-clothing",
+      "name": "Kids' clothing",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "kidswear-discovery",
+          "text": "school and weekend kids clothes under 180 SAR per outfit that survive rough play",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kidswear-local",
+          "text": "ملابس أطفال قطن تتحمل اللعب والغسيل المتكرر",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "kidswear-branded",
+          "text": "Centrepoint kids or H&M — which app does better end-of-season sales in Saudi?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Centrepoint"
+        },
+        {
+          "qid": "kidswear-problem",
+          "text": "three kids growing at once and mall shopping every school term is draining the budget",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "gold-demi-fine-jewelry",
+      "name": "Gold-plated / demi-fine jewelry",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "jewelry-discovery",
+          "text": "tarnish resistant everyday jewelry under 300 SAR that looks real gold",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "jewelry-local",
+          "text": "اكسسوارات لونها ذهبي يثبت وما يسود مع الاستخدام",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "jewelry-branded",
+          "text": "is Lazurde's demi-fine line online only or in their boutiques too, and any Riyadh Season offers?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Lazurde"
+        },
+        {
+          "qid": "jewelry-problem",
+          "text": "every affordable piece I wear daily turns dark within a month here",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "healthy-snacks",
+      "name": "Healthy snacks",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "snacks-discovery",
+          "text": "desk snacks under 50 SAR a pack that keep me going without the sugar crash",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "snacks-local",
+          "text": "سناك صحي يشبع بين الاجتماعات بدون سعرات فاضية",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "snacks-branded",
+          "text": "do Danube and Tamimi stock decent protein snack brands or is Amazon.sa the better hunt?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Danube"
+        },
+        {
+          "qid": "snacks-problem",
+          "text": "the office pantry is only biscuits and by asr I'm raiding it against my own diet plan",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "green-tea-wellness",
+      "name": "Green tea / wellness tea",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "tea-discovery",
+          "text": "good green tea under 60 SAR that doesn't taste like grass, loose or bags",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "tea-local",
+          "text": "شاي أخضر طعمه مقبول ينفع بعد العشا للهضم",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "tea-branded",
+          "text": "Twinings selection — Panda, Danube or Amazon.sa bulk, where's the value?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Twinings"
+        },
+        {
+          "qid": "tea-problem",
+          "text": "trying to replace my fourth coffee of the day with something that won't wreck my sleep",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "dry-fruits-nuts",
+      "name": "Dry fruits & nuts",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "nuts-discovery",
+          "text": "fresh mixed nuts under 100 SAR a kilo for the majlis, roasted not stale",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "nuts-local",
+          "text": "مكسرات طازجة مشكلة للضيافة من محمصة معروفة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "nuts-branded",
+          "text": "Al Rifai — their branches, app delivery or the supermarket packs, is quality the same?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Al Rifai"
+        },
+        {
+          "qid": "nuts-problem",
+          "text": "guests every weekend this month and supermarket nuts always taste like the bag",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "honey-organic",
+      "name": "Honey (raw / organic)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "honey-discovery",
+          "text": "authentic sidr honey under 300 SAR that comes with lab testing, tired of fakes",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "honey-local",
+          "text": "عسل سدر جبلي أصلي مو مغشوش من مصدر موثوق",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "honey-branded",
+          "text": "Al Shifa vs a premium local apiary — is the supermarket brand actually pure?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Al Shifa"
+        },
+        {
+          "qid": "honey-problem",
+          "text": "father takes a spoonful every morning for his health and we're never sure what we're buying is genuine",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "chocolates-artisanal",
+      "name": "Chocolates (artisanal)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "chocolate-discovery",
+          "text": "premium chocolate tray under 200 SAR for engagement hosting that looks generous",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "chocolate-local",
+          "text": "شوكولاتة فاخرة تنسيق هدايا ومناسبات وين أفضل مكان",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "chocolate-branded",
+          "text": "Patchi — the boutique arrangements or their online store, and do prices differ?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Patchi"
+        },
+        {
+          "qid": "chocolate-problem",
+          "text": "we're hosting the in-laws for the first time and the sweets table has to impress",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "ghee-organic",
+      "name": "Ghee (organic)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "ghee-discovery",
+          "text": "pure baladi ghee under 150 SAR a kilo for kabsa that tastes like grandma's",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "ghee-local",
+          "text": "سمن بلدي أصلي للكبسة والمفطح من وين أطلبه",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "ghee-branded",
+          "text": "is Al Marai ghee good enough for traditional cooking or do I hunt down farm sourced?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Almarai"
+        },
+        {
+          "qid": "ghee-problem",
+          "text": "my kabsa never tastes like my mother's and she swears it's the ghee I'm using",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "multivitamins",
+      "name": "Multivitamins",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "multivit-discovery",
+          "text": "complete daily multivitamin under 150 SAR monthly, pharmacist recommended not influencer recommended",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "multivit-local",
+          "text": "فيتامينات شاملة للرجال ينصح فيها الصيادلة مو الإعلانات",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "multivit-branded",
+          "text": "Centrum men — Nahdi, Al Dawaa or Amazon.sa, and do pharmacy loyalty points make the difference?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Centrum"
+        },
+        {
+          "qid": "multivit-problem",
+          "text": "annual checkup showed vitamin D at rock bottom and energy has been matching it",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "sleep-aids",
+      "name": "Sleep aids / melatonin",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "sleep-discovery",
+          "text": "melatonin under 100 SAR that's pharmacy legal in Saudi and actually works",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sleep-local",
+          "text": "ميلاتونين أو شي طبيعي للنوم متوفر بالصيدليات هنا",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sleep-branded",
+          "text": "Natrol 5mg — which Saudi pharmacy chains actually stock it, or is iHerb the only route?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Natrol"
+        },
+        {
+          "qid": "sleep-problem",
+          "text": "work starts at 7:30 and my mind refuses to shut down before 2am, I'm wrecked all week",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "omega-3",
+      "name": "Omega-3 / fish oil",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "omega-discovery",
+          "text": "high EPA omega 3 under 180 SAR without fishy aftertaste",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "omega-local",
+          "text": "حبوب اوميغا ٣ تركيز قوي بدون ريحة السمك",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "omega-branded",
+          "text": "Jamieson or Nordic Naturals — which does Nahdi carry and which needs ordering?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Jamieson"
+        },
+        {
+          "qid": "omega-problem",
+          "text": "doctor flagged my triglycerides and said fix it with diet and fish oil before we talk medication",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "immunity-boosters",
+      "name": "Immunity boosters",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "immunity-discovery",
+          "text": "vitamin C and zinc under 90 SAR for the family before school season starts",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "immunity-local",
+          "text": "مقويات مناعة للعيال قبل المدارس تنفع من الصيدلية",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "immunity-branded",
+          "text": "Redoxon effervescent — Al Dawaa multibuy or Amazon.sa box deals, which wins?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Redoxon"
+        },
+        {
+          "qid": "immunity-problem",
+          "text": "first month of school and the kids bring home a new virus every single week",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "baby-skincare",
+      "name": "Baby skincare",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "babyskin-discovery",
+          "text": "gentle baby wash and lotion under 100 SAR for sensitive newborn skin",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "babyskin-local",
+          "text": "منتجات استحمام للمولود بدون عطور تناسب البشرة الحساسة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "babyskin-branded",
+          "text": "Sebamed baby — Nahdi, babyshop or Amazon.sa, where's the full range cheapest?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Sebamed"
+        },
+        {
+          "qid": "babyskin-problem",
+          "text": "our newborn's skin flakes and reddens after every bath and my wife is worried sick",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "diapers",
+      "name": "Diapers",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "diapers-discovery",
+          "text": "night diapers under 1.2 SAR per piece that hold till fajr without leaking",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "diapers-local",
+          "text": "حفاضات ليلية ما تسرب وأحسن سعر للكرتون",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "diapers-branded",
+          "text": "Pampers cartons — Danube app, babyshop or Amazon.sa subscribe, real cheapest per piece?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Pampers"
+        },
+        {
+          "qid": "diapers-problem",
+          "text": "we're through three sheet changes a week at 3am and both of us work mornings",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "kids-toys-educational",
+      "name": "Kids' toys (educational)",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "toys-discovery",
+          "text": "educational toys under 250 SAR that pull a five year old off the tablet",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "toys-local",
+          "text": "ألعاب تعليمية تشغل الطفل بشي مفيد غير الجوال",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "toys-branded",
+          "text": "LEGO Classic — Jarir, Toys R Us or Amazon.sa, who discounts first before Riyadh Season?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "LEGO"
+        },
+        {
+          "qid": "toys-problem",
+          "text": "screen tantrums are ruining our evenings and every toy we bought lasts one afternoon",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "bedsheets-bedding",
+      "name": "Bedsheets / bedding",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "bedding-discovery",
+          "text": "cotton king sheets under 350 SAR that stay cool with the AC cycling at night",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "bedding-local",
+          "text": "شراشف قطن ناعمة مقاس كينج خامتها تستاهل",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "bedding-branded",
+          "text": "IKEA or Home Box for quality sheets, or is a specialist linen store worth the extra?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "IKEA"
+        },
+        {
+          "qid": "bedding-problem",
+          "text": "I flip my pillow all night looking for the cool side and wake up more tired than I slept",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "cookware",
+      "name": "Cookware (non-toxic / cast iron)",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "cookware-discovery",
+          "text": "non toxic cookware set under 800 SAR that handles daily kabsa duty",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cookware-local",
+          "text": "قدور صحية بدون تيفال مقشر تتحمل الطبخ اليومي",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "cookware-branded",
+          "text": "Tefal Ingenio — Extra, SACO or Amazon.sa, where do the sets actually go on offer?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Tefal"
+        },
+        {
+          "qid": "cookware-problem",
+          "text": "my pans are flaking into the food and I keep reading that coating is not something to eat",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "home-fragrance",
+      "name": "Home fragrance / candles",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "fragrance-discovery",
+          "text": "home fragrance under 200 SAR that gives the majlis presence without smoke",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "fragrance-local",
+          "text": "معطر جو فخم للمجلس يدوم يومين مو ساعتين",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "fragrance-branded",
+          "text": "Arabian Oud room sprays — mall branch or website, and is the mukhallat range online?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Arabian Oud"
+        },
+        {
+          "qid": "fragrance-problem",
+          "text": "guests arrive in an hour sometimes and the house needs to smell ready in minutes",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "water-bottles",
+      "name": "Water bottles / flasks",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "bottle-discovery",
+          "text": "insulated flask under 180 SAR that keeps water icy in a car parked in Jeddah sun",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "bottle-local",
+          "text": "مطارة تحفظ البرودة بالسيارة وقت الصيف الحار",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "bottle-branded",
+          "text": "Stanley — Extra, Sun & Sand or Amazon.sa, and how do I spot the fakes flooding around?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Stanley"
+        },
+        {
+          "qid": "bottle-problem",
+          "text": "water in my car turns hot enough for tea by the time I finish one site visit",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "air-purifiers",
+      "name": "Air purifiers",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "purifier-discovery",
+          "text": "air purifier under 1000 SAR that copes with Riyadh dust storms in a big living room",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "purifier-local",
+          "text": "جهاز تنقية هوا قوي لأيام الغبار يغطي صالة كبيرة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "purifier-branded",
+          "text": "Xiaomi Smart Air Purifier — Extra, Jarir or Amazon.sa, who prices the 4 Pro best?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Xiaomi"
+        },
+        {
+          "qid": "purifier-problem",
+          "text": "after every dust storm my son's asthma acts up for days even with windows sealed",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "mattresses",
+      "name": "Mattresses",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "mattress-discovery",
+          "text": "medical grade mattress under 3000 SAR king size with real trial nights",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mattress-local",
+          "text": "مرتبة طبية للظهر مع فترة تجربة واسترجاع فعلي",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "mattress-branded",
+          "text": "Sleep High vs imported Emma — which actually honors the trial period in Saudi?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Sleep High"
+        },
+        {
+          "qid": "mattress-problem",
+          "text": "lower back stiff every morning and the physio says look at where you sleep first",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "prayer-mats",
+      "name": "Prayer mats",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "prayermat-discovery",
+          "text": "thick padded prayer mat under 180 SAR that's easy on the knees, gift boxed",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "prayermat-local",
+          "text": "سجادة صلاة طبية سميكة تريح الركب هدية للوالد",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "prayermat-branded",
+          "text": "are TIMEZ5 physiological mats available in Saudi retail or ordering only?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "TIMEZ5"
+        },
+        {
+          "qid": "prayermat-problem",
+          "text": "my father winces getting up from sujood and refuses to pray sitting down",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "tws-earbuds",
+      "name": "TWS earbuds",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "tws-discovery",
+          "text": "ANC earbuds under 350 SAR for open office noise and gym sessions",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "tws-local",
+          "text": "سماعات عزل ضوضاء تنفع للدوام والنادي بسعر حلو",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "tws-branded",
+          "text": "Soundcore — Jarir shelf price vs Amazon.sa vs noon, where's the Liberty 4 cheapest genuine?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Soundcore"
+        },
+        {
+          "qid": "tws-problem",
+          "text": "open office chatter destroys my focus and my old earbuds barely mute anything",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "power-banks",
+      "name": "Power banks",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "powerbank-discovery",
+          "text": "20000mah fast charging power bank under 180 SAR that's airline safe for umrah trips",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "powerbank-local",
+          "text": "باور بانك سريع مسموح بالطيران يشحن جوالين",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "powerbank-branded",
+          "text": "Anker — Jarir, Extra or the official Amazon.sa store, who's got the 737 in stock at list?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Anker"
+        },
+        {
+          "qid": "powerbank-problem",
+          "text": "phone died in the Haram parking and I couldn't find the family for an hour",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "gaming-accessories",
+      "name": "Gaming accessories",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "gaming-discovery",
+          "text": "wireless gaming headset under 500 SAR with mic good enough for ranked nights",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "gaming-local",
+          "text": "سماعة قيمنق لاسلكية مايكها واضح للفرايند أونلاين",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "gaming-branded",
+          "text": "Razer gear — Jarir gaming section, Extra or Amazon.sa, where do prices actually drop?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Razer"
+        },
+        {
+          "qid": "gaming-problem",
+          "text": "squad says my mic crackles every night and I'm getting muted mid game",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "running-gear",
+      "name": "Running gear",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "running-discovery",
+          "text": "running shoes under 600 SAR for 5k training on Riyadh Boulevard tracks",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "running-local",
+          "text": "جزمة جري مريحة للمبتدئين تنفع للممشى",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "running-branded",
+          "text": "Asics Gel — Sun & Sand Sports, Foot Locker or Amazon.sa, and do sizes run small?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Asics"
+        },
+        {
+          "qid": "running-problem",
+          "text": "shins hurt after every evening walk since I started trying to jog parts of it",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "pet-food-cats",
+      "name": "Pet food (cats)",
+      "group": "Pets",
+      "queries": [
+        {
+          "qid": "catfood-discovery",
+          "text": "quality dry cat food under 250 SAR for 4kg with Riyadh delivery",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "catfood-local",
+          "text": "أكل قطط صحي مب رخيص وردي مع توصيل شهري",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "catfood-branded",
+          "text": "Royal Canin — Pet Oasis, a vet clinic or Amazon.sa subscription, best steady price?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Royal Canin"
+        },
+        {
+          "qid": "catfood-problem",
+          "text": "my cat vomits the supermarket kibble weekly and the vet says change the diet first",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    }
+  ],
+  "merchant": null
+}

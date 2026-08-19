@@ -281,7 +281,7 @@
         },
         {
           "qid": "lipstick-branded",
-          "text": "Where would you route me for a real Maybelline long-stay lipstick: its own site or a marketplace?",
+          "text": "Where should I buy a genuine Maybelline — official site or marketplace?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",
@@ -503,11 +503,11 @@
         },
         {
           "qid": "face-masks-sheet-masks-branded",
-          "text": "I already want Nykaa sheet mask — where is the safest place to buy it without overpaying?",
+          "text": "I already want Nykaa Cosmetics sheet mask — where is the safest place to buy it without overpaying?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",
-          "leader_brand": "Nykaa"
+          "leader_brand": "Nykaa Cosmetics"
         },
         {
           "qid": "face-masks-sheet-masks-problem",
@@ -540,11 +540,11 @@
         },
         {
           "qid": "nail-care-branded",
-          "text": "What's the best place online to get authentic Nykaa nail-care kit in India right now?",
+          "text": "What's the best place online to get authentic Nykaa Cosmetics nail-care kit in India right now?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",
-          "leader_brand": "Nykaa"
+          "leader_brand": "Nykaa Cosmetics"
         },
         {
           "qid": "nail-care-problem",
@@ -651,7 +651,7 @@
         },
         {
           "qid": "abayas-and-modest-fashion-branded",
-          "text": "Where would you route me for a real Modest Essentials abaya: its own site or a marketplace?",
+          "text": "What's the safest place to order Modest Essentials without getting a fake?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",
@@ -1021,7 +1021,7 @@
         },
         {
           "qid": "kids-clothing-branded",
-          "text": "Where would you route me for a real Hopscotch kids' clothes: its own site or a marketplace?",
+          "text": "Is Hopscotch cheaper on their own website or on Amazon right now?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",
@@ -1391,7 +1391,7 @@
         },
         {
           "qid": "ghee-branded",
-          "text": "Where would you route me for a real Two Brothers Organic Farms A2 ghee: its own site or a marketplace?",
+          "text": "Best place to get authentic Two Brothers Organic Farms with fast delivery?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",
@@ -1761,7 +1761,7 @@
         },
         {
           "qid": "sleep-aids-melatonin-branded",
-          "text": "Where would you route me for a real Wellbeing Nutrition melatonin supplement: its own site or a marketplace?",
+          "text": "Should I order Wellbeing Nutrition from their site or wait for a marketplace sale?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",
@@ -2131,7 +2131,7 @@
         },
         {
           "qid": "baby-food-branded",
-          "text": "Where would you route me for a real Cerelac baby cereal: its own site or a marketplace?",
+          "text": "Where do people usually buy real Cerelac online in India?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",
@@ -2501,7 +2501,7 @@
         },
         {
           "qid": "water-bottles-flasks-branded",
-          "text": "Where would you route me for a real Milton insulated flask: its own site or a marketplace?",
+          "text": "I want Milton but worried about counterfeits — where's it guaranteed genuine?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",
@@ -2871,7 +2871,7 @@
         },
         {
           "qid": "power-banks-branded",
-          "text": "Where would you route me for a real Ambrane power bank: its own site or a marketplace?",
+          "text": "Which site gives the best deal on Ambrane — brand store, Amazon or Flipkart?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",
@@ -3241,7 +3241,7 @@
         },
         {
           "qid": "running-gear-branded",
-          "text": "Where would you route me for a real Decathlon running gear: its own site or a marketplace?",
+          "text": "Where can I find Decathlon at the lowest price, genuine only?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",
@@ -3611,7 +3611,7 @@
         },
         {
           "qid": "festive-gifting-hampers-branded",
-          "text": "Where would you route me for a real Ferns N Petals festive gift hamper: its own site or a marketplace?",
+          "text": "Is buying Ferns N Petals direct from the brand worth it, or is Flipkart fine?",
           "archetype": "branded-routing",
           "intent": "commercial",
           "language": "en",

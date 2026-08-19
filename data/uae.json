@@ -1,0 +1,1839 @@
+{
+  "market": "UAE",
+  "categories": [
+    {
+      "id": "oud-products",
+      "name": "Oud products",
+      "queries": [
+        {
+          "qid": "oud-products-discovery",
+          "text": "premium pure oud wood chips for home burning under 300 AED",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "oud-products-local",
+          "text": "عود طبيعي فاخر للمناسبات ريحته تطول",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "oud-products-branded",
+          "text": "where to buy genuine Abdul Samad Al Qurashi pure oud oil online",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Abdul Samad Al Qurashi"
+        },
+        {
+          "qid": "oud-products-problem",
+          "text": "how to make my house smell traditional and woody for guests without using synthetic air fresheners",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "hair-styling-women",
+      "name": "Hair styling (women)",
+      "queries": [
+        {
+          "qid": "hair-styling-women-discovery",
+          "text": "heat protectant spray for curly hair under 60 AED",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hair-styling-women-local",
+          "text": "سيروم قبل الاستشوار يحمي الشعر من الحرارة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "hair-styling-women-branded",
+          "text": "best price for Dyson Airwrap multi styler complete long online",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Dyson"
+        },
+        {
+          "qid": "hair-styling-women-problem",
+          "text": "my hair gets incredibly frizzy the moment I step outside in the humidity",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "skin-brightening-cream",
+      "name": "Skin brightening cream",
+      "queries": [
+        {
+          "qid": "skin-brightening-cream-discovery",
+          "text": "night cream for pigmentation and dark spots under 100 AED",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "skin-brightening-cream-local",
+          "text": "كريم تفتيح البقع الداكنة وتوحيد لون البشرة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "skin-brightening-cream-branded",
+          "text": "where to order Eucerin even pigment perfector dual serum",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Eucerin"
+        },
+        {
+          "qid": "skin-brightening-cream-problem",
+          "text": "I have stubborn acne scars on my cheeks that make my complexion look completely uneven",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "face-masks",
+      "name": "Face masks / sheet masks",
+      "queries": [
+        {
+          "qid": "face-masks-discovery",
+          "text": "hydrating korean sheet masks pack under 50 AED for glowing skin",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "face-masks-local",
+          "text": "ماسك كوري للوجه يعطي نضارة وترطيب عميق",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "face-masks-branded",
+          "text": "where to buy Dr Jart rubber masks in bulk for cheap",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Dr. Jart+"
+        },
+        {
+          "qid": "face-masks-problem",
+          "text": "my face looks exhausted and dull after a long flight and I need a quick fix before an event",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "nail-care",
+      "name": "Nail care",
+      "queries": [
+        {
+          "qid": "nail-care-discovery",
+          "text": "strengthening cuticle oil pen under 40 AED for brittle nails",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "nail-care-local",
+          "text": "مقوي اظافر يمنع التكسر ويطولها بسرعة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "nail-care-branded",
+          "text": "where can I buy Sally Hansen hard as nails treatment locally",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Sally Hansen"
+        },
+        {
+          "qid": "nail-care-problem",
+          "text": "my nails keep splitting and peeling off in thin layers after removing my acrylics",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "mens-sunglasses",
+      "name": "Men's sunglasses",
+      "queries": [
+        {
+          "qid": "mens-sunglasses-discovery",
+          "text": "polarized aviator shades for driving under 200 AED",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mens-sunglasses-local",
+          "text": "نظارات شمسية رجالية بولارايزد للقيادة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "mens-sunglasses-branded",
+          "text": "where to buy authentic Ray-Ban wayfarers online with fast shipping",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ray-Ban"
+        },
+        {
+          "qid": "mens-sunglasses-problem",
+          "text": "the intense sun glare on the highway is giving me a headache on my way to work",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "womens-ethnic-wear",
+      "name": "Women's ethnic wear / kurtis",
+      "queries": [
+        {
+          "qid": "womens-ethnic-wear-discovery",
+          "text": "cotton printed kurtis for daily office wear under 150 AED",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "womens-ethnic-wear-local",
+          "text": "جلابيات استقبال فخمة للعيد ومريحة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "womens-ethnic-wear-branded",
+          "text": "best site to buy Biba festive wear suits in UAE",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Biba"
+        },
+        {
+          "qid": "womens-ethnic-wear-problem",
+          "text": "I need something modest but breathable to wear to a traditional evening family gathering",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "abayas-modest-fashion",
+      "name": "Abayas & modest fashion",
+      "queries": [
+        {
+          "qid": "abayas-modest-fashion-discovery",
+          "text": "everyday black nada silk abaya under 250 AED",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "abayas-modest-fashion-local",
+          "text": "عبايات سوداء سادة للدوام قماش ندى بارد",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "abayas-modest-fashion-branded",
+          "text": "where to order Hanayen abayas online with delivery to my house",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Hanayen"
+        },
+        {
+          "qid": "abayas-modest-fashion-problem",
+          "text": "my current modest workwear is too thick and makes me sweat instantly during the summer commute",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "sneakers-casual-shoes",
+      "name": "Sneakers / casual shoes",
+      "queries": [
+        {
+          "qid": "sneakers-casual-shoes-discovery",
+          "text": "comfortable white walking sneakers for travel under 300 AED",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sneakers-casual-shoes-local",
+          "text": "شوز رياضي مريح للمشي الطويل ما يوجع الرجل",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sneakers-casual-shoes-branded",
+          "text": "where to buy New Balance 530 running shoes locally",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "New Balance"
+        },
+        {
+          "qid": "sneakers-casual-shoes-problem",
+          "text": "my feet and lower back ache terribly after standing during my entire 8 hour shift",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "mens-formal-shoes",
+      "name": "Men's formal shoes",
+      "queries": [
+        {
+          "qid": "mens-formal-shoes-discovery",
+          "text": "genuine leather oxford shoes for office wear under 400 AED",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mens-formal-shoes-local",
+          "text": "حذاء رسمي رجالي جلد طبيعي للدوام",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "mens-formal-shoes-branded",
+          "text": "best place to get Clarks leather brogues on discount",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Clarks"
+        },
+        {
+          "qid": "mens-formal-shoes-problem",
+          "text": "I have a wedding to attend but all my dress shoes give me terrible blisters on my heels",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "perfume-attar",
+      "name": "Perfume / Attar",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "perfume-attar-budget",
+          "text": "best long lasting perfume under AED 100 UAE",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": [
+        {
+          "qid": "perfume-attar-budget",
+          "engine": "claude",
+          "surface": "api",
+          "collected_on": "2026-08-18",
+          "recommendations": [
+            {
+              "rank": 1,
+              "brand": "Lattafa",
+              "product": "Velvet Oud / Raghba Wood Intense",
+              "why": "Named the top answer for long wear and high projection under AED 100; UAE house built for the climate",
+              "destination": "marketplace",
+              "destination_domain": "amazon.ae"
+            },
+            {
+              "rank": 2,
+              "brand": "Rasasi",
+              "product": "Rasasi Romance",
+              "why": "Trusted UAE perfume house; affordable, elegant, recommended for daily wear",
+              "destination": "marketplace",
+              "destination_domain": "noon.com"
+            },
+            {
+              "rank": 3,
+              "brand": "Ajmal",
+              "product": "Sacrifice",
+              "why": "Heritage UAE house; fresh citrus-jasmine build praised as office-friendly and heat-resistant, smells above its price",
+              "destination": "brand-direct",
+              "destination_domain": "en-ae.ajmal.com"
+            },
+            {
+              "rank": 4,
+              "brand": "My Perfumes (Arabiyat)",
+              "product": "Arabiyat Prestige line",
+              "why": "Local D2C house with strong under-AED-100 range tuned for UAE heat; free shipping over AED 100",
+              "destination": "brand-direct",
+              "destination_domain": "myperfumes.ae"
+            },
+            {
+              "rank": 5,
+              "brand": "Ahmed Al Maghribi",
+              "product": "Oud Classic",
+              "why": "Affordable oud with citrus opening and musk-balsam base — signature-scent value under AED 100",
+              "destination": "brand-direct",
+              "destination_domain": "ahmedalmaghribi.co.in"
+            }
+          ],
+          "sources_cited": [
+            "asaan.com",
+            "myperfumes.ae",
+            "craftier.ae",
+            "luvindeals.com",
+            "ahmedalmaghribi.co.in",
+            "vperfumes.com",
+            "ajmal.com",
+            "aromaticscentslab.com",
+            "albait-aldimashqi.com",
+            "alhajisperfumes.com",
+            "perfumegallery.ae",
+            "gulfnews.com"
+          ],
+          "notes": "CATEGORY INSIGHT: Perfume/attar is a rare category where local D2C brand domains (myperfumes.ae, craftier.ae, ajmal.com) dominate AI citations over marketplaces — 3 of 5 shelf slots routed brand-direct. Strong proof point for the ShelfShare thesis that region-native categories are winnable. Gulf News 'best buys' content is a key trusted source to target for PR. TODO: collect the Arabic-language version of this query — results likely differ significantly."
+        }
+      ]
+    },
+    {
+      "id": "face-serum-vitamin-c",
+      "name": "Face serum / vitamin C",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "serum-discovery",
+          "text": "vitamin C serum under AED 120 that won't irritate skin in constant AC",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "serum-local",
+          "text": "سيروم فيتامين سي ينفع للبشرة المتعبة من المكيف والشمس",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "serum-branded",
+          "text": "The Ordinary vitamin C — Noon, Namshi or the Dubai Mall store, where's it genuinely cheapest?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "The Ordinary"
+        },
+        {
+          "qid": "serum-problem",
+          "text": "my skin looks grey and tired in office lighting no matter how much water I drink",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "sunscreen",
+      "name": "Sunscreen",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "sunscreen-discovery",
+          "text": "sweatproof sunscreen under AED 90 for beach weekends that leaves no white cast",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sunscreen-local",
+          "text": "واقي شمس يتحمل رطوبة الصيف وما يسد المسام",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sunscreen-branded",
+          "text": "is La Roche-Posay Anthelios cheaper at Life Pharmacy or on Amazon.ae?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "La Roche-Posay"
+        },
+        {
+          "qid": "sunscreen-problem",
+          "text": "I burn on the 20 minute walk from the metro and my face stays red till evening",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "shampoo-sulfate-free",
+      "name": "Shampoo (sulfate-free)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "shampoo-discovery",
+          "text": "sulfate free shampoo around AED 60 that helps with desalinated water hair damage",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "shampoo-local",
+          "text": "شامبو بدون سلفات يرجع الحيوية للشعر الجاف من ماي الخزان",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "shampoo-branded",
+          "text": "OGX shampoo — Carrefour, Noon or watch for a Namshi sale?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "OGX"
+        },
+        {
+          "qid": "shampoo-problem",
+          "text": "since moving to Dubai my hair feels like straw and sheds way more than before",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "beard-grooming",
+      "name": "Beard grooming",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "beard-discovery",
+          "text": "beard oil and balm set under AED 100 that survives gym plus humidity",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "beard-local",
+          "text": "زيت لحية يخلي الشكل مرتب للدوام بدون لمعة زايدة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "beard-branded",
+          "text": "Beardo products in UAE — is Amazon.ae stock genuine or should I order from an Indian site?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Beardo"
+        },
+        {
+          "qid": "beard-problem",
+          "text": "my beard looks patchy and scruffy on video calls and the office is strict about grooming",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "lipstick-longstay",
+      "name": "Lipstick (long-stay)",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "lipstick-discovery",
+          "text": "transfer proof lipstick under AED 80 that lasts through iftar dinners",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "lipstick-local",
+          "text": "روج ثابت ما يروح مع القهوة ولونه طبيعي للدوام",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "lipstick-branded",
+          "text": "Huda Beauty liquid matte — official site, Sephora or Noon for real stock?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Huda Beauty"
+        },
+        {
+          "qid": "lipstick-problem",
+          "text": "every lipstick I own is gone by lunch and reapplying at work feels unprofessional",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "body-lotion",
+      "name": "Body lotion",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "lotion-discovery",
+          "text": "non sticky body lotion under AED 50 for AC-dried skin",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "lotion-local",
+          "text": "لوشن للجسم يرطب زين وما يلزق بالصيف",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "lotion-branded",
+          "text": "CeraVe moisturizing lotion — Boots, BinSina or Amazon.ae for the best price?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "CeraVe"
+        },
+        {
+          "qid": "lotion-problem",
+          "text": "my arms and legs are flaky and itchy all winter even though it's not even cold here",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "hijabs-scarves",
+      "name": "Hijabs & scarves",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "hijab-discovery",
+          "text": "breathable everyday hijabs under AED 60 that don't slip and need minimal pins",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hijab-local",
+          "text": "حجابات شيفون بألوان محايدة للدوام وين ألقى تشكيلة حلوة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "hijab-branded",
+          "text": "Haute Hijab worth ordering to UAE or is a local brand just as good without the shipping wait?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Haute Hijab"
+        },
+        {
+          "qid": "hijab-problem",
+          "text": "my scarves keep sliding during the commute and by 10am I've re-pinned three times",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "mens-watches",
+      "name": "Men's watches",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "watch-discovery",
+          "text": "minimal dress watch under AED 800 that works for both kandura and suit",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "watch-local",
+          "text": "ساعة رجالية أنيقة بسعر معقول تناسب الدوام والمناسبات",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "watch-branded",
+          "text": "Casio Edifice — Sharaf DG, Amazon.ae or the mall kiosks, who has real stock cheapest?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Casio"
+        },
+        {
+          "qid": "watch-problem",
+          "text": "I need one watch that doesn't look cheap at client meetings but I can't justify a luxury brand yet",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "handbags",
+      "name": "Handbags",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "handbag-discovery",
+          "text": "structured work tote under AED 400 that fits a 13 inch laptop",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "handbag-local",
+          "text": "شنطة يومية عملية وشكلها راقي بسعر مو مبالغ فيه",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "handbag-branded",
+          "text": "Charles & Keith bags — their own site, Namshi or 6thStreet for the better deal?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Charles & Keith"
+        },
+        {
+          "qid": "handbag-problem",
+          "text": "I carry a laptop, water bottle and makeup daily and every bag I buy loses its shape in a month",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "athleisure",
+      "name": "Athleisure / gym wear",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "athleisure-discovery",
+          "text": "gym sets under AED 200 that are squat proof and handle outdoor runs in October",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "athleisure-local",
+          "text": "ملابس رياضية مريحة وساترة للنادي النسائي",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "athleisure-branded",
+          "text": "Squatwolf — order from their site or is Noon carrying the full range now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Squatwolf"
+        },
+        {
+          "qid": "athleisure-problem",
+          "text": "my workout clothes show everything and ride up, I want to focus on training not adjusting",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "kids-clothing",
+      "name": "Kids' clothing",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "kidswear-discovery",
+          "text": "school-friendly kids clothes under AED 120 per outfit that survive weekly washing",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "kidswear-local",
+          "text": "ملابس أطفال قطنية تتحمل الغسيل وين أحصل خامات زينة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "kidswear-branded",
+          "text": "H&M kids — app orders or Mall of the Emirates store, and when do the big sales drop?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "H&M"
+        },
+        {
+          "qid": "kidswear-problem",
+          "text": "my kids outgrow everything in three months and I'm tired of paying mall prices for it",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "gold-demi-fine-jewelry",
+      "name": "Gold-plated / demi-fine jewelry",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "jewelry-discovery",
+          "text": "tarnish free everyday jewelry under AED 250 that survives pool and gym",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "jewelry-local",
+          "text": "اكسسوارات ذهبية اللون ما تتغير مع العرق والماي",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "jewelry-branded",
+          "text": "is Lovisa quality worth it or should I pay a bit more at a local demi-fine brand?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Lovisa"
+        },
+        {
+          "qid": "jewelry-problem",
+          "text": "every gold-look piece I buy turns dark within weeks here and stains my skin green",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "whey-protein",
+      "name": "Protein powder / whey",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "whey-discovery",
+          "text": "lab tested whey under AED 200 per kg — too many fake tubs going around",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "whey-local",
+          "text": "بروتين أصلي مضمون من وين آخذه بسعر عدل",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "whey-branded",
+          "text": "Optimum Nutrition — Muscle & Strength store, iHerb or Amazon.ae, which one's guaranteed original?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Optimum Nutrition"
+        },
+        {
+          "qid": "whey-problem",
+          "text": "lifting for months with barely any change and my trainer keeps saying protein protein protein",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "healthy-snacks",
+      "name": "Healthy snacks",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "snacks-discovery",
+          "text": "office snacks under AED 40 a pack that aren't just chips in disguise",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "snacks-local",
+          "text": "سناكات صحية للدوام تشبع وما ترفع السكر",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "snacks-branded",
+          "text": "does Kibsons carry good healthy snack brands or is Noon Minutes faster for that?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Kibsons"
+        },
+        {
+          "qid": "snacks-problem",
+          "text": "the office vending machine is destroying my diet and my energy crashes every day at 4",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "coffee-specialty",
+      "name": "Coffee (specialty / instant)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "coffee-discovery",
+          "text": "specialty beans under AED 90 that make home espresso taste like the Alserkal cafes",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "coffee-local",
+          "text": "قهوة مختصة محمصة طازج توصيل سريع داخل دبي",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "coffee-branded",
+          "text": "Nightjar beans — subscribe on their site or grab bags from the roastery?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nightjar"
+        },
+        {
+          "qid": "coffee-problem",
+          "text": "I'm spending 25 dirhams a day on flat whites and my home attempts taste burnt",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "dates-premium",
+      "name": "Dates",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "dates-discovery",
+          "text": "quality medjool box under AED 120 for Ramadan hosting",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "dates-local",
+          "text": "تمر فاخر للضيافة والهدايا وين أحصله طازج مو مخزن",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "dates-branded",
+          "text": "Bateel gift boxes — order online or is the Dubai Mall boutique selection better?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Bateel"
+        },
+        {
+          "qid": "dates-problem",
+          "text": "I need hosting gifts that feel generous and local without going full luxury pricing",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "honey-organic",
+      "name": "Honey (raw / organic)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "honey-discovery",
+          "text": "real sidr honey under AED 200 that's actually tested, not just labeled organic",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "honey-local",
+          "text": "عسل سدر أصلي مضمون مو مغشوش من وين آخذه",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "honey-branded",
+          "text": "Balqees honey — their Alserkal shop, website or Spinneys shelf, any price difference?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Balqees"
+        },
+        {
+          "qid": "honey-problem",
+          "text": "I keep getting sick this season and my mother insists on one spoon of the real stuff daily, not supermarket syrup",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "chocolates-artisanal",
+      "name": "Chocolates (artisanal)",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "chocolate-discovery",
+          "text": "gift-worthy chocolate box under AED 170 that isn't the same mall brands everyone gives",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "chocolate-local",
+          "text": "شوكولاتة فاخرة محلية الصنع تنفع هدية عزيمة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "chocolate-branded",
+          "text": "Mirzam chocolate — factory shop in Alserkal or do they deliver same day?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Mirzam"
+        },
+        {
+          "qid": "chocolate-problem",
+          "text": "I'm invited to three Eid gatherings and showing up with airport chocolate feels lazy",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "energy-drinks",
+      "name": "Energy drinks",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "energy-discovery",
+          "text": "sugar free energy drinks under AED 10 a can for night shifts, cases delivered",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "energy-local",
+          "text": "مشروب طاقة بدون سكر يوصلون كراتين للبيت",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "energy-branded",
+          "text": "Celsius cases — Amazon.ae subscribe and save or is Carrefour running offers?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Celsius"
+        },
+        {
+          "qid": "energy-problem",
+          "text": "I drive long hours at night and coffee stopped doing anything months ago",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "multivitamins",
+      "name": "Multivitamins",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "multivit-discovery",
+          "text": "daily multivitamin under AED 120 a month — everyone here is vitamin D deficient apparently",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "multivit-local",
+          "text": "فيتامينات يومية موثوقة للطاقة والمناعة من صيدلية معروفة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "multivit-branded",
+          "text": "Centrum — Life Pharmacy, BinSina or iHerb, where's it real and reasonably priced?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Centrum"
+        },
+        {
+          "qid": "multivit-problem",
+          "text": "my blood test came back low on almost everything and the doctor just said fix your levels",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "sleep-aids",
+      "name": "Sleep aids / melatonin",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "sleep-discovery",
+          "text": "melatonin gummies under AED 90 that are legal here and actually work",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sleep-local",
+          "text": "شي طبيعي يساعد على النوم بدون وصفة ومصرح فيه",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sleep-branded",
+          "text": "Natrol melatonin — can I get it at UAE pharmacies or only through iHerb?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Natrol"
+        },
+        {
+          "qid": "sleep-problem",
+          "text": "my brain switches off at 2am and the alarm is at 6, I'm running on fumes at work",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "omega-3",
+      "name": "Omega-3 / fish oil",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "omega-discovery",
+          "text": "high strength omega 3 under AED 160 without the fishy burps",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "omega-local",
+          "text": "اوميغا ٣ تركيز عالي بدون طعم سمك مزعج",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "omega-branded",
+          "text": "Nordic Naturals — worth the iHerb wait or does a local pharmacy carry it?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nordic Naturals"
+        },
+        {
+          "qid": "omega-problem",
+          "text": "cholesterol report scared me and the cardiologist mentioned fish oil before medication",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "immunity-boosters",
+      "name": "Immunity boosters",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "immunity-discovery",
+          "text": "vitamin C plus zinc combo under AED 80 for the office flu season",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "immunity-local",
+          "text": "مقويات مناعة للعايلة كل ما يتغير الجو أحد يمرض",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "immunity-branded",
+          "text": "Sambucol elderberry — BinSina stock or order ahead on Amazon.ae before season?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Sambucol"
+        },
+        {
+          "qid": "immunity-problem",
+          "text": "every time the AC gets serviced at work half the floor gets sick including me",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "period-care",
+      "name": "Period care / menstrual cups",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "period-discovery",
+          "text": "organic cotton pads or period underwear under AED 100 a cycle, delivered discreetly",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "period-local",
+          "text": "منتجات عناية شهرية قطن طبيعي توصيل سري وسريع",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "period-branded",
+          "text": "is Ohne or a local subscription brand better for monthly delivery in Dubai?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ohne"
+        },
+        {
+          "qid": "period-problem",
+          "text": "regular pads irritate my skin badly and pharmacy options here all feel the same",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "baby-skincare",
+      "name": "Baby skincare",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "babyskin-discovery",
+          "text": "fragrance free baby lotion and wash under AED 80 for newborn eczema-prone skin",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "babyskin-local",
+          "text": "منتجات عناية للبيبي بدون عطور لبشرة حساسة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "babyskin-branded",
+          "text": "Mustela — Mumzworld, pharmacy or Amazon.ae, who's cheapest for the newborn set?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Mustela"
+        },
+        {
+          "qid": "babyskin-problem",
+          "text": "my baby's cheeks go red and rough every time we run the AC cold at night",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "diapers",
+      "name": "Diapers",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "diapers-discovery",
+          "text": "overnight diapers under AED 1 per piece that actually last 10 hours",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "diapers-local",
+          "text": "حفاضات ليلية ما تسرب واشتراك شهري يوفر",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "diapers-branded",
+          "text": "Pampers Premium Care — Mumzworld subscription, Carrefour bulk or Amazon.ae subscribe & save?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Pampers"
+        },
+        {
+          "qid": "diapers-problem",
+          "text": "we're changing sheets at 3am twice a week and both of us have work in the morning",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "baby-food",
+      "name": "Baby food",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "babyfood-discovery",
+          "text": "organic baby purees under AED 12 a pouch with no added sugar",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "babyfood-local",
+          "text": "أكل أطفال عضوي بدون سكر مضاف يوصل البيت",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "babyfood-branded",
+          "text": "Little Farm pouches — their site subscription or Kibsons basket add-on?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Little Farm"
+        },
+        {
+          "qid": "babyfood-problem",
+          "text": "my toddler refuses everything I cook but inhales store pouches, at least let them be healthy ones",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "kids-toys-educational",
+      "name": "Kids' toys (educational)",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "toys-discovery",
+          "text": "screen free educational toys under AED 200 for a four year old",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "toys-local",
+          "text": "ألعاب تعليمية تشغل الطفل عن الآيباد بعمر أربع سنوات",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "toys-branded",
+          "text": "LEGO sets — Virgin Megastore, Amazon.ae or wait for the DSF sales?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "LEGO"
+        },
+        {
+          "qid": "toys-problem",
+          "text": "my son's screen time doubled this summer and every toy we buy is abandoned in a day",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "bedsheets-bedding",
+      "name": "Bedsheets / bedding",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "bedding-discovery",
+          "text": "cooling bedsheets under AED 300 king size for AC sleepers who still sweat",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "bedding-local",
+          "text": "شراشف قطن باردة مقاس كينج خامة ممتازة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "bedding-branded",
+          "text": "Home Centre or IKEA for decent cotton sheets, or is a D2C linen brand worth the jump?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Home Centre"
+        },
+        {
+          "qid": "bedding-problem",
+          "text": "I wake up sweaty at 3am even with AC on 21 and my sheets feel like plastic",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "home-fragrance",
+      "name": "Home fragrance / candles",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "fragrance-discovery",
+          "text": "long lasting home fragrance under AED 180 that isn't overpowering for a small flat",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "fragrance-local",
+          "text": "معطر منزل يدوم ويعطي فخامة بدون ما يصير خانق",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "fragrance-branded",
+          "text": "Ajmal home range — their boutique or Noon, and do the diffusers go on sale?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ajmal"
+        },
+        {
+          "qid": "fragrance-problem",
+          "text": "guests always comment how fresh other homes smell and mine just smells like cooking",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "water-bottles",
+      "name": "Water bottles / flasks",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "bottle-discovery",
+          "text": "insulated bottle under AED 130 that keeps water cold in a parked car",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "bottle-local",
+          "text": "مطارة تحفظ الماي بارد بالسيارة وقت الحر",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "bottle-branded",
+          "text": "Stanley quencher — Sharaf DG, Amazon.ae or the fakes are everywhere now, where's it real?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Stanley"
+        },
+        {
+          "qid": "bottle-problem",
+          "text": "my water is warm soup by the time I get to the gym after work",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "air-purifiers",
+      "name": "Air purifiers",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "purifier-discovery",
+          "text": "air purifier under AED 900 that handles dust storms and a dusty villa",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "purifier-local",
+          "text": "جهاز تنقية هوا ينفع أيام الغبار لغرفة كبيرة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "purifier-branded",
+          "text": "Xiaomi purifier — Sharaf DG, Noon or the Mi store, who prices it best?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Xiaomi"
+        },
+        {
+          "qid": "purifier-problem",
+          "text": "after every sandstorm my kid's allergies flare for a week and wiping surfaces isn't enough",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "mattresses",
+      "name": "Mattresses",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "mattress-discovery",
+          "text": "memory foam mattress under AED 2500 king with a real trial period",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mattress-local",
+          "text": "مرتبة طبية مريحة للظهر مع فترة تجربة وإرجاع",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "mattress-branded",
+          "text": "Emma mattress — their UAE site or Amazon.ae, and is the 100 night trial real here?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Emma"
+        },
+        {
+          "qid": "mattress-problem",
+          "text": "I wake up with lower back pain every morning that fades by noon, the bed is clearly the problem",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "prayer-mats",
+      "name": "Prayer mats",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "prayermat-discovery",
+          "text": "padded prayer mat under AED 150 that's kind to knees, gift quality",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "prayermat-local",
+          "text": "سجادة صلاة سميكة مريحة للركب تنفع هدية رمضان",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "prayermat-branded",
+          "text": "Sabr mats — order from their site or does anyone stock them locally for faster delivery?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Sabr"
+        },
+        {
+          "qid": "prayermat-problem",
+          "text": "my father's knees ache after every prayer and the thin mat we have doesn't help at all",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "tws-earbuds",
+      "name": "TWS earbuds",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "tws-discovery",
+          "text": "ANC earbuds under AED 300 for metro commutes and gym sweat",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "tws-local",
+          "text": "سماعات بلوتوث عزل ضوضاء تتحمل الرياضة بسعر معقول",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "tws-branded",
+          "text": "Soundcore Liberty — Sharaf DG, Noon or the Anker store on Amazon.ae?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Soundcore"
+        },
+        {
+          "qid": "tws-problem",
+          "text": "the metro announcements blast through everything I own and my calls sound like a wind tunnel",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "smartwatches",
+      "name": "Smartwatches",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "smartwatch-discovery",
+          "text": "fitness smartwatch under AED 1000 with proper battery life, not daily charging",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "smartwatch-local",
+          "text": "ساعة ذكية للرياضة بطاريتها تعيش أيام مو ساعات",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "smartwatch-branded",
+          "text": "Garmin Forerunner — iSTYLE, Sharaf DG or grey import, what's the warranty catch?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Garmin"
+        },
+        {
+          "qid": "smartwatch-problem",
+          "text": "training for my first half marathon and my phone strapped to my arm is miserable",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "power-banks",
+      "name": "Power banks",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "powerbank-discovery",
+          "text": "20000mah power bank under AED 140 that's flight safe and charges a laptop",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "powerbank-local",
+          "text": "باور بانك سريع يشحن اللابتوب ومسموح بالطيارة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "powerbank-branded",
+          "text": "Anker 737 — Amazon.ae official store or Sharaf DG, who's actually cheaper this week?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Anker"
+        },
+        {
+          "qid": "powerbank-problem",
+          "text": "my phone dies before I land every single trip and airport charging spots are a fight",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "yoga-mats",
+      "name": "Yoga mats",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "yogamat-discovery",
+          "text": "non slip yoga mat under AED 250 that grips even in hot studio classes",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "yogamat-local",
+          "text": "سجادة يوغا ما تزحلق مع التعرق للتمارين المنزلية",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "yogamat-branded",
+          "text": "Liforme or Lululemon mat — is either stocked locally or only via international shipping?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Liforme"
+        },
+        {
+          "qid": "yogamat-problem",
+          "text": "my hands slide forward in downward dog the minute I start sweating and it ruins the class",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "pet-food-cats",
+      "name": "Pet food (cats)",
+      "group": "Pets",
+      "queries": [
+        {
+          "qid": "catfood-discovery",
+          "text": "quality dry cat food under AED 200 for 4kg bags with delivery",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "catfood-local",
+          "text": "أكل قطط صحي مو تجاري بحت مع توصيل شهري",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "catfood-branded",
+          "text": "Royal Canin — Dubai Pet Food, Petzone or Amazon.ae subscription, best regular price?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Royal Canin"
+        },
+        {
+          "qid": "catfood-problem",
+          "text": "my cat's coat went dull and she's shedding everywhere since we switched to the cheap supermarket brand",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
+    }
+  ],
+  "merchant": null
+}

@@ -5,13 +5,13 @@ export default function Hero() {
     <header className="hero" id="top-hero">
       <div className="eyebrow">
         <span className="eyebrow-dot" />
-        AI &amp; agentic commerce intelligence
+        AI &amp; agentic commerce intelligence · India · UAE · Saudi Arabia
       </div>
       <h1 className="hero-h1">
         Does AI put you on the shelf — or <span className="flip">Amazon</span>?
       </h1>
       <p className="hero-sub">
-        Your customers now ask ChatGPT, Gemini, Perplexity, Claude and Grok what to buy.
+        Your customers now ask ChatGPT, Gemini, Claude, Grok, Perplexity and Copilot what to buy.
         StockedBy runs their real questions, in their real languages, and shows you exactly
         who gets recommended — you, your rival, or the marketplace giants — and where the AI
         sends the buyer to check out.
