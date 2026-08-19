@@ -176,12 +176,21 @@ export async function POST(request) {
     }
   }
 
+  // Scoring must only see rows with real data — an engine with zero
+  // snapshots for this category has "missing" placeholder rows so the UI
+  // can render its own harvest-in-progress state, but those placeholders
+  // are not a real score of 0 and must not drag the average down or
+  // inflate totalRows (rule 2: never fabricate).
+  const scoringEngineData = Object.fromEntries(
+    Object.entries(engineData).map(([engine, rows]) => [engine, rows.filter((r) => r.source !== "missing")])
+  );
+
   const report = computeReport({
     market,
     brand: brandName,
     competitor: competitorName,
     brandWebsite: brandWebsiteInput,
-    engineData,
+    engineData: scoringEngineData,
   });
 
   return NextResponse.json({
