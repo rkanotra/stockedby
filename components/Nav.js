@@ -1,0 +1,19 @@
+export default function Nav() {
+  return (
+    <nav className="nav">
+      <div className="nav-in">
+        <a href="#top" className="logo">
+          stocked<b>by</b>
+        </a>
+        <div className="nav-links">
+          <a href="#monitor">Features</a>
+          <a href="#markets">Markets</a>
+          <a href="#data">Data</a>
+          <a href="#protect">Protect</a>
+          <a href="#compare">Compare</a>
+        </div>
+        <a href="#test" className="btn">Run free shelf test</a>
+      </div>
+    </nav>
+  );
+}
