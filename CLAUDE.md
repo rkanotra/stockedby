@@ -13,7 +13,9 @@ economy, built on three pillars:
 
 The free shelf test is the acquisition wedge; monitoring subscriptions are the
 revenue; commerce trust infrastructure is the long-term moat. Regional focus
-(India, GCC, Pakistan, SEA) is the go-to-market advantage, not the ceiling.
+(India, UAE, Saudi Arabia) is the go-to-market advantage; Pakistan and SEA
+are future expansion markets — do not mention them in user-facing copy until
+launched.
 
 Current phase: **MVP sprint — domain-live test build**
 MVP scope (build now): landing page + full test flow + /api/test with

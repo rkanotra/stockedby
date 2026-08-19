@@ -8,7 +8,7 @@ export default function Footer() {
           </a>
           <br />
           <span style={{ fontSize: "12px" }}>
-            The visibility, intelligence and trust layer for AI-driven commerce — starting with the merchants of India, GCC, Pakistan &amp; SEA.
+            The visibility, intelligence and trust layer for AI-driven commerce — starting with the merchants of India, UAE &amp; Saudi Arabia.
           </span>
         </div>
         <div>

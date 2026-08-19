@@ -13,9 +13,7 @@ export default function EngineStrip() {
         <span>Benchmarked against</span>
         <b>Amazon</b><span className="strip-dot">·</span>
         <b>Flipkart</b><span className="strip-dot">·</span>
-        <b>Noon</b><span className="strip-dot">·</span>
-        <b>Daraz</b><span className="strip-dot">·</span>
-        <b>Shopee</b>
+        <b>Noon</b>
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ export default function AisleMonitor() {
         <div className="feat rv">
           <span className="flabel">Local rival benchmark</span>
           <h3>Not just Amazon</h3>
-          <p>India scores you against Flipkart. GCC against Noon. Pakistan against Daraz. SEA against Shopee. Because that&rsquo;s who&rsquo;s actually eating your shelf.</p>
+          <p>India scores you against Flipkart. UAE and Saudi Arabia against Noon. Because that&rsquo;s who&rsquo;s actually eating your shelf.</p>
         </div>
         <div className="feat rv">
           <span className="flabel">Standardized scoring</span>

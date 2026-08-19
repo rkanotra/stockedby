@@ -9,8 +9,8 @@ export default function Compare() {
             <tr><th></th><th className="us">StockedBy</th><th>Profound</th><th>Otterly</th><th>HubSpot grader</th></tr>
           </thead>
           <tbody>
-            <tr><td>Local marketplace rivals (Flipkart, Noon, Daraz, Shopee)</td><td className="us yes-mark">✓</td><td className="no-mark">✗</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
-            <tr><td>Local-language queries (Hinglish, Arabic, Urdu)</td><td className="us yes-mark">✓</td><td className="no-mark">✗</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
+            <tr><td>Local marketplace rivals (Flipkart, Noon)</td><td className="us yes-mark">✓</td><td className="no-mark">✗</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
+            <tr><td>Local-language queries (Hinglish, Arabic)</td><td className="us yes-mark">✓</td><td className="no-mark">✗</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
             <tr><td>Checkout routing (brand-direct vs marketplace)</td><td className="us yes-mark">✓</td><td className="no-mark">✗</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
             <tr><td>Query fanout &amp; trusted sources</td><td className="us yes-mark">✓</td><td className="yes-mark">✓</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
             <tr><td>Fix generation (JSON-LD, llms.txt)</td><td className="us yes-mark">soon</td><td className="no-mark">✗</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
