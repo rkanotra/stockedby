@@ -10,11 +10,15 @@ const VERDICT_CLASS = {
   "ON THE SHELF": "vGood",
 };
 
-export default function VerdictCard({ market, brand, report, onRetry }) {
+export default function VerdictCard({ market, brand, category, report, onRetry }) {
   const rivalLabel = RIVAL_LABELS[market] || "Amazon";
   const appearance = report.appearanceSummary;
-  const topDestination = report.destinations.yourDestinations[0] || null;
-  const founderSummary = buildFounderSummary({ brand, appearanceSummary: appearance, topDestination });
+  const founderSummary = buildFounderSummary({
+    brand,
+    category,
+    appearanceSummary: appearance,
+    yourDestinations: report.destinations.yourDestinations,
+  });
 
   return (
     <div className={styles.card}>
@@ -25,7 +29,7 @@ export default function VerdictCard({ market, brand, report, onRetry }) {
       <div className={`${styles.verdict} ${styles[VERDICT_CLASS[report.verdict]] || ""}`}>{report.verdict}</div>
       {appearance && (
         <div className={styles.subline}>
-          Recommended in {appearance.appearedIn} of {appearance.totalAttempted} shopper question
+          Recommended in {appearance.appearedIn} of {appearance.totalAttempted} organic question
           {appearance.totalAttempted === 1 ? "" : "s"}
           {appearance.bestRank ? `, best rank #${appearance.bestRank}` : ""}.
         </div>

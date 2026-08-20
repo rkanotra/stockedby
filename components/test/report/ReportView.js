@@ -14,6 +14,7 @@ export default function ReportView({ data, onRetry }) {
     brand,
     competitor,
     brandWebsite,
+    category,
     report,
     sentiment,
     mentionCount,
@@ -24,7 +25,7 @@ export default function ReportView({ data, onRetry }) {
 
   return (
     <>
-      <VerdictCard market={market} brand={brand} report={report} onRetry={onRetry} />
+      <VerdictCard market={market} brand={brand} category={category?.name} report={report} onRetry={onRetry} />
       <CheckoutBattleCard brand={brand} brandWebsite={brandWebsite} destinations={report.destinations} />
       <ShareOfVoiceCard market={market} brand={brand} competitor={competitor} shareOfVoice={report.shareOfVoice} />
       <SentimentCard sentiment={sentiment} mentionCount={mentionCount} />

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import styles from "../test.module.css";
-import { ENGINES, ENGINE_LABELS, ARCH_LABELS, DEST_LABELS, matches, isRivalFor } from "@/lib/scoring";
+import { ENGINES, ENGINE_LABELS, ARCH_LABELS, DEST_LABELS, matches, isRivalFor, effectiveDestination } from "@/lib/scoring";
 
 const DEST_COLORS = {
   "brand-direct": "#5bd6a0",
@@ -56,7 +56,9 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
           <div className={styles.shelf} key={r.qid}>
             <p className={styles.shelfQ} dir="auto">
               <span className={styles.arch} style={{ marginRight: 8, marginBottom: 0 }}>
-                {ARCH_LABELS[r.archetype] || r.archetype}
+                {r.archetype === "branded-routing"
+                  ? "Checkout test · where AI sends buyers who already chose you"
+                  : ARCH_LABELS[r.archetype] || r.archetype}
               </span>
               “{r.text}”
             </p>
@@ -64,16 +66,14 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
               {r.recs.map((rec, j) => {
                 const tagClass =
                   j === youIdx ? styles.tagYou : j === compIdx ? styles.tagComp : isRival(rec.brand) ? styles.tagAmz : "";
+                const dest = effectiveDestination(rec, { isYou: j === youIdx });
                 return (
                   <div key={j} className={`${styles.tag} ${tagClass}`} title={rec.product}>
                     <span className={styles.rk}>#{j + 1}</span>
                     {rec.brand}
-                    {rec.destination && rec.destination !== "none" && (
-                      <span
-                        className={styles.dest}
-                        style={{ color: j === youIdx ? "#17251f" : DEST_COLORS[rec.destination] }}
-                      >
-                        → {DEST_LABELS[rec.destination]}
+                    {dest !== "none" && (
+                      <span className={styles.dest} style={{ color: j === youIdx ? "#17251f" : DEST_COLORS[dest] }}>
+                        → {DEST_LABELS[dest]}
                       </span>
                     )}
                   </div>

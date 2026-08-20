@@ -190,10 +190,23 @@ export async function POST(request) {
     Object.entries(engineData).map(([engine, rows]) => [engine, rows.filter((r) => r.source !== "missing")])
   );
 
-  // From the RAW liveRuns (done + error), not the filtered scoring data —
-  // a failed live call must show up as "couldn't complete," never silently
-  // shrink the denominator the same way a real "not recommended" would.
-  const appearanceSummary = computeAppearanceSummary(liveRuns, brandName);
+  // The personalized branded-routing question ("where can I buy genuine
+  // {brand}...") always surfaces the brand by construction — it isn't
+  // testing whether AI organically recommends you. Excluded from appearance
+  // rate / Share of Voice / per-engine scores / verdict; it only feeds the
+  // checkout-destination analysis below (computeReport's engineData param,
+  // which stays the full set). From the RAW liveRuns (done + error), not
+  // the filtered scoring data — a failed live call must show up as
+  // "couldn't complete," never silently shrink the denominator the same
+  // way a real "not recommended" would.
+  const organicLiveRuns = liveRuns.filter((r) => r.archetype !== "branded-routing");
+  const organicScoringEngineData = Object.fromEntries(
+    Object.entries(scoringEngineData).map(([engine, rows]) => [
+      engine,
+      rows.filter((r) => r.archetype !== "branded-routing"),
+    ])
+  );
+  const appearanceSummary = computeAppearanceSummary(organicLiveRuns, brandName);
 
   const report = computeReport({
     market,
@@ -201,6 +214,7 @@ export async function POST(request) {
     competitor: competitorName,
     brandWebsite: brandWebsiteInput,
     engineData: scoringEngineData,
+    organicEngineData: organicScoringEngineData,
     appearanceSummary,
   });
 
