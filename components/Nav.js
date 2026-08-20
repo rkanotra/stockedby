@@ -13,6 +13,7 @@ export default function Nav() {
           <a href="#data">Data</a>
           <a href="#protect">Protect</a>
           <a href="#compare">Compare</a>
+          <Link href="/audit">Agent Audit</Link>
         </div>
         <Link href="/test" className="btn">Run free shelf test</Link>
       </div>

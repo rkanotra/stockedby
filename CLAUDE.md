@@ -8,8 +8,11 @@ economy, built on three pillars:
   (brand-direct vs marketplace).
 - **IMPROVE** — GEO tooling: fix plans, fix generation (JSON-LD, llms.txt,
   structured feeds), monitoring & re-test cadence.
-- **PROTECT** (roadmap) — agent identity & trust, recommendation fraud detection,
-  transaction risk for agentic checkout.
+- **PROTECT** — agent identity & trust and transaction risk are still
+  roadmap, but the free Agent Readiness Audit (/audit) is live: checks
+  whether a merchant's own site can be discovered, read and transacted
+  with by AI agents (robots.txt, /llms.txt, UCP/ACP manifests, Product
+  JSON-LD). Recommendation fraud detection is still roadmap too.
 
 The free shelf test is the acquisition wedge; monitoring subscriptions are the
 revenue; commerce trust infrastructure is the long-term moat. Markets:
@@ -60,6 +63,12 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
    API key budget.)
 10. **Every new query-bank batch must pass** `python scripts/check_query_bank.py <file>`
     before merging into data/.
+11. **The audit's domain fetches are an SSRF surface** — any fetch of a
+    merchant-entered domain (or a redirect target it points to) must go
+    through lib/audit/ssrfGuard.js's assertPublicHostname() first. Never add
+    a raw `fetch()` to app/api/audit/ that bypasses it, and never switch
+    fetchWithTimeout back to `redirect: "follow"` — each hop needs its own
+    hostname check.
 
 ## Repo map
 - docs/prototype-app.jsx — WORKING product logic (port, don't rewrite): Claude
@@ -94,6 +103,13 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
   earbuds, boAt routing, vitamin-C serum) for India, merged into india.json's
   categories by lib/bank.js.
 - scripts/check_query_bank.py — acceptance gate for all bank batches.
+- lib/audit/ — Agent Readiness Audit (app/api/audit, app/audit,
+  components/audit/): ssrfGuard.js (mandatory hostname check, see hard
+  rule 11), fetchWithTimeout.js (SSRF-safe manual redirect following),
+  robots.js, jsonld.js, platform.js (Shopify/WooCommerce/Magento/Salla/
+  Zid fingerprints + Stripe.js detection), productDiscovery.js (sitemap
+  or on-page link), score.js (checks → Discoverable/Readable/
+  Transactable layer scores → verdict, platform-aware fix lines).
 
 ## Build phases (one per session, commit after each)
 1. Scaffold Next.js (App Router) + landing page from docs/design/ (hero

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function AisleProtect() {
   return (
     <section id="protect" className="wrap aisle">
@@ -10,6 +12,14 @@ export default function AisleProtect() {
       </p>
       <div className="aisle-plank rv" />
       <div className="grid">
+        <div className="feat rv">
+          <span className="flabel">Agent Readiness Audit</span>
+          <h3>Can agents actually buy from you?</h3>
+          <p>Free live check: robots.txt, /llms.txt, agentic-checkout manifests (UCP/ACP) and product structured data — scored Discoverable / Readable / Transactable.</p>
+          <Link href="/audit" className="btn-ghost" style={{ display: "inline-block", marginTop: 12 }}>
+            Run the agent audit
+          </Link>
+        </div>
         <div className="feat rv">
           <span className="flabel">Recommendation fraud<span className="soon">roadmap</span></span>
           <h3>Fake shelves, hijacked names</h3>
@@ -32,7 +42,7 @@ export default function AisleProtect() {
         </div>
       </div>
       <div className="steps" style={{ marginTop: "36px" }}>
-        <div className="step rv"><span className="n">TODAY</span><h3>Free shelf test</h3><p>Measure your AI visibility in 2 minutes. Free forever — it&rsquo;s how brands discover the problem.</p></div>
+        <div className="step rv"><span className="n">TODAY</span><h3>Free shelf test &amp; agent audit</h3><p>Measure your AI visibility and your agent readiness in minutes. Both free forever — how brands discover the problem.</p></div>
         <div className="step rv"><span className="n">NEXT</span><h3>Monitoring &amp; GEO suite</h3><p>Monthly tracking, competitive intelligence, fix generation and Share of AI Voice for teams.</p></div>
         <div className="step rv"><span className="n">THEN</span><h3>Agentic commerce infrastructure</h3><p>Trust, identity and transaction risk for a world where AI agents do the buying.</p></div>
       </div>

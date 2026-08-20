@@ -7,6 +7,7 @@ import SentimentCard from "./SentimentCard";
 import ShelvesCard from "./ShelvesCard";
 import FanoutCard from "./FanoutCard";
 import TrustedSourcesCard from "./TrustedSourcesCard";
+import AuditCTA from "./AuditCTA";
 
 export default function ReportView({ data, onRetry }) {
   const {
@@ -32,6 +33,7 @@ export default function ReportView({ data, onRetry }) {
       <ShelvesCard market={market} brand={brand} competitor={competitor} engines={engines} />
       <FanoutCard fanout={fanout} />
       <TrustedSourcesCard trustedSources={trustedSources} />
+      <AuditCTA brandWebsite={brandWebsite} />
     </>
   );
 }
