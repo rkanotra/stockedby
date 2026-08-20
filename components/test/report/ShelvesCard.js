@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import styles from "../test.module.css";
-import { ENGINES, ENGINE_LABELS, ARCH_LABELS, matches, isRivalFor } from "@/lib/scoring";
+import { ENGINES, ENGINE_LABELS, ARCH_LABELS, DEST_LABELS, matches, isRivalFor } from "@/lib/scoring";
 
 const DEST_COLORS = {
   "brand-direct": "#5bd6a0",
@@ -20,7 +20,7 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
     const rows = engines[e] || [];
     if (e === "claude") return "live";
     const withData = rows.find((r) => r.source !== "missing");
-    return withData ? withData.collected_on : "harvest in progress";
+    return withData ? withData.collected_on : "data coming soon";
   };
 
   const activeRows = (engines[activeEngine] || []).filter((r) => r.source !== "missing");
@@ -29,6 +29,10 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
   return (
     <div className={styles.card}>
       <div className={styles.h2}>The shelves</div>
+      <p className={styles.sectionHint}>
+        Every AI engine&rsquo;s actual ranked answer, side by side — see where you rank against
+        competitors on each one.
+      </p>
       <div className={styles.tabs}>
         {ENGINES.map((e) => (
           <button
@@ -69,12 +73,7 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
                         className={styles.dest}
                         style={{ color: j === youIdx ? "#17251f" : DEST_COLORS[rec.destination] }}
                       >
-                        →{" "}
-                        {rec.destination === "brand-direct"
-                          ? "direct"
-                          : rec.destination === "marketplace"
-                          ? "mktpl"
-                          : "aggr"}
+                        → {DEST_LABELS[rec.destination]}
                       </span>
                     )}
                   </div>
@@ -89,15 +88,13 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
 
       {activeEngine !== "claude" && activeRows.length === 0 && (
         <div className={styles.notharvested}>
-          No {ENGINE_LABELS[activeEngine]} snapshots for this category yet — harvest in progress. Run these
-          questions in the {ENGINE_LABELS[activeEngine]} app with the Harvest Prompt and add the snapshots to
-          the bank — this tab lights up automatically.
+          {ENGINE_LABELS[activeEngine]} data coming soon for this category — check back soon.
         </div>
       )}
       {activeEngine !== "claude" && activeRows.length > 0 && missingCount > 0 && (
         <div className={styles.notharvested}>
-          {ENGINE_LABELS[activeEngine]} hasn&rsquo;t been harvested for {missingCount} of these queries yet —
-          harvest in progress.
+          {ENGINE_LABELS[activeEngine]} data coming soon for {missingCount} of these question
+          {missingCount === 1 ? "" : "s"}.
         </div>
       )}
     </div>

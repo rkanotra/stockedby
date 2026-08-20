@@ -283,6 +283,39 @@
   font-size: 13px;
   margin-bottom: 14px;
 }
+.retryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 8px 12px;
+  border: 1px dashed #6b3a32;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #ffb3a6;
+}
+.retryBtn {
+  flex-shrink: 0;
+  background: transparent;
+  color: #ffb3a6;
+  border: 1px solid #ffb3a6;
+  border-radius: 6px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.retryBtn:hover {
+  background: rgba(255, 107, 87, 0.12);
+}
+.sectionHint {
+  font-size: 13px;
+  color: #7fa18c;
+  margin: -4px 0 14px;
+  line-height: 1.5;
+}
 .verdict {
   font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 800;

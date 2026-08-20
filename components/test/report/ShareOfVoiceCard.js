@@ -10,6 +10,10 @@ export default function ShareOfVoiceCard({ market, brand, competitor, shareOfVoi
   return (
     <div className={styles.card}>
       <div className={styles.h2}>Share of AI Voice</div>
+      <p className={styles.sectionHint}>
+        Of every recommendation slot AI handed out across these questions, how many went to you
+        versus the competition.
+      </p>
       <div className={styles.sov}>
         <div style={{ width: `${shareOfVoice.you}%`, background: "#ffc53d" }} />
         {hasComp && <div style={{ width: `${shareOfVoice.competitor}%`, background: "#4a9fd8" }} />}

@@ -8,7 +8,10 @@ export default function TrustedSourcesCard({ trustedSources }) {
 
   return (
     <div className={styles.card}>
-      <div className={styles.h2}>Sources Claude trusted</div>
+      <div className={styles.h2}>Sources AI trusted</div>
+      <p className={styles.sectionHint}>
+        The websites AI actually read to form its answer — your best targets for reviews and PR.
+      </p>
       {trustedSources.map(([domain, n]) => (
         <div className={styles.srcrow} key={domain}>
           <span className={styles.srcname}>{domain}</span>

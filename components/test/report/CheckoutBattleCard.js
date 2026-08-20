@@ -18,6 +18,10 @@ export default function CheckoutBattleCard({ brand, brandWebsite, destinations }
   return (
     <div className={styles.card}>
       <div className={styles.h2}>The checkout battle</div>
+      <p className={styles.sectionHint}>
+        Where AI sends the buyer to actually pay — your own site, or someone else&rsquo;s marketplace
+        collecting a commission on the sale.
+      </p>
       <div className={styles.sov}>
         {Object.keys(DEST_COLORS).map((k) => (
           <div key={k} style={{ width: `${pct[k]}%`, background: DEST_COLORS[k] }} />
@@ -34,15 +38,16 @@ export default function CheckoutBattleCard({ brand, brandWebsite, destinations }
           <span className={styles.label} style={{ marginTop: 12 }}>
             When AI recommends {brand}, buyers go to
           </span>
-          {yourDestinations.map(([dom, n]) => (
-            <div className={styles.sovrow} key={dom}>
+          {yourDestinations.map((d) => (
+            <div className={styles.sovrow} key={d.domain}>
               <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12 }}>
-                {dom}
-                {brandWebsite && domainsMatch(dom, brandWebsite) && (
+                {d.domain}
+                <span className={styles.matchBadge}>{DEST_LABELS[d.destination]}</span>
+                {brandWebsite && domainsMatch(d.domain, brandWebsite) && (
                   <span className={styles.matchBadge}>your site</span>
                 )}
               </span>
-              <span className={styles.p}>{n}×</span>
+              <span className={styles.p}>{d.count}×</span>
             </div>
           ))}
         </>

@@ -28,8 +28,13 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
 1. **API keys server-side only.** ANTHROPIC_API_KEY, RESEND_API_KEY, SUPABASE
    keys live in Vercel env vars. Never in client code, never committed.
 2. **Never fabricate data.** Engine tabs render only from real data. Engines
-   without snapshots show a "harvest in progress" pending state — never
-   placeholder results. Live results come only from the Claude API call.
+   without snapshots show a "data coming soon" pending state — never
+   placeholder results. Live results come only from the Claude API call. A
+   failed live query is never silently dropped from a denominator either —
+   the report states the true count of questions attempted vs. completed.
+   Sentiment is grounded ONLY in this test's own verbatim data (>=2 real
+   mentions of the brand, or it isn't shown) — never the model's outside
+   knowledge about the brand.
 3. **Mobile-first.** Most visitors are founders on phones. Test at 375px first.
 4. **RTL/Arabic support** is required for UAE/KSA market pages and Arabic queries.
 5. **Design source of truth is docs/design/** (Claude Design exports).
@@ -60,9 +65,12 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
 - docs/prototype-app.jsx — WORKING product logic (port, don't rewrite): Claude
   shopping-assistant prompt, telemetry extraction (server_tool_use →
   query fanout, web_search_tool_result → trusted sources), destination
-  tracking, rank-weighted scoring (rank1=100…rank5=20), verdicts
-  (ON THE SHELF / OUTSHELVED / NOT STOCKED), Share of AI Voice, sentiment,
-  engine tabs, snapshot export. Contains the embedded compact bank format.
+  tracking, rank-weighted scoring (rank1=100…rank5=20), Share of AI Voice,
+  sentiment, engine tabs, snapshot export. Contains the embedded compact bank
+  format. Verdict tiers since the report overhaul (superseding the
+  prototype's 3): NOT STOCKED (never appeared) / BARELY STOCKED (appeared,
+  but in under half of completed questions) / OUTSHELVED (appears often
+  enough but ranks below the rival average) / ON THE SHELF.
 - docs/stockedby-data-kit.md — data schema, Harvest Prompt (§2), Query Bank
   Generation Prompt (§2b), category list, archetypes. The data contract.
 - docs/website-structure-reference.html — section structure + copy reference
@@ -81,7 +89,7 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
 - data/uae.json — accepted UAE query bank (50 categories). Harvested Claude
   snapshots ship inline in the bank file (no separate seed file).
 - data/ksa.json — accepted KSA query bank (47 categories). No snapshots
-  harvested yet — engine tabs show "harvest in progress" until harvested.
+  harvested yet — engine tabs show "data coming soon" until harvested.
 - data/snapshots-india-seed.json — real harvested Claude snapshots (TWS
   earbuds, boAt routing, vitamin-C serum) for India, merged into india.json's
   categories by lib/bank.js.

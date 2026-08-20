@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import styles from "./test.module.css";
 import { listMarkets, getMarketCategories, getCategory } from "@/lib/bankStatic";
+import { effectiveQueryText } from "@/lib/queryPersonalize";
 import SetupPanel from "./SetupPanel";
 import ReadyPanel from "./ReadyPanel";
 import RunningPanel from "./RunningPanel";
@@ -36,14 +37,17 @@ export default function TestFlow() {
     const c = getCategory(market, id);
     if (!c) return;
     setCatId(id);
-    setQueries((c.queries || []).map((q) => ({ ...q })));
+    // originalText is the immutable bank template a branded-routing query
+    // gets personalized from on every brand-field keystroke; userEdited
+    // freezes that once the merchant types into the textarea themselves.
+    setQueries((c.queries || []).map((q) => ({ ...q, originalText: q.text, userEdited: false })));
     setPhase("ready");
     setResult(null);
     setRunError("");
   }
 
   function setQueryText(qid, text) {
-    setQueries((prev) => prev.map((q) => (q.qid === qid ? { ...q, text } : q)));
+    setQueries((prev) => prev.map((q) => (q.qid === qid ? { ...q, text, userEdited: true } : q)));
   }
 
   async function startTest() {
@@ -60,7 +64,7 @@ export default function TestFlow() {
           brand: brand.trim(),
           competitor: competitor.trim(),
           brandWebsite: website.trim(),
-          queries: queries.map((q) => ({ qid: q.qid, text: q.text })),
+          queries: queries.map((q) => ({ qid: q.qid, text: effectiveQueryText(q, brand) })),
         }),
       });
       const data = await res.json();
@@ -127,11 +131,13 @@ export default function TestFlow() {
           />
         )}
 
-        {phase === "running" && <RunningPanel queries={queries} />}
+        {phase === "running" && (
+          <RunningPanel queries={queries.map((q) => ({ ...q, text: effectiveQueryText(q, brand) }))} />
+        )}
 
         {phase === "done" && result && (
           <>
-            <ReportView data={result} />
+            <ReportView data={result} onRetry={startTest} />
             <button type="button" className={styles.btnGhost} onClick={testAnother}>
               Test another category
             </button>

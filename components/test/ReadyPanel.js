@@ -2,6 +2,7 @@
 
 import styles from "./test.module.css";
 import { ARCH_LABELS } from "@/lib/scoring";
+import { effectiveQueryText } from "@/lib/queryPersonalize";
 
 export default function ReadyPanel({
   category,
@@ -48,15 +49,15 @@ export default function ReadyPanel({
 
       <span className={styles.label}>Shopper questions for this category</span>
       <p className={styles.hint}>
-        Standardized so your score is comparable with every other brand tested. Edit if needed —
-        the routing question tests the category leader; swap in your own brand to test YOUR
-        checkout routing.
+        Standardized so your score is comparable with every other brand tested. The routing
+        question below is already personalized to test <strong>your</strong> checkout routing —
+        edit any question if needed.
       </p>
       {queries.map((q, i) => (
         <div key={q.qid}>
           <textarea
             className={styles.qedit}
-            value={q.text}
+            value={effectiveQueryText(q, brand)}
             dir="auto"
             aria-label={`Query ${i + 1}`}
             onChange={(e) => onQueryText(q.qid, e.target.value)}

@@ -81,6 +81,11 @@ Category discovery alone misses most of the funnel. Each archetype measures some
 
 Collection guidance:
 - For every ★ category, collect at least: 1 category-discovery, 1 branded-routing (use the category leader's name), 1 problem-first or replacement.
+- `leader_brand` on a branded-routing query is a bank-authoring convenience,
+  not what actually gets asked. At test time the app rewrites that query to
+  the merchant's OWN entered brand by default (see lib/queryPersonalize.js)
+  — testing the bank's original leader-brand routing question is a later
+  competitive-intel feature, not the free test's default behavior.
 - For branded-routing and service-booking, the `destination` field is the whole point — always record which link/domain the engine offered for the actual purchase.
 - Services (flights, hotels, salon booking, insurance) get their own category group — the "shelf" concept applies to any market where direct sellers fight aggregators.
 

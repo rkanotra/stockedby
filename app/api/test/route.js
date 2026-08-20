@@ -5,6 +5,7 @@ import {
   ENGINES,
   matches,
   computeReport,
+  computeAppearanceSummary,
   computeFanout,
   computeTrustedSources,
 } from "@/lib/scoring";
@@ -154,8 +155,12 @@ export async function POST(request) {
     });
   }
 
-  // Sentiment (haiku, aux call — hard rule 7): only worth running if the
-  // brand actually showed up somewhere, live or in a snapshot.
+  // Sentiment (haiku, aux call — hard rule 7): grounded ONLY in verbatim
+  // "why" text from shelves where the brand actually appeared. Below 2 real
+  // mentions there isn't enough signal to analyze without the model filling
+  // gaps from outside knowledge — skip the call entirely rather than risk a
+  // fabricated-sounding answer (a real bug had this describe a brand using
+  // an unrelated same-named company's history).
   const mentions = [];
   Object.values(engineData)
     .flat()
@@ -168,7 +173,7 @@ export async function POST(request) {
     );
 
   let sentiment = null;
-  if (mentions.length > 0) {
+  if (mentions.length >= 2) {
     try {
       sentiment = await analyzeSentiment(brandName, mentions.slice(0, 12));
     } catch {
@@ -178,12 +183,17 @@ export async function POST(request) {
 
   // Scoring must only see rows with real data — an engine with zero
   // snapshots for this category has "missing" placeholder rows so the UI
-  // can render its own harvest-in-progress state, but those placeholders
+  // can render its own data-coming-soon state, but those placeholders
   // are not a real score of 0 and must not drag the average down or
   // inflate totalRows (rule 2: never fabricate).
   const scoringEngineData = Object.fromEntries(
     Object.entries(engineData).map(([engine, rows]) => [engine, rows.filter((r) => r.source !== "missing")])
   );
+
+  // From the RAW liveRuns (done + error), not the filtered scoring data —
+  // a failed live call must show up as "couldn't complete," never silently
+  // shrink the denominator the same way a real "not recommended" would.
+  const appearanceSummary = computeAppearanceSummary(liveRuns, brandName);
 
   const report = computeReport({
     market,
@@ -191,6 +201,7 @@ export async function POST(request) {
     competitor: competitorName,
     brandWebsite: brandWebsiteInput,
     engineData: scoringEngineData,
+    appearanceSummary,
   });
 
   return NextResponse.json({
@@ -205,6 +216,7 @@ export async function POST(request) {
     engines: engineData,
     report,
     sentiment,
+    mentionCount: mentions.length,
     fanout: computeFanout(liveRuns),
     trustedSources: computeTrustedSources(liveRuns),
     rateLimit,

@@ -8,15 +8,26 @@ import ShelvesCard from "./ShelvesCard";
 import FanoutCard from "./FanoutCard";
 import TrustedSourcesCard from "./TrustedSourcesCard";
 
-export default function ReportView({ data }) {
-  const { market, brand, competitor, brandWebsite, report, sentiment, engines, fanout, trustedSources } = data;
+export default function ReportView({ data, onRetry }) {
+  const {
+    market,
+    brand,
+    competitor,
+    brandWebsite,
+    report,
+    sentiment,
+    mentionCount,
+    engines,
+    fanout,
+    trustedSources,
+  } = data;
 
   return (
     <>
-      <VerdictCard market={market} brand={brand} report={report} />
+      <VerdictCard market={market} brand={brand} report={report} onRetry={onRetry} />
       <CheckoutBattleCard brand={brand} brandWebsite={brandWebsite} destinations={report.destinations} />
       <ShareOfVoiceCard market={market} brand={brand} competitor={competitor} shareOfVoice={report.shareOfVoice} />
-      <SentimentCard sentiment={sentiment} />
+      <SentimentCard sentiment={sentiment} mentionCount={mentionCount} />
       <ShelvesCard market={market} brand={brand} competitor={competitor} engines={engines} />
       <FanoutCard fanout={fanout} />
       <TrustedSourcesCard trustedSources={trustedSources} />
