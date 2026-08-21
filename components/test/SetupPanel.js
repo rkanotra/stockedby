@@ -12,7 +12,7 @@ const MARKET_VS = {
   KSA: "Amazon.sa / Jarir",
 };
 
-export default function SetupPanel({ markets, market, onMarket, categories, search, onSearch, onPick }) {
+export default function SetupPanel({ markets, market, onMarket, categories, search, onSearch, onPick, onCustomPick }) {
   const filtered = categories.filter(
     (c) =>
       (c.queries || []).length > 0 &&
@@ -49,7 +49,12 @@ export default function SetupPanel({ markets, market, onMarket, categories, sear
             <span className={styles.g}>{(c.snapshots || []).length ? "● data" : ""}</span>
           </div>
         ))}
-        {filtered.length === 0 && (
+        {filtered.length === 0 && search.trim() && (
+          <div className={styles.catrow} style={{ color: "#ffc53d" }} onClick={() => onCustomPick(search.trim())}>
+            <span>Test &ldquo;{search.trim()}&rdquo; as a custom category →</span>
+          </div>
+        )}
+        {filtered.length === 0 && !search.trim() && (
           <div className={styles.catrow} style={{ cursor: "default", color: "#7fa18c" }}>
             No matching category
           </div>

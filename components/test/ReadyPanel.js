@@ -6,6 +6,7 @@ import { effectiveQueryText } from "@/lib/queryPersonalize";
 
 export default function ReadyPanel({
   category,
+  isCustom,
   brand,
   onBrand,
   website,
@@ -21,6 +22,13 @@ export default function ReadyPanel({
   return (
     <div className={styles.card}>
       <span className={styles.label}>Category · {category.name}</span>
+      {isCustom && (
+        <div className={styles.customNote}>
+          AI-generated for this custom category — review each question below before running.
+          Custom-test scores aren&rsquo;t part of the standardized benchmark, so they&rsquo;re not
+          comparable across brands.
+        </div>
+      )}
       <input
         className={styles.input}
         placeholder="Your brand name"

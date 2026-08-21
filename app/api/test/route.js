@@ -40,12 +40,12 @@ export async function POST(request) {
     return badRequest("Invalid JSON body.");
   }
 
-  const { market, categoryId, brand, competitor, brandWebsite, queries: queryOverrides } = body || {};
+  const { market, categoryId, brand, competitor, brandWebsite, queries: queryOverrides, customCategory } = body || {};
 
   if (!market || !listMarkets().includes(market)) {
     return badRequest(`"market" must be one of: ${listMarkets().join(", ")}.`);
   }
-  if (!categoryId || typeof categoryId !== "string") {
+  if (!customCategory && (!categoryId || typeof categoryId !== "string")) {
     return badRequest('"categoryId" is required.');
   }
   if (!brand || typeof brand !== "string" || !brand.trim()) {
@@ -61,9 +61,32 @@ export async function POST(request) {
     );
   }
 
-  const category = getCategory(market, categoryId);
-  if (!category) {
-    return NextResponse.json({ error: `Unknown category "${categoryId}" for ${market}.` }, { status: 404 });
+  // Custom category (search had no bank match, merchant generated + reviewed
+  // 4 questions via /api/generate-queries): the client sends the full,
+  // already-edited category+queries directly — there's no bank entry to look
+  // up, and none gets written (hard rule: custom categories never land in
+  // data/*.json). category.snapshots stays empty so every non-claude engine
+  // below is always "stale" and always attempts an on-demand harvest.
+  let category;
+  if (customCategory) {
+    const name = typeof customCategory.name === "string" ? customCategory.name.trim() : "";
+    if (!name) return badRequest('"customCategory.name" is required.');
+    const rawQueries = Array.isArray(customCategory.queries) ? customCategory.queries : [];
+    const cleanQueries = rawQueries
+      .map((q) => ({
+        qid: typeof q?.qid === "string" ? q.qid.trim() : "",
+        text: typeof q?.text === "string" ? q.text.trim() : "",
+        archetype: typeof q?.archetype === "string" ? q.archetype : "",
+        language: typeof q?.language === "string" ? q.language : "en",
+      }))
+      .filter((q) => q.qid && q.text);
+    if (cleanQueries.length === 0) return badRequest('"customCategory.queries" must include at least one question.');
+    category = { id: null, name, group: null, queries: cleanQueries, snapshots: [] };
+  } else {
+    category = getCategory(market, categoryId);
+    if (!category) {
+      return NextResponse.json({ error: `Unknown category "${categoryId}" for ${market}.` }, { status: 404 });
+    }
   }
 
   const brandName = brand.trim();
@@ -288,6 +311,7 @@ export async function POST(request) {
     ok: true,
     market,
     category: { id: category.id, name: category.name, group: category.group },
+    isCustom: Boolean(customCategory),
     brand: brandName,
     competitor: competitorName || null,
     brandWebsite: brandWebsiteInput || null,

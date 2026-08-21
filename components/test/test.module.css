@@ -283,6 +283,16 @@
   font-size: 13px;
   margin-bottom: 14px;
 }
+.customNote {
+  background: rgba(255, 197, 61, 0.08);
+  border: 1px solid #4a3f1f;
+  color: #e8cf8a;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 10px 0 14px;
+}
 .retryRow {
   display: flex;
   align-items: center;

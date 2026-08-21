@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "../test.module.css";
 import VerdictCard from "./VerdictCard";
 import CheckoutBattleCard from "./CheckoutBattleCard";
 import ShareOfVoiceCard from "./ShareOfVoiceCard";
@@ -16,6 +17,7 @@ export default function ReportView({ data, onRetry }) {
     competitor,
     brandWebsite,
     category,
+    isCustom,
     report,
     sentiment,
     mentionCount,
@@ -26,6 +28,12 @@ export default function ReportView({ data, onRetry }) {
 
   return (
     <>
+      {isCustom && (
+        <div className={styles.customNote}>
+          Custom category — standardized benchmark not available, so these scores aren&rsquo;t
+          comparable across brands the way a bank-category test is.
+        </div>
+      )}
       <VerdictCard market={market} brand={brand} category={category?.name} report={report} onRetry={onRetry} />
       <CheckoutBattleCard brand={brand} brandWebsite={brandWebsite} destinations={report.destinations} />
       <ShareOfVoiceCard market={market} brand={brand} competitor={competitor} shareOfVoice={report.shareOfVoice} />

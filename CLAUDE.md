@@ -135,6 +135,17 @@ renders but only console-logs/no-ops with a "coming soon" toast. Email stack
   and real-telemetry-over-self-report principle in JS
   (@google/genai / openai). Results are NOT persisted (Vercel's filesystem
   is ephemeral) — see build phase 4 TODO below.
+- app/api/generate-queries + components/test/CustomCategoryPanel.js — custom
+  category flow: when a merchant's category search has no bank match,
+  SetupPanel offers "Test '{query}' as a custom category", which collects
+  their brand (needed up front — the branded-routing question asks about it
+  directly, no leader-brand guessing) then calls this route to generate 4
+  queries with Claude (lib/claudeClient.js generateCustomQueries, adapted
+  from docs/stockedby-data-kit.md §2b). Lands in the normal ReadyPanel
+  review step (mandatory stop) before /api/test ever runs them. Never
+  written into data/*.json — console-logged only for now; TODO(Phase 4 /
+  Supabase): persist market+category+brand so the most-requested customs
+  become candidates for the next real bank batch.
 - lib/audit/ — Agent Readiness Audit (app/api/audit, app/audit,
   components/audit/): ssrfGuard.js (mandatory hostname check, see hard
   rule 11), fetchWithTimeout.js (SSRF-safe manual redirect following),
