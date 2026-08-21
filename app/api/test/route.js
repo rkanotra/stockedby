@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCategory, listMarkets } from "@/lib/bank";
 import { askShoppingAssistant, analyzeSentiment } from "@/lib/claudeClient";
 import {
-  ENGINES,
+  ENGINE_ORDER,
   matches,
   computeReport,
   computeAppearanceSummary,
@@ -129,8 +129,13 @@ export async function POST(request) {
 
   // engineData: claude = live results just collected; every other engine
   // (rule 6) is never called live — only rendered from harvested snapshots.
+  // Only ever looks up a snapshot for an engine in ENGINE_ORDER (chatgpt,
+  // gemini) — a bank file can still carry an old grok/perplexity/copilot
+  // snapshot from before they were dropped from product scope, and it's
+  // silently ignored here rather than erroring. Don't add per-engine
+  // validation on category.snapshots; that tolerance is intentional.
   const engineData = { claude: doneRuns.map((r) => ({ ...r, collected_on: "live", source: "live" })) };
-  for (const engine of ENGINES) {
+  for (const engine of ENGINE_ORDER) {
     if (engine === "claude") continue;
     engineData[engine] = finalQueries.map((q) => {
       const snaps = (category.snapshots || []).filter((s) => s.qid === q.qid && s.engine === engine);

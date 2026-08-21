@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import styles from "../test.module.css";
-import { ENGINES, ENGINE_LABELS, ARCH_LABELS, DEST_LABELS, matches, isRivalFor, effectiveDestination } from "@/lib/scoring";
+import { ENGINE_ORDER, ENGINE_LABELS, ARCH_LABELS, DEST_LABELS, matches, isRivalFor, effectiveDestination } from "@/lib/scoring";
 
 const DEST_COLORS = {
   "brand-direct": "#5bd6a0",
@@ -11,8 +11,13 @@ const DEST_COLORS = {
   none: "#3a5a48",
 };
 
+const hasRealData = (engines, e) => (engines[e] || []).some((r) => r.source !== "missing");
+
 export default function ShelvesCard({ market, brand, competitor, engines }) {
-  const [activeEngine, setActiveEngine] = useState("claude");
+  // ChatGPT first if it actually has data for this category — that's the
+  // engine most founders think of first — falling back to Claude (always
+  // has data, since it's the one just tested live) when it doesn't.
+  const [activeEngine, setActiveEngine] = useState(() => (hasRealData(engines, "chatgpt") ? "chatgpt" : "claude"));
   const isRival = isRivalFor(market);
   const hasComp = Boolean(competitor && competitor.trim());
 
@@ -20,7 +25,7 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
     const rows = engines[e] || [];
     if (e === "claude") return "live";
     const withData = rows.find((r) => r.source !== "missing");
-    return withData ? withData.collected_on : "data coming soon";
+    return withData ? `collected ${withData.collected_on}` : "data coming soon";
   };
 
   const activeRows = (engines[activeEngine] || []).filter((r) => r.source !== "missing");
@@ -34,7 +39,7 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
         competitors on each one.
       </p>
       <div className={styles.tabs}>
-        {ENGINES.map((e) => (
+        {ENGINE_ORDER.map((e) => (
           <button
             key={e}
             type="button"

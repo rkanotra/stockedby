@@ -17,7 +17,7 @@ export default function Footer() {
           <a href="#markets">Markets</a> · <a href="#data">Data</a> · <a href="#compare">Compare</a>
         </div>
         <div className="mono" style={{ fontSize: "11px" }}>
-          Engines: Claude · ChatGPT · Gemini · Grok
+          Engines: ChatGPT · Gemini · Claude
           <br />© 2026 StockedBy
         </div>
       </div>

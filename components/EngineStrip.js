@@ -3,12 +3,9 @@ export default function EngineStrip() {
     <div className="strip">
       <div className="strip-in">
         <span>Tested across</span>
-        <b>Claude</b><span className="strip-dot">·</span>
         <b>ChatGPT</b><span className="strip-dot">·</span>
         <b>Gemini</b><span className="strip-dot">·</span>
-        <b>Grok</b><span className="strip-dot">·</span>
-        <b>Perplexity</b><span className="strip-dot">·</span>
-        <b>Copilot</b>
+        <b>Claude</b>
         <span>|</span>
         <span>Benchmarked against</span>
         <b>Amazon</b><span className="strip-dot">·</span>

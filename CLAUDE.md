@@ -3,9 +3,8 @@
 ## What this is
 StockedBy (stockedby.com) is a B2B SaaS platform for the AI & agentic commerce
 economy, built on three pillars:
-- **MEASURE** — AI visibility scoring across ChatGPT, Gemini, Claude, Grok
-  (+ Perplexity, Copilot as harvested), competitive intelligence, checkout routing
-  (brand-direct vs marketplace).
+- **MEASURE** — AI visibility scoring across ChatGPT, Gemini and Claude,
+  competitive intelligence, checkout routing (brand-direct vs marketplace).
 - **IMPROVE** — GEO tooling: fix plans, fix generation (JSON-LD, llms.txt,
   structured feeds), monitoring & re-test cadence.
 - **PROTECT** — agent identity & trust and transaction risk are still
@@ -48,9 +47,18 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
    Archivo (body), IBM Plex Mono (labels/data) — load from Google Fonts, do NOT
    embed woff2 from the design export. Favicon: done — app/icon.svg (tag-yellow
    rounded mark, "by" in ink, matches the nav logo) + app/apple-icon.png.
-6. **Engines.** Test engines: claude, chatgpt, gemini, grok, perplexity,
-   copilot. Claude runs live server-side; all others render from harvested
-   snapshots in data/*.json. Query-bank GENERATION is Claude/ChatGPT only.
+6. **Engines.** Product scope is exactly three, in this canonical order:
+   chatgpt, gemini, claude — defined once as ENGINE_ORDER in lib/scoring.js;
+   every engine tab, scorebox, and iteration derives from it, never a
+   hand-written list. Claude runs live server-side; ChatGPT and Gemini
+   render from harvested snapshots in data/*.json (API-harvested via
+   scripts/harvest.py, or manually per docs/stockedby-data-kit.md §2).
+   Grok, Perplexity and Copilot are OUT OF PRODUCT SCOPE — not deferred, not
+   "coming soon": no UI surface should name them, and no new code should add
+   them back without this rule changing first. The data layer stays
+   tolerant of them though — an old grok/perplexity/copilot snapshot
+   sitting in a bank file is silently ignored (never matched by
+   ENGINE_ORDER), not an error. Query-bank GENERATION is Claude/ChatGPT only.
 7. **Cost ceiling ≤ $0.05 per free test:** queries come from the bank (no
    generation call), web_search max_uses: 2 per query, model claude-sonnet-4-6,
    aux calls (sentiment) on haiku.
@@ -84,17 +92,21 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
   Generation Prompt (§2b), category list, archetypes. The data contract.
 - docs/website-structure-reference.html — section structure + copy reference
   (dark; superseded visually by docs/design/).
-- docs/design/ — Claude Design exports = visual source of truth. NOTE: current
-  hero export includes Perplexity/Copilot chips — keep them ONLY behind the
-  data-gate rule (#2).
+- docs/design/ — Claude Design exports = visual source of truth. NOTE: the
+  hero export itself still has Perplexity/Copilot chips from before hard
+  rule 6 narrowed product scope to chatgpt/gemini/claude — that's a stale
+  historical export, not a rule override; components/Hero.js (the live
+  component) has already dropped them and is the one that matters.
 - docs/api-lead-resend.ts — lead endpoint reference implementation.
 - data/india.json — accepted India query bank (ChatGPT-generated, 100 cats ×
   4 queries). Flags resolved: "route me" phrasing reworded; leader brands
   verified ("Modest Essentials", "Nykaa Cosmetics").
-- data/india-v2-grok.json — accepted Grok variant bank; use as -v2 phrasing
-  variants for answer-stability metrics. Flags resolved: Hinglish
-  problem-first language fields relabeled; "Local modest brands" leader
-  replaced with "Shiddat".
+- data/india-v2-grok.json — accepted Grok-generated variant bank; "Grok"
+  here is only the phrasing-generation source for these -v2 query variants
+  (answer-stability metrics), not a claim that Grok is a tested/displayed
+  engine — it isn't, and never was wired into lib/bank.js. Flags resolved:
+  Hinglish problem-first language fields relabeled; "Local modest brands"
+  leader replaced with "Shiddat".
 - data/uae.json — accepted UAE query bank (50 categories). Harvested Claude
   snapshots ship inline in the bank file (no separate seed file).
 - data/ksa.json — accepted KSA query bank (47 categories). No snapshots
@@ -123,8 +135,7 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
 --- MVP ends here: stockedby.com live and testable ---
 4. [post-MVP] Zoho mailboxes + /api/lead (Resend + Supabase) + email gate +
    consent (DPDP/PDPL).
-5. [post-MVP] Real rate limiting, privacy policy, analytics, Arabic/RTL pass,
-   Perplexity/Copilot snapshot harvest merge.
+5. [post-MVP] Real rate limiting, privacy policy, analytics, Arabic/RTL pass.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

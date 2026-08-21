@@ -11,10 +11,10 @@ export default function Hero() {
         Does AI put you on the shelf — or <span className="flip">Amazon</span>?
       </h1>
       <p className="hero-sub">
-        Your customers now ask ChatGPT, Gemini, Claude, Grok, Perplexity and Copilot what to buy.
-        StockedBy runs their real questions, in their real languages, and shows you exactly
-        who gets recommended — you, your rival, or the marketplace giants — and where the AI
-        sends the buyer to check out.
+        Your customers now ask AI what to buy. StockedBy runs their real questions, in their
+        real languages, to see who ChatGPT, Gemini and Claude recommend — with Claude tested
+        live — you, your rival, or the marketplace giants, and where the AI sends the buyer
+        to check out.
       </p>
       <div className="hero-ctas">
         <Link href="/test" className="btn-primary">Test my brand — free</Link>
@@ -36,12 +36,9 @@ export default function Hero() {
               <div className="report-label">Query · real shopper set</div>
               <div className="report-query">best vitamin C serum for oily skin</div>
               <div className="report-engines">
-                <span className="chip active">Claude</span>
                 <span className="chip">ChatGPT</span>
                 <span className="chip">Gemini</span>
-                <span className="chip">Grok</span>
-                <span className="chip">Perplexity</span>
-                <span className="chip">Copilot</span>
+                <span className="chip active">Claude</span>
               </div>
               <div className="rank-list">
                 <div className="rank-row you">
@@ -89,12 +86,9 @@ export default function Hero() {
               <div>
                 <div className="report-label">Engines stocking you</div>
                 <div className="engine-badges">
-                  <span className="engine-badge yes">Claude ✓</span>
                   <span className="engine-badge yes">ChatGPT ✓</span>
                   <span className="engine-badge no">Gemini ✗</span>
-                  <span className="engine-badge yes">Grok ✓</span>
-                  <span className="engine-badge yes">Perplexity ✓</span>
-                  <span className="engine-badge no">Copilot ✗</span>
+                  <span className="engine-badge yes">Claude ✓</span>
                 </div>
               </div>
             </div>

@@ -95,11 +95,11 @@ export default function TestFlow() {
             stocked<b>by</b>
           </Link>
         </div>
-        <div className={styles.mark}>StockedBy · {market} · 6 engines</div>
+        <div className={styles.mark}>StockedBy · {market} · 3 engines</div>
         <h1 className={styles.title}>Does AI put you on the shelf?</h1>
         <p className={styles.sub}>
-          Pick your category, enter your brand, and see who Claude — live — and ChatGPT, Gemini, Grok,
-          Perplexity and Copilot from harvested data recommend, and where they send the buyer to check out.
+          Pick your category, enter your brand, and see who ChatGPT, Gemini and Claude recommend —
+          with Claude tested live — and where they send the buyer to check out.
         </p>
 
         {phase === "setup" && (

@@ -9,15 +9,18 @@ have it self-report its own genuine answer in the data-kit snapshot schema.
 Never fabricates: if an engine has no API integration here, or a grounded
 call fails, the script skips it loudly rather than inventing a snapshot —
 the manual copy-paste flow in docs/stockedby-data-kit.md §2 still works for
-any engine (consumer-app surface: chatgpt, gemini, grok, perplexity, copilot).
+chatgpt or gemini (consumer-app surface) if you'd rather not use an API key.
+grok, perplexity and copilot are out of product scope (see CLAUDE.md) — not
+supported here, and not expected to be.
 
 Usage:
-  python scripts/harvest.py --engine gemini --market India
+  python scripts/harvest.py --engine chatgpt --market India
   python scripts/harvest.py --engine gemini --market all --limit 3 --dry-run
   python scripts/harvest.py --engine gemini --market UAE --category perfume-attar
 
 Requires: pip install -r scripts/requirements.txt (or use a venv — see
-scripts/README.md). Reads GEMINI_API_KEY from the environment or .env.local.
+scripts/README.md). Reads GEMINI_API_KEY / OPENAI_API_KEY from the
+environment or .env.local, matching the engine you pass to --engine.
 """
 import argparse
 import json
@@ -146,25 +149,93 @@ class GeminiHarvester:
         return domains or None
 
 
-ENGINES = {"gemini": GeminiHarvester}
+class OpenAIHarvester:
+    """engine="chatgpt", surface="api" — real web search via the Responses API."""
+
+    name = "chatgpt"
+    surface = "api"
+
+    def __init__(self, model=None):
+        from openai import OpenAI
+
+        api_key = os.environ.get("OPENAI_API_KEY")
+        if not api_key:
+            raise SystemExit("OPENAI_API_KEY is not set (checked env + .env.local).")
+        self.client = OpenAI(api_key=api_key)
+        # Override with OPENAI_MODEL if the default has moved on by the time
+        # this runs — OpenAI's lineup turns over faster than this script does.
+        self.model = model or os.environ.get("OPENAI_MODEL", "gpt-4.1")
+
+    def ask(self, query_text, retries=2):
+        prompt = HARVEST_PROMPT.format(query_text=query_text)
+        last_err = None
+        for attempt in range(retries + 1):
+            try:
+                resp = self.client.responses.create(
+                    model=self.model,
+                    input=prompt,
+                    tools=[{"type": "web_search"}],
+                )
+                parsed = extract_json(resp.output_text or "")
+                sources = self._real_sources(resp) or parsed.get("sources_cited") or []
+                return parsed.get("recommendations", []), sources
+            except Exception as e:  # noqa: BLE001 - surfaced to the caller, not swallowed
+                last_err = e
+                msg = str(e).lower()
+                if "rate_limit" in msg or "insufficient_quota" in msg or "429" in msg:
+                    raise  # quota/billing block — retrying won't help, fail loud
+                if attempt < retries:
+                    time.sleep(2 ** attempt)
+        raise last_err
+
+    @staticmethod
+    def _real_sources(resp):
+        """Prefer the model's actual URL citations over its self-reported
+        sources_cited — same principle as the Gemini harvester and the
+        Claude route trusting real tool telemetry over model narration."""
+        from urllib.parse import urlparse
+
+        domains = []
+        try:
+            for item in resp.output:
+                if getattr(item, "type", None) != "message":
+                    continue
+                for block in getattr(item, "content", None) or []:
+                    for ann in getattr(block, "annotations", None) or []:
+                        if getattr(ann, "type", None) != "url_citation":
+                            continue
+                        url = getattr(ann, "url", None)
+                        if not url:
+                            continue
+                        d = urlparse(url).hostname
+                        if d:
+                            domains.append(d.removeprefix("www."))
+        except (AttributeError, TypeError):
+            return None
+        return domains or None
+
+
+ENGINES = {"gemini": GeminiHarvester, "chatgpt": OpenAIHarvester}
+QUOTA_DOCS_URL = {
+    "gemini": "https://ai.google.dev/gemini-api/docs/rate-limits",
+    "chatgpt": "https://platform.openai.com/docs/guides/rate-limits",
+}
+
+
+def is_quota_error(e):
+    msg = str(e).lower()
+    return "resource_exhausted" in msg or "rate_limit" in msg or "insufficient_quota" in msg or "429" in msg
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--engine", required=True, choices=["gemini", "chatgpt", "grok", "perplexity", "copilot"])
+    ap.add_argument("--engine", required=True, choices=["gemini", "chatgpt"])
     ap.add_argument("--market", required=True, choices=[*MARKET_FILES.keys(), "all"])
     ap.add_argument("--category", help="Only harvest this category id (for testing).")
     ap.add_argument("--limit", type=int, help="Cap the number of categories processed per market.")
     ap.add_argument("--sleep", type=float, default=1.5, help="Seconds between API calls (default 1.5).")
     ap.add_argument("--dry-run", action="store_true", help="Print what would run, call nothing, write nothing.")
     args = ap.parse_args()
-
-    if args.engine not in ENGINES:
-        raise SystemExit(
-            f"No API integration for engine={args.engine!r} yet. "
-            "Use the manual Harvest Prompt workflow in docs/stockedby-data-kit.md §2 "
-            "(consumer-app surface) and paste the result into data/ directly."
-        )
 
     markets = list(MARKET_FILES.keys()) if args.market == "all" else [args.market]
     harvester = None if args.dry_run else ENGINES[args.engine]()
@@ -198,11 +269,11 @@ def main():
                 except Exception as e:  # noqa: BLE001
                     total_failed += 1
                     print(f"{label} FAILED: {type(e).__name__}: {str(e)[:300]}")
-                    if "RESOURCE_EXHAUSTED" in str(e) or "429" in str(e):
+                    if is_quota_error(e):
                         print(
-                            "\nQuota/billing exhausted for grounded search — stopping the whole run "
-                            "rather than burning through remaining calls that will fail the same way.\n"
-                            "Fix billing/quota at https://ai.google.dev/gemini-api/docs/rate-limits, "
+                            "\nQuota/billing exhausted — stopping the whole run rather than "
+                            "burning through remaining calls that will fail the same way.\n"
+                            f"Fix billing/quota at {QUOTA_DOCS_URL.get(args.engine, '')}, "
                             "then re-run (already-written snapshots are untouched)."
                         )
                         if changed:

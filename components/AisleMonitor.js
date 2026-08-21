@@ -6,14 +6,14 @@ export default function AisleMonitor() {
         <h2>See every shelf you&rsquo;re on. And every one you&rsquo;re not.</h2>
       </div>
       <p className="aisle-sub rv">
-        One test, four AI engines, scored against the marketplace giant that actually matters in your market.
+        One test, three AI engines, scored against the marketplace giant that actually matters in your market.
       </p>
       <div className="aisle-plank rv" />
       <div className="grid">
         <div className="feat rv">
           <span className="flabel">Multi-engine shelf test</span>
-          <h3>Four AI shelves, one verdict</h3>
-          <p>Real shopper questions run on Claude live and compared against ChatGPT, Gemini and Grok. A brand that wins on one engine and vanishes on another finds out here.</p>
+          <h3>Three AI shelves, one verdict</h3>
+          <p>Real shopper questions run on Claude live and compared against ChatGPT and Gemini. A brand that wins on one engine and vanishes on another finds out here.</p>
         </div>
         <div className="feat rv">
           <span className="flabel">Share of AI voice</span>

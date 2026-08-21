@@ -9,7 +9,9 @@ import styles from "./test.module.css";
 export default function RunningPanel({ queries }) {
   return (
     <div className={styles.card}>
-      <span className={styles.label}>Claude · live run</span>
+      <span className={styles.label}>
+        Claude · live test running — ChatGPT and Gemini results load from our latest collected data
+      </span>
       <p className={styles.runningNote}>
         Running {queries.length} question{queries.length === 1 ? "" : "s"} against Claude with
         live web search…

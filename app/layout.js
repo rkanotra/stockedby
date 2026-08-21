@@ -3,7 +3,7 @@ import "./globals.css";
 export const metadata = {
   title: "StockedBy — Does AI put you on the shelf?",
   description:
-    "AI & agentic commerce intelligence for brands in India, UAE & Saudi Arabia. Measure how often ChatGPT, Gemini, Claude and Grok recommend you, improve your GEO, and protect your position as AI-driven commerce scales.",
+    "AI & agentic commerce intelligence for brands in India, UAE & Saudi Arabia. Measure how often ChatGPT, Gemini and Claude recommend you, improve your GEO, and protect your position as AI-driven commerce scales.",
 };
 
 export default function RootLayout({ children }) {
