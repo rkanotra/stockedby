@@ -104,8 +104,14 @@ h1.hero-h1 .flip { color: var(--brick2); }
 .report-live { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--green2); letter-spacing: 0.1em; }
 .report-body { display: grid; grid-template-columns: 1.4fr 1fr; }
 @media (max-width: 700px) { .report-body { grid-template-columns: 1fr; } .report-col-l { border-right: none !important; border-bottom: 1px solid var(--line4); } }
-.report-col-l { padding: 24px 26px; border-right: 1px solid var(--line4); }
-.report-col-r { padding: 24px 26px; display: flex; flex-direction: column; gap: 20px; }
+/* min-width:0 overrides the grid item's default min-width:auto — without
+   it, .rank-row's own nowrap brand/destination text (deliberately nowrap so
+   row height never shifts between tabs) sets a min-content width wider than
+   the card, blowing the whole grid track out past the card's edges instead
+   of letting each row ellipsize on its own, as .rank-brand/.rank-dest's own
+   text-overflow:ellipsis already expects. */
+.report-col-l { padding: 24px 26px; border-right: 1px solid var(--line4); min-width: 0; }
+.report-col-r { padding: 24px 26px; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 .report-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted2); margin-bottom: 10px; }
 .report-query {
   font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.5; color: var(--ink);
@@ -123,7 +129,13 @@ h1.hero-h1 .flip { color: var(--brick2); }
 .chip:hover { border-color: var(--muted2); color: var(--ink); }
 .chip.active { font-weight: 600; background: var(--ink); color: var(--white); border-color: var(--ink); }
 .chip.active:hover { border-color: var(--ink); }
-@media (max-width: 480px) { .chip { flex: 1; padding: 11px 12px; } }
+@media (max-width: 480px) {
+  /* flex:1 alone can't shrink a flex item below its own content's
+     intrinsic width (min-width defaults to auto) — without min-width:0
+     three chips at their natural "ChatGPT"-width overflow the card and get
+     clipped by .report-card's overflow:hidden instead of sharing the row. */
+  .chip { flex: 1; min-width: 0; padding: 9px 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
 .rank-list { display: flex; flex-direction: column; gap: 6px; }
 .rank-row { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line4); border-radius: 8px; padding: 10px 14px; }
 .rank-row.you { background: #FFF7E2; border-color: #F4DEA0; }
@@ -173,9 +185,20 @@ h1.hero-h1 .flip { color: var(--brick2); }
 }
 .strip-in b { color: var(--cream); font-weight: 500; }
 .strip-dot { color: var(--tag); }
+/* Each side ("Tested across…" / "Benchmarked against…") is its own atomic
+   group so the container only ever wraps BETWEEN groups, never inside one
+   — no ragged mid-phrase breaks. */
+.strip-group { display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; max-width: 100%; }
 
 /* ---------- aisles (feature sections) ---------- */
-section.aisle { padding: 76px 0 8px; }
+/* Longhand on purpose: section.aisle + .wrap both apply to the same element
+   (className="wrap aisle"), and section.aisle's higher specificity (element
+   + class beats class-only) means a shorthand `padding: 76px 0 8px` here
+   would silently zero out .wrap's left/right padding on every pillar,
+   markets, how-it-works, data and compare section — invisible on desktop
+   (where .wrap's max-width already leaves plenty of outer whitespace) but
+   flush-to-edge on mobile, where that whitespace doesn't exist. */
+section.aisle { padding-top: 76px; padding-bottom: 8px; }
 .aisle-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
 .aisle-mark {
   font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
@@ -268,3 +291,35 @@ footer { border-top: 1px solid var(--line); margin-top: 84px; padding: 34px 0 44
 .rv { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
 .rv.on { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .rv { opacity: 1 !important; transform: none !important; transition: none !important; } }
+
+/* ---------- mobile container padding ----------
+   Single source of truth for every section-level wrapper's horizontal
+   inset at mobile widths, so nothing (headings, subtitles, badges, the
+   yellow divider planks, nav, the engine strip's text) sits closer than
+   16px to the viewport edge. Longhand left/right only — never touches the
+   top/bottom padding each of these already has. .strip's own background is
+   allowed to stay full-bleed (no max-width on it); only its text content
+   (.strip-in, via .strip's padding) gets the inset. */
+@media (max-width: 640px) {
+  .wrap, .hero, .strip, .nav-in {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+/* Engine strip: force the two groups onto their own clean centered line
+   each, rather than letting them wrap wherever the ~26px inter-group gap
+   happens to break — the "|" divider is meaningless once they're stacked,
+   so it's hidden rather than left dangling on its own line. */
+@media (max-width: 560px) {
+  .strip-in { flex-direction: column; gap: 8px; }
+  .strip-sep { display: none; }
+}
+/* At the narrowest phones even a single group's phrase can be too wide for
+   one line at the base 12px — shrink type + tracking just enough to keep
+   each group on its own single line, verified empirically (see PR notes),
+   not by estimate. */
+@media (max-width: 360px) {
+  .strip-in { font-size: 10.5px; gap: 6px; }
+  .strip-group { gap: 7px; }
+}
