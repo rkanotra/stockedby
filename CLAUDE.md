@@ -21,14 +21,19 @@ user-facing copy until launched.
 
 Current phase: **MVP sprint — domain-live test build**
 MVP scope (build now): landing page + full test flow + /api/test with
-ANTHROPIC_API_KEY only. NO email gate, NO Resend, NO Supabase, NO rate
-limiting yet — full report shows without email. Lead form renders but only
-console-logs/no-ops with a "coming soon" toast. Email stack (Zoho mailboxes +
-Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
+ANTHROPIC_API_KEY (required) + GEMINI_API_KEY/OPENAI_API_KEY (optional —
+enable on-demand chatgpt/gemini harvest for stale/missing categories, see
+lib/harvestClients.js; without them that path is skipped and the engine tab
+falls back to whatever snapshot exists). NO email gate, NO Resend, NO
+Supabase, NO rate limiting yet — full report shows without email. Lead form
+renders but only console-logs/no-ops with a "coming soon" toast. Email stack
+(Zoho mailboxes + Resend/Supabase gate) is DEFERRED to post-MVP; keep
+/api/lead as a stub.
 
 ## Hard rules
-1. **API keys server-side only.** ANTHROPIC_API_KEY, RESEND_API_KEY, SUPABASE
-   keys live in Vercel env vars. Never in client code, never committed.
+1. **API keys server-side only.** ANTHROPIC_API_KEY, GEMINI_API_KEY,
+   OPENAI_API_KEY, RESEND_API_KEY, SUPABASE keys live in Vercel env vars.
+   Never in client code, never committed.
 2. **Never fabricate data.** Engine tabs render only from real data. Engines
    without snapshots show a "data coming soon" pending state — never
    placeholder results. Live results come only from the Claude API call. A
@@ -50,9 +55,14 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
 6. **Engines.** Product scope is exactly three, in this canonical order:
    chatgpt, gemini, claude — defined once as ENGINE_ORDER in lib/scoring.js;
    every engine tab, scorebox, and iteration derives from it, never a
-   hand-written list. Claude runs live server-side; ChatGPT and Gemini
-   render from harvested snapshots in data/*.json (API-harvested via
-   scripts/harvest.py, or manually per docs/stockedby-data-kit.md §2).
+   hand-written list. Claude runs live server-side on every test. ChatGPT
+   and Gemini normally render from harvested snapshots in data/*.json
+   (API-harvested offline via scripts/harvest.py, or manually per
+   docs/stockedby-data-kit.md §2) — but if the tested category+market has no
+   snapshot newer than lib/freshness.js's SNAPSHOT_MAX_AGE_DAYS (30 days),
+   app/api/test/route.js harvests that engine on demand instead, via
+   lib/harvestClients.js (same HARVEST_PROMPT as the offline script; results
+   are labeled source: "live-harvest", never merged into "snapshot" rows).
    Grok, Perplexity and Copilot are OUT OF PRODUCT SCOPE — not deferred, not
    "coming soon": no UI surface should name them, and no new code should add
    them back without this rule changing first. The data layer stays
@@ -115,6 +125,16 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
   earbuds, boAt routing, vitamin-C serum) for India, merged into india.json's
   categories by lib/bank.js.
 - scripts/check_query_bank.py — acceptance gate for all bank batches.
+- lib/freshness.js — SNAPSHOT_MAX_AGE_DAYS + staleEnginesFor(), shared
+  client+server (no fs/API keys), used by app/api/test/route.js to decide
+  when to harvest on demand and by components/test/TestFlow.js to preview
+  that decision before the request fires (RunningPanel's "testing live
+  now…" hint).
+- lib/harvestClients.js — server-only on-demand chatgpt/gemini harvest for
+  app/api/test (hard rule 6), reusing scripts/harvest.py's HARVEST_PROMPT
+  and real-telemetry-over-self-report principle in JS
+  (@google/genai / openai). Results are NOT persisted (Vercel's filesystem
+  is ephemeral) — see build phase 4 TODO below.
 - lib/audit/ — Agent Readiness Audit (app/api/audit, app/audit,
   components/audit/): ssrfGuard.js (mandatory hostname check, see hard
   rule 11), fetchWithTimeout.js (SSRF-safe manual redirect following),
@@ -135,6 +155,14 @@ Resend/Supabase gate) is DEFERRED to post-MVP; keep /api/lead as a stub.
 --- MVP ends here: stockedby.com live and testable ---
 4. [post-MVP] Zoho mailboxes + /api/lead (Resend + Supabase) + email gate +
    consent (DPDP/PDPL).
+   TODO: this is also where the on-demand harvest (lib/harvestClients.js)
+   gets a real cache — Vercel's filesystem is ephemeral, so today's harvested
+   snapshots are returned per-test and thrown away. Add a write-through
+   Supabase table (market+category+qid+engine+collected_on -> recommendations
+   + sources) that app/api/test/route.js writes to right after a successful
+   on-demand harvest, and reads from BEFORE falling back to data/*.json —
+   bank JSON becomes the seed layer under the live cache, not the only
+   source of snapshots.
 5. [post-MVP] Real rate limiting, privacy policy, analytics, Arabic/RTL pass.
 
 <!-- BEGIN:nextjs-agent-rules -->

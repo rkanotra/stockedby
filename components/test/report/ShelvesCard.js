@@ -25,7 +25,8 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
     const rows = engines[e] || [];
     if (e === "claude") return "live";
     const withData = rows.find((r) => r.source !== "missing");
-    return withData ? `collected ${withData.collected_on}` : "data coming soon";
+    if (!withData) return "data coming soon";
+    return withData.source === "live-harvest" ? "collected today" : `collected ${withData.collected_on}`;
   };
 
   const activeRows = (engines[activeEngine] || []).filter((r) => r.source !== "missing");

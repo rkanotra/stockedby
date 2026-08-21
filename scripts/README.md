@@ -14,6 +14,13 @@ chatgpt/gemini/claude — see CLAUDE.md; claude is always live, never
 harvested, so it isn't a harvest.py engine). grok, perplexity and copilot
 are out of scope entirely — not "not yet implemented," not supported.
 
+This is the offline/batch path, writing straight to data/*.json. There's
+also an on-demand path — lib/harvestClients.js, the JS port of this same
+HARVEST_PROMPT, called from app/api/test/route.js when a live test hits a
+category+market with no snapshot newer than 30 days (lib/freshness.js). The
+two aren't shared code (one's Python, one's JS) so keep them in sync by hand
+if the prompt or schema changes.
+
 Setup (one-time):
 
 ```

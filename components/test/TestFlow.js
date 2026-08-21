@@ -5,6 +5,8 @@ import Link from "next/link";
 import styles from "./test.module.css";
 import { listMarkets, getMarketCategories, getCategory } from "@/lib/bankStatic";
 import { effectiveQueryText } from "@/lib/queryPersonalize";
+import { staleEnginesFor } from "@/lib/freshness";
+import { ENGINE_ORDER } from "@/lib/scoring";
 import SetupPanel from "./SetupPanel";
 import ReadyPanel from "./ReadyPanel";
 import RunningPanel from "./RunningPanel";
@@ -26,6 +28,11 @@ export default function TestFlow() {
 
   const categories = getMarketCategories(market);
   const category = getCategory(market, catId);
+  // Best-effort pre-run hint for RunningPanel — see its own comment on why
+  // this can't be a guarantee of what the server will actually harvest.
+  const harvestingEngines = category
+    ? staleEnginesFor(category, ENGINE_ORDER.filter((e) => e !== "claude"))
+    : [];
 
   function pickMarket(m) {
     setMarket(m);
@@ -132,7 +139,10 @@ export default function TestFlow() {
         )}
 
         {phase === "running" && (
-          <RunningPanel queries={queries.map((q) => ({ ...q, text: effectiveQueryText(q, brand) }))} />
+          <RunningPanel
+            queries={queries.map((q) => ({ ...q, text: effectiveQueryText(q, brand) }))}
+            harvestingEngines={harvestingEngines}
+          />
         )}
 
         {phase === "done" && result && (

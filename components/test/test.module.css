@@ -402,6 +402,11 @@
   text-transform: none;
   letter-spacing: 0;
 }
+/* Non-interactive reuse of .tab (RunningPanel's per-engine status strip,
+   shown before results exist to click into) — same look, no click affordance. */
+.tabStatic {
+  cursor: default;
+}
 .tab:focus-visible {
   outline: 2px solid #f1f5ec;
   outline-offset: 2px;

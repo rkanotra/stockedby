@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getCategory, listMarkets } from "@/lib/bank";
 import { askShoppingAssistant, analyzeSentiment } from "@/lib/claudeClient";
+import { HARVEST_ENGINES } from "@/lib/harvestClients";
+import { staleEnginesFor } from "@/lib/freshness";
 import {
   ENGINE_ORDER,
   matches,
@@ -87,12 +89,52 @@ export async function POST(request) {
     return badRequest("This category has no queries to run.");
   }
 
+  // On-demand harvest (chatgpt/gemini): only for engines whose newest
+  // snapshot for this category+market is missing or older than
+  // lib/freshness.js's SNAPSHOT_MAX_AGE_DAYS, and only if the matching API
+  // key is configured (lib/harvestClients.js) — otherwise those engines
+  // fall through to the existing snapshot/"missing" behavior below,
+  // unchanged. Cost guard: runs at most once per test (no retry loop, one
+  // job per stale engine here), capped at HARVEST_QUERY_CAP queries per
+  // engine — with only chatgpt/gemini ever eligible, that's <= 2 engines x
+  // 4 queries = 8 extra calls, max. Fired in the SAME Promise.allSettled
+  // batch as the live Claude calls below so it costs no extra wall-clock
+  // time, not appended after.
+  const HARVEST_QUERY_CAP = 4;
+  const HARVEST_ENV_KEY = { gemini: "GEMINI_API_KEY", chatgpt: "OPENAI_API_KEY" };
+  const harvestEngines = staleEnginesFor(
+    category,
+    ENGINE_ORDER.filter((e) => e !== "claude")
+  ).filter((e) => Boolean(process.env[HARVEST_ENV_KEY[e]]));
+  const harvestQueries = finalQueries.slice(0, HARVEST_QUERY_CAP);
+  const harvestJobs = harvestEngines.flatMap((engine) => harvestQueries.map((q) => ({ engine, q })));
+
   // Live Claude calls run in parallel — sequential per-query calls (as in
   // the prototype, which needed that to drive incremental UI state) would
-  // risk exceeding maxDuration for a 4-query category.
-  const settled = await Promise.allSettled(
-    finalQueries.map((q) => askShoppingAssistant(q.text))
-  );
+  // risk exceeding maxDuration for a 4-query category. On-demand harvest
+  // jobs (if any) run in this same parallel batch.
+  const [settled, harvestSettled] = await Promise.all([
+    Promise.allSettled(finalQueries.map((q) => askShoppingAssistant(q.text))),
+    Promise.allSettled(harvestJobs.map((job) => HARVEST_ENGINES[job.engine](job.q.text))),
+  ]);
+
+  // Vercel's filesystem is ephemeral — a harvested recommendation below is
+  // never written back to data/*.json, only returned for this response.
+  // TODO(Phase 4 / Supabase): write-through snapshot cache — persist
+  // harvested rows to a table keyed by market+category+qid+engine, with
+  // data/*.json as the seed layer lib/bank.js/lib/bankStatic.js fall back
+  // to. See CLAUDE.md build phase 4.
+  const today = new Date().toISOString().slice(0, 10);
+  const harvestedByEngineQid = new Map();
+  harvestJobs.forEach((job, i) => {
+    const result = harvestSettled[i];
+    if (result.status === "fulfilled") {
+      harvestedByEngineQid.set(`${job.engine}:${job.q.qid}`, result.value.recommendations || []);
+    }
+    // A failed on-demand harvest just falls through to the existing
+    // snapshot lookup below (or "missing") — never fabricated, and never
+    // silently retried (the cost guard above already ran this once).
+  });
 
   const liveRuns = finalQueries.map((q, i) => {
     const result = settled[i];
@@ -127,17 +169,36 @@ export async function POST(request) {
     );
   }
 
-  // engineData: claude = live results just collected; every other engine
-  // (rule 6) is never called live — only rendered from harvested snapshots.
-  // Only ever looks up a snapshot for an engine in ENGINE_ORDER (chatgpt,
-  // gemini) — a bank file can still carry an old grok/perplexity/copilot
-  // snapshot from before they were dropped from product scope, and it's
-  // silently ignored here rather than erroring. Don't add per-engine
-  // validation on category.snapshots; that tolerance is intentional.
+  // engineData: claude = live results just collected. Every other engine
+  // (rule 6 — chatgpt/gemini only, grok/perplexity/copilot out of scope)
+  // renders from a harvested-just-now row when this run's on-demand harvest
+  // covered it, else from the newest banked snapshot, else "missing". Only
+  // ever looks up a snapshot for an engine in ENGINE_ORDER — a bank file
+  // can still carry an old grok/perplexity/copilot snapshot from before
+  // they were dropped from product scope, and it's silently ignored here
+  // rather than erroring. Don't add per-engine validation on
+  // category.snapshots; that tolerance is intentional.
   const engineData = { claude: doneRuns.map((r) => ({ ...r, collected_on: "live", source: "live" })) };
   for (const engine of ENGINE_ORDER) {
     if (engine === "claude") continue;
     engineData[engine] = finalQueries.map((q) => {
+      const harvested = harvestedByEngineQid.get(`${engine}:${q.qid}`);
+      if (harvested) {
+        return {
+          qid: q.qid,
+          text: q.text,
+          archetype: q.archetype,
+          recs: harvested.slice(0, 5).map((rec) => ({
+            brand: rec.brand || "",
+            product: rec.product || "",
+            why: rec.why || "",
+            destination: rec.destination || "none",
+            destination_domain: rec.destination_domain || "",
+          })),
+          collected_on: today,
+          source: "live-harvest",
+        };
+      }
       const snaps = (category.snapshots || []).filter((s) => s.qid === q.qid && s.engine === engine);
       const latest = snaps.sort((a, b) => (a.collected_on < b.collected_on ? 1 : -1))[0];
       if (!latest) {
