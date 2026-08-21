@@ -13739,6 +13739,43 @@
         }
       ],
       "snapshots": []
+    },
+    {
+      "id": "flowers-gifting",
+      "name": "Flowers & gifting",
+      "group": "Gifting",
+      "queries": [
+        {
+          "qid": "flowers-gifting-discovery",
+          "text": "midnight flower and cake delivery in Bangalore under ₹1500 for a birthday",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "flowers-gifting-local",
+          "text": "mummy ka birthday hai kal, fresh flowers aur cake combo 1200 tak mein deliver ho jaye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "hi-en"
+        },
+        {
+          "qid": "flowers-gifting-branded",
+          "text": "Ferns N Petals site or app — where are today's delivery slots and working discount codes?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ferns N Petals"
+        },
+        {
+          "qid": "flowers-gifting-problem",
+          "text": "I live abroad and keep missing family occasions back home, want something reaching them the same day",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
     }
   ]
 }

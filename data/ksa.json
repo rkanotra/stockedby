@@ -8250,6 +8250,42 @@
           "language": "en"
         }
       ]
+    },
+    {
+      "id": "flowers-gifting",
+      "name": "Flowers & gifting",
+      "group": "Gifting",
+      "queries": [
+        {
+          "qid": "flowers-gifting-discovery",
+          "text": "flower bouquet delivery in Riyadh under 250 SAR for a graduation today",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "flowers-gifting-local",
+          "text": "بوكيه ورد فخم توصيل نفس اليوم بالرياض لمناسبة تخرج",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "flowers-gifting-branded",
+          "text": "does Floward deliver same-day across Riyadh, and is their app cheaper than the website?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Floward"
+        },
+        {
+          "qid": "flowers-gifting-problem",
+          "text": "my sister graduates this afternoon and I'm stuck at work in another city",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
     }
   ],
   "merchant": null

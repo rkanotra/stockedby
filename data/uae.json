@@ -8973,6 +8973,42 @@
           "language": "en"
         }
       ]
+    },
+    {
+      "id": "flowers-gifting",
+      "name": "Flowers & gifting",
+      "group": "Gifting",
+      "queries": [
+        {
+          "qid": "flowers-gifting-discovery",
+          "text": "same day flower delivery in Dubai under AED 200 for an anniversary tonight",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "flowers-gifting-local",
+          "text": "توصيل ورد نفس اليوم بدبي لمناسبة الليلة مع تغليف حلو",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "flowers-gifting-branded",
+          "text": "Floward — app, website or a call, which actually gets the fastest same-day slot in Dubai Marina?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Floward"
+        },
+        {
+          "qid": "flowers-gifting-problem",
+          "text": "I forgot our anniversary and need something impressive at her office before 8pm",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ]
     }
   ],
   "merchant": null
