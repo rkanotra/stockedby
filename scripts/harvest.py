@@ -13,10 +13,17 @@ chatgpt or gemini (consumer-app surface) if you'd rather not use an API key.
 grok, perplexity and copilot are out of product scope (see CLAUDE.md) — not
 supported here, and not expected to be.
 
+A bare run (no --category/--limit/--all-categories) is scoped to DEFAULT_IDS
+— the data-kit's star-priority categories, ~22 per market — not the whole
+bank. That's ~54 categories / ~216 queries per engine across all markets,
+not ~197 categories / ~785 queries. Pass --all-categories to explicitly opt
+into the full bank.
+
 Usage:
   python scripts/harvest.py --engine chatgpt --market India
   python scripts/harvest.py --engine gemini --market all --limit 3 --dry-run
   python scripts/harvest.py --engine gemini --market UAE --category perfume-attar
+  python scripts/harvest.py --engine gemini --market all --all-categories
 
 Requires: pip install -r scripts/requirements.txt (or use a venv — see
 scripts/README.md). Reads GEMINI_API_KEY / OPENAI_API_KEY from the
@@ -37,6 +44,35 @@ MARKET_FILES = {
     "India": "india.json",
     "UAE": "uae.json",
     "KSA": "ksa.json",
+}
+
+# The safe default scope for a --market all run: the star-priority
+# categories from docs/stockedby-data-kit.md §3 ("Start with * = priority
+# 20 for India + GCC"), 22 categories x 3 markets ~= 54 total instead of the
+# full bank's ~200 (~785 queries/engine at 4 queries/category). IDs are
+# per-market on purpose — slug conventions differ (e.g. India's
+# "men-s-sunglasses" vs UAE/KSA's "mens-sunglasses"), and not every market's
+# current batch has every star category yet. --category/--limit/
+# --all-categories always override this; it only applies to a bare run.
+DEFAULT_IDS = {
+    "India": [
+        "face-serum-vitamin-c", "sunscreen", "hair-oil", "beard-grooming", "perfume-attar",
+        "oud-products", "men-s-sunglasses", "women-s-ethnic-wear-kurtis", "abayas-and-modest-fashion",
+        "sneakers-casual-shoes", "protein-powder-whey", "healthy-snacks-makhana", "coffee",
+        "multivitamins", "ayurvedic-supplements", "baby-skincare", "bedsheets-bedding", "cookware",
+        "tws-earbuds", "smartwatches", "yoga-mats", "fragrance-free-sensitive-skincare",
+    ],
+    "UAE": [
+        "face-serum-vitamin-c", "sunscreen", "beard-grooming", "perfume-attar", "oud-products",
+        "mens-sunglasses", "womens-ethnic-wear", "abayas-modest-fashion", "sneakers-casual-shoes",
+        "whey-protein", "coffee-specialty", "multivitamins", "baby-skincare", "bedsheets-bedding",
+        "tws-earbuds", "smartwatches", "yoga-mats",
+    ],
+    "KSA": [
+        "skincare-serum", "sunscreen", "beard-grooming", "perfume-attar", "oud-products",
+        "mens-sunglasses", "abayas-modest-fashion", "sneakers", "whey-protein", "multivitamins",
+        "baby-skincare", "bedsheets-bedding", "cookware", "tws-earbuds", "smartwatches",
+    ],
 }
 
 # The exact schema/prompt shape from docs/stockedby-data-kit.md §2, adapted
@@ -90,7 +126,7 @@ class GeminiHarvester:
     name = "gemini"
     surface = "api"
 
-    def __init__(self, model="gemini-3.6-flash"):
+    def __init__(self, model="gemini-3.6-flash", timeout_ms=90_000):
         from google import genai
         from google.genai import types
 
@@ -98,7 +134,12 @@ class GeminiHarvester:
         if not api_key:
             raise SystemExit("GEMINI_API_KEY is not set (checked env + .env.local).")
         self._types = types
-        self.client = genai.Client(api_key=api_key)
+        # Without an explicit timeout a stalled connection can hang
+        # indefinitely — a real run once sat with zero output for ~2 hours
+        # before something external finally killed it. 90s is generous for
+        # a single grounded call; a genuinely stuck request should fail
+        # fast so retries/resume can do their job instead.
+        self.client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=timeout_ms))
         self.model = model
 
     def ask(self, query_text, retries=2):
@@ -155,13 +196,15 @@ class OpenAIHarvester:
     name = "chatgpt"
     surface = "api"
 
-    def __init__(self, model=None):
+    def __init__(self, model=None, timeout_s=90.0):
         from openai import OpenAI
 
         api_key = os.environ.get("OPENAI_API_KEY")
         if not api_key:
             raise SystemExit("OPENAI_API_KEY is not set (checked env + .env.local).")
-        self.client = OpenAI(api_key=api_key)
+        # Explicit timeout for the same reason as the Gemini client: a
+        # stalled connection should fail fast, not hang indefinitely.
+        self.client = OpenAI(api_key=api_key, timeout=timeout_s)
         # Override with OPENAI_MODEL if the default has moved on by the time
         # this runs — OpenAI's lineup turns over faster than this script does.
         self.model = model or os.environ.get("OPENAI_MODEL", "gpt-4.1")
@@ -227,11 +270,27 @@ def is_quota_error(e):
     return "resource_exhausted" in msg or "rate_limit" in msg or "insufficient_quota" in msg or "429" in msg
 
 
+def print_market_summary(stats):
+    print("\nPer-market results:")
+    icon = {"ok": "✓", "skip": "skip", "fail": "✗", "dry-run": "dry"}
+    for market, s in stats.items():
+        print(
+            f"  {market:6} {icon[s['status']]:5} categories={s['categories']} "
+            f"written={s['written']} failed={s['failed']} resumed={s.get('skipped', 0)}"
+        )
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--engine", required=True, choices=["gemini", "chatgpt"])
     ap.add_argument("--market", required=True, choices=[*MARKET_FILES.keys(), "all"])
     ap.add_argument("--category", help="Only harvest this category id (for testing).")
+    ap.add_argument(
+        "--all-categories",
+        action="store_true",
+        help="Process the entire bank instead of the DEFAULT_IDS priority scope (~4x more "
+        "categories, ~785 queries/engine across all markets). Expensive — try --limit first.",
+    )
     ap.add_argument("--limit", type=int, help="Cap the number of categories processed per market.")
     ap.add_argument("--sleep", type=float, default=1.5, help="Seconds between API calls (default 1.5).")
     ap.add_argument("--dry-run", action="store_true", help="Print what would run, call nothing, write nothing.")
@@ -241,24 +300,51 @@ def main():
     harvester = None if args.dry_run else ENGINES[args.engine]()
     today = date.today().isoformat()
 
-    total_calls = total_written = total_failed = 0
+    total_calls = total_written = total_failed = total_skipped = 0
+    market_stats = {}
 
     for market in markets:
         path, data = load_market_file(market)
-        categories = data.get("categories", [])
+        all_categories = data.get("categories", [])
         if args.category:
-            categories = [c for c in categories if c["id"] == args.category]
-            if not categories:
-                print(f"[{market}] no category '{args.category}' found, skipping market")
-                continue
+            categories = [c for c in all_categories if c["id"] == args.category]
+        elif args.all_categories:
+            categories = all_categories
+        else:
+            default_ids = set(DEFAULT_IDS.get(market, []))
+            categories = [c for c in all_categories if c["id"] in default_ids]
         if args.limit:
             categories = categories[: args.limit]
 
+        if not categories:
+            print(f"[{market}] no matching categories, skipping")
+            market_stats[market] = {"status": "skip", "categories": 0, "written": 0, "failed": 0}
+            continue
+
+        market_written = market_failed = market_skipped = 0
         changed = False
-        for cat in categories:
+        for cat_i, cat in enumerate(categories, 1):
+            cat_changed = False
             for q in cat.get("queries", []):
-                total_calls += 1
                 label = f"[{market}/{cat['id']}/{q['qid']}]"
+
+                # Resume support: if a previous run today already collected
+                # this exact qid+engine (e.g. the process got killed
+                # partway through), don't re-ask and re-pay for it — pick
+                # up where it left off. A snapshot from an EARLIER date is
+                # legitimate history, not a resume marker, so it doesn't
+                # count here; only today's own collected_on does.
+                already_done = any(
+                    s.get("qid") == q["qid"] and s.get("engine") == args.engine and s.get("collected_on") == today
+                    for s in cat.get("snapshots", [])
+                )
+                if already_done:
+                    print(f"{label} already collected today — skipping (resume)")
+                    total_skipped += 1
+                    market_skipped += 1
+                    continue
+
+                total_calls += 1
                 if args.dry_run:
                     print(f"{label} DRY RUN — would ask: {q['text'][:80]!r}")
                     continue
@@ -268,6 +354,7 @@ def main():
                     recs, sources = harvester.ask(q["text"])
                 except Exception as e:  # noqa: BLE001
                     total_failed += 1
+                    market_failed += 1
                     print(f"{label} FAILED: {type(e).__name__}: {str(e)[:300]}")
                     if is_quota_error(e):
                         print(
@@ -278,6 +365,14 @@ def main():
                         )
                         if changed:
                             save_market_file(path, data)
+                        market_stats[market] = {
+                            "status": "fail",
+                            "categories": cat_i,
+                            "written": market_written,
+                            "failed": market_failed,
+                            "skipped": market_skipped,
+                        }
+                        print_market_summary(market_stats)
                         sys.exit(1)
                     time.sleep(args.sleep)
                     continue
@@ -292,16 +387,38 @@ def main():
                         "sources_cited": sources,
                     }
                 )
-                changed = True
+                changed = cat_changed = True
                 total_written += 1
+                market_written += 1
                 print(f"{label} ok — {len(recs)} recs, {len(sources)} sources")
                 time.sleep(args.sleep)
 
-        if changed and not args.dry_run:
-            save_market_file(path, data)
-            print(f"[{market}] wrote {path.relative_to(REPO_ROOT)}")
+            # Save after every category, not just at the end of the whole
+            # market — a run across all 100+ categories can take hours; on a
+            # crash or interruption, only the in-flight category's work (and
+            # spend) is at risk, not the entire market's.
+            if cat_changed and not args.dry_run:
+                save_market_file(path, data)
+                print(f"[{market}] {cat_i}/{len(categories)} categories done, saved {path.relative_to(REPO_ROOT)}")
 
-    print(f"\nDone. calls={total_calls} written={total_written} failed={total_failed}")
+        if args.dry_run:
+            status = "dry-run"
+        elif market_failed > 0 and market_written == 0 and market_skipped == 0:
+            # Nothing succeeded, nothing resumable from a prior run either —
+            # a real failure, not just "everything was already done."
+            status = "fail"
+        else:
+            status = "ok"
+        market_stats[market] = {
+            "status": status,
+            "categories": len(categories),
+            "written": market_written,
+            "failed": market_failed,
+            "skipped": market_skipped,
+        }
+
+    print(f"\nDone. calls={total_calls} written={total_written} failed={total_failed} resumed={total_skipped}")
+    print_market_summary(market_stats)
     if total_failed:
         sys.exit(1)
 

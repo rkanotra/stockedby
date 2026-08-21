@@ -36,11 +36,22 @@ python3 scripts/harvest.py --engine gemini --market India
 python3 scripts/harvest.py --engine chatgpt --market all
 ```
 
-Flags: `--category <id>` and `--limit N` scope a run for testing before
-going wide; `--dry-run` previews without calling the API or writing files;
-`--sleep <seconds>` (default 1.5) paces calls. New snapshots are appended,
-never overwritten (data-kit.md rule: re-collect with a new `collected_on`
-date rather than editing an old snapshot — staleness/drift is itself data).
-On a quota/billing error (429) the run stops immediately rather than
-burning through the rest of the queue on calls that will fail the same way;
-whatever was already written stays written.
+**A bare run (no `--category`) is scoped to `DEFAULT_IDS`** — the data-kit's
+star-priority categories (~22/market, ~54 total across all three markets,
+~216 queries/engine) — not the whole bank. `--all-categories` opts into the
+full bank explicitly (~197 categories, ~785 queries/engine — hours per
+engine; run engines sequentially, never concurrently, since two processes
+writing the same market file will clobber each other's saved progress).
+
+Flags: `--category <id>` harvests just that one category; `--all-categories`
+processes the whole bank instead of `DEFAULT_IDS`; `--limit N` caps
+whichever category list was selected — for testing before going wide;
+`--dry-run` previews without calling the API or writing files; `--sleep
+<seconds>` (default 1.5) paces calls. New snapshots are appended, never
+overwritten (data-kit.md rule: re-collect with a new `collected_on` date
+rather than editing an old snapshot — staleness/drift is itself data). The
+market file is saved after every category (not just at the end of a whole
+market), so a crash or interruption only risks the one in-flight category.
+On a quota/billing error the run stops immediately rather than burning
+through the rest of the queue on calls that will fail the same way; a final
+per-market ✓/skip/✗ summary (categories/written/failed) prints either way.
