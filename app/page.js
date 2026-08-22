@@ -1,19 +1,15 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import EngineStrip from "@/components/EngineStrip";
-import BrandStory from "@/components/BrandStory";
-import AisleMonitor from "@/components/AisleMonitor";
-import AisleDiagnose from "@/components/AisleDiagnose";
-import AisleWin from "@/components/AisleWin";
-import AisleProtect from "@/components/AisleProtect";
-import HowItWorks from "@/components/HowItWorks";
-import Markets from "@/components/Markets";
-import DataSection from "@/components/DataSection";
-import Compare from "@/components/Compare";
-import CtaReceipt from "@/components/CtaReceipt";
+import PromiseStrip from "@/components/PromiseStrip";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
+// Homepage philosophy (CLAUDE.md): the homepage IS the test — hero, one
+// promise strip, footer. Education (pillars, markets, data, compare,
+// how-it-works) lives in the report and a future /platform page, not here.
+// Those sections' components still exist (components/Aisle*.js,
+// HowItWorks.js, Markets.js, DataSection.js, Compare.js) — just unused by
+// this page for now.
 export default function Home() {
   return (
     <>
@@ -21,17 +17,7 @@ export default function Home() {
         <Nav />
         <Hero />
       </div>
-      <EngineStrip />
-      <BrandStory />
-      <AisleMonitor />
-      <AisleDiagnose />
-      <AisleWin />
-      <AisleProtect />
-      <HowItWorks />
-      <Markets />
-      <DataSection />
-      <Compare />
-      <CtaReceipt />
+      <PromiseStrip />
       <Footer />
       <ScrollReveal />
     </>

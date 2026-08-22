@@ -8,7 +8,7 @@
       "queries": [
         {
           "qid": "tws-earbuds-budget",
-          "text": "best TWS earbuds under \u20b92000 India",
+          "text": "best TWS earbuds under ₹2000 India",
           "archetype": "category-discovery",
           "intent": "commercial",
           "language": "en"
@@ -56,7 +56,7 @@
               "rank": 4,
               "brand": "CMF by Nothing",
               "product": "CMF Buds 2a",
-              "why": "42dB ANC with Dirac-tuned drivers and app EQ support at \u20b91,899",
+              "why": "42dB ANC with Dirac-tuned drivers and app EQ support at ₹1,899",
               "destination": "marketplace",
               "destination_domain": "flipkart.com"
             },
@@ -97,14 +97,14 @@
               "rank": 1,
               "brand": "boAt (official store)",
               "product": "boat-lifestyle.com daily deals",
-              "why": "Brand's own site showed the deepest cuts (e.g. Airdopes 181 Pro \u20b91,399 vs \u20b94,990 MRP) plus freebies like Spotify offers",
+              "why": "Brand's own site showed the deepest cuts (e.g. Airdopes 181 Pro ₹1,399 vs ₹4,990 MRP) plus freebies like Spotify offers",
               "destination": "brand-direct",
               "destination_domain": "boat-lifestyle.com"
             },
             {
               "rank": 2,
               "brand": "Flipkart",
-              "product": "boAt Airdopes range from \u20b9799",
+              "product": "boAt Airdopes range from ₹799",
               "why": "Widest selection and dominant in search results; sale events (Big Billion Days, Winter Bonanza) push prices lowest",
               "destination": "marketplace",
               "destination_domain": "flipkart.com"
@@ -120,7 +120,7 @@
             {
               "rank": 4,
               "brand": "Croma",
-              "product": "boAt TWS under \u20b92000 collection",
+              "product": "boAt TWS under ₹2000 collection",
               "why": "Online plus offline pickup; curated budget TWS storefront",
               "destination": "marketplace",
               "destination_domain": "croma.com"
@@ -145,7 +145,7 @@
       ]
     },
     {
-      "id": "vitamin-c-serum",
+      "id": "face-serum-vitamin-c",
       "name": "Vitamin C face serum",
       "group": "Beauty & Personal Care",
       "queries": [
@@ -168,7 +168,7 @@
               "rank": 1,
               "brand": "Minimalist",
               "product": "Vitamin C 10% Face Serum",
-              "why": "Most popular Indian serum on ingredient-analysis platforms; clinically proven brightening at ~\u20b9650, fungal-acne safe and lightweight for oily skin",
+              "why": "Most popular Indian serum on ingredient-analysis platforms; clinically proven brightening at ~₹650, fungal-acne safe and lightweight for oily skin",
               "destination": "marketplace",
               "destination_domain": "amazon.in"
             },
@@ -192,7 +192,7 @@
               "rank": 4,
               "brand": "Pilgrim",
               "product": "10% Vitamin C Serum (3-O-ethyl ascorbic acid + 5% niacinamide)",
-              "why": "Stable derivative absorbs without greasy residue \u2014 formulated specifically for oily/combination skin",
+              "why": "Stable derivative absorbs without greasy residue — formulated specifically for oily/combination skin",
               "destination": "brand-direct",
               "destination_domain": "discoverpilgrim.com"
             },
@@ -220,7 +220,7 @@
             "skinsort.com",
             "forbes.com"
           ],
-          "notes": "SOURCE INSIGHT: skinsort.com (ingredient-analysis platform) and D2C brand blogs dominate this category's citations \u2014 several D2C brands (Pilgrim, Deconstruct, CITTA) successfully rank their own educational content, proving problem-first content on brand domains wins AI shelf space in beauty."
+          "notes": "SOURCE INSIGHT: skinsort.com (ingredient-analysis platform) and D2C brand blogs dominate this category's citations — several D2C brands (Pilgrim, Deconstruct, CITTA) successfully rank their own educational content, proving problem-first content on brand domains wins AI shelf space in beauty."
         }
       ]
     }

@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { ENGINE_ORDER, ENGINE_LABELS, matches, effectiveDestination, DEST_LABELS } from "@/lib/scoring";
 import indiaBank from "@/data/india.json";
 import indiaSeed from "@/data/snapshots-india-seed.json";
 import HeroReportCard from "./HeroReportCard";
+import DomainCheckForm from "./DomainCheckForm";
 
 // Real snapshots only (hard rule 2: never fabricate) — resolved once at
 // module load (static JSON imports, no fetch) so the hero report-card mock
@@ -17,11 +17,14 @@ const HERO_BANK_CATEGORY_ID = "face-serum-vitamin-c";
 // "✕ not on this shelf" money moment has to come from a real gap, not a
 // staged one.
 const HERO_BANK_QID = "face-serum-vitamin-c-problem";
-// Real Claude seed for this same product, but filed under a different
-// category id — data/snapshots-india-seed.json predates the current
-// data/india.json category id and was never renamed to match (see
-// CLAUDE.md repo map). Still the real snapshot, just a different key.
-const HERO_SEED_CATEGORY_ID = "vitamin-c-serum";
+// Real Claude seed for this same product. Used to be filed under a
+// different id ("vitamin-c-serum") than data/india.json's real category —
+// lib/bankMerge.js's mergeBank() replaced the whole bank category with the
+// seed's stale 1-query version on id match, so the two were kept
+// deliberately un-matched here as a workaround. Both are now fixed
+// (mergeBank deep-merges instead of replacing; the seed id was renamed to
+// match), so this is just the category id like everywhere else.
+const HERO_SEED_CATEGORY_ID = "face-serum-vitamin-c";
 
 const DEST_CLASS = { "brand-direct": "direct", marketplace: "mktpl", aggregator: "aggr" };
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
@@ -108,24 +111,12 @@ const HERO_ENGINES = buildHeroEngines();
 export default function Hero() {
   return (
     <header className="hero" id="top-hero">
-      <div className="eyebrow">
-        <span className="eyebrow-dot" />
-        AI &amp; agentic commerce intelligence · India · UAE · Saudi Arabia
-      </div>
-      <h1 className="hero-h1">
-        Does AI put you on the shelf — or <span className="flip">Amazon</span>?
-      </h1>
-      <p className="hero-sub">
-        Your customers now ask AI what to buy. StockedBy runs their real questions, in their
-        real languages, across ChatGPT, Gemini and Claude — kept current automatically, never
-        a stale test — and shows you who gets recommended: you, your rival, or the marketplace
-        giants, and where the AI sends the buyer to check out.
+      <h1 className="hero-h1-simple">Is your brand on AI&rsquo;s shelf?</h1>
+      <DomainCheckForm />
+      <div className="hero-note mono">No card. No signup. 2 minutes.</div>
+      <p className="hero-market-line">
+        Built for India · UAE · Saudi Arabia — real shopper questions in Hinglish and Arabic.
       </p>
-      <div className="hero-ctas">
-        <Link href="/test" className="btn-primary">Test my brand — free</Link>
-        <a href="#monitor" className="btn-ghost">See what you get</a>
-      </div>
-      <div className="hero-note mono">No card. No signup to see your verdict. 2 minutes.</div>
 
       {/* product report card mock — tabs + shelf are real snapshot data
           (HERO_ENGINES, computed above); verdict/SOV/engine-badges below

@@ -19,17 +19,17 @@ import { ENGINE_ORDER, ENGINE_LABELS } from "@/lib/scoring";
 // snapshot date or "data coming soon" once the response lands.
 export default function RunningPanel({ queries, harvestingEngines = [] }) {
   const engineStatus = (e) => {
-    if (e === "claude") return "live";
-    if (harvestingEngines.includes(e)) return "testing live now…";
-    return "loading collected data";
+    if (e === "claude") return "checking now";
+    if (harvestingEngines.includes(e)) return "checking live now…";
+    return "using recent answers";
   };
 
   return (
     <div className={styles.card}>
       <span className={styles.label}>
-        Claude · live test running
+        Checking with Claude now
         {harvestingEngines.length > 0 &&
-          ` — also refreshing ${harvestingEngines.map((e) => ENGINE_LABELS[e]).join(" + ")} for this category`}
+          ` — also checking ${harvestingEngines.map((e) => ENGINE_LABELS[e]).join(" and ")}`}
       </span>
       <div className={styles.tabs}>
         {ENGINE_ORDER.map((e) => (
@@ -40,8 +40,7 @@ export default function RunningPanel({ queries, harvestingEngines = [] }) {
         ))}
       </div>
       <p className={styles.runningNote}>
-        Running {queries.length} question{queries.length === 1 ? "" : "s"} against Claude with
-        live web search…
+        Asking {queries.length} question{queries.length === 1 ? "" : "s"}…
       </p>
       {queries.map((q, i) => (
         <div className={styles.queryline} key={q.qid || i}>

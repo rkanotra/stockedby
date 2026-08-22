@@ -1,65 +1,71 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import styles from "./test.module.css";
 import { listMarkets, getMarketCategories, getCategory } from "@/lib/bankStatic";
 import { effectiveQueryText } from "@/lib/queryPersonalize";
 import { staleEnginesFor } from "@/lib/freshness";
-import { ENGINE_ORDER } from "@/lib/scoring";
-import SetupPanel from "./SetupPanel";
-import CustomCategoryPanel from "./CustomCategoryPanel";
-import ReadyPanel from "./ReadyPanel";
+import { ENGINE_ORDER, guessBrandFromDomain } from "@/lib/scoring";
+import DomainStep from "./DomainStep";
+import BrandStep from "./BrandStep";
+import MarketStep from "./MarketStep";
+import CategoryStep from "./CategoryStep";
+import QueryStep from "./QueryStep";
 import RunningPanel from "./RunningPanel";
 import ReportView from "./report/ReportView";
 
 const MARKETS = listMarkets();
 
+// Domain-first step wizard, one decision per screen:
+// domain -> brand -> market -> category -> (generating, only for a custom
+// category) -> queries -> running -> done. Brand/website are collected
+// once, up front — "website" IS the domain here (no separate field), and
+// there's no competitor field at all (dropped for this simplified flow;
+// the report/API still support one, this wizard just never asks).
 export default function TestFlow() {
+  const searchParams = useSearchParams();
+
+  const [domain, setDomain] = useState(() => searchParams.get("domain") || "");
+  const [brand, setBrand] = useState("");
   const [market, setMarket] = useState(MARKETS[0]);
   const [catSearch, setCatSearch] = useState("");
   const [catId, setCatId] = useState("");
-  const [brand, setBrand] = useState("");
-  const [website, setWebsite] = useState("");
-  const [competitor, setCompetitor] = useState("");
   const [queries, setQueries] = useState([]);
-  // setup | custom-brand | ready | running | done
-  const [phase, setPhase] = useState("setup");
+  // domain | brand | market | category | generating | queries | running | done
+  const [phase, setPhase] = useState("domain");
   const [result, setResult] = useState(null);
   const [runError, setRunError] = useState("");
 
-  // Custom-category flow (search had no bank match): customCategoryName is
-  // the merchant's typed category; isCustom marks the currently-loaded
-  // `queries` as Claude-generated rather than from the bank, so ReadyPanel/
-  // startTest/the report all know to treat this run differently.
+  // Custom-category flow (search had no bank match): brand is already known
+  // by the time this can happen (collected in the "brand" step, before
+  // "category"), so unlike the old flow there's no separate brand-collection
+  // screen — picking a custom category goes straight to generating.
   const [customCategoryName, setCustomCategoryName] = useState("");
   const [isCustom, setIsCustom] = useState(false);
-  const [generating, setGenerating] = useState(false);
   const [genError, setGenError] = useState("");
 
   const categories = getMarketCategories(market);
   const bankCategory = getCategory(market, catId);
   const category = isCustom ? { name: customCategoryName } : bankCategory;
   // Best-effort pre-run hint for RunningPanel — see its own comment on why
-  // this can't be a guarantee of what the server will actually harvest. A
-  // custom `category` here has no `snapshots` at all, so staleEnginesFor
-  // (via its own `category?.snapshots || []` guard) naturally reports every
-  // non-claude engine as stale — matches what the server will attempt.
+  // this can't be a guarantee of what the server will actually harvest.
   const harvestingEngines = category
     ? staleEnginesFor(category, ENGINE_ORDER.filter((e) => e !== "claude"))
     : [];
+
+  function goToBrand() {
+    if (!domain.trim()) return;
+    if (!brand.trim()) setBrand(guessBrandFromDomain(domain));
+    setPhase("brand");
+  }
 
   function pickMarket(m) {
     setMarket(m);
     setCatId("");
     setCatSearch("");
-  }
-
-  function backToSetup() {
-    setPhase("setup");
-    setIsCustom(false);
-    setCustomCategoryName("");
-    setGenError("");
+    setPhase("category");
   }
 
   function pickCategory(id) {
@@ -72,46 +78,36 @@ export default function TestFlow() {
     // gets personalized from on every brand-field keystroke; userEdited
     // freezes that once the merchant types into the textarea themselves.
     setQueries((c.queries || []).map((q) => ({ ...q, originalText: q.text, userEdited: false })));
-    setPhase("ready");
+    setPhase("queries");
     setResult(null);
     setRunError("");
   }
 
-  function pickCustomCategory(name) {
+  async function pickCustomCategory(name) {
     setCustomCategoryName(name);
     setCatId("");
     setGenError("");
-    setPhase("custom-brand");
-  }
-
-  async function generateCustom() {
-    if (!brand.trim() || generating) return;
-    setGenerating(true);
-    setGenError("");
+    setPhase("generating");
     try {
       const res = await fetch("/api/generate-queries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ market, categoryName: customCategoryName, brand: brand.trim() }),
+        body: JSON.stringify({ market, categoryName: name, brand: brand.trim() }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setGenError(data.error || "Couldn't generate questions. Please try again.");
+        setGenError(data.error || "Couldn't write questions. Please try again.");
+        setPhase("category");
         return;
       }
-      // Custom queries arrive already personalized to the merchant's brand
-      // (no leader_brand to substitute) — originalText/userEdited still
-      // matter so the textarea's onChange tracking works the same as bank
-      // queries.
       setQueries(data.queries.map((q) => ({ ...q, originalText: q.text, userEdited: false })));
       setIsCustom(true);
       setResult(null);
       setRunError("");
-      setPhase("ready");
+      setPhase("queries");
     } catch {
       setGenError("Network error — please try again.");
-    } finally {
-      setGenerating(false);
+      setPhase("category");
     }
   }
 
@@ -127,8 +123,8 @@ export default function TestFlow() {
       const payload = {
         market,
         brand: brand.trim(),
-        competitor: competitor.trim(),
-        brandWebsite: website.trim(),
+        competitor: "",
+        brandWebsite: domain.trim(),
       };
       if (isCustom) {
         // Custom queries ARE the category definition — nothing to look up
@@ -154,19 +150,19 @@ export default function TestFlow() {
       const data = await res.json();
       if (!res.ok) {
         setRunError(data.error || "Something went wrong. Please try again.");
-        setPhase("ready");
+        setPhase("queries");
         return;
       }
       setResult(data);
       setPhase("done");
     } catch {
       setRunError("Network error — please try again.");
-      setPhase("ready");
+      setPhase("queries");
     }
   }
 
   function testAnother() {
-    setPhase("setup");
+    setPhase("domain");
     setIsCustom(false);
     setCustomCategoryName("");
     setResult(null);
@@ -181,55 +177,46 @@ export default function TestFlow() {
             stocked<b>by</b>
           </Link>
         </div>
-        <div className={styles.mark}>StockedBy · {market} · 3 engines</div>
-        <h1 className={styles.title}>Does AI put you on the shelf?</h1>
-        <p className={styles.sub}>
-          Pick your category, enter your brand, and see who ChatGPT, Gemini and Claude
-          recommend — kept current automatically, never a stale test — and where they send the
-          buyer to check out.
-        </p>
+        <div className={styles.mark}>Free brand check</div>
 
-        {phase === "setup" && (
-          <SetupPanel
-            markets={MARKETS}
-            market={market}
-            onMarket={pickMarket}
+        {phase === "domain" && <DomainStep domain={domain} onDomain={setDomain} onNext={goToBrand} />}
+
+        {phase === "brand" && (
+          <BrandStep brand={brand} onBrand={setBrand} onNext={() => setPhase("market")} onBack={() => setPhase("domain")} />
+        )}
+
+        {phase === "market" && <MarketStep markets={MARKETS} onPick={pickMarket} onBack={() => setPhase("brand")} />}
+
+        {phase === "category" && (
+          <CategoryStep
             categories={categories}
             search={catSearch}
             onSearch={setCatSearch}
             onPick={pickCategory}
             onCustomPick={pickCustomCategory}
+            onBack={() => setPhase("market")}
           />
         )}
 
-        {phase === "custom-brand" && (
-          <CustomCategoryPanel
-            categoryName={customCategoryName}
-            market={market}
-            brand={brand}
-            onBrand={setBrand}
-            onGenerate={generateCustom}
-            onBack={backToSetup}
-            generating={generating}
-            error={genError}
-          />
+        {phase === "generating" && (
+          <div className={styles.card}>
+            <span className={styles.label}>Writing your questions…</span>
+            <p className={styles.hint} style={{ marginTop: 0 }}>
+              This takes a few seconds.
+            </p>
+          </div>
         )}
 
-        {phase === "ready" && category && (
-          <ReadyPanel
-            category={category}
+        {phase === "queries" && category && (
+          <QueryStep
+            categoryName={category.name}
             isCustom={isCustom}
             brand={brand}
-            onBrand={setBrand}
-            website={website}
-            onWebsite={setWebsite}
-            competitor={competitor}
-            onCompetitor={setCompetitor}
             queries={queries}
             onQueryText={setQueryText}
             onStart={startTest}
-            onBack={backToSetup}
-            error={runError}
+            onBack={() => setPhase("category")}
+            error={runError || genError}
           />
         )}
 
@@ -244,7 +231,7 @@ export default function TestFlow() {
           <>
             <ReportView data={result} onRetry={startTest} />
             <button type="button" className={styles.btnGhost} onClick={testAnother}>
-              Test another category
+              Test another product
             </button>
           </>
         )}

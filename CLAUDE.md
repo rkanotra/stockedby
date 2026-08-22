@@ -19,6 +19,24 @@ India, UAE, KSA (Saudi Arabia) — the go-to-market advantage. Pakistan and
 SEA are unannounced future expansion markets — do not mention them in
 user-facing copy until launched.
 
+**Homepage philosophy: the homepage is the test; education lives in the
+report and blog.** app/page.js is deliberately just Nav + Hero (single
+domain input + one button + the interactive report-card demo) +
+PromiseStrip (three one-line promises) + Footer. The pillar/markets/data/
+compare/how-it-works sections (components/Aisle*.js, HowItWorks.js,
+Markets.js, DataSection.js, Compare.js) still exist, unused by this page —
+reserved for a future /platform page, not deleted. Anyone who wants to
+understand HOW StockedBy works gets that from an actual report (which
+already keeps its fuller explainer style) or a future blog, not a landing
+page essay. This extends to the /test wizard too: domain-first, one
+decision per screen (components/test/DomainStep.js ->
+BrandStep.js -> MarketStep.js -> CategoryStep.js -> QueryStep.js), plain
+language throughout — no "engines"/"queries"/"telemetry"/"archetype" on
+either surface, short sentences, buttons that state their outcome ("Check
+my brand — free", "Show my report", "Test another product"). The report
+page (components/test/report/) is explicitly exempt from this — it keeps
+its existing, more detailed explainer copy.
+
 Current phase: **Phase 4 complete — persistence, capture & share are live**
 MVP (landing page, full test flow, /api/test) shipped first; Phase 4 added
 Supabase (leads/reports/snapshots/custom_category_requests —
@@ -145,7 +163,16 @@ Arabic/RTL pass).
   harvested yet — engine tabs show "data coming soon" until harvested.
 - data/snapshots-india-seed.json — real harvested Claude snapshots (TWS
   earbuds, boAt routing, vitamin-C serum) for India, merged into india.json's
-  categories by lib/bank.js.
+  categories by lib/bank.js / lib/bankMerge.js. Its category ids must match
+  data/india.json's real ids exactly — mergeBank() deep-merges a seed
+  category's snapshots onto the matching bank category (appending, never
+  replacing), but an id that doesn't match a real bank category just gets
+  added as its own separate one. A real past bug: the seed's vitamin-C
+  category was filed under "vitamin-c-serum" instead of the bank's real
+  "face-serum-vitamin-c", creating a confusing near-duplicate in the
+  picker (fixed by renaming it) — and mergeBank() itself used to replace a
+  matching bank category wholesale instead of merging, which had silently
+  discarded 8 of "tws-earbuds"'s 10 real harvested snapshots (also fixed).
 - scripts/check_query_bank.py — acceptance gate for all bank batches.
 - lib/freshness.js — SNAPSHOT_MAX_AGE_DAYS + staleEnginesFor(), shared
   client+server (no fs/API keys), used by app/api/test/route.js to decide
@@ -157,15 +184,27 @@ Arabic/RTL pass).
   and real-telemetry-over-self-report principle in JS
   (@google/genai / openai). A successful harvest write-throughs to Supabase
   via lib/snapshotCache.js — see that entry below.
-- app/api/generate-queries + components/test/CustomCategoryPanel.js — custom
-  category flow: when a merchant's category search has no bank match,
-  SetupPanel offers "Test '{query}' as a custom category", which collects
-  their brand (needed up front — the branded-routing question asks about it
-  directly, no leader-brand guessing) then calls this route to generate 4
-  queries with Claude (lib/claudeClient.js generateCustomQueries, adapted
-  from docs/stockedby-data-kit.md §2b). Lands in the normal ReadyPanel
-  review step (mandatory stop) before /api/test ever runs them. Never
-  written into data/*.json — every request is logged to Supabase's
+- components/test/ — the /test wizard, one component per screen:
+  DomainStep.js -> BrandStep.js (brand auto-guessed from the domain via
+  lib/scoring.js's guessBrandFromDomain, always editable) -> MarketStep.js
+  (3 big cards) -> CategoryStep.js (search, large tap targets) ->
+  QueryStep.js (edit + run). TestFlow.js owns the phase state machine and
+  is the only place brand/website/market/category/queries live — website
+  IS the domain (no separate field), and there's no competitor field at
+  all in this flow (dropped for simplicity; /api/test and the report still
+  support one, this wizard just never asks). "Free brand check" is the
+  entire persistent header; each step supplies its own short framing.
+- app/api/generate-queries — custom category flow: when CategoryStep's
+  search has no bank match, it offers "Test '{query}' — we'll write the
+  questions". Brand is already known by then (collected in BrandStep,
+  before MarketStep/CategoryStep), so — unlike the flow's first version —
+  there's no separate brand-collection screen; picking a custom category
+  calls this route immediately with the brand already in hand (no
+  leader-brand guessing either way) and generates 4 queries with Claude
+  (lib/claudeClient.js generateCustomQueries, adapted from
+  docs/stockedby-data-kit.md §2b). Lands in the same QueryStep review
+  (mandatory stop) before /api/test ever runs them. Never written into
+  data/*.json — every request is logged to Supabase's
   custom_category_requests table (console fallback if Supabase isn't
   configured) so the most-requested customs can become real bank additions.
 - supabase/migrations/0001_phase4_schema.sql — the four Phase 4 tables

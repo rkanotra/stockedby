@@ -186,6 +186,65 @@
   color: #5bd6a0;
   flex-shrink: 0;
 }
+/* MarketStep.js: market is its own one-decision screen now, not a row of
+   compact tabs sharing space with the category search — big, thumb-sized
+   cards, one per market. */
+.marketCards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.marketCard {
+  background: #0e1f18;
+  border: 1px solid #2e5240;
+  color: #f1f5ec;
+  border-radius: 12px;
+  padding: 18px 20px;
+  font-family: "Archivo", sans-serif;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 64px;
+}
+.marketCard:hover {
+  border-color: #ffc53d;
+}
+.marketCardName {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+}
+.marketCardLine {
+  font-size: 13px;
+  color: #9db4a6;
+}
+/* CategoryStep.js: same idea — full-width rows with generous padding
+   instead of a dense list, for a thumb on a small screen. */
+.catlistBig {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #264434;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+.catrowBig {
+  padding: 16px 18px;
+  font-size: 16px;
+  border-bottom: 1px dashed #264434;
+  cursor: pointer;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+}
+.catrowBig:last-child {
+  border-bottom: none;
+}
+.catrowBig:hover {
+  background: #1b3628;
+}
 .qedit {
   width: 100%;
   box-sizing: border-box;

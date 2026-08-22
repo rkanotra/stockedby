@@ -1,11 +1,18 @@
+import { Suspense } from "react";
 import TestFlow from "@/components/test/TestFlow";
 
 export const metadata = {
-  title: "Run your free shelf test — StockedBy",
-  description:
-    "Pick your category, enter your brand, and see who ChatGPT, Gemini and Claude recommend — kept current automatically, never a stale test — and where they send the buyer to check out.",
+  title: "Check my brand — free — StockedBy",
+  description: "See if ChatGPT, Gemini and Claude recommend your brand — free, in about 2 minutes.",
 };
 
+// TestFlow reads the ?domain= param via useSearchParams, which requires a
+// Suspense boundary to keep this route prerenderable — see Next's own docs
+// on useSearchParams + prerendering.
 export default function TestPage() {
-  return <TestFlow />;
+  return (
+    <Suspense fallback={null}>
+      <TestFlow />
+    </Suspense>
+  );
 }

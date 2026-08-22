@@ -8,14 +8,9 @@ export default function Nav() {
           stocked<b>by</b>
         </a>
         <div className="nav-links">
-          <a href="#monitor">Features</a>
-          <a href="#markets">Markets</a>
-          <a href="#data">Data</a>
-          <a href="#protect">Protect</a>
-          <a href="#compare">Compare</a>
-          <Link href="/audit">Agent Audit</Link>
+          <Link href="/audit">Free agent check</Link>
         </div>
-        <Link href="/test" className="btn">Run free shelf test</Link>
+        <Link href="/test" className="btn">Check my brand</Link>
       </div>
     </nav>
   );

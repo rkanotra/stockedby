@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer>
@@ -11,19 +13,12 @@ export default function Footer() {
             Every AI assistant is a shop now — StockedBy tells you if you&rsquo;re stocked by
             ChatGPT, Gemini and Claude.
           </span>
-          <br />
-          <span style={{ fontSize: "12px" }}>
-            The visibility, intelligence and trust layer for AI-driven commerce — starting with the merchants of India, UAE &amp; Saudi Arabia.
-          </span>
         </div>
         <div>
-          <a href="#monitor">Measure</a> · <a href="#win">Improve</a> · <a href="#protect">Protect</a>
-          <br />
-          <a href="#markets">Markets</a> · <a href="#data">Data</a> · <a href="#compare">Compare</a>
+          <Link href="/test">Check my brand</Link> · <Link href="/audit">Free agent check</Link>
         </div>
         <div className="mono" style={{ fontSize: "11px" }}>
-          Engines: ChatGPT · Gemini · Claude
-          <br />© 2026 StockedBy
+          © 2026 StockedBy
         </div>
       </div>
     </footer>
