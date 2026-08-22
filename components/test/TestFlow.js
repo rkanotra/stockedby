@@ -8,6 +8,7 @@ import { listMarkets, getMarketCategories, getCategory } from "@/lib/bankStatic"
 import { effectiveQueryText } from "@/lib/queryPersonalize";
 import { staleEnginesFor } from "@/lib/freshness";
 import { ENGINE_ORDER, guessBrandFromDomain } from "@/lib/scoring";
+import { runAllQueries } from "@/lib/runQueries";
 import DomainStep from "./DomainStep";
 import BrandStep from "./BrandStep";
 import MarketStep from "./MarketStep";
@@ -33,10 +34,16 @@ export default function TestFlow() {
   const [catSearch, setCatSearch] = useState("");
   const [catId, setCatId] = useState("");
   const [queries, setQueries] = useState([]);
-  // domain | brand | market | category | generating | queries | running | done
+  // domain | brand | market | category | generating | queries | running | retrying | done
   const [phase, setPhase] = useState("domain");
   const [result, setResult] = useState(null);
   const [runError, setRunError] = useState("");
+  // qid -> "searching" | "done" | "error", live per-question progress —
+  // each question is now its own request (lib/runQueries.js), so this can
+  // reflect real per-question completion instead of one shared state for
+  // the whole batch. Also drives "retrying" phase's running list, scoped
+  // to just the question(s) actually being retried.
+  const [liveStatus, setLiveStatus] = useState({});
 
   // Custom-category flow (search had no bank match): brand is already known
   // by the time this can happen (collected in the "brand" step, before
@@ -115,49 +122,95 @@ export default function TestFlow() {
     setQueries((prev) => prev.map((q) => (q.qid === qid ? { ...q, text, userEdited: true } : q)));
   }
 
+  // Runs a batch of questions (all of them for a fresh test, or just the
+  // failed ones for a retry — see retryFailedQuestions), each as its own
+  // request via lib/runQueries.js, with live per-question status feeding
+  // liveStatus for RunningPanel. Returns the resolved rows.
+  async function runQuestions(finalQueries) {
+    setLiveStatus(Object.fromEntries(finalQueries.map((q) => [q.qid, "searching"])));
+    return runAllQueries(finalQueries, (qid, status) =>
+      setLiveStatus((prev) => ({ ...prev, [qid]: status }))
+    );
+  }
+
+  // Submits liveRuns (already collected via runQuestions) to /api/test for
+  // scoring, harvest, sentiment and persistence — shared by both a fresh
+  // run and a retry, since both ultimately need the same server-side work
+  // re-done over a (possibly partially updated) set of question results.
+  async function submitLiveRuns(liveRuns) {
+    const payload = {
+      market,
+      brand: brand.trim(),
+      competitor: "",
+      brandWebsite: domain.trim(),
+      liveRuns,
+    };
+    if (isCustom) {
+      // Custom queries ARE the category definition — nothing to look up
+      // or override server-side, and nothing gets written into data/*.json.
+      payload.customCategory = {
+        name: customCategoryName,
+        queries: liveRuns.map((r) => ({
+          qid: r.qid,
+          text: r.text,
+          archetype: r.archetype,
+          language: queries.find((q) => q.qid === r.qid)?.language || "en",
+        })),
+      };
+    } else {
+      payload.categoryId = catId;
+      payload.queries = liveRuns.map((r) => ({ qid: r.qid, text: r.text }));
+    }
+    const res = await fetch("/api/test", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+    return data;
+  }
+
   async function startTest() {
     if (!brand.trim() || queries.length === 0) return;
     setPhase("running");
     setRunError("");
     try {
-      const payload = {
-        market,
-        brand: brand.trim(),
-        competitor: "",
-        brandWebsite: domain.trim(),
-      };
-      if (isCustom) {
-        // Custom queries ARE the category definition — nothing to look up
-        // or override server-side, and nothing gets written into data/*.json.
-        payload.customCategory = {
-          name: customCategoryName,
-          queries: queries.map((q) => ({
-            qid: q.qid,
-            text: effectiveQueryText(q, brand),
-            archetype: q.archetype,
-            language: q.language,
-          })),
-        };
-      } else {
-        payload.categoryId = catId;
-        payload.queries = queries.map((q) => ({ qid: q.qid, text: effectiveQueryText(q, brand) }));
-      }
-      const res = await fetch("/api/test", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setRunError(data.error || "Something went wrong. Please try again.");
-        setPhase("queries");
-        return;
-      }
+      const finalQueries = queries.map((q) => ({
+        qid: q.qid,
+        text: effectiveQueryText(q, brand),
+        archetype: q.archetype,
+      }));
+      const liveRuns = await runQuestions(finalQueries);
+      const data = await submitLiveRuns(liveRuns);
       setResult(data);
       setPhase("done");
-    } catch {
-      setRunError("Network error — please try again.");
+    } catch (e) {
+      setRunError(e?.message || "Network error — please try again.");
       setPhase("queries");
+    }
+  }
+
+  // The report's "Retry" button (components/test/report/VerdictCard.js)
+  // calls this with report.appearanceSummary.failedQueries — re-runs ONLY
+  // those questions (each its own request, with its own retry, same as a
+  // fresh test), merges the new results into the already-good ones from
+  // `result.liveRuns`, and resubmits the full set so the report reflects
+  // the fix. A question that succeeds elsewhere is never re-fetched.
+  async function retryFailedQuestions(failedQueries) {
+    if (!result || !Array.isArray(failedQueries) || failedQueries.length === 0) return;
+    setPhase("retrying");
+    setRunError("");
+    try {
+      const updates = await runQuestions(failedQueries);
+      const updatesByQid = new Map(updates.map((u) => [u.qid, u]));
+      const mergedLiveRuns = result.liveRuns.map((r) => updatesByQid.get(r.qid) || r);
+      const data = await submitLiveRuns(mergedLiveRuns);
+      setResult(data);
+      setPhase("done");
+    } catch (e) {
+      setRunError(e?.message || "Network error — please try again.");
+      setPhase("done");
     }
   }
 
@@ -167,6 +220,7 @@ export default function TestFlow() {
     setCustomCategoryName("");
     setResult(null);
     setRunError("");
+    setLiveStatus({});
   }
 
   return (
@@ -227,12 +281,25 @@ export default function TestFlow() {
           <RunningPanel
             queries={queries.map((q) => ({ ...q, text: effectiveQueryText(q, brand) }))}
             harvestingEngines={harvestingEngines}
+            liveStatus={liveStatus}
+          />
+        )}
+
+        {phase === "retrying" && (
+          <RunningPanel
+            queries={queries
+              .filter((q) => q.qid in liveStatus)
+              .map((q) => ({ ...q, text: effectiveQueryText(q, brand) }))}
+            liveStatus={liveStatus}
+            label={`Rechecking ${Object.keys(liveStatus).length} question${
+              Object.keys(liveStatus).length === 1 ? "" : "s"
+            }…`}
           />
         )}
 
         {phase === "done" && result && (
           <>
-            <ReportView data={result} onRetry={startTest} />
+            <ReportView data={result} onRetry={retryFailedQuestions} />
             <button type="button" className={styles.btnGhost} onClick={testAnother}>
               Test another product
             </button>

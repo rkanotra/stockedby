@@ -3,10 +3,11 @@
 import styles from "./test.module.css";
 import { ENGINE_ORDER, ENGINE_LABELS } from "@/lib/scoring";
 
-// All queries fire in one parallel batch server-side (see app/api/test),
-// so we can't stream true per-query timing — every dot goes to "searching"
-// together, then flips to its real per-query done/error state from the
-// response. Still reflects real outcomes, just coarser-grained timing.
+// Each question now runs as its own request (lib/runQueries.js, called
+// from components/test/TestFlow.js) instead of one /api/test invocation
+// running all of them internally — so liveStatus (qid -> "searching" |
+// "done" | "error") reflects real per-question completion, not one shared
+// state for the whole batch.
 //
 // harvestingEngines: computed client-side (TestFlow.js, via lib/freshness.js
 // against the category data already bundled by lib/bankStatic.js) — which
@@ -17,7 +18,13 @@ import { ENGINE_ORDER, ENGINE_LABELS } from "@/lib/scoring";
 // in advance. No data is fabricated either way — if the on-demand harvest
 // doesn't happen, the post-run tab correctly falls back to the real
 // snapshot date or "data coming soon" once the response lands.
-export default function RunningPanel({ queries, harvestingEngines = [] }) {
+//
+// label overrides the default "Asking N questions…" line — TestFlow.js
+// uses this for the report's "Retry" flow, scoped to just the question(s)
+// actually being retried.
+const DOT_CLASS = { searching: "dotSearching", done: "dotDone", error: "dotError" };
+
+export default function RunningPanel({ queries, harvestingEngines = [], liveStatus = {}, label }) {
   const engineStatus = (e) => {
     if (e === "claude") return "checking now";
     if (harvestingEngines.includes(e)) return "checking live now…";
@@ -40,14 +47,17 @@ export default function RunningPanel({ queries, harvestingEngines = [] }) {
         ))}
       </div>
       <p className={styles.runningNote}>
-        Asking {queries.length} question{queries.length === 1 ? "" : "s"}…
+        {label || `Asking ${queries.length} question${queries.length === 1 ? "" : "s"}…`}
       </p>
-      {queries.map((q, i) => (
-        <div className={styles.queryline} key={q.qid || i}>
-          <span className={`${styles.dot} ${styles.dotSearching}`} />
-          <span style={{ flex: 1 }} dir="auto">{q.text}</span>
-        </div>
-      ))}
+      {queries.map((q, i) => {
+        const status = liveStatus[q.qid] || "searching";
+        return (
+          <div className={styles.queryline} key={q.qid || i}>
+            <span className={`${styles.dot} ${styles[DOT_CLASS[status]]}`} />
+            <span style={{ flex: 1 }} dir="auto">{q.text}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }

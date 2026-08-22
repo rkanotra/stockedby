@@ -129,8 +129,10 @@ Arabic/RTL pass).
    sitting in a bank file is silently ignored (never matched by
    ENGINE_ORDER), not an error. Query-bank GENERATION is Claude/ChatGPT only.
 7. **Cost ceiling ≤ $0.05 per free test:** queries come from the bank (no
-   generation call), web_search max_uses: 2 per query, model claude-sonnet-4-6,
-   aux calls (sentiment) on haiku.
+   generation call), web_search max_uses: 2 per query (1 for the
+   problem-first archetype specifically — its open-ended phrasing triggers
+   the longest searches, see app/api/test/query/route.js), model
+   claude-sonnet-4-6, aux calls (sentiment) on haiku.
 8. **Email gate before deep results** (live, Phase 4): verdict + engine
    scoreboxes (VerdictCard) are free; everything else (checkout battle,
    Share of AI Voice, sentiment, the shelves, fanout, trusted sources, audit
@@ -150,8 +152,10 @@ Arabic/RTL pass).
    email/consent) or the /api/lead rate limit (its own IP-cap namespace,
    separate from /api/test's) blocks submission.
 9. **Rate limit**: cap tests per IP per day at 10 in app/api/test (also
-   applied, with their own separate counters, to app/api/generate-queries
-   and app/api/lead — see lib/rateLimit.js's namespace param). [STILL
+   applied, with their own separate counters, to app/api/generate-queries,
+   app/api/lead, and app/api/test/query (limit 200 — abuse-prevention only,
+   not the real per-test cap, since one test now fires several of these) —
+   see lib/rateLimit.js's namespace param). [STILL
    DEFERRED] the stronger per-email-per-category-per-month limit hard rule
    8's original draft described — nothing enforces "1 free test per email"
    yet, only the IP-based caps above.
@@ -220,16 +224,39 @@ Arabic/RTL pass).
   and real-telemetry-over-self-report principle in JS
   (@google/genai / openai). A successful harvest write-throughs to Supabase
   via lib/snapshotCache.js — see that entry below.
+- app/api/test/query/route.js + lib/runQueries.js — the live per-question
+  Claude call is its own endpoint, one request per shopper question, hard-
+  capped at 50s (lib/claudeClient.js's askShoppingAssistant timeoutMs,
+  which now covers a possible pause_turn continuation too — see its own
+  comment) with web_search max_uses dropped to 1 for the problem-first
+  archetype specifically (its open-ended phrasing triggers the longest
+  searches). lib/runQueries.js is the client-side orchestrator
+  (components/test/TestFlow.js): runAllQueries() fires every question in
+  parallel, each with its own client-driven retry (a fresh separate
+  request, not a same-invocation retry) before it can end up "error". This
+  replaced app/api/test doing all the live Claude calls itself inside one
+  Promise.all — that meant every question in a test shared ONE Vercel
+  function's duration budget, so one slow/paused question could threaten
+  the whole batch. app/api/test now requires `liveRuns` in its request
+  body (the client-collected results) instead of running the calls itself
+  — see its own comment.
 - components/test/ — the /test wizard, one component per screen:
   DomainStep.js -> BrandStep.js (brand auto-guessed from the domain via
   lib/scoring.js's guessBrandFromDomain, always editable) -> MarketStep.js
   (3 big cards) -> CategoryStep.js (search, large tap targets) ->
-  QueryStep.js (edit + run). TestFlow.js owns the phase state machine and
-  is the only place brand/website/market/category/queries live — website
-  IS the domain (no separate field), and there's no competitor field at
-  all in this flow (dropped for simplicity; /api/test and the report still
-  support one, this wizard just never asks). "Free brand check" is the
-  entire persistent header; each step supplies its own short framing.
+  QueryStep.js (edit + run) -> RunningPanel.js (live per-question
+  searching/done/error dots, via lib/runQueries.js's onStatus callback).
+  TestFlow.js owns the phase state machine and is the only place brand/
+  website/market/category/queries live — website IS the domain (no
+  separate field), and there's no competitor field at all in this flow
+  (dropped for simplicity; /api/test and the report still support one,
+  this wizard just never asks). The report's "Retry" button
+  (components/test/report/VerdictCard.js, shown when
+  report.appearanceSummary.failed > 0) calls TestFlow.js's
+  retryFailedQuestions() with report.appearanceSummary.failedQueries — re-
+  runs ONLY those questions (not the whole test), merges the fixed results
+  into the already-good ones from the prior response's liveRuns, and
+  resubmits to /api/test for a fresh report.
 - app/api/generate-queries — custom category flow: when CategoryStep's
   search has no bank match, it offers "Test '{query}' — we'll write the
   questions". Brand is already known by then (collected in BrandStep,

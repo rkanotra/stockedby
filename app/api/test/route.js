@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCategory, listMarkets } from "@/lib/bank";
-import { askShoppingAssistant, analyzeSentiment } from "@/lib/claudeClient";
+import { analyzeSentiment } from "@/lib/claudeClient";
 import { HARVEST_ENGINES } from "@/lib/harvestClients";
 import { staleEnginesFor } from "@/lib/freshness";
 import { fetchCachedSnapshots, writeThroughSnapshot } from "@/lib/snapshotCache";
@@ -15,58 +15,25 @@ import {
 } from "@/lib/scoring";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
 
-// Vercel Hobby defaults Node functions to a 10s timeout — a single live
-// Claude call with web search regularly runs longer than that. 130s budgets
-// for the worst realistic case of a single query: 40s first attempt + a
-// pause_turn continuation (lib/claudeClient.js — Anthropic's server-side
-// web-search loop can pause mid-turn on a search-heavy question; capped at
-// 10s to resume) + up to 9s of 429 backoff/stagger + 20s retry attempt +
-// its own possible 10s continuation + ~10s sentiment + overhead. If this
-// exceeds the account's actual plan ceiling, the deploy fails cleanly (the
-// prior deployment stays live) — dial the number back rather than guess
-// further.
-export const maxDuration = 130;
+// This route no longer makes the live per-question Claude calls itself —
+// that used to mean every question in a test shared ONE Vercel function's
+// duration budget, so a single slow or paused question (see
+// lib/claudeClient.js's pause_turn handling) could burn most of it, and
+// hitting the ceiling killed every other question's already-good result
+// along with it. Each question now runs as its own request against
+// app/api/test/query, orchestrated client-side (components/test/TestFlow.js)
+// with its own retry — this route just receives the results (`liveRuns` in
+// the request body, required) and does the rest: on-demand chatgpt/gemini
+// harvest, scoring, sentiment, and persistence. Its own remaining worst
+// case is bounded by harvest (its own 40s TIMEOUT_MS, lib/harvestClients.js)
+// running in parallel across up to 8 jobs, plus sentiment (haiku, ~10s) —
+// comfortably under even a conservative reading of Vercel's duration
+// limits, which is the point: shrink what one invocation has to do, rather
+// than raise how long it's allowed to run.
+export const maxDuration = 65;
 export const runtime = "nodejs";
 
 const MAX_QUERIES = 6;
-const QUERY_TIMEOUT_MS = 40_000;
-const RETRY_TIMEOUT_MS = 20_000;
-const RETRY_WAIT_MS = 3_000;
-const RETRY_STAGGER_MS = 2_000;
-const MAX_STAGGERED_INDEX = 3; // caps worst-case added wall time from stagger
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function isRateLimitError(err) {
-  return err?.status === 429;
-}
-
-// Each query gets one retry, 3s after the first failure, before it's ever
-// reported as "couldn't complete" — a slow web search or a momentary 429
-// shouldn't cost a merchant a real data point. When the first failure was a
-// 429 specifically, the retry is additionally staggered by query index (2s
-// each, capped) rather than firing right back at the API alongside every
-// other query's retry — the same simultaneous-burst pattern that likely
-// caused the 429 in the first place. Never throws — always resolves to a
-// Promise.allSettled-shaped {status, value|reason} object, since this is
-// used in place of Promise.allSettled itself below.
-async function runQueryWithRetry(q, index) {
-  try {
-    const value = await askShoppingAssistant(q.text, { timeoutMs: QUERY_TIMEOUT_MS });
-    return { status: "fulfilled", value };
-  } catch (firstErr) {
-    const stagger = isRateLimitError(firstErr) ? Math.min(index, MAX_STAGGERED_INDEX) * RETRY_STAGGER_MS : 0;
-    await sleep(RETRY_WAIT_MS + stagger);
-    try {
-      const value = await askShoppingAssistant(q.text, { timeoutMs: RETRY_TIMEOUT_MS });
-      return { status: "fulfilled", value };
-    } catch (secondErr) {
-      return { status: "rejected", reason: secondErr };
-    }
-  }
-}
 
 function badRequest(message) {
   return NextResponse.json({ error: message }, { status: 400 });
@@ -87,7 +54,16 @@ export async function POST(request) {
     return badRequest("Invalid JSON body.");
   }
 
-  const { market, categoryId, brand, competitor, brandWebsite, queries: queryOverrides, customCategory } = body || {};
+  const {
+    market,
+    categoryId,
+    brand,
+    competitor,
+    brandWebsite,
+    queries: queryOverrides,
+    customCategory,
+    liveRuns: clientLiveRuns,
+  } = body || {};
 
   if (!market || !listMarkets().includes(market)) {
     return badRequest(`"market" must be one of: ${listMarkets().join(", ")}.`);
@@ -159,6 +135,55 @@ export async function POST(request) {
     return badRequest("This category has no queries to run.");
   }
 
+  // liveRuns is now required — the client already ran every question
+  // through app/api/test/query (one request each, in parallel, with its
+  // own retry) before ever calling this route. Never re-fetched here: a
+  // client-supplied result is exactly as real as one this route would have
+  // fetched itself (same function, same ANTHROPIC_API_KEY, just invoked as
+  // a separate short-lived request) — only its STRUCTURE is validated
+  // below, never its content re-derived or second-guessed.
+  if (!Array.isArray(clientLiveRuns) || clientLiveRuns.length !== finalQueries.length) {
+    return badRequest('"liveRuns" must include exactly one result per question — see app/api/test/query.');
+  }
+  const liveRunByQid = new Map(
+    clientLiveRuns.filter((r) => r && typeof r.qid === "string").map((r) => [r.qid, r])
+  );
+  if (!finalQueries.every((q) => liveRunByQid.has(q.qid))) {
+    return badRequest('"liveRuns" is missing a result for one or more questions.');
+  }
+  const liveRuns = finalQueries.map((q) => {
+    const r = liveRunByQid.get(q.qid);
+    if (r.status === "done") {
+      return {
+        qid: q.qid,
+        text: q.text,
+        archetype: q.archetype,
+        status: "done",
+        recs: Array.isArray(r.recs) ? r.recs : [],
+        searches: Array.isArray(r.searches) ? r.searches : [],
+        citations: Array.isArray(r.citations) ? r.citations : [],
+      };
+    }
+    return {
+      qid: q.qid,
+      text: q.text,
+      archetype: q.archetype,
+      status: "error",
+      recs: [],
+      searches: [],
+      citations: [],
+      error: typeof r.error === "string" ? r.error : "Live test failed for this question after a retry.",
+    };
+  });
+
+  const doneRuns = liveRuns.filter((r) => r.status === "done");
+  if (doneRuns.length === 0) {
+    return NextResponse.json(
+      { error: "The live Claude test failed for every question. Please try again." },
+      { status: 502 }
+    );
+  }
+
   // Phase 4 snapshot cache: Supabase rows for this market+category, merged
   // on top of the bank's own inline seed snapshots (lib/snapshotCache.js —
   // a no-op returning [] for custom categories, or if Supabase isn't
@@ -178,9 +203,7 @@ export async function POST(request) {
   // unchanged. Cost guard: runs at most once per test (no retry loop, one
   // job per stale engine here), capped at HARVEST_QUERY_CAP queries per
   // engine — with only chatgpt/gemini ever eligible, that's <= 2 engines x
-  // 4 queries = 8 extra calls, max. Fired in the SAME Promise.allSettled
-  // batch as the live Claude calls below so it costs no extra wall-clock
-  // time, not appended after.
+  // 4 queries = 8 extra calls, max, run in parallel below.
   const HARVEST_QUERY_CAP = 4;
   const HARVEST_ENV_KEY = { gemini: "GEMINI_API_KEY", chatgpt: "OPENAI_API_KEY" };
   const harvestEngines = staleEnginesFor(
@@ -190,19 +213,12 @@ export async function POST(request) {
   const harvestQueries = finalQueries.slice(0, HARVEST_QUERY_CAP);
   const harvestJobs = harvestEngines.flatMap((engine) => harvestQueries.map((q) => ({ engine, q })));
 
-  // Live Claude calls run in parallel — sequential per-query calls (as in
-  // the prototype, which needed that to drive incremental UI state) would
-  // risk exceeding maxDuration for a 4-query category. Each query retries
-  // once on its own (runQueryWithRetry, see above) before it can end up in
-  // `settled` as rejected, so `settled` is already in Promise.allSettled's
-  // {status, value|reason} shape without needing that wrapper itself. On-
-  // demand harvest jobs (if any) run in this same parallel batch — they
-  // keep their existing run-once-ever cost guard (no retry), unrelated to
-  // this per-query retry.
-  const [settled, harvestSettled] = await Promise.all([
-    Promise.all(finalQueries.map((q, i) => runQueryWithRetry(q, i))),
-    Promise.allSettled(harvestJobs.map((job) => HARVEST_ENGINES[job.engine](job.q.text))),
-  ]);
+  // On-demand harvest jobs (if any) — unrelated to the live Claude calls
+  // now, since those already happened client-side before this request.
+  // Keep their existing run-once-ever cost guard (no retry).
+  const harvestSettled = await Promise.allSettled(
+    harvestJobs.map((job) => HARVEST_ENGINES[job.engine](job.q.text))
+  );
 
   // Never written back to data/*.json (Vercel's filesystem is ephemeral
   // anyway) — instead write-through to the Supabase snapshots table
@@ -236,39 +252,6 @@ export async function POST(request) {
       });
     })
   );
-
-  const liveRuns = finalQueries.map((q, i) => {
-    const result = settled[i];
-    if (result.status === "fulfilled") {
-      return {
-        qid: q.qid,
-        text: q.text,
-        archetype: q.archetype,
-        status: "done",
-        recs: result.value.recs,
-        searches: result.value.searches,
-        citations: result.value.citations,
-      };
-    }
-    return {
-      qid: q.qid,
-      text: q.text,
-      archetype: q.archetype,
-      status: "error",
-      recs: [],
-      searches: [],
-      citations: [],
-      error: result.reason?.message || "Live test failed for this query after a retry.",
-    };
-  });
-
-  const doneRuns = liveRuns.filter((r) => r.status === "done");
-  if (doneRuns.length === 0) {
-    return NextResponse.json(
-      { error: "The live Claude test failed for every query. Please try again." },
-      { status: 502 }
-    );
-  }
 
   // engineData: claude = live results just collected. Every other engine
   // (rule 6 — chatgpt/gemini only, grok/perplexity/copilot out of scope)

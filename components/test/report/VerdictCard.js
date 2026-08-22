@@ -41,7 +41,11 @@ export default function VerdictCard({ market, brand, category, report, onRetry }
             {appearance.failed} question{appearance.failed === 1 ? "" : "s"} couldn&rsquo;t complete
           </span>
           {onRetry && (
-            <button type="button" className={styles.retryBtn} onClick={onRetry}>
+            <button
+              type="button"
+              className={styles.retryBtn}
+              onClick={() => onRetry(appearance.failedQueries)}
+            >
               Retry
             </button>
           )}
