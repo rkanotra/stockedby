@@ -13,6 +13,13 @@ const DEST_COLORS = {
 
 const hasRealData = (engines, e) => (engines[e] || []).some((r) => r.source !== "missing");
 
+// Rendered both as a visible caption (mobile-first — a hover-only tooltip
+// would never reach a touch device) and as a title= tooltip on the
+// non-claude tabs for desktop hover, so the explanation isn't gated behind
+// either mechanism alone.
+const FRESHNESS_EXPLAINER =
+  "We fetch each engine’s answer live the first time a category is tested, then reuse it briefly so repeat tests stay fast and affordable — Claude re-runs fresh every time.";
+
 export default function ShelvesCard({ market, brand, competitor, engines }) {
   // ChatGPT first if it actually has data for this category — that's the
   // engine most founders think of first — falling back to Claude (always
@@ -20,13 +27,25 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
   const [activeEngine, setActiveEngine] = useState(() => (hasRealData(engines, "chatgpt") ? "chatgpt" : "claude"));
   const isRival = isRivalFor(market);
   const hasComp = Boolean(competitor && competitor.trim());
+  // Local date, not UTC — a snapshot collected_on (server-stamped in UTC,
+  // see app/api/test/route.js) landing on "today" from the merchant's own
+  // clock is the plain-language claim "fresh today" is making.
+  const todayLocal = (() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  })();
 
   const engineTabInfo = (e) => {
     const rows = engines[e] || [];
     if (e === "claude") return "live";
     const withData = rows.find((r) => r.source !== "missing");
     if (!withData) return "data coming soon";
-    return withData.source === "live-harvest" ? "collected today" : `collected ${withData.collected_on}`;
+    // Same "fresh today" label whether this row was just on-demand
+    // harvested for this exact test (source live-harvest) or is a cached
+    // snapshot that merely happens to be dated today — both are equally
+    // "fresh," the distinction that matters to a merchant is the date, not
+    // which of those two paths produced it.
+    return withData.collected_on === todayLocal ? "fresh today" : `collected ${withData.collected_on}`;
   };
 
   const activeRows = (engines[activeEngine] || []).filter((r) => r.source !== "missing");
@@ -46,12 +65,14 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
             type="button"
             className={`${styles.tab} ${activeEngine === e ? styles.active : ""}`}
             onClick={() => setActiveEngine(e)}
+            title={e !== "claude" ? FRESHNESS_EXPLAINER : undefined}
           >
             {ENGINE_LABELS[e]}
             <span className={styles.st}>{engineTabInfo(e)}</span>
           </button>
         ))}
       </div>
+      <p className={styles.hint} style={{ marginTop: 10 }}>{FRESHNESS_EXPLAINER}</p>
 
       {activeRows.map((r) => {
         const youIdx = r.recs.findIndex((rec) => matches(brand, rec.brand) || matches(brand, rec.product));
