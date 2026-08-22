@@ -322,6 +322,7 @@ h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size
 .feat h3 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 18px; margin-bottom: 8px; }
 .feat p { color: var(--muted); font-size: 14px; }
 .flabel { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted2); display: block; margin-bottom: 10px; }
+.faq-list { display: flex; flex-direction: column; gap: 14px; max-width: 760px; }
 .soon {
   display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--ink); background: var(--green2); border-radius: 999px; padding: 3px 9px; margin-left: 8px; vertical-align: 2px;

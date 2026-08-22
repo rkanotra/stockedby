@@ -8,11 +8,18 @@ import Markets from "@/components/Markets";
 import DataSection from "@/components/DataSection";
 import Compare from "@/components/Compare";
 import ScrollReveal from "@/components/ScrollReveal";
+import { buildOpenGraph, buildTwitter } from "@/lib/site";
+
+const TITLE = "Why StockedBy — AI visibility built for India, UAE and Saudi Arabia";
+const DESCRIPTION =
+  "AI visibility scoring, fix tooling and agent-readiness infrastructure for brands in India, UAE and Saudi Arabia — not a US tool with your currency swapped in.";
 
 export const metadata = {
-  title: "Why StockedBy",
-  description:
-    "AI visibility scoring, GEO fix tooling and agent-readiness infrastructure for brands in India, UAE and Saudi Arabia.",
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/why" },
+  openGraph: buildOpenGraph({ title: TITLE, description: DESCRIPTION, path: "/why" }),
+  twitter: buildTwitter({ title: TITLE, description: DESCRIPTION }),
 };
 
 // Homepage philosophy (CLAUDE.md): the homepage is the door, this page is

@@ -1,8 +1,15 @@
 import Link from "next/link";
+import { buildOpenGraph, buildTwitter } from "@/lib/site";
+
+const TITLE = "Privacy — StockedBy";
+const DESCRIPTION = "What StockedBy collects, why, and how to ask us to delete it.";
 
 export const metadata = {
-  title: "Privacy — StockedBy",
-  description: "What StockedBy collects, why, and how to ask us to delete it.",
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/privacy" },
+  openGraph: buildOpenGraph({ title: TITLE, description: DESCRIPTION, path: "/privacy" }),
+  twitter: buildTwitter({ title: TITLE, description: DESCRIPTION }),
 };
 
 // Deliberately short and specific to what this app actually does today —

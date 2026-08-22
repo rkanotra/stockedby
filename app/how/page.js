@@ -1,11 +1,20 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import HowItWorks from "@/components/HowItWorks";
+import FaqSection from "@/components/FaqSection";
 import ScrollReveal from "@/components/ScrollReveal";
+import { buildOpenGraph, buildTwitter } from "@/lib/site";
+
+const TITLE = "How it works — StockedBy";
+const DESCRIPTION =
+  "Every AI assistant is now a shop — here's how a StockedBy test works, in three steps.";
 
 export const metadata = {
-  title: "How it works",
-  description: "Every AI assistant is now a shop — here's how a StockedBy test works, in three steps.",
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/how" },
+  openGraph: buildOpenGraph({ title: TITLE, description: DESCRIPTION, path: "/how" }),
+  twitter: buildTwitter({ title: TITLE, description: DESCRIPTION }),
 };
 
 // The 3-step section (components/HowItWorks.js) unchanged, plus the story
@@ -34,6 +43,7 @@ export default function HowPage() {
         </p>
       </div>
       <HowItWorks />
+      <FaqSection />
       <Footer />
       <ScrollReveal />
     </>

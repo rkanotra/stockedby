@@ -1,9 +1,24 @@
 import "./globals.css";
+import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
 
+const TITLE = "StockedBy — Does AI recommend your brand?";
+const DESCRIPTION =
+  "Check if ChatGPT, Gemini and Claude recommend your brand. Free AI visibility test for brands in India, UAE and Saudi Arabia.";
+
+// Root-level defaults — every page below sets its own full metadata export
+// (title/description/canonical/openGraph/twitter, via lib/site.js's
+// buildOpenGraph/buildTwitter) rather than relying on inheriting from
+// here, since Next only shallow-merges nested fields like openGraph per
+// segment (a child that sets its own openGraph object fully replaces this
+// one, not merges into it). This is still a real fallback for any route
+// that doesn't override it. metadataBase lets every page use a relative
+// path (canonical: "/why") instead of repeating SITE_URL.
 export const metadata = {
-  title: "StockedBy — Does AI put you on the shelf?",
-  description:
-    "AI & agentic commerce intelligence for brands in India, UAE & Saudi Arabia. Measure how often ChatGPT, Gemini and Claude recommend you, improve your GEO, and protect your position as AI-driven commerce scales.",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: buildOpenGraph({ title: TITLE, description: DESCRIPTION, path: "/" }),
+  twitter: buildTwitter({ title: TITLE, description: DESCRIPTION }),
 };
 
 export default function RootLayout({ children }) {

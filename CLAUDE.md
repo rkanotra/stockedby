@@ -345,7 +345,28 @@ Arabic/RTL pass).
   off the homepage and /test wizard.
 - app/how/page.js — "How it works": a short story paragraph ("every AI
   assistant is now a shop") followed by HowItWorks.js's unchanged 3-step
-  section.
+  section, then components/FaqSection.js — 5 real Q&As rendered visibly
+  (Google's structured-data guidelines require FAQPage markup to reflect
+  content actually on the page) plus the matching FAQPage JSON-LD.
+- SEO foundation: lib/site.js's buildOpenGraph()/buildTwitter() build a
+  fully self-contained openGraph/twitter object per page (image, siteName,
+  type, locale always included) — every page metadata export uses these
+  rather than writing the object literally, because Next only SHALLOW-
+  merges nested metadata fields per route segment (a page that sets its
+  own `openGraph` silently drops the root layout's, image included, unless
+  it's re-included — a real bug this caused and fixed). app/opengraph-image.js
+  is the one dynamic OG image (next/og, brand tokens from globals.css, no
+  external asset) shared site-wide via those helpers. components/JsonLd.js
+  renders one JSON-LD `<script>` block (Next's own documented pattern);
+  used by app/page.js (Organization + WebApplication) and
+  components/FaqSection.js (FAQPage). app/sitemap.js lists the real static
+  pages only (/report/[slug] excluded — dynamic, not canonical landing
+  content, and Supabase isn't configured in production yet to enumerate
+  them anyway). app/robots.js allows everything, including AI crawlers,
+  explicitly by name — reuses lib/audit/robots.js's AI_BOTS list (the same
+  six bots the audit tool checks a MERCHANT's site against) as the single
+  source of truth. Every page also sets `alternates: { canonical }`
+  (/test's is the fixed path, not its ?domain=... query variants).
 
 ## Build phases (one per session, commit after each)
 1. Scaffold Next.js (App Router) + landing page from docs/design/ (hero

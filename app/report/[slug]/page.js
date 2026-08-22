@@ -5,6 +5,7 @@ import { getReportBySlug } from "@/lib/reports";
 import { buildFounderSummary } from "@/lib/scoring";
 import ReportView from "@/components/test/report/ReportView";
 import styles from "@/components/test/test.module.css";
+import { buildOpenGraph, buildTwitter } from "@/lib/site";
 
 export const runtime = "nodejs";
 
@@ -42,8 +43,9 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
-    openGraph: { title, description, type: "website" },
-    twitter: { card: "summary", title, description },
+    alternates: { canonical: `/report/${slug}` },
+    openGraph: buildOpenGraph({ title, description, path: `/report/${slug}` }),
+    twitter: buildTwitter({ title, description }),
   };
 }
 
