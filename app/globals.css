@@ -52,6 +52,14 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--ink); outline-o
 @media (max-width: 760px) { .nav-links { display: none; } }
 .btn { display: inline-block; background: var(--ink); color: var(--white); font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer; }
 .btn:hover { background: var(--hover-nav); }
+/* Below 760px the hero's own yellow "Check my brand" button sits right
+   under the fold — the nav's black one is a redundant duplicate at that
+   width, not a second real option (unlike desktop, where the hero button
+   is a full scroll away). Nav-links already hide at the same breakpoint,
+   so mobile nav is logo-only. Scoped to .hero-shell (homepage only, see
+   app/page.js) rather than every page using Nav.js — /why and /how have
+   no other CTA into /test, so their nav button must stay even on mobile. */
+@media (max-width: 760px) { .hero-shell .nav-in .btn { display: none; } }
 
 /* ---------- hero ---------- */
 .hero-shell { position: relative; overflow: hidden; background: var(--cream); }
@@ -92,18 +100,30 @@ h1.hero-h1-simple {
   font-size: clamp(32px, 5.2vw, 56px); line-height: 1.08; letter-spacing: -0.02em;
   margin: 0 auto 26px; max-width: 16ch; color: var(--ink);
 }
+/* Mobile-first: stacked column, Semrush-style row from 640px up. A real
+   past bug lived here — flex-basis is a WIDTH hint in a row flex container
+   but becomes a HEIGHT hint the moment the container flips to
+   flex-direction: column, so .domain-input's old "flex: 1 1 240px" (meant
+   as a min width) silently forced it 240px TALL on every phone once this
+   went column-first. Explicit height + width: 100% below sidesteps that
+   entirely — no flex-basis at all until the row breakpoint, where it's
+   reintroduced deliberately. */
 .domain-form {
-  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  display: flex; flex-direction: column; gap: 10px;
   max-width: 560px; margin: 0 auto 14px;
 }
 .domain-input {
-  flex: 1 1 240px; min-width: 0; font-family: 'Archivo', sans-serif; font-size: 16px;
+  width: 100%; height: 56px; font-family: 'Archivo', sans-serif; font-size: 16px;
   color: var(--ink); background: var(--white); border: 1.5px solid var(--line3);
-  border-radius: 10px; padding: 15px 16px;
+  border-radius: 10px; padding: 0 16px;
 }
 .domain-input:focus { outline: none; border-color: var(--ink); }
-.domain-submit { flex-shrink: 0; white-space: nowrap; }
-@media (max-width: 480px) { .domain-form { flex-direction: column; } }
+.domain-submit { width: 100%; height: 56px; }
+@media (min-width: 640px) {
+  .domain-form { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .domain-input { flex: 1 1 240px; min-width: 0; width: auto; }
+  .domain-submit { flex-shrink: 0; white-space: nowrap; width: auto; }
+}
 
 /* ---------- report card mock ---------- */
 .report-wrap { position: relative; max-width: 920px; margin: 64px auto 0; }
@@ -391,6 +411,18 @@ footer { border-top: 1px solid var(--line); margin-top: 84px; padding: 34px 0 44
     padding-left: 18px;
     padding-right: 18px;
   }
+}
+
+/* Mobile hero vertical rhythm: the desktop values (84px top padding, 30px/
+   26px gaps below the eyebrow/headline) leave the first screen's most
+   important content — eyebrow, headline, input, button, trust line —
+   taller than an iPhone's viewport, forcing a scroll before a visitor ever
+   sees the button. Longhand padding-top only (this combines with the
+   horizontal-only rule above on the same .hero element). */
+@media (max-width: 640px) {
+  .hero { padding-top: 28px; }
+  .eyebrow { margin-bottom: 14px; }
+  h1.hero-h1-simple { margin-bottom: 14px; font-size: clamp(28px, 7.5vw, 40px); }
 }
 
 /* Engine strip: force the two groups onto their own clean centered line
