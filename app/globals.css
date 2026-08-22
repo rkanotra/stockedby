@@ -43,9 +43,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--ink); outline-o
 
 /* ---------- nav ---------- */
 .nav { position: relative; z-index: 5; background: var(--cream); border-bottom: 1px solid var(--line); }
-.nav-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 15px 24px; max-width: 1160px; margin: 0 auto; }
+.nav-in { display: flex; align-items: center; gap: 24px; padding: 15px 24px; max-width: 1160px; margin: 0 auto; }
 .logo { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 20px; color: var(--ink); letter-spacing: -0.01em; }
 .logo b { background: var(--tag); padding: 1px 6px; border-radius: 5px; font-weight: 800; }
+.nav-links { display: flex; align-items: center; gap: 26px; margin-left: auto; font-size: 14px; font-weight: 500; }
+.nav-links a { color: var(--muted); }
+.nav-links a:hover { color: var(--ink); }
+@media (max-width: 760px) { .nav-links { display: none; } }
 .btn { display: inline-block; background: var(--ink); color: var(--white); font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer; }
 .btn:hover { background: var(--hover-nav); }
 
@@ -227,8 +231,42 @@ h1.hero-h1-simple {
   font-size: 13px; font-weight: 600; color: var(--link-hover);
 }
 .promise-link:hover { color: var(--brick); }
-.promise-link-secondary { margin-top: 12px; color: var(--muted); font-weight: 500; }
-.promise-link-secondary:hover { color: var(--ink); }
+
+/* Deliberately NOT yellow (the primary "Check my brand" CTA's color) — an
+   outlined, dark-bordered card reads as a second, distinct product for a
+   different (technical) audience, not the same tool restated. */
+.audit-promo-card {
+  display: block; text-align: left; max-width: 46ch; margin: 28px auto 0;
+  background: var(--white); border: 1.5px solid var(--ink); border-radius: 14px;
+  padding: 20px 22px;
+}
+.audit-promo-card:hover { border-color: var(--brick); }
+.audit-promo-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted);
+}
+.audit-promo-title {
+  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 19px;
+  margin: 8px 0 6px; color: var(--ink);
+}
+.audit-promo-line { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 16px; }
+.audit-promo-btn {
+  display: inline-block; font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 14px;
+  color: var(--ink); border: 1.5px solid var(--ink); border-radius: 8px; padding: 9px 16px;
+}
+.audit-promo-card:hover .audit-promo-btn { background: var(--ink); color: var(--white); }
+
+/* ---------- /why and /how page headers ---------- */
+/* Longhand top/bottom padding only — same reason as section.aisle above:
+   this combines with .wrap on the same element. */
+.page-hero { padding-top: 56px; padding-bottom: 8px; }
+.page-hero h1 {
+  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800;
+  font-size: clamp(34px, 6vw, 54px); letter-spacing: -0.01em; margin: 0 0 12px;
+}
+.page-hero p { color: var(--muted); max-width: 60ch; font-size: 17px; line-height: 1.5; margin: 0; }
+.story-block { max-width: 70ch; }
+.story-block p { color: var(--ink); font-size: 17px; line-height: 1.65; margin: 0 0 18px; }
 
 /* ---------- aisles (feature sections) ---------- */
 /* Longhand on purpose: section.aisle + .wrap both apply to the same element

@@ -60,8 +60,14 @@ export default function PromiseStrip() {
             See a real report →
           </a>
         )}
-        <Link href="/audit" className="promise-link promise-link-secondary">
-          Also free: check if AI apps can read your website →
+        <Link href="/audit" className="audit-promo-card">
+          <span className="audit-promo-label">For technical teams</span>
+          <h3 className="audit-promo-title">Agent-ready check</h3>
+          <p className="audit-promo-line">
+            As agentic commerce arrives (ChatGPT checkout, Google UCP), can AI agents read and
+            buy from your store? Free 30-second audit.
+          </p>
+          <span className="audit-promo-btn">Run agent check</span>
         </Link>
       </div>
     </section>

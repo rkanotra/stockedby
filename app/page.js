@@ -4,12 +4,11 @@ import PromiseStrip from "@/components/PromiseStrip";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
-// Homepage philosophy (CLAUDE.md): the homepage IS the test — hero, one
-// promise strip, footer. Education (pillars, markets, data, compare,
-// how-it-works) lives in the report and a future /platform page, not here.
-// Those sections' components still exist (components/Aisle*.js,
-// HowItWorks.js, Markets.js, DataSection.js, Compare.js) — just unused by
-// this page for now.
+// Homepage philosophy (CLAUDE.md): the homepage is the door — Nav, Hero,
+// one promise strip (incl. the audit-promo card), Footer. The pillar/
+// markets/data/compare sections live on /why (app/why/page.js); the
+// 3-step how-it-works section lives on /how (app/how/page.js) — reachable
+// from Nav's "Why StockedBy" / "How it works" links, not from here.
 export default function Home() {
   return (
     <>

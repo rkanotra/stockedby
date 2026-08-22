@@ -20,22 +20,32 @@ SEA are unannounced future expansion markets — do not mention them in
 user-facing copy until launched.
 
 **Site philosophy: the homepage is the door, the report is the product,
-education lives in the blog — no roadmap content on public pages.**
-app/page.js is deliberately just Nav (logo + one button, "Check my brand —
-free") + Hero (eyebrow "For brands in India · UAE · Saudi Arabia" + single
-domain input + one button + the interactive report-card demo, which must
-show the India serum DISCOVERY shelf with Indian brands — never a
-problem-first snapshot with non-India results) + PromiseStrip (three
-one-line promises with icons, plus one always-visible secondary link to
-/audit) + Footer (logo + one-line story + Privacy). The pillar/markets/data/
-compare/how-it-works sections (components/Aisle*.js, HowItWorks.js,
-Markets.js, DataSection.js, Compare.js) still exist, unused by this page —
-reserved for a future /platform page, not deleted. Anyone who wants to
-understand HOW StockedBy works gets that from an actual report (which
-already keeps its fuller explainer style) or a future blog, not a landing
-page essay — and no TODAY/NEXT/THEN roadmap framing belongs on any
-public-facing page (CLAUDE.md's own "still roadmap" pillars are internal
-framing, not copy to surface to merchants). This extends to the /test
+/why and /how are where curious or technical visitors and investors read
+the full picture — no roadmap content on the homepage itself.**
+app/page.js is deliberately just Nav + Hero (eyebrow "For brands in India ·
+UAE · Saudi Arabia" + single domain input + one button + the interactive
+report-card demo, which must show the India serum DISCOVERY shelf with
+Indian brands — never a problem-first snapshot with non-India results) +
+PromiseStrip (three one-line promises with icons, an always-visible example-
+report link, and a bordered "Agent-ready check" feature card — see below) +
+Footer. Nav (components/Nav.js) is four items max: logo, "How it works"
+(/how), "Why StockedBy" (/why), "Agent check" (/audit), then the one button
+("Check my brand — free") — the three links hide below 760px so mobile
+keeps the minimal logo+button nav; Footer links are the same "How it
+works · Why StockedBy · Privacy". /why (app/why/page.js) moved the pillar/
+markets/data/compare sections here UNCHANGED (components/Aisle*.js,
+Markets.js, DataSection.js, Compare.js) — including AisleProtect's TODAY/
+NEXT/THEN roadmap framing, which is fine on /why specifically (its whole
+purpose is the full picture for a technical/investor reader) but still does
+NOT belong on the homepage or the /test wizard. /how (app/how/page.js)
+moved HowItWorks.js's 3-step section here, preceded by a short "every AI
+assistant is now a shop" story paragraph. The bordered "Agent-ready check"
+card in PromiseStrip.js (className `audit-promo-card`, deliberately
+outlined/dark rather than the homepage's yellow CTA color, so it reads as a
+second product for a technical audience, not the same tool restated) is the
+homepage's only remaining link into /audit; it's allowed slightly more
+technical language ("agentic commerce", "UCP") than the rest of the
+homepage per its own "for technical teams" label. This extends to the /test
 wizard too: domain-first, one decision per screen (components/test/
 DomainStep.js -> BrandStep.js -> MarketStep.js -> CategoryStep.js ->
 QueryStep.js), persistent header (eyebrow "StockedBy · {market}" + subtitle
@@ -300,6 +310,15 @@ Arabic/RTL pass).
   /test, /audit and the lead gate, who else sees it (Anthropic/Google/
   OpenAI for questions; Resend/Supabase for email + storage), and DPDP
   (India) / PDPL (UAE, KSA) rights.
+- app/why/page.js — "Why StockedBy": the pillar sections
+  (components/AisleMonitor.js, AisleDiagnose.js, AisleWin.js,
+  AisleProtect.js), Markets.js, DataSection.js and Compare.js, all rendered
+  unchanged — this is the one page allowed the fuller "still roadmap"
+  framing (TODAY/NEXT/THEN, PROTECT's roadmap-tagged features) that stays
+  off the homepage and /test wizard.
+- app/how/page.js — "How it works": a short story paragraph ("every AI
+  assistant is now a shop") followed by HowItWorks.js's unchanged 3-step
+  section.
 
 ## Build phases (one per session, commit after each)
 1. Scaffold Next.js (App Router) + landing page from docs/design/ (hero
