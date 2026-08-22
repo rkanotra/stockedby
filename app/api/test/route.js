@@ -16,14 +16,16 @@ import {
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
 
 // Vercel Hobby defaults Node functions to a 10s timeout — a single live
-// Claude call with web search regularly runs longer than that. 100s budgets
-// for one full retry per query on top of the original ceiling (40s first
-// attempt + up to 13s of 429 backoff/stagger + 20s retry attempt + ~10s
-// sentiment + overhead — see runQueryWithRetry below) so a transient
-// failure doesn't get reported before a second real try. If this exceeds
-// the account's actual plan ceiling, the deploy fails cleanly (the prior
-// deployment stays live) — dial the number back rather than guess further.
-export const maxDuration = 100;
+// Claude call with web search regularly runs longer than that. 130s budgets
+// for the worst realistic case of a single query: 40s first attempt + a
+// pause_turn continuation (lib/claudeClient.js — Anthropic's server-side
+// web-search loop can pause mid-turn on a search-heavy question; capped at
+// 10s to resume) + up to 9s of 429 backoff/stagger + 20s retry attempt +
+// its own possible 10s continuation + ~10s sentiment + overhead. If this
+// exceeds the account's actual plan ceiling, the deploy fails cleanly (the
+// prior deployment stays live) — dial the number back rather than guess
+// further.
+export const maxDuration = 130;
 export const runtime = "nodejs";
 
 const MAX_QUERIES = 6;
