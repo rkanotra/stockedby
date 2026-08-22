@@ -3,6 +3,8 @@ import { getCategory, listMarkets } from "@/lib/bank";
 import { askShoppingAssistant, analyzeSentiment } from "@/lib/claudeClient";
 import { HARVEST_ENGINES } from "@/lib/harvestClients";
 import { staleEnginesFor } from "@/lib/freshness";
+import { fetchCachedSnapshots, writeThroughSnapshot } from "@/lib/snapshotCache";
+import { saveReport } from "@/lib/reports";
 import {
   ENGINE_ORDER,
   matches,
@@ -112,6 +114,17 @@ export async function POST(request) {
     return badRequest("This category has no queries to run.");
   }
 
+  // Phase 4 snapshot cache: Supabase rows for this market+category, merged
+  // on top of the bank's own inline seed snapshots (lib/snapshotCache.js —
+  // a no-op returning [] for custom categories, or if Supabase isn't
+  // configured). This — not category.snapshots alone — is what "is this
+  // engine stale" and "what's the fallback if harvest fails" are computed
+  // against below, so a category harvested by an earlier visitor today
+  // reads as fresh for every later visitor, not just the one who paid for
+  // the harvest.
+  const cachedSnapshots = await fetchCachedSnapshots(market, category.id);
+  const allSnapshots = [...(category.snapshots || []), ...cachedSnapshots];
+
   // On-demand harvest (chatgpt/gemini): only for engines whose newest
   // snapshot for this category+market is missing or older than
   // lib/freshness.js's SNAPSHOT_MAX_AGE_DAYS, and only if the matching API
@@ -126,7 +139,7 @@ export async function POST(request) {
   const HARVEST_QUERY_CAP = 4;
   const HARVEST_ENV_KEY = { gemini: "GEMINI_API_KEY", chatgpt: "OPENAI_API_KEY" };
   const harvestEngines = staleEnginesFor(
-    category,
+    { snapshots: allSnapshots },
     ENGINE_ORDER.filter((e) => e !== "claude")
   ).filter((e) => Boolean(process.env[HARVEST_ENV_KEY[e]]));
   const harvestQueries = finalQueries.slice(0, HARVEST_QUERY_CAP);
@@ -141,23 +154,38 @@ export async function POST(request) {
     Promise.allSettled(harvestJobs.map((job) => HARVEST_ENGINES[job.engine](job.q.text))),
   ]);
 
-  // Vercel's filesystem is ephemeral — a harvested recommendation below is
-  // never written back to data/*.json, only returned for this response.
-  // TODO(Phase 4 / Supabase): write-through snapshot cache — persist
-  // harvested rows to a table keyed by market+category+qid+engine, with
-  // data/*.json as the seed layer lib/bank.js/lib/bankStatic.js fall back
-  // to. See CLAUDE.md build phase 4.
+  // Never written back to data/*.json (Vercel's filesystem is ephemeral
+  // anyway) — instead write-through to the Supabase snapshots table
+  // (lib/snapshotCache.js), a no-op if Supabase isn't configured or this is
+  // a custom category (category.id null). Awaited (not fire-and-forget) so
+  // the write is actually queued before a serverless function can tear
+  // down post-response; each write is cheap and this only runs for engines
+  // that were genuinely stale, so it doesn't add much to the request.
   const today = new Date().toISOString().slice(0, 10);
   const harvestedByEngineQid = new Map();
-  harvestJobs.forEach((job, i) => {
-    const result = harvestSettled[i];
-    if (result.status === "fulfilled") {
-      harvestedByEngineQid.set(`${job.engine}:${job.q.qid}`, result.value.recommendations || []);
-    }
-    // A failed on-demand harvest just falls through to the existing
-    // snapshot lookup below (or "missing") — never fabricated, and never
-    // silently retried (the cost guard above already ran this once).
-  });
+  await Promise.all(
+    harvestJobs.map(async (job, i) => {
+      const result = harvestSettled[i];
+      if (result.status !== "fulfilled") {
+        // A failed on-demand harvest just falls through to the existing
+        // snapshot lookup below (or "missing") — never fabricated, and
+        // never silently retried (the cost guard above already ran this
+        // once).
+        return;
+      }
+      const recs = result.value.recommendations || [];
+      harvestedByEngineQid.set(`${job.engine}:${job.q.qid}`, recs);
+      await writeThroughSnapshot({
+        market,
+        categoryId: category.id,
+        qid: job.q.qid,
+        engine: job.engine,
+        collectedOn: today,
+        recommendations: recs,
+        sources: result.value.sources,
+      });
+    })
+  );
 
   const liveRuns = finalQueries.map((q, i) => {
     const result = settled[i];
@@ -222,8 +250,13 @@ export async function POST(request) {
           source: "live-harvest",
         };
       }
-      const snaps = (category.snapshots || []).filter((s) => s.qid === q.qid && s.engine === engine);
-      const latest = snaps.sort((a, b) => (a.collected_on < b.collected_on ? 1 : -1))[0];
+      const snaps = allSnapshots.filter((s) => s.qid === q.qid && s.engine === engine);
+      // 3-way comparator (0 on ties) so the pick is deterministic under
+      // JS's stable sort — a 1/-1-only comparator never reports equal dates
+      // as equal, which made the "latest" pick effectively arbitrary
+      // whenever two snapshots (e.g. a bank seed and a same-day Supabase
+      // write-through) shared a collected_on.
+      const latest = snaps.sort((a, b) => (a.collected_on > b.collected_on ? -1 : a.collected_on < b.collected_on ? 1 : 0))[0];
       if (!latest) {
         return { qid: q.qid, text: q.text, archetype: q.archetype, recs: [], collected_on: null, source: "missing" };
       }
@@ -307,10 +340,42 @@ export async function POST(request) {
     appearanceSummary,
   });
 
+  const categoryOut = { id: category.id, name: category.name, group: category.group };
+  const fanout = computeFanout(liveRuns);
+  const trustedSources = computeTrustedSources(liveRuns);
+
+  // Every completed test is saved (slug "{brand}-{category}-{shortid}"),
+  // gate or no gate — components/test/report/ReportView.js's blur-lock is a
+  // client-side presentational layer over this same data, not a
+  // server-side redaction, so there's nothing sensitive about persisting
+  // the full report up front. Best-effort: a save failure (or Supabase not
+  // configured) just means no share link this time, never a failed test.
+  const slug = await saveReport({
+    market,
+    categoryId: category.id,
+    categoryName: category.name,
+    brand: brandName,
+    brandWebsite: brandWebsiteInput,
+    reportData: {
+      market,
+      brand: brandName,
+      competitor: competitorName || null,
+      brandWebsite: brandWebsiteInput || null,
+      category: categoryOut,
+      isCustom: Boolean(customCategory),
+      report,
+      sentiment,
+      mentionCount: mentions.length,
+      engines: engineData,
+      fanout,
+      trustedSources,
+    },
+  });
+
   return NextResponse.json({
     ok: true,
     market,
-    category: { id: category.id, name: category.name, group: category.group },
+    category: categoryOut,
     isCustom: Boolean(customCategory),
     brand: brandName,
     competitor: competitorName || null,
@@ -321,8 +386,9 @@ export async function POST(request) {
     report,
     sentiment,
     mentionCount: mentions.length,
-    fanout: computeFanout(liveRuns),
-    trustedSources: computeTrustedSources(liveRuns),
+    fanout,
+    trustedSources,
+    slug,
     rateLimit,
   });
 }

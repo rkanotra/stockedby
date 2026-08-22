@@ -19,16 +19,21 @@ India, UAE, KSA (Saudi Arabia) — the go-to-market advantage. Pakistan and
 SEA are unannounced future expansion markets — do not mention them in
 user-facing copy until launched.
 
-Current phase: **MVP sprint — domain-live test build**
-MVP scope (build now): landing page + full test flow + /api/test with
-ANTHROPIC_API_KEY (required) + GEMINI_API_KEY/OPENAI_API_KEY (optional —
-enable on-demand chatgpt/gemini harvest for stale/missing categories, see
-lib/harvestClients.js; without them that path is skipped and the engine tab
-falls back to whatever snapshot exists). NO email gate, NO Resend, NO
-Supabase, NO rate limiting yet — full report shows without email. Lead form
-renders but only console-logs/no-ops with a "coming soon" toast. Email stack
-(Zoho mailboxes + Resend/Supabase gate) is DEFERRED to post-MVP; keep
-/api/lead as a stub.
+Current phase: **Phase 4 complete — persistence, capture & share are live**
+MVP (landing page, full test flow, /api/test) shipped first; Phase 4 added
+Supabase (leads/reports/snapshots/custom_category_requests —
+supabase/migrations/0001_phase4_schema.sql), the email gate (hard rule 8),
+report persistence + /report/[slug] sharing, and a shared snapshot cache on
+top of the on-demand harvest (hard rule 6). All of it is additive and
+degrades gracefully: ANTHROPIC_API_KEY is still the only hard-required key
+— GEMINI_API_KEY/OPENAI_API_KEY, SUPABASE_URL/SUPABASE_SERVICE_KEY, and
+RESEND_API_KEY are all optional, and every feature that depends on one
+quietly no-ops without it rather than failing the free test (see
+lib/harvestClients.js, lib/supabaseClient.js, lib/email.js). Zoho mailbox
+setup (the actual inbox FOUNDER_EMAIL/FROM_EMAIL point at) is ops, not
+code — nothing here builds that. Still not started: Phase 5 (real per-
+email-per-category-per-month rate limiting, privacy policy, analytics,
+Arabic/RTL pass).
 
 ## Hard rules
 1. **API keys server-side only.** ANTHROPIC_API_KEY, GEMINI_API_KEY,
@@ -72,13 +77,30 @@ renders but only console-logs/no-ops with a "coming soon" toast. Email stack
 7. **Cost ceiling ≤ $0.05 per free test:** queries come from the bank (no
    generation call), web_search max_uses: 2 per query, model claude-sonnet-4-6,
    aux calls (sentiment) on haiku.
-8. [DEFERRED — post-MVP] **Email gate before deep results**: verdict is free to see; full report
-   requires work email + pain point. Consent language for DPDP (India) / PDPL
-   (UAE, KSA). POST /api/lead → Resend (founder notification + merchant
-   confirmation) + Supabase insert. See docs/api-lead-resend.ts.
-9. [DEFERRED — post-MVP] **Rate limit**: 1 free test per email per category per
-   month. (MVP: cap tests per IP per day at 10 in the API route to protect the
-   API key budget.)
+8. **Email gate before deep results** (live, Phase 4): verdict + engine
+   scoreboxes (VerdictCard) are free; everything else (checkout battle,
+   Share of AI Voice, sentiment, the shelves, fanout, trusted sources, audit
+   CTA) sits behind components/test/report/LeadGate.js — work email +
+   optional brand website/pain point + a required DPDP (India) / PDPL (UAE,
+   KSA) consent checkbox. POST /api/lead → Supabase `leads` insert + Resend
+   (founder notification + merchant confirmation, both carrying the
+   /report/[slug] link) — see lib/email.js (adapted from
+   docs/api-lead-resend.ts) and lib/reports.js. The gate is a client-side
+   presentational blur/clip over already-rendered children, not server-side
+   redaction — LeadGate's own comment explains why (lead capture, not
+   access control; a shared /report/[slug] link re-gates for each new
+   visitor by design, which doubles as further lead-gen off shares).
+   Graceful throughout: a Supabase or Resend failure still unlocks the UI
+   and still returns `ok`, per hard rule 1's "never block the merchant over
+   an optional infra dependency" pattern — only a bad request (missing
+   email/consent) or the /api/lead rate limit (its own IP-cap namespace,
+   separate from /api/test's) blocks submission.
+9. **Rate limit**: cap tests per IP per day at 10 in app/api/test (also
+   applied, with their own separate counters, to app/api/generate-queries
+   and app/api/lead — see lib/rateLimit.js's namespace param). [STILL
+   DEFERRED] the stronger per-email-per-category-per-month limit hard rule
+   8's original draft described — nothing enforces "1 free test per email"
+   yet, only the IP-based caps above.
 10. **Every new query-bank batch must pass** `python scripts/check_query_bank.py <file>`
     before merging into data/.
 11. **The audit's domain fetches are an SSRF surface** — any fetch of a
@@ -133,8 +155,8 @@ renders but only console-logs/no-ops with a "coming soon" toast. Email stack
 - lib/harvestClients.js — server-only on-demand chatgpt/gemini harvest for
   app/api/test (hard rule 6), reusing scripts/harvest.py's HARVEST_PROMPT
   and real-telemetry-over-self-report principle in JS
-  (@google/genai / openai). Results are NOT persisted (Vercel's filesystem
-  is ephemeral) — see build phase 4 TODO below.
+  (@google/genai / openai). A successful harvest write-throughs to Supabase
+  via lib/snapshotCache.js — see that entry below.
 - app/api/generate-queries + components/test/CustomCategoryPanel.js — custom
   category flow: when a merchant's category search has no bank match,
   SetupPanel offers "Test '{query}' as a custom category", which collects
@@ -143,9 +165,50 @@ renders but only console-logs/no-ops with a "coming soon" toast. Email stack
   queries with Claude (lib/claudeClient.js generateCustomQueries, adapted
   from docs/stockedby-data-kit.md §2b). Lands in the normal ReadyPanel
   review step (mandatory stop) before /api/test ever runs them. Never
-  written into data/*.json — console-logged only for now; TODO(Phase 4 /
-  Supabase): persist market+category+brand so the most-requested customs
-  become candidates for the next real bank batch.
+  written into data/*.json — every request is logged to Supabase's
+  custom_category_requests table (console fallback if Supabase isn't
+  configured) so the most-requested customs can become real bank additions.
+- supabase/migrations/0001_phase4_schema.sql — the four Phase 4 tables
+  (leads, reports, snapshots, custom_category_requests); paste into
+  Supabase's SQL editor to apply (idempotent, safe to re-run). RLS is
+  enabled with zero policies on every table — the app only ever talks to
+  Supabase with the service-role key (lib/supabaseClient.js), which
+  bypasses RLS, so this just guarantees the anon key (never used here, but
+  if it ever leaked) grants nothing.
+- lib/supabaseClient.js — server-only Supabase client; returns null (not a
+  throw) when SUPABASE_URL/SUPABASE_SERVICE_KEY aren't set, and every
+  caller treats that as "Phase 4 feature is off" rather than an error.
+- lib/snapshotCache.js — the write-through cache behind hard rule 6's
+  on-demand harvest: fetchCachedSnapshots() merges Supabase rows on top of
+  a bank category's own inline seed snapshots (bank JSON stays the seed
+  layer, Supabase holds only the deltas); writeThroughSnapshot() persists a
+  fresh on-demand harvest so a category is harvested live once ever, not
+  once per visitor. Deliberately skipped for custom categories (its own
+  comment explains why: shared fixed qids + no real category_id would let
+  two different merchants' custom tests collide on the same cache key).
+- lib/reports.js — saveReport()/getReportBySlug(): every completed test
+  (app/api/test/route.js) is saved with slug "{brand}-{category}-{shortid}",
+  gate or no gate — components/test/report/LeadGate.js's blur-lock is a
+  client-side presentational layer over this same data, not a server-side
+  redaction, so there's nothing sensitive about persisting the full report
+  up front. Powers app/report/[slug]/page.js.
+- app/report/[slug]/page.js — read-only, shareable view of a saved report
+  (generateMetadata sets the "{brand} — {verdict} · StockedBy" OG title +
+  a description built from the same buildFounderSummary the report's own
+  summary card uses, so WhatsApp/LinkedIn previews render meaningfully).
+  Renders the same ReportView/LeadGate the live /test flow uses.
+- lib/email.js — Resend wrapper (adapted from docs/api-lead-resend.ts) used
+  by app/api/lead/route.js: founder notification + merchant confirmation,
+  both linking to /report/[slug]. Every merchant-controlled field is HTML-
+  escaped before interpolation. Independent per-recipient success flags
+  (Promise.allSettled) — one send failing (e.g. an unverified Resend
+  sending domain, which restricts merchant-address sends) never blocks the
+  other.
+- lib/site.js — SITE_URL constant (NEXT_PUBLIC_SITE_URL, defaults to
+  https://stockedby.com) for building absolute /report/[slug] links in
+  emails. components/test/report/ShareButton.js deliberately does NOT use
+  this — it reads window.location.origin instead, so the copied link
+  always matches whatever domain/environment is actually being viewed.
 - lib/audit/ — Agent Readiness Audit (app/api/audit, app/audit,
   components/audit/): ssrfGuard.js (mandatory hostname check, see hard
   rule 11), fetchWithTimeout.js (SSRF-safe manual redirect following),
@@ -164,17 +227,15 @@ renders but only console-logs/no-ops with a "coming soon" toast. Email stack
 3. Test-flow UI: category picker → editable queries → live run → report
    (all modules from prototype) — dark theme. Lead form = visual stub.
 --- MVP ends here: stockedby.com live and testable ---
-4. [post-MVP] Zoho mailboxes + /api/lead (Resend + Supabase) + email gate +
-   consent (DPDP/PDPL).
-   TODO: this is also where the on-demand harvest (lib/harvestClients.js)
-   gets a real cache — Vercel's filesystem is ephemeral, so today's harvested
-   snapshots are returned per-test and thrown away. Add a write-through
-   Supabase table (market+category+qid+engine+collected_on -> recommendations
-   + sources) that app/api/test/route.js writes to right after a successful
-   on-demand harvest, and reads from BEFORE falling back to data/*.json —
-   bank JSON becomes the seed layer under the live cache, not the only
-   source of snapshots.
-5. [post-MVP] Real rate limiting, privacy policy, analytics, Arabic/RTL pass.
+4. [DONE] /api/lead (Resend + Supabase) + email gate + consent (DPDP/PDPL);
+   report persistence + /report/[slug] share; write-through snapshot cache
+   on top of the on-demand harvest. See hard rules 6/8/9 and the repo map
+   entries for supabase/migrations/0001_phase4_schema.sql,
+   lib/supabaseClient.js, lib/snapshotCache.js, lib/reports.js, lib/email.js.
+   Zoho mailbox setup itself (the inbox FOUNDER_EMAIL/FROM_EMAIL point at)
+   is ops, not code — not part of this phase's deliverable.
+5. [post-MVP, not started] Real per-email-per-category-per-month rate
+   limiting (see hard rule 9), privacy policy, analytics, Arabic/RTL pass.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

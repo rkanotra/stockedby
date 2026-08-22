@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { generateCustomQueries } from "@/lib/claudeClient";
 import { listMarkets } from "@/lib/bank";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
+import { supabase } from "@/lib/supabaseClient";
 
 // Short generation call, not a live web-search test — no need for the
 // 60s ceiling app/api/test/route.js raises for itself.
@@ -60,10 +61,23 @@ export async function POST(request) {
   }
 
   // Never written into data/*.json (hard rule: custom categories stay out
-  // of the canonical bank). Console for now; TODO(Phase 4 / Supabase):
-  // persist market+category+brand so the most-requested customs become
-  // candidates for the next real bank batch — see CLAUDE.md build phase 4.
-  console.log(`[custom-category] market=${market} category="${category}" brand="${brandName}"`);
+  // of the canonical bank). Phase 4: persisted to custom_category_requests
+  // so the most-requested customs can become real bank additions — falls
+  // back to console if Supabase isn't configured, and either way this is
+  // best-effort: a logging failure must never fail the generation itself.
+  const db = supabase();
+  if (db) {
+    try {
+      const { error } = await db
+        .from("custom_category_requests")
+        .insert({ market, category_text: category });
+      if (error) console.error("[custom-category] insert failed", error.message);
+    } catch (e) {
+      console.error("[custom-category] insert failed", e?.message || e);
+    }
+  } else {
+    console.log(`[custom-category] market=${market} category="${category}" brand="${brandName}"`);
+  }
 
   try {
     const queries = await generateCustomQueries({ market, categoryName: category, brand: brandName });

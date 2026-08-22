@@ -2,6 +2,8 @@
 
 import styles from "../test.module.css";
 import VerdictCard from "./VerdictCard";
+import LeadGate from "./LeadGate";
+import ShareButton from "./ShareButton";
 import CheckoutBattleCard from "./CheckoutBattleCard";
 import ShareOfVoiceCard from "./ShareOfVoiceCard";
 import SentimentCard from "./SentimentCard";
@@ -24,6 +26,7 @@ export default function ReportView({ data, onRetry }) {
     engines,
     fanout,
     trustedSources,
+    slug,
   } = data;
 
   return (
@@ -35,13 +38,27 @@ export default function ReportView({ data, onRetry }) {
         </div>
       )}
       <VerdictCard market={market} brand={brand} category={category?.name} report={report} onRetry={onRetry} />
-      <CheckoutBattleCard brand={brand} brandWebsite={brandWebsite} destinations={report.destinations} />
-      <ShareOfVoiceCard market={market} brand={brand} competitor={competitor} shareOfVoice={report.shareOfVoice} />
-      <SentimentCard sentiment={sentiment} mentionCount={mentionCount} />
-      <ShelvesCard market={market} brand={brand} competitor={competitor} engines={engines} />
-      <FanoutCard fanout={fanout} />
-      <TrustedSourcesCard trustedSources={trustedSources} />
-      <AuditCTA brandWebsite={brandWebsite} />
+      {slug && (
+        <div style={{ marginBottom: 14 }}>
+          <ShareButton slug={slug} />
+        </div>
+      )}
+      <LeadGate
+        market={market}
+        category={category?.name}
+        brand={brand}
+        brandWebsite={brandWebsite}
+        verdict={report.verdict}
+        slug={slug}
+      >
+        <CheckoutBattleCard brand={brand} brandWebsite={brandWebsite} destinations={report.destinations} />
+        <ShareOfVoiceCard market={market} brand={brand} competitor={competitor} shareOfVoice={report.shareOfVoice} />
+        <SentimentCard sentiment={sentiment} mentionCount={mentionCount} />
+        <ShelvesCard market={market} brand={brand} competitor={competitor} engines={engines} />
+        <FanoutCard fanout={fanout} />
+        <TrustedSourcesCard trustedSources={trustedSources} />
+        <AuditCTA brandWebsite={brandWebsite} />
+      </LeadGate>
     </>
   );
 }

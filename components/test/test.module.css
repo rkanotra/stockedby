@@ -293,6 +293,41 @@
   line-height: 1.5;
   margin: 10px 0 14px;
 }
+/* Email gate (LeadGate.js): a clipped, blurred teaser of the locked cards
+   in normal document flow, followed by the unlock form — no absolute
+   overlay, so it can never misbehave on mobile viewport heights it hasn't
+   been tested at (hard rule 3). */
+.gateWrap {
+  margin-bottom: 14px;
+}
+.gatePreview {
+  max-height: 220px;
+  overflow: hidden;
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 92%);
+  mask-image: linear-gradient(to bottom, #000 35%, transparent 92%);
+}
+.gateForm {
+  margin-top: -8px;
+}
+.consentRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #9db4a6;
+  margin: 4px 0 14px;
+}
+.consentRow input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  accent-color: #ffc53d;
+}
 .retryRow {
   display: flex;
   align-items: center;
