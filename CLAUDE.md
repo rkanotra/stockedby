@@ -383,6 +383,26 @@ Arabic/RTL pass).
   six bots the audit tool checks a MERCHANT's site against) as the single
   source of truth. Every page also sets `alternates: { canonical }`
   (/test's is the fixed path, not its ?domain=... query variants).
+- Blog: content/blogs/*.md are the real posts (title/metaTitle/description/
+  slug/date frontmatter + markdown body) — lib/blog.js reads them via an
+  explicit filename list (POST_FILES), not a directory glob, so a stray
+  planning doc dropped in the same folder can't silently become a "post."
+  content/blog-content-calendar.md (outside content/blogs/, deliberately)
+  holds the future-posts outline that used to share a file with post 3 —
+  moved so it's never parsed as content. app/blog/page.js is the listing;
+  app/blog/[slug]/page.js renders each post via react-markdown (the only
+  markdown-rendering dependency in the project — added for this), with
+  Article JSON-LD, per-post OG/canonical (lib/site.js's buildOpenGraph/
+  buildTwitter, same as every other page), and components/BlogLink.js
+  rewriting the posts' own https://stockedby.com links into fast
+  next/link navigation. components/BlogCta.js (DomainCheckForm reused
+  verbatim, not rewritten) closes every post — the same conversion moment
+  as the homepage hero. app/blog/rss.xml/route.js is a plain Route
+  Handler (not a Next file-convention name) serving RSS 2.0.
+  app/sitemap.js includes /blog and every post URL. Nav.js and Footer.js
+  both link /blog — verified the 5-item nav (How it works, Why StockedBy,
+  Blog, Agent check, the CTA button) doesn't wrap or crowd at any
+  real desktop width before adding it there, not just eyeballed.
 
 ## Build phases (one per session, commit after each)
 1. Scaffold Next.js (App Router) + landing page from docs/design/ (hero

@@ -15,7 +15,7 @@ export default function Footer() {
         </div>
         <div className="mono" style={{ fontSize: "11px" }}>
           <Link href="/how">How it works</Link> · <Link href="/why">Why StockedBy</Link> ·{" "}
-          <Link href="/privacy">Privacy</Link>
+          <Link href="/blog">Blog</Link> · <Link href="/privacy">Privacy</Link>
           <br />© 2026 StockedBy
         </div>
       </div>
