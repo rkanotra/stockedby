@@ -16,12 +16,55 @@ import {
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
 
 // Vercel Hobby defaults Node functions to a 10s timeout — a single live
-// Claude call with web search regularly runs longer than that. Raise the
-// ceiling (Hobby's configurable max) so the run isn't cut off mid-request.
-export const maxDuration = 60;
+// Claude call with web search regularly runs longer than that. 100s budgets
+// for one full retry per query on top of the original ceiling (40s first
+// attempt + up to 13s of 429 backoff/stagger + 20s retry attempt + ~10s
+// sentiment + overhead — see runQueryWithRetry below) so a transient
+// failure doesn't get reported before a second real try. If this exceeds
+// the account's actual plan ceiling, the deploy fails cleanly (the prior
+// deployment stays live) — dial the number back rather than guess further.
+export const maxDuration = 100;
 export const runtime = "nodejs";
 
 const MAX_QUERIES = 6;
+const QUERY_TIMEOUT_MS = 40_000;
+const RETRY_TIMEOUT_MS = 20_000;
+const RETRY_WAIT_MS = 3_000;
+const RETRY_STAGGER_MS = 2_000;
+const MAX_STAGGERED_INDEX = 3; // caps worst-case added wall time from stagger
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isRateLimitError(err) {
+  return err?.status === 429;
+}
+
+// Each query gets one retry, 3s after the first failure, before it's ever
+// reported as "couldn't complete" — a slow web search or a momentary 429
+// shouldn't cost a merchant a real data point. When the first failure was a
+// 429 specifically, the retry is additionally staggered by query index (2s
+// each, capped) rather than firing right back at the API alongside every
+// other query's retry — the same simultaneous-burst pattern that likely
+// caused the 429 in the first place. Never throws — always resolves to a
+// Promise.allSettled-shaped {status, value|reason} object, since this is
+// used in place of Promise.allSettled itself below.
+async function runQueryWithRetry(q, index) {
+  try {
+    const value = await askShoppingAssistant(q.text, { timeoutMs: QUERY_TIMEOUT_MS });
+    return { status: "fulfilled", value };
+  } catch (firstErr) {
+    const stagger = isRateLimitError(firstErr) ? Math.min(index, MAX_STAGGERED_INDEX) * RETRY_STAGGER_MS : 0;
+    await sleep(RETRY_WAIT_MS + stagger);
+    try {
+      const value = await askShoppingAssistant(q.text, { timeoutMs: RETRY_TIMEOUT_MS });
+      return { status: "fulfilled", value };
+    } catch (secondErr) {
+      return { status: "rejected", reason: secondErr };
+    }
+  }
+}
 
 function badRequest(message) {
   return NextResponse.json({ error: message }, { status: 400 });
@@ -147,10 +190,15 @@ export async function POST(request) {
 
   // Live Claude calls run in parallel — sequential per-query calls (as in
   // the prototype, which needed that to drive incremental UI state) would
-  // risk exceeding maxDuration for a 4-query category. On-demand harvest
-  // jobs (if any) run in this same parallel batch.
+  // risk exceeding maxDuration for a 4-query category. Each query retries
+  // once on its own (runQueryWithRetry, see above) before it can end up in
+  // `settled` as rejected, so `settled` is already in Promise.allSettled's
+  // {status, value|reason} shape without needing that wrapper itself. On-
+  // demand harvest jobs (if any) run in this same parallel batch — they
+  // keep their existing run-once-ever cost guard (no retry), unrelated to
+  // this per-query retry.
   const [settled, harvestSettled] = await Promise.all([
-    Promise.allSettled(finalQueries.map((q) => askShoppingAssistant(q.text))),
+    Promise.all(finalQueries.map((q, i) => runQueryWithRetry(q, i))),
     Promise.allSettled(harvestJobs.map((job) => HARVEST_ENGINES[job.engine](job.q.text))),
   ]);
 
@@ -208,7 +256,7 @@ export async function POST(request) {
       recs: [],
       searches: [],
       citations: [],
-      error: result.reason?.message || "Live test failed for this query.",
+      error: result.reason?.message || "Live test failed for this query after a retry.",
     };
   });
 
