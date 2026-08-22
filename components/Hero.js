@@ -117,9 +117,9 @@ export default function Hero() {
       </h1>
       <p className="hero-sub">
         Your customers now ask AI what to buy. StockedBy runs their real questions, in their
-        real languages, to see who ChatGPT, Gemini and Claude recommend — with Claude tested
-        live — you, your rival, or the marketplace giants, and where the AI sends the buyer
-        to check out.
+        real languages, across ChatGPT, Gemini and Claude — kept current automatically, never
+        a stale test — and shows you who gets recommended: you, your rival, or the marketplace
+        giants, and where the AI sends the buyer to check out.
       </p>
       <div className="hero-ctas">
         <Link href="/test" className="btn-primary">Test my brand — free</Link>

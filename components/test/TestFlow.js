@@ -184,8 +184,9 @@ export default function TestFlow() {
         <div className={styles.mark}>StockedBy · {market} · 3 engines</div>
         <h1 className={styles.title}>Does AI put you on the shelf?</h1>
         <p className={styles.sub}>
-          Pick your category, enter your brand, and see who ChatGPT, Gemini and Claude recommend —
-          with Claude tested live — and where they send the buyer to check out.
+          Pick your category, enter your brand, and see who ChatGPT, Gemini and Claude
+          recommend — kept current automatically, never a stale test — and where they send the
+          buyer to check out.
         </p>
 
         {phase === "setup" && (

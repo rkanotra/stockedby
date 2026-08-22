@@ -1,6 +1,7 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import EngineStrip from "@/components/EngineStrip";
+import BrandStory from "@/components/BrandStory";
 import AisleMonitor from "@/components/AisleMonitor";
 import AisleDiagnose from "@/components/AisleDiagnose";
 import AisleWin from "@/components/AisleWin";
@@ -21,6 +22,7 @@ export default function Home() {
         <Hero />
       </div>
       <EngineStrip />
+      <BrandStory />
       <AisleMonitor />
       <AisleDiagnose />
       <AisleWin />

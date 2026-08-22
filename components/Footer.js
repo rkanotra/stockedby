@@ -8,6 +8,11 @@ export default function Footer() {
           </a>
           <br />
           <span style={{ fontSize: "12px" }}>
+            Every AI assistant is a shop now — StockedBy tells you if you&rsquo;re stocked by
+            ChatGPT, Gemini and Claude.
+          </span>
+          <br />
+          <span style={{ fontSize: "12px" }}>
             The visibility, intelligence and trust layer for AI-driven commerce — starting with the merchants of India, UAE &amp; Saudi Arabia.
           </span>
         </div>
