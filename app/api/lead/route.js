@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 import { sendLeadEmails } from "@/lib/email";
+import { getReportBySlug } from "@/lib/reports";
+import { buildLayerOne } from "@/lib/layerOne";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
@@ -75,6 +77,33 @@ export async function POST(request) {
     console.log("[leads] SUPABASE not configured — lead not persisted:", emailInput, brandInput, marketInput, categoryInput);
   }
 
+  // Merchant email = Layer-1 content only + link (report simplification
+  // spec) — reuses the exact same lib/layerOne.js functions StoryView.js
+  // renders from, computed here off the report this test already saved
+  // (app/api/test/route.js's saveReport call), never recomputed from
+  // scratch. If the report can't be loaded (no slug, Supabase down, or
+  // just not configured when the test ran), sendLeadEmails falls back to
+  // its plain verdict-only email rather than failing the send.
+  const slugInput = typeof reportSlug === "string" ? reportSlug : null;
+  let layer1 = null;
+  if (slugInput) {
+    try {
+      const row = await getReportBySlug(slugInput);
+      const reportData = row?.report_json;
+      if (reportData) {
+        layer1 = buildLayerOne({
+          brand: reportData.brand,
+          report: reportData.report,
+          engines: reportData.engines,
+          sentiment: reportData.sentiment,
+          trustedSources: reportData.trustedSources,
+        });
+      }
+    } catch (e) {
+      console.error("[leads] loading report for email failed", e?.message || e);
+    }
+  }
+
   let emailResult = { founderSent: false, merchantSent: false };
   try {
     emailResult = await sendLeadEmails({
@@ -84,7 +113,8 @@ export async function POST(request) {
       category: categoryInput,
       painpoint: painpointInput,
       verdict: typeof verdict === "string" ? verdict : "",
-      reportSlug: typeof reportSlug === "string" ? reportSlug : null,
+      reportSlug: slugInput,
+      layer1,
     });
   } catch (e) {
     console.error("[leads] email send failed", e?.message || e);
