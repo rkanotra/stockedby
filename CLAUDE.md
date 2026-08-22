@@ -305,7 +305,18 @@ Arabic/RTL pass).
   escaped before interpolation. Independent per-recipient success flags
   (Promise.allSettled) — one send failing (e.g. an unverified Resend
   sending domain, which restricts merchant-address sends) never blocks the
-  other.
+  other. buildMerchantEmail() (exported, pure) builds the merchant email —
+  a plain, personal-feeling email (both html and text parts), not a
+  marketing template: one-line verdict, who AI recommends instead, the
+  "money line" (only when buyers actually go elsewhere), three tips from
+  lib/layerOne.js's buildEmailTips(), a plain link to the report, and a
+  reply-inviting sign-off. Subject line is keyed off the Layer 1
+  YES/SOMETIMES/NO appearance verdict, not the 4-tier report.verdict —
+  three fixed variants, same structure for all three (only the subject and
+  opening line change). Valuable even if the merchant never clicks through
+  — every section degrades gracefully when its underlying data is missing
+  (no trusted source, no destination data, no report link) rather than
+  showing a broken or empty line.
 - lib/site.js — SITE_URL constant (NEXT_PUBLIC_SITE_URL, defaults to
   https://stockedby.com) for building absolute /report/[slug] and /audit
   links in emails. components/test/report/ShareButton.js deliberately does
@@ -319,7 +330,12 @@ Arabic/RTL pass).
   buildActions() returns {text, href} objects — href is set (to /audit,
   prefilled with the brand's domain when known) only when the brand's own
   site never appeared as a destination, the report's cross-link into the
-  free site check.
+  free site check. buildEmailTips() is the email's own parallel fix-plan —
+  same underlying signals (trusted sources, destination data) as
+  buildActions, but always exactly 3 fixed tips in a fixed order (not a
+  cascade of candidates) — lib/email.js's buildMerchantEmail() is the only
+  caller. Both land on buildLayerOne's return value as `.actions` and
+  `.emailTips` respectively.
 - lib/audit/ — Agent Readiness Audit (app/api/audit, app/audit,
   components/audit/): ssrfGuard.js (mandatory hostname check, see hard
   rule 11), fetchWithTimeout.js (SSRF-safe manual redirect following),
