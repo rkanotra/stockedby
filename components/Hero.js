@@ -10,13 +10,15 @@ import DomainCheckForm from "./DomainCheckForm";
 // invented copy.
 const HERO_BRAND = "Minimalist";
 const HERO_BANK_CATEGORY_ID = "face-serum-vitamin-c";
-// The problem-first query, not the discovery one: it's the only query in
-// this category where Minimalist's presence actually differs by engine in
-// the real harvested data (present via Claude's seed snapshot below,
-// genuinely absent from both the chatgpt and gemini harvests) — the
-// "✕ not on this shelf" money moment has to come from a real gap, not a
-// staged one.
-const HERO_BANK_QID = "face-serum-vitamin-c-problem";
+// The discovery query, not problem-first: this is the shelf-browsing
+// question the hero's own headline is about ("who does AI recommend"),
+// and — checked directly against the harvested data before picking it —
+// it's genuinely clean India-only results on every engine (Indian brands,
+// .in/.co domains, amazon.in). An earlier version of this file used the
+// problem-first query instead, which does have real chatgpt-harvest rows
+// with US brands and amazon.com — accurate to what was actually harvested,
+// but wrong for a hero mock meant to represent the India market.
+const HERO_BANK_QID = "face-serum-vitamin-c-discovery";
 // Real Claude seed for this same product. Used to be filed under a
 // different id ("vitamin-c-serum") than data/india.json's real category —
 // lib/bankMerge.js's mergeBank() replaced the whole bank category with the
@@ -111,12 +113,15 @@ const HERO_ENGINES = buildHeroEngines();
 export default function Hero() {
   return (
     <header className="hero" id="top-hero">
-      <h1 className="hero-h1-simple">Is your brand on AI&rsquo;s shelf?</h1>
+      <div className="eyebrow">
+        <span className="eyebrow-dot" />
+        For brands in India · UAE · Saudi Arabia
+      </div>
+      <h1 className="hero-h1-simple">Does AI recommend your brand — or your competitor?</h1>
       <DomainCheckForm />
-      <div className="hero-note mono">No card. No signup. 2 minutes.</div>
-      <p className="hero-market-line">
-        Built for India · UAE · Saudi Arabia — real shopper questions in Hinglish and Arabic.
-      </p>
+      <div className="hero-note mono">
+        Free. 2 minutes. See what ChatGPT, Gemini and Claude tell your customers.
+      </div>
 
       {/* product report card mock — tabs + shelf are real snapshot data
           (HERO_ENGINES, computed above); verdict/SOV/engine-badges below
@@ -145,10 +150,10 @@ export default function Hero() {
                 </div>
               </div>
               <div>
-                <div className="report-label">Engines stocking you</div>
+                <div className="report-label">AI apps stocking you</div>
                 <div className="engine-badges">
                   <span className="engine-badge yes">ChatGPT ✓</span>
-                  <span className="engine-badge no">Gemini ✗</span>
+                  <span className="engine-badge yes">Gemini ✓</span>
                   <span className="engine-badge yes">Claude ✓</span>
                 </div>
               </div>

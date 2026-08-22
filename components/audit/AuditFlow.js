@@ -50,11 +50,11 @@ export default function AuditFlow({ initialDomain = "" }) {
             stocked<b>by</b>
           </Link>
         </div>
-        <div className={styles.mark}>StockedBy · Agent Readiness Audit</div>
-        <h1 className={styles.title}>Can AI agents actually buy from you?</h1>
+        <div className={styles.mark}>Free website check</div>
+        <h1 className={styles.title}>Can AI apps read your website?</h1>
         <p className={styles.sub}>
-          Being recommended isn&rsquo;t enough once agents start transacting. This checks whether your
-          site can be found, read, and bought from by AI agents — not just seen by shoppers.
+          If AI can&rsquo;t read your shop, it can&rsquo;t recommend or sell your products. Free
+          check, 30 seconds.
         </p>
 
         {(phase === "setup" || phase === "running") && (
@@ -68,14 +68,14 @@ export default function AuditFlow({ initialDomain = "" }) {
               onChange={(e) => setDomain(e.target.value)}
               autoComplete="url"
               disabled={phase === "running"}
+              autoFocus
             />
             <p className={styles.hint} style={{ marginTop: 0 }}>
-              We check robots.txt, /llms.txt, agentic-checkout manifests, and product page markup —
-              server-side, no signup.
+              We check if AI apps can find, read and buy from your site. No signup.
             </p>
             {error && <div className={styles.errBanner}>{error}</div>}
             <button type="submit" className={styles.btn} disabled={!domain.trim() || phase === "running"}>
-              {phase === "running" ? "Checking your site…" : "Run the audit"}
+              {phase === "running" ? "Checking your website…" : "Check my website — free"}
             </button>
           </form>
         )}
@@ -84,7 +84,7 @@ export default function AuditFlow({ initialDomain = "" }) {
           <>
             <AuditResults result={result} />
             <button type="button" className={styles.btnGhost} onClick={auditAnother}>
-              Audit another site
+              Check another website
             </button>
           </>
         )}

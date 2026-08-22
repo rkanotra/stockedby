@@ -19,23 +19,49 @@ India, UAE, KSA (Saudi Arabia) — the go-to-market advantage. Pakistan and
 SEA are unannounced future expansion markets — do not mention them in
 user-facing copy until launched.
 
-**Homepage philosophy: the homepage is the test; education lives in the
-report and blog.** app/page.js is deliberately just Nav + Hero (single
-domain input + one button + the interactive report-card demo) +
-PromiseStrip (three one-line promises) + Footer. The pillar/markets/data/
+**Site philosophy: the homepage is the door, the report is the product,
+education lives in the blog — no roadmap content on public pages.**
+app/page.js is deliberately just Nav (logo + one button, "Check my brand —
+free") + Hero (eyebrow "For brands in India · UAE · Saudi Arabia" + single
+domain input + one button + the interactive report-card demo, which must
+show the India serum DISCOVERY shelf with Indian brands — never a
+problem-first snapshot with non-India results) + PromiseStrip (three
+one-line promises with icons, plus one always-visible secondary link to
+/audit) + Footer (logo + one-line story + Privacy). The pillar/markets/data/
 compare/how-it-works sections (components/Aisle*.js, HowItWorks.js,
 Markets.js, DataSection.js, Compare.js) still exist, unused by this page —
 reserved for a future /platform page, not deleted. Anyone who wants to
 understand HOW StockedBy works gets that from an actual report (which
 already keeps its fuller explainer style) or a future blog, not a landing
-page essay. This extends to the /test wizard too: domain-first, one
-decision per screen (components/test/DomainStep.js ->
-BrandStep.js -> MarketStep.js -> CategoryStep.js -> QueryStep.js), plain
-language throughout — no "engines"/"queries"/"telemetry"/"archetype" on
-either surface, short sentences, buttons that state their outcome ("Check
-my brand — free", "Show my report", "Test another product"). The report
-page (components/test/report/) is explicitly exempt from this — it keeps
-its existing, more detailed explainer copy.
+page essay — and no TODAY/NEXT/THEN roadmap framing belongs on any
+public-facing page (CLAUDE.md's own "still roadmap" pillars are internal
+framing, not copy to surface to merchants). This extends to the /test
+wizard too: domain-first, one decision per screen (components/test/
+DomainStep.js -> BrandStep.js -> MarketStep.js -> CategoryStep.js ->
+QueryStep.js), persistent header (eyebrow "StockedBy · {market}" + subtitle
+"Your customers ask ChatGPT what to buy. See if it says your name — or
+your competitor's."), plain language throughout — banned words on every
+user-facing surface: engine, query, telemetry, archetype, fanout, harvest,
+GEO, agentic, UCP, ACP, manifest, schema, protocol (say instead: AI apps,
+questions, what AI searched, site check) — short sentences (max ~12 words),
+buttons that state their outcome ("Check my brand — free", "Show my
+report", "Test another product"). The report page
+(components/test/report/) renders a 4-card Layer 1 story by default
+(StoryView.js, computed by lib/layerOne.js: YES/SOMETIMES/NO, who AI
+recommends, where buyers pay in counts not percentages, 3 next steps — one
+of which links to /audit when the brand's own site never appeared as a
+destination) with a "See full details" button that expands the existing,
+more detailed full report (Layer 2, unchanged). The merchant email uses
+Layer 1 content only. The Agent Readiness Audit (/audit) follows the same
+pattern: Layer 1 (components/audit/AuditResults.js, computed by
+lib/audit/layerOne.js) is a plain verdict (YES, AI CAN READ YOUR SHOP /
+SOME PROBLEMS / AI CAN'T READ YOUR SHOP) + up to 4 plain findings with
+fixes, deliberately computed from only the discoverable+readable layers
+(no UCP/ACP/transactable — still roadmap); "See technical details" expands
+the original per-check output, unchanged, for developers. Each surface
+cross-links to the other: the audit result ends with a link to /test, and
+the shelf report's "what should you do" card links to /audit when
+warranted.
 
 Current phase: **Phase 4 complete — persistence, capture & share are live**
 MVP (landing page, full test flow, /api/test) shipped first; Phase 4 added
@@ -244,17 +270,36 @@ Arabic/RTL pass).
   sending domain, which restricts merchant-address sends) never blocks the
   other.
 - lib/site.js — SITE_URL constant (NEXT_PUBLIC_SITE_URL, defaults to
-  https://stockedby.com) for building absolute /report/[slug] links in
-  emails. components/test/report/ShareButton.js deliberately does NOT use
-  this — it reads window.location.origin instead, so the copied link
-  always matches whatever domain/environment is actually being viewed.
+  https://stockedby.com) for building absolute /report/[slug] and /audit
+  links in emails. components/test/report/ShareButton.js deliberately does
+  NOT use this — it reads window.location.origin instead, so the copied
+  link always matches whatever domain/environment is actually being viewed.
+- lib/layerOne.js — pure computation for the shelf report's Layer 1 story
+  (buildAppearanceStory/buildTopBrands/buildDestinationStory/buildActions,
+  combined by buildLayerOne), shared verbatim by
+  components/test/report/StoryView.js (client) and app/api/lead/route.js's
+  merchant email, so the on-screen story and the email can never drift.
+  buildActions() returns {text, href} objects — href is set (to /audit,
+  prefilled with the brand's domain when known) only when the brand's own
+  site never appeared as a destination, the report's cross-link into the
+  free site check.
 - lib/audit/ — Agent Readiness Audit (app/api/audit, app/audit,
   components/audit/): ssrfGuard.js (mandatory hostname check, see hard
   rule 11), fetchWithTimeout.js (SSRF-safe manual redirect following),
   robots.js, jsonld.js, platform.js (Shopify/WooCommerce/Magento/Salla/
   Zid fingerprints + Stripe.js detection), productDiscovery.js (sitemap
   or on-page link), score.js (checks → Discoverable/Readable/
-  Transactable layer scores → verdict, platform-aware fix lines).
+  Transactable layer scores → verdict, platform-aware fix lines),
+  layerOne.js (parallel to lib/layerOne.js — buildAuditLayerOne() computes
+  the plain-language Layer 1 verdict + up to 4 findings+fixes from only the
+  discoverable+readable layers, rendered by
+  components/audit/AuditResults.js; Layer 2 keeps score.js's full 3-layer
+  output, including transactable, unchanged for developers).
+- app/privacy/page.js — the site's privacy policy (uses the .legal styles
+  in app/globals.css), linked from Footer.js. Covers what's collected at
+  /test, /audit and the lead gate, who else sees it (Anthropic/Google/
+  OpenAI for questions; Resend/Supabase for email + storage), and DPDP
+  (India) / PDPL (UAE, KSA) rights.
 
 ## Build phases (one per session, commit after each)
 1. Scaffold Next.js (App Router) + landing page from docs/design/ (hero

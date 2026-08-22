@@ -97,6 +97,7 @@ export async function POST(request) {
           engines: reportData.engines,
           sentiment: reportData.sentiment,
           trustedSources: reportData.trustedSources,
+          brandWebsite: reportData.brandWebsite,
         });
       }
     } catch (e) {

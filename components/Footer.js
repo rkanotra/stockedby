@@ -10,15 +10,12 @@ export default function Footer() {
           </a>
           <br />
           <span style={{ fontSize: "12px" }}>
-            Every AI assistant is a shop now — StockedBy tells you if you&rsquo;re stocked by
-            ChatGPT, Gemini and Claude.
+            Every AI app is a shop now. StockedBy tells you if you&rsquo;re stocked.
           </span>
         </div>
-        <div>
-          <Link href="/test">Check my brand</Link> · <Link href="/audit">Free agent check</Link>
-        </div>
         <div className="mono" style={{ fontSize: "11px" }}>
-          © 2026 StockedBy
+          <Link href="/privacy">Privacy</Link>
+          <br />© 2026 StockedBy
         </div>
       </div>
     </footer>

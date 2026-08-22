@@ -177,7 +177,10 @@ export default function TestFlow() {
             stocked<b>by</b>
           </Link>
         </div>
-        <div className={styles.mark}>Free brand check</div>
+        <div className={styles.mark}>StockedBy · {market}</div>
+        <p className={styles.sub}>
+          Your customers ask ChatGPT what to buy. See if it says your name — or your competitor&rsquo;s.
+        </p>
 
         {phase === "domain" && <DomainStep domain={domain} onDomain={setDomain} onNext={goToBrand} />}
 

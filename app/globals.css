@@ -43,15 +43,11 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--ink); outline-o
 
 /* ---------- nav ---------- */
 .nav { position: relative; z-index: 5; background: var(--cream); border-bottom: 1px solid var(--line); }
-.nav-in { display: flex; align-items: center; gap: 24px; padding: 15px 24px; max-width: 1160px; margin: 0 auto; }
+.nav-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 15px 24px; max-width: 1160px; margin: 0 auto; }
 .logo { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 20px; color: var(--ink); letter-spacing: -0.01em; }
 .logo b { background: var(--tag); padding: 1px 6px; border-radius: 5px; font-weight: 800; }
-.nav-links { display: flex; gap: 26px; margin-left: auto; font-size: 14px; font-weight: 500; }
-.nav-links a { color: var(--muted); }
-.nav-links a:hover { color: var(--ink); }
 .btn { display: inline-block; background: var(--ink); color: var(--white); font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer; }
 .btn:hover { background: var(--hover-nav); }
-@media (max-width: 760px) { .nav-links { display: none; } }
 
 /* ---------- hero ---------- */
 .hero-shell { position: relative; overflow: hidden; background: var(--cream); }
@@ -104,7 +100,6 @@ h1.hero-h1-simple {
 .domain-input:focus { outline: none; border-color: var(--ink); }
 .domain-submit { flex-shrink: 0; white-space: nowrap; }
 @media (max-width: 480px) { .domain-form { flex-direction: column; } }
-.hero-market-line { color: var(--muted); font-size: 14px; max-width: 46ch; margin: 14px auto 0; }
 
 /* ---------- report card mock ---------- */
 .report-wrap { position: relative; max-width: 920px; margin: 64px auto 0; }
@@ -217,16 +212,23 @@ h1.hero-h1-simple {
    fix below: never a shorthand `padding` that could zero out the inner
    .wrap's left/right padding on an element that also carries both classes. */
 .promises { padding-top: 44px; padding-bottom: 44px; background: var(--card-tint); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
-.promise-list { list-style: none; display: flex; flex-direction: column; gap: 14px; max-width: 46ch; margin: 0 auto; }
+.promise-list { list-style: none; display: flex; flex-direction: column; gap: 18px; max-width: 46ch; margin: 0 auto; }
 .promise-line {
+  display: flex; align-items: center; gap: 12px; text-align: left;
   font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700;
   font-size: clamp(17px, 2.4vw, 21px); line-height: 1.4; color: var(--ink);
 }
+.promise-icon {
+  flex-shrink: 0; width: 26px; height: 26px; color: var(--link-hover);
+  background: var(--white); border: 1px solid var(--line3); border-radius: 8px; padding: 5px;
+}
 .promise-link {
-  display: inline-block; margin-top: 26px; font-family: 'IBM Plex Mono', monospace;
+  display: block; margin-top: 22px; font-family: 'IBM Plex Mono', monospace;
   font-size: 13px; font-weight: 600; color: var(--link-hover);
 }
 .promise-link:hover { color: var(--brick); }
+.promise-link-secondary { margin-top: 12px; color: var(--muted); font-weight: 500; }
+.promise-link-secondary:hover { color: var(--ink); }
 
 /* ---------- aisles (feature sections) ---------- */
 /* Longhand on purpose: section.aisle + .wrap both apply to the same element
@@ -248,6 +250,14 @@ section.aisle { padding-top: 76px; padding-bottom: 8px; }
 h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(28px, 4.4vw, 42px); letter-spacing: -0.01em; }
 .aisle-sub { color: var(--muted); max-width: 60ch; margin: 12px 0 34px; font-size: 16px; }
 .aisle-plank { height: 8px; background: linear-gradient(#F4DEA0, var(--tag)); border-radius: 2px; margin-bottom: 42px; }
+
+/* ---------- legal pages (app/privacy) ---------- */
+.legal { max-width: 640px; padding: 60px 24px 80px; }
+.legal h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(28px, 5vw, 40px); }
+.legal-updated { color: var(--muted2); font-size: 13px; margin: 8px 0 32px; }
+.legal h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 18px; margin: 28px 0 8px; }
+.legal p { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 4px; }
+.legal a { color: var(--link-hover); text-decoration: underline; }
 
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
 .feat { background: var(--white); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }

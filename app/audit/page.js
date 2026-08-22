@@ -1,9 +1,9 @@
 import AuditFlow from "@/components/audit/AuditFlow";
 
 export const metadata = {
-  title: "Agent Readiness Audit — StockedBy",
+  title: "Can AI apps read your website? — StockedBy",
   description:
-    "Check whether AI agents can discover, read, and actually buy from your site — robots.txt, llms.txt, agentic checkout manifests, and product structured data.",
+    "If AI can't read your shop, it can't recommend or sell your products. Free check, 30 seconds.",
 };
 
 export default async function AuditPage({ searchParams }) {

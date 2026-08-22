@@ -45,8 +45,8 @@ export default function HeroReportCard({ engines, children }) {
       </div>
       <div className="report-body">
         <div className="report-col-l">
-          <div className="report-label">Query · real shopper set</div>
-          <div className="report-engines" role="tablist" aria-label="AI engine">
+          <div className="report-label">Real shopper question</div>
+          <div className="report-engines" role="tablist" aria-label="AI app">
             {engines.map((e, idx) => (
               <button
                 key={e.id}

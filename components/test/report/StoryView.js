@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import styles from "../test.module.css";
 import { matches } from "@/lib/scoring";
 import { buildLayerOne } from "@/lib/layerOne";
@@ -14,13 +15,14 @@ const APPEAR_CLASS = { YES: "vGood", SOMETIMES: "vMid", NO: "vBad" };
 // app/api/lead/route.js reuses verbatim for the merchant email — same
 // numbers everywhere, never two versions of the story.
 export default function StoryView({ data, onSeeFullDetails }) {
-  const { brand, report, engines, sentiment, trustedSources } = data;
+  const { brand, report, engines, sentiment, trustedSources, brandWebsite } = data;
   const { appearance, brands, destinations, actions } = buildLayerOne({
     brand,
     report,
     engines,
     sentiment,
     trustedSources,
+    brandWebsite,
   });
 
   return (
@@ -80,7 +82,7 @@ export default function StoryView({ data, onSeeFullDetails }) {
         <span className={styles.label}>What should you do now?</span>
         <ul className={styles.storyActions}>
           {actions.map((a, i) => (
-            <li key={i}>{a}</li>
+            <li key={i}>{a.href ? <Link href={a.href}>{a.text}</Link> : a.text}</li>
           ))}
         </ul>
       </div>
