@@ -15,12 +15,16 @@ import TrustedSourcesCard from "./TrustedSourcesCard";
 import AuditCTA from "./AuditCTA";
 
 // Layer 1 (StoryView, always visible — see its own comment) is the default
-// view; clicking "See full details" reveals Layer 2, which is exactly the
-// report this component rendered before Layer 1 existed: VerdictCard, the
-// share button, then the email-gated deep cards. Nothing about Layer 2 or
-// the email gate changed — it just moved one click deeper.
-export default function ReportView({ data, onRetry }) {
-  const [showFull, setShowFull] = useState(false);
+// view; clicking the full-width "See full report" button reveals Layer 2,
+// which is exactly the report this component rendered before Layer 1
+// existed: VerdictCard, the share button, then the email-gated deep cards.
+// Nothing about Layer 2 or the email gate changed — it just moved one
+// click deeper. initialShowFull lets a caller (app/report/[slug]/page.js,
+// for a `?full=1` link) land straight on Layer 2 instead of requiring the
+// click — used by the homepage's "See a real report" example link so a
+// visitor sees the depth immediately.
+export default function ReportView({ data, onRetry, initialShowFull = false }) {
+  const [showFull, setShowFull] = useState(initialShowFull);
   const {
     market,
     brand,

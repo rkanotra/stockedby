@@ -47,12 +47,16 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function ReportPage({ params }) {
+export default async function ReportPage({ params, searchParams }) {
   const { slug } = await params;
+  const search = await searchParams;
   const row = await loadReport(slug);
   if (!row) notFound();
 
   const data = row.report_json || {};
+  // ?full=1 (used by the homepage's "See a real report" example link) opens
+  // straight on Layer 2 so a visitor sees the depth without an extra click.
+  const initialShowFull = search?.full === "1";
 
   return (
     <div className={styles.root}>
@@ -66,7 +70,7 @@ export default async function ReportPage({ params }) {
         <h1 className={styles.title}>{data.brand}&rsquo;s AI shelf report</h1>
         <p className={styles.sub}>{data.category?.name}</p>
 
-        <ReportView data={{ ...data, slug: row.slug }} />
+        <ReportView data={{ ...data, slug: row.slug }} initialShowFull={initialShowFull} />
 
         <Link
           href="/test"

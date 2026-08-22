@@ -5,7 +5,11 @@ import Link from "next/link";
 // run through /api/test — and Supabase's `reports` table is still empty
 // until supabase/migrations/0001_phase4_schema.sql is applied). Once a real
 // test has been run and saved, drop its slug in here to activate the link;
-// until then it stays hidden rather than pointing at a page that 404s.
+// until then it stays hidden rather than pointing at a page that 404s. The
+// link already carries ?full=1 so the moment this is set, it opens the
+// report with the full details expanded (app/report/[slug]/page.js reads
+// that param into ReportView's initialShowFull) — a visitor sees the depth
+// immediately instead of needing to click "See full report" themselves.
 const EXAMPLE_REPORT_SLUG = "";
 
 const PROMISES = [
@@ -52,7 +56,7 @@ export default function PromiseStrip() {
           ))}
         </ul>
         {EXAMPLE_REPORT_SLUG && (
-          <a href={`/report/${EXAMPLE_REPORT_SLUG}`} className="promise-link">
+          <a href={`/report/${EXAMPLE_REPORT_SLUG}?full=1`} className="promise-link">
             See a real report →
           </a>
         )}
