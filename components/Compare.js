@@ -13,7 +13,7 @@ export default function Compare() {
             <tr><td>Local-language queries (Hinglish, Arabic)</td><td className="us yes-mark">✓</td><td className="no-mark">✗</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
             <tr><td>Checkout routing (brand-direct vs marketplace)</td><td className="us yes-mark">✓</td><td className="no-mark">✗</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
             <tr><td>Query fanout &amp; trusted sources</td><td className="us yes-mark">✓</td><td className="yes-mark">✓</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
-            <tr><td>Fix generation (JSON-LD, llms.txt)</td><td className="us yes-mark">soon</td><td className="no-mark">✗</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
+            <tr><td>Fix generation (JSON-LD, llms.txt)</td><td className="us yes-mark">✓</td><td className="no-mark">✗</td><td className="no-mark">✗</td><td className="no-mark">✗</td></tr>
             <tr><td>Free for merchants</td><td className="us yes-mark">✓</td><td className="no-mark">enterprise $</td><td className="no-mark">from $29/mo</td><td className="yes-mark">✓</td></tr>
           </tbody>
         </table>

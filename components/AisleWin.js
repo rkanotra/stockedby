@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function AisleWin() {
   return (
     <section id="win" className="wrap aisle">
@@ -16,9 +18,12 @@ export default function AisleWin() {
           <p>Not stocked, outshelved, or losing checkouts — each verdict gets its own prioritized plan: structured data, content targets, source outreach.</p>
         </div>
         <div className="feat rv">
-          <span className="flabel">Fix generator<span className="soon">coming soon</span></span>
+          <span className="flabel">Fix generator</span>
           <h3>One-click machine-readability</h3>
           <p>Auto-generated Product JSON-LD, llms.txt and structured feeds from your catalog — the layer no monitoring tool ships.</p>
+          <Link href="/fix" className="btn-ghost" style={{ display: "inline-block", marginTop: 12 }}>
+            Generate the fix
+          </Link>
         </div>
         <div className="feat rv">
           <span className="flabel">Re-test cadence</span>

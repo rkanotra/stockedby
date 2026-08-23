@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
-import { sendLeadEmails } from "@/lib/email";
+import { sendLeadEmails, sendFixLeadEmails } from "@/lib/email";
 import { getReportBySlug } from "@/lib/reports";
 import { buildLayerOne } from "@/lib/layerOne";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
@@ -28,18 +28,33 @@ export async function POST(request) {
     return badRequest("Invalid JSON body.");
   }
 
-  const { email, brand, brandWebsite, painpoint, market, category, consent, verdict, reportSlug } = body || {};
+  const { email, brand, brandWebsite, painpoint, market, category, consent, verdict, reportSlug, source, platform } =
+    body || {};
+
+  // "fix" leads (Fix Generator, /fix) reuse this same gate/endpoint per the
+  // feature spec ("same email gate as reports, saves lead with
+  // source='fix'") but have no market/category/verdict — they have a
+  // domain instead. Everything else (rate limit, consent, Supabase
+  // resilience) is identical between the two sources.
+  const sourceInput = source === "fix" ? "fix" : "report";
 
   const emailInput = typeof email === "string" ? email.trim() : "";
   if (!emailInput || !EMAIL_RE.test(emailInput)) {
     return badRequest("A valid work email is required.");
   }
-  const brandInput = typeof brand === "string" ? brand.trim() : "";
-  if (!brandInput) return badRequest('"brand" is required.');
+  const brandWebsiteInput = typeof brandWebsite === "string" ? brandWebsite.trim() : "";
+  let brandInput = typeof brand === "string" ? brand.trim() : "";
   const marketInput = typeof market === "string" ? market.trim() : "";
-  if (!marketInput) return badRequest('"market" is required.');
   const categoryInput = typeof category === "string" ? category.trim() : "";
-  if (!categoryInput) return badRequest('"category" is required.');
+
+  if (sourceInput === "fix") {
+    if (!brandWebsiteInput) return badRequest('"brandWebsite" (the domain) is required.');
+    if (!brandInput) brandInput = brandWebsiteInput;
+  } else {
+    if (!brandInput) return badRequest('"brand" is required.');
+    if (!marketInput) return badRequest('"market" is required.');
+    if (!categoryInput) return badRequest('"category" is required.');
+  }
   if (consent !== true) {
     return badRequest("Consent is required to unlock the full report.");
   }
@@ -53,7 +68,6 @@ export async function POST(request) {
     );
   }
 
-  const brandWebsiteInput = typeof brandWebsite === "string" ? brandWebsite.trim() : "";
   const painpointInput = typeof painpoint === "string" ? painpoint.trim() : "";
   const consentAt = new Date().toISOString();
 
@@ -65,9 +79,10 @@ export async function POST(request) {
         brand: brandInput,
         brand_domain: brandWebsiteInput || null,
         painpoint: painpointInput || null,
-        market: marketInput,
-        category: categoryInput,
+        market: marketInput || null,
+        category: categoryInput || null,
         consent_at: consentAt,
+        source: sourceInput,
       });
       if (error) console.error("[leads] insert failed", error.message);
     } catch (e) {
@@ -86,7 +101,7 @@ export async function POST(request) {
   // its plain verdict-only email rather than failing the send.
   const slugInput = typeof reportSlug === "string" ? reportSlug : null;
   let layer1 = null;
-  if (slugInput) {
+  if (sourceInput === "report" && slugInput) {
     try {
       const row = await getReportBySlug(slugInput);
       const reportData = row?.report_json;
@@ -107,16 +122,24 @@ export async function POST(request) {
 
   let emailResult = { founderSent: false, merchantSent: false };
   try {
-    emailResult = await sendLeadEmails({
-      email: emailInput,
-      brand: brandInput,
-      market: marketInput,
-      category: categoryInput,
-      painpoint: painpointInput,
-      verdict: typeof verdict === "string" ? verdict : "",
-      reportSlug: slugInput,
-      layer1,
-    });
+    emailResult =
+      sourceInput === "fix"
+        ? await sendFixLeadEmails({
+            email: emailInput,
+            domain: brandWebsiteInput,
+            platform: typeof platform === "string" ? platform : "",
+            painpoint: painpointInput,
+          })
+        : await sendLeadEmails({
+            email: emailInput,
+            brand: brandInput,
+            market: marketInput,
+            category: categoryInput,
+            painpoint: painpointInput,
+            verdict: typeof verdict === "string" ? verdict : "",
+            reportSlug: slugInput,
+            layer1,
+          });
   } catch (e) {
     console.error("[leads] email send failed", e?.message || e);
   }

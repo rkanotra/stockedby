@@ -48,16 +48,25 @@ export default function AuditResults({ result }) {
           <p className={styles.storyLine}>No problems found — AI apps can read your shop.</p>
         </div>
       ) : (
-        <div className={styles.card}>
-          <span className={styles.label}>What&rsquo;s wrong</span>
-          <ul className={styles.storyActions}>
-            {layer1.findings.map((f, i) => (
-              <li key={i}>
-                {f.finding} — {f.fix}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <>
+          <div className={styles.card}>
+            <span className={styles.label}>What&rsquo;s wrong</span>
+            <ul className={styles.storyActions}>
+              {layer1.findings.map((f, i) => (
+                <li key={i}>
+                  {f.finding} — {f.fix}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <Link
+            href={`/fix?domain=${encodeURIComponent(domain)}`}
+            className={styles.btn}
+            style={{ display: "block", textAlign: "center" }}
+          >
+            Generate the fix →
+          </Link>
+        </>
       )}
 
       {!showFull && (

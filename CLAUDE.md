@@ -85,9 +85,19 @@ RESEND_API_KEY are all optional, and every feature that depends on one
 quietly no-ops without it rather than failing the free test (see
 lib/harvestClients.js, lib/supabaseClient.js, lib/email.js). Zoho mailbox
 setup (the actual inbox FOUNDER_EMAIL/FROM_EMAIL point at) is ops, not
-code — nothing here builds that. Still not started: Phase 5 (real per-
-email-per-category-per-month rate limiting, privacy policy, analytics,
-Arabic/RTL pass).
+code — nothing here builds that. The Fix Generator (/fix, IMPROVE pillar)
+is also live — see the repo map entries for app/api/fix/route.js and
+lib/audit/fixGenerator.js/installInstructions.js/gatherSignals.js — reusing
+the same email gate (hard rule 8, source="fix"), rate-limit pattern (hard
+rule 9) and SSRF guard (hard rule 11) as the rest of the app. Its Supabase
+migration (supabase/migrations/0002_fix_generator_schema.sql) has NOT been
+run against the live project yet — same manual "paste into Supabase's SQL
+editor" step as 0001, still outstanding. Still not started: Phase 5 (real
+per-email-per-category-per-month rate limiting, privacy policy, analytics,
+Arabic/RTL pass) — analytics here means a real GA property; lib/analytics.js
+ships a safe no-op trackEvent() wrapper ahead of that (fires fix_started/
+fix_completed/fix_gate_shown/fix_lead_submitted the moment GA is wired up,
+does nothing until then).
 
 ## Hard rules
 1. **API keys server-side only.** ANTHROPIC_API_KEY, GEMINI_API_KEY,
@@ -132,7 +142,11 @@ Arabic/RTL pass).
    generation call), web_search max_uses: 2 per query (1 for the
    problem-first archetype specifically — its open-ended phrasing triggers
    the longest searches, see app/api/test/query/route.js), model
-   claude-sonnet-4-6, aux calls (sentiment) on haiku.
+   claude-sonnet-4-6, aux calls (sentiment) on haiku. The Fix Generator's
+   per-page product extraction (lib/claudeClient.js's extractProductData)
+   is haiku-only too, capped at 8 pages/run (app/api/fix/route.js's
+   MAX_PRODUCTS) with maxRetries: 0 — the SDK's own retry would risk
+   exceeding maxDuration rather than saving cost.
 8. **Email gate before deep results** (live, Phase 4): verdict + engine
    scoreboxes (VerdictCard) are free; everything else (checkout battle,
    Share of AI Voice, sentiment, the shelves, fanout, trusted sources, audit
@@ -155,7 +169,10 @@ Arabic/RTL pass).
    applied, with their own separate counters, to app/api/generate-queries,
    app/api/lead, and app/api/test/query (limit 200 — abuse-prevention only,
    not the real per-test cap, since one test now fires several of these) —
-   see lib/rateLimit.js's namespace param). [STILL
+   see lib/rateLimit.js's namespace param). app/api/fix reuses
+   checkAndConsume() unmodified but passes a composite `${ip}:${hostname}`
+   key (namespace "fix", limit 1) instead of a bare IP — one run per
+   domain per IP per day, without touching lib/rateLimit.js. [STILL
    DEFERRED] the stronger per-email-per-category-per-month limit hard rule
    8's original draft described — nothing enforces "1 free test per email"
    yet, only the IP-based caps above.
@@ -166,7 +183,11 @@ Arabic/RTL pass).
     through lib/audit/ssrfGuard.js's assertPublicHostname() first. Never add
     a raw `fetch()` to app/api/audit/ that bypasses it, and never switch
     fetchWithTimeout back to `redirect: "follow"` — each hop needs its own
-    hostname check.
+    hostname check. app/api/fix fetches the same merchant-entered domain
+    (plus up to 8 of its own product pages) and is bound by this rule too —
+    it calls assertPublicHostname() before gathering signals, same as
+    /api/audit, and reuses fetchTextSafe() throughout for every subsequent
+    page fetch.
 
 ## Repo map
 - docs/prototype-app.jsx — WORKING product logic (port, don't rewrite): Claude
@@ -348,6 +369,68 @@ Arabic/RTL pass).
   discoverable+readable layers, rendered by
   components/audit/AuditResults.js; Layer 2 keeps score.js's full 3-layer
   output, including transactable, unchanged for developers).
+- lib/audit/gatherSignals.js — gatherAuditSignals(hostname): the 6-way
+  parallel fetchTextSafe wave (robots.txt/llms.txt/ucp/acp/homepage/
+  sitemap.xml) plus wellKnownResult(), extracted out of app/api/audit/
+  route.js so app/api/fix can reuse the exact same signal-gathering for its
+  own "before" snapshot without duplicating or drifting from /api/audit's
+  own logic.
+- app/api/fix/route.js — the Fix Generator (/fix): discovers up to 8
+  product URLs (sitemap.xml first via productDiscovery.js's
+  scanSitemapMulti, falling back to commonListingUrls's /products//shop//
+  collections/ paths, then the homepage's own links via
+  findProductUrlsInHtml — all additive multi-URL siblings of /api/audit's
+  original single-URL functions, kept genuinely separate so /api/audit's
+  shipped behavior can't regress), extracts each page with
+  lib/claudeClient.js's extractProductData (haiku, see hard rule 7),
+  builds schema.org Product JSON-LD per product and a site-level llms.txt
+  (lib/audit/fixGenerator.js — every field conditional on real extracted
+  data, per hard rule 2: a page that can't be read returns an honest
+  {status:"error"}, never invented product data), and computes a full
+  "before" audit snapshot inline (reusing gatherAuditSignals +
+  lib/audit/score.js's buildAuditResult) so the results page's "Verify it
+  worked" button only needs one fresh /api/audit call to diff against —
+  no second endpoint. Best-effort persists to Supabase's `fix_runs` table
+  (supabase/migrations/0002_fix_generator_schema.sql, not yet applied to
+  the live project — see "Current phase" above).
+- lib/audit/installInstructions.js — getInstallInstructions(platformId):
+  exact, platform-specific paste steps (Shopify/WooCommerce/Magento/Salla/
+  Zid + a generic "custom" fallback) for both the JSON-LD blocks and
+  llms.txt, keyed off the same platform id string
+  lib/audit/platform.js's detectPlatform() returns — /audit and /fix can
+  never disagree about which platform a site is on.
+- app/fix/page.js + components/fix/ (FixFlow.js phase state machine →
+  FixResults.js → ProductJsonLdCard.js, FixLeadGate.js) — the /fix UI,
+  mirroring app/audit/page.js + components/audit/'s shape. First 2
+  products render free and unlocked; the full product set + llms.txt
+  download + platform install steps + the "Verify it worked" before/after
+  diff + the "don't have a developer? reply to your email" CTA sit behind
+  FixLeadGate.js (a domain-keyed twin of components/test/report/
+  LeadGate.js, same blur/clip-then-unlock presentational pattern, hard
+  rule 8's gate extended via source="fix" — see app/api/lead/route.js and
+  lib/email.js's sendFixLeadEmails/buildFixLeadEmail below). Cross-linked
+  from components/audit/AuditResults.js (a "Generate the fix →" button
+  under Layer 1 findings), components/test/report/FixPlanCTA.js (inserted
+  into ReportView.js's LeadGate children alongside AuditCTA.js), and
+  components/AisleWin.js's "Fix generator" card on /why (no longer a
+  "coming soon" chip).
+- lib/analytics.js — trackEvent(name, params): a "use client" no-op
+  wrapper around window.gtag, safe to call before a real GA property is
+  wired up (that's an ops decision, out of scope here — see "Current
+  phase"). Fired by components/fix/ at fix_started, fix_completed,
+  fix_gate_shown and fix_lead_submitted.
+- app/api/lead/route.js + lib/email.js — extended, not forked, for
+  source="fix" leads (hard rule 8): market/category validation is skipped
+  and brandWebsite (the domain) becomes required instead when
+  source==="fix", brand falls back to that domain, and the Supabase
+  `leads` insert gets a new nullable `source` column (default 'report',
+  supabase/migrations/0002_fix_generator_schema.sql, market/category also
+  dropped to nullable there) so every existing report-flow call site keeps
+  working unchanged. Email dispatch branches on the same source: fix leads
+  get lib/email.js's sendFixLeadEmails/buildFixLeadEmail (a receipt + the
+  "reply and we'll install it for you" invitation — there's no /report/
+  [slug]-style share link for a fix run to point to) instead of
+  sendLeadEmails/buildMerchantEmail's report-summary shape.
 - app/privacy/page.js — the site's privacy policy (uses the .legal styles
   in app/globals.css), linked from Footer.js. Covers what's collected at
   /test, /audit and the lead gate, who else sees it (Anthropic/Google/

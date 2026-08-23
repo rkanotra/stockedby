@@ -885,3 +885,108 @@
   padding: 4px 12px;
   margin-bottom: 4px;
 }
+
+/* Fix Generator (app/fix, components/fix/) — product cards, JSON-LD copy
+   blocks, install steps, verify diff. Reuses every color token above. */
+.productName {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  margin: 0 0 2px;
+}
+.productMeta {
+  font-size: 12px;
+  color: #7fa18c;
+  margin: 0 0 10px;
+  word-break: break-all;
+}
+.productErr {
+  font-size: 13px;
+  color: #ffb3a6;
+  line-height: 1.5;
+}
+.codeBlockHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.copyBtn {
+  background: transparent;
+  color: #ffc53d;
+  border: 1px solid #4a3f1f;
+  border-radius: 8px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  padding: 5px 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.copyBtn:focus-visible {
+  outline: 3px solid #f1f5ec;
+  outline-offset: 2px;
+}
+.codeBlock {
+  background: #0e1f18;
+  border: 1px solid #264434;
+  border-radius: 10px;
+  padding: 12px;
+  margin: 0;
+  overflow-x: auto;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #c4d6c9;
+  white-space: pre;
+}
+.lockedHint {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffc53d;
+  margin: 0 0 10px;
+}
+.installStep {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #c4d6c9;
+  margin-bottom: 10px;
+}
+.installStepNum {
+  flex-shrink: 0;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: #16180f;
+  background: #ffc53d;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+.verifyGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.verifyCol {
+  border: 1px solid #264434;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.verifyColLabel {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7fa18c;
+  display: block;
+  margin-bottom: 6px;
+}

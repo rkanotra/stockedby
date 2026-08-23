@@ -7,6 +7,7 @@ import { findProductSchema, validateProductFields } from "@/lib/audit/jsonld";
 import { detectPlatform, detectStripe } from "@/lib/audit/platform";
 import { scanSitemap, findProductUrlInHtml } from "@/lib/audit/productDiscovery";
 import { buildAuditResult } from "@/lib/audit/score";
+import { gatherAuditSignals, wellKnownResult } from "@/lib/audit/gatherSignals";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
 
 // Several sequential-ish fetches to an arbitrary domain (robots.txt,
@@ -16,20 +17,8 @@ import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
 export const maxDuration = 60;
 export const runtime = "nodejs";
 
-const UA = "StockedBy-AgentAudit/1.0 (+https://stockedby.com)";
-
 function badRequest(message) {
   return NextResponse.json({ error: message }, { status: 400 });
-}
-
-function wellKnownResult({ ok, text }) {
-  if (!ok || text === null) return { status: "missing" };
-  try {
-    JSON.parse(text);
-    return { status: "valid" };
-  } catch {
-    return { status: "invalid-json" };
-  }
 }
 
 export async function POST(request) {
@@ -66,18 +55,11 @@ export async function POST(request) {
     return badRequest("Couldn't resolve that domain.");
   }
 
-  const base = `https://${hostname}`;
-  const headers = { "User-Agent": UA };
-
-  // First wave: everything independent of each other, all in parallel.
-  const [robotsTxt, llmsTxt, ucpRaw, acpRaw, homepage, sitemapXml] = await Promise.all([
-    fetchTextSafe(`${base}/robots.txt`, { headers }),
-    fetchTextSafe(`${base}/llms.txt`, { headers }),
-    fetchTextSafe(`${base}/.well-known/ucp`, { headers }),
-    fetchTextSafe(`${base}/.well-known/acp`, { headers }),
-    fetchTextSafe(`${base}/`, { headers, maxBytes: 3_000_000 }),
-    fetchTextSafe(`${base}/sitemap.xml`, { headers }),
-  ]);
+  // First wave: everything independent of each other, all in parallel —
+  // shared with app/api/fix/route.js's own "before" snapshot, see
+  // lib/audit/gatherSignals.js.
+  const { base, headers, robotsTxt, llmsTxt, ucpRaw, acpRaw, homepage, sitemapXml } =
+    await gatherAuditSignals(hostname);
 
   if (!homepage.ok || !homepage.text) {
     return NextResponse.json(

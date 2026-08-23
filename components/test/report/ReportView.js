@@ -13,6 +13,7 @@ import ShelvesCard from "./ShelvesCard";
 import FanoutCard from "./FanoutCard";
 import TrustedSourcesCard from "./TrustedSourcesCard";
 import AuditCTA from "./AuditCTA";
+import FixPlanCTA from "./FixPlanCTA";
 
 // Layer 1 (StoryView, always visible — see its own comment) is the default
 // view; clicking the full-width "See full report" button reveals Layer 2,
@@ -75,6 +76,7 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
             <FanoutCard fanout={fanout} />
             <TrustedSourcesCard trustedSources={trustedSources} />
             <AuditCTA brandWebsite={brandWebsite} />
+            <FixPlanCTA brandWebsite={brandWebsite} />
           </LeadGate>
         </>
       )}
