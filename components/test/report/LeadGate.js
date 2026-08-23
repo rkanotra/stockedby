@@ -13,7 +13,20 @@ const CONSENT_TEXT =
 // already fully in the DOM (just blurred + height-clipped) rather than
 // server-redacted, since the gate's job is lead capture, not access
 // control — see app/api/test/route.js's save-report comment.
-export default function LeadGate({ market, category, brand, brandWebsite, verdict, slug, onUnlock, children }) {
+export default function LeadGate({
+  market,
+  category,
+  brand,
+  brandWebsite,
+  verdict,
+  slug,
+  onUnlock,
+  report,
+  engines,
+  sentiment,
+  trustedSources,
+  children,
+}) {
   const [unlocked, setUnlocked] = useState(false);
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState(brandWebsite || "");
@@ -35,12 +48,26 @@ export default function LeadGate({ market, category, brand, brandWebsite, verdic
           email: email.trim(),
           brand,
           brandWebsite: website.trim(),
+          // The domain this test actually ran on, untouched by whatever the
+          // user typed into the (optional, editable) field above — used to
+          // build the "test another product"/PDF links correctly even if
+          // that field gets cleared or changed. See app/api/lead/route.js.
+          testedDomain: brandWebsite || "",
           painpoint: pain.trim(),
           market,
           category,
           consent,
           verdict,
           reportSlug: slug || null,
+          // The client already has this report's real data in memory —
+          // sending it directly means the merchant email (and its PDF) can
+          // always be built, instead of depending on a Supabase round trip
+          // (getReportBySlug) that fails silently if persistence didn't
+          // happen or hasn't caught up yet. See app/api/lead/route.js.
+          report,
+          engines,
+          sentiment,
+          trustedSources,
         }),
       });
       const data = await res.json();

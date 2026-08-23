@@ -3,7 +3,9 @@ import { supabase } from "@/lib/supabaseClient";
 import { sendLeadEmails, sendFixLeadEmails } from "@/lib/email";
 import { getReportBySlug } from "@/lib/reports";
 import { buildLayerOne } from "@/lib/layerOne";
+import { buildReportPdf } from "@/lib/pdf/buildReportPdf";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
+import { SITE_URL } from "@/lib/site";
 
 export const runtime = "nodejs";
 export const maxDuration = 20;
@@ -28,8 +30,24 @@ export async function POST(request) {
     return badRequest("Invalid JSON body.");
   }
 
-  const { email, brand, brandWebsite, painpoint, market, category, consent, verdict, reportSlug, source, platform } =
-    body || {};
+  const {
+    email,
+    brand,
+    brandWebsite,
+    testedDomain,
+    painpoint,
+    market,
+    category,
+    consent,
+    verdict,
+    reportSlug,
+    source,
+    platform,
+    report,
+    engines,
+    sentiment,
+    trustedSources,
+  } = body || {};
 
   // "fix" leads (Fix Generator, /fix) reuse this same gate/endpoint per the
   // feature spec ("same email gate as reports, saves lead with
@@ -94,25 +112,46 @@ export async function POST(request) {
 
   // Merchant email = Layer-1 content only + link (report simplification
   // spec) — reuses the exact same lib/layerOne.js functions StoryView.js
-  // renders from, computed here off the report this test already saved
-  // (app/api/test/route.js's saveReport call), never recomputed from
-  // scratch. If the report can't be loaded (no slug, Supabase down, or
-  // just not configured when the test ran), sendLeadEmails falls back to
-  // its plain verdict-only email rather than failing the send.
+  // renders from. Preferred path: the client (LeadGate.js) already sent
+  // this report's real data (report/engines/sentiment/trustedSources)
+  // straight from memory, so layer1 can always be computed here without
+  // depending on Supabase having actually saved (and re-served) the report
+  // — a Supabase outage, a not-yet-applied migration, or read-after-write
+  // lag used to silently produce an empty, substance-free email (the
+  // `!layer1` fallback in lib/email.js's buildMerchantEmail) even though
+  // the merchant's real data was sitting right there in the browser the
+  // whole time. Falls back to the old getReportBySlug lookup only when the
+  // client didn't send this data (e.g. a stale cached page).
   const slugInput = typeof reportSlug === "string" ? reportSlug : null;
+  const testedDomainInput = typeof testedDomain === "string" ? testedDomain.trim() : "";
   let layer1 = null;
-  // The report's own saved domain, not the lead form's optional (and
-  // user-editable/clearable) "brand website" field — this is what powers
-  // the merchant email's "test your other products" link, so it needs the
-  // real domain the test actually ran against, not whatever was left in
-  // that field at submit time.
-  let reportBrandWebsite = null;
-  if (sourceInput === "report" && slugInput) {
-    try {
-      const row = await getReportBySlug(slugInput);
-      const reportData = row?.report_json;
-      if (reportData) {
-        reportBrandWebsite = reportData.brandWebsite || null;
+  let pdfBuffer = null;
+  let effectiveBrandWebsite = testedDomainInput || brandWebsiteInput;
+
+  if (sourceInput === "report") {
+    let reportData =
+      report && engines ? { brand: brandInput, report, engines, sentiment, trustedSources, brandWebsite: effectiveBrandWebsite } : null;
+
+    if (!reportData && slugInput) {
+      try {
+        const row = await getReportBySlug(slugInput);
+        const saved = row?.report_json;
+        if (saved) {
+          reportData = saved;
+          effectiveBrandWebsite = saved.brandWebsite || effectiveBrandWebsite;
+        }
+      } catch (e) {
+        console.error("[leads] loading report for email failed", e?.message || e);
+      }
+    }
+
+    if (reportData) {
+      // Malformed data (e.g. a stale client sending a slightly different
+      // shape) must never 500 the whole request — that would leave the
+      // merchant NOT unlocked, a worse failure than a substance-free email.
+      // lib/email.js's buildMerchantEmail already has an honest, graceful
+      // fallback for layer1 === null.
+      try {
         layer1 = buildLayerOne({
           brand: reportData.brand,
           report: reportData.report,
@@ -121,9 +160,29 @@ export async function POST(request) {
           trustedSources: reportData.trustedSources,
           brandWebsite: reportData.brandWebsite,
         });
+      } catch (e) {
+        console.error("[leads] building layer1 failed", e?.message || e);
+        layer1 = null;
       }
-    } catch (e) {
-      console.error("[leads] loading report for email failed", e?.message || e);
+
+      // Never blocks the send (spec item 3) — a generation failure just
+      // means the email goes out without an attachment.
+      try {
+        pdfBuffer = await buildReportPdf({
+          brand: reportData.brand,
+          categoryName: categoryInput,
+          market: marketInput,
+          brandWebsite: reportData.brandWebsite,
+          report: reportData.report,
+          engines: reportData.engines,
+          sentiment: reportData.sentiment,
+          trustedSources: reportData.trustedSources,
+          reportUrl: slugInput ? `${SITE_URL}/report/${slugInput}` : null,
+        });
+      } catch (e) {
+        console.error("[leads] PDF generation failed — sending email without it", e?.message || e);
+        pdfBuffer = null;
+      }
     }
   }
 
@@ -146,7 +205,8 @@ export async function POST(request) {
             verdict: typeof verdict === "string" ? verdict : "",
             reportSlug: slugInput,
             layer1,
-            brandWebsite: reportBrandWebsite || brandWebsiteInput,
+            brandWebsite: effectiveBrandWebsite,
+            pdfBuffer,
           });
   } catch (e) {
     console.error("[leads] email send failed", e?.message || e);

@@ -5,6 +5,7 @@ import styles from "../test.module.css";
 import { matches } from "@/lib/scoring";
 import { buildLayerOne } from "@/lib/layerOne";
 import TestAnotherCTA from "./TestAnotherCTA";
+import DownloadPdfButton from "./DownloadPdfButton";
 
 const APPEAR_COLOR = { YES: "#5bd6a0", SOMETIMES: "#ffc53d", NO: "#ff6b57" };
 const APPEAR_CLASS = { YES: "vGood", SOMETIMES: "vMid", NO: "vBad" };
@@ -16,7 +17,7 @@ const APPEAR_CLASS = { YES: "vGood", SOMETIMES: "vMid", NO: "vBad" };
 // app/api/lead/route.js reuses verbatim for the merchant email — same
 // numbers everywhere, never two versions of the story.
 export default function StoryView({ data, onSeeFullDetails }) {
-  const { brand, report, engines, sentiment, trustedSources, brandWebsite, market, category } = data;
+  const { brand, report, engines, sentiment, trustedSources, brandWebsite, market, category, slug } = data;
   const { appearance, brands, destinations, actions } = buildLayerOne({
     brand,
     report,
@@ -95,6 +96,18 @@ export default function StoryView({ data, onSeeFullDetails }) {
       <button type="button" className={styles.btnFullReport} onClick={onSeeFullDetails}>
         See full report — who, where, and why →
       </button>
+
+      <DownloadPdfButton
+        brand={brand}
+        categoryName={category?.name}
+        market={market}
+        brandWebsite={brandWebsite}
+        report={report}
+        engines={engines}
+        sentiment={sentiment}
+        trustedSources={trustedSources}
+        slug={slug}
+      />
     </>
   );
 }

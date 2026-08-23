@@ -96,6 +96,10 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
             verdict={report.verdict}
             slug={slug}
             onUnlock={scrollToExpanded}
+            report={report}
+            engines={engines}
+            sentiment={sentiment}
+            trustedSources={trustedSources}
           >
             <CheckoutBattleCard brand={brand} brandWebsite={brandWebsite} destinations={report.destinations} />
             <ShareOfVoiceCard market={market} brand={brand} competitor={competitor} shareOfVoice={report.shareOfVoice} />
