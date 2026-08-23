@@ -25,17 +25,31 @@ const MARKETS = listMarkets();
 // once, up front — "website" IS the domain here (no separate field), and
 // there's no competitor field at all (dropped for this simplified flow;
 // the report/API still support one, this wizard just never asks).
+// "Test your next product" (components/test/report/TestAnotherCTA.js,
+// the merchant email) links back here with domain+brand+market all
+// carried in the URL — when all three are present and valid, skip
+// straight to the category step instead of making a returning merchant
+// re-enter what's already known.
+function returnContextFromParams(searchParams) {
+  const domain = safeDecode(searchParams.get("domain") || "");
+  const brand = safeDecode(searchParams.get("brand") || "");
+  const marketParam = safeDecode(searchParams.get("market") || "");
+  const market = MARKETS.includes(marketParam) ? marketParam : null;
+  return { domain, brand, market, isReturn: Boolean(domain && brand && market) };
+}
+
 export default function TestFlow() {
   const searchParams = useSearchParams();
+  const [initialContext] = useState(() => returnContextFromParams(searchParams));
 
-  const [domain, setDomain] = useState(() => safeDecode(searchParams.get("domain") || ""));
-  const [brand, setBrand] = useState("");
-  const [market, setMarket] = useState(MARKETS[0]);
+  const [domain, setDomain] = useState(initialContext.domain);
+  const [brand, setBrand] = useState(initialContext.isReturn ? initialContext.brand : "");
+  const [market, setMarket] = useState(initialContext.market || MARKETS[0]);
   const [catSearch, setCatSearch] = useState("");
   const [catId, setCatId] = useState("");
   const [queries, setQueries] = useState([]);
   // domain | brand | market | category | generating | queries | running | retrying | done
-  const [phase, setPhase] = useState("domain");
+  const [phase, setPhase] = useState(initialContext.isReturn ? "category" : "domain");
   const [result, setResult] = useState(null);
   const [runError, setRunError] = useState("");
   // qid -> "searching" | "done" | "error", live per-question progress —

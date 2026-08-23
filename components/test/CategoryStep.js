@@ -11,7 +11,10 @@ export default function CategoryStep({ categories, search, onSearch, onPick, onC
 
   return (
     <div className={styles.card}>
-      <span className={styles.label}>What do you sell?</span>
+      <span className={styles.label}>Pick your most important product to start</span>
+      <p className={styles.hint} style={{ marginTop: 0 }}>
+        You can test another product right after — each gets its own report.
+      </p>
       <input
         className={styles.input}
         placeholder="e.g. serum, earbuds, abaya"

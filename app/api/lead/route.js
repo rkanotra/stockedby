@@ -101,11 +101,18 @@ export async function POST(request) {
   // its plain verdict-only email rather than failing the send.
   const slugInput = typeof reportSlug === "string" ? reportSlug : null;
   let layer1 = null;
+  // The report's own saved domain, not the lead form's optional (and
+  // user-editable/clearable) "brand website" field — this is what powers
+  // the merchant email's "test your other products" link, so it needs the
+  // real domain the test actually ran against, not whatever was left in
+  // that field at submit time.
+  let reportBrandWebsite = null;
   if (sourceInput === "report" && slugInput) {
     try {
       const row = await getReportBySlug(slugInput);
       const reportData = row?.report_json;
       if (reportData) {
+        reportBrandWebsite = reportData.brandWebsite || null;
         layer1 = buildLayerOne({
           brand: reportData.brand,
           report: reportData.report,
@@ -139,6 +146,7 @@ export async function POST(request) {
             verdict: typeof verdict === "string" ? verdict : "",
             reportSlug: slugInput,
             layer1,
+            brandWebsite: reportBrandWebsite || brandWebsiteInput,
           });
   } catch (e) {
     console.error("[leads] email send failed", e?.message || e);
