@@ -100,6 +100,67 @@ Important: your recommendations must be your real answer to the question — do
 not change them because of the format. Name actual brands."""
 
 
+def load_env():
+    """Load .env.local (repo root) into the environment if present, via
+    python-dotenv. scripts/README.md's documented setup is
+    `export $(grep -v '^#' .env.local | xargs)` before running any script
+    here — this is just a convenience so scripts/retest.py and
+    scripts/founder_digest.py (both of which need SUPABASE_URL/
+    SUPABASE_SERVICE_KEY/RESEND_API_KEY even for a --dry-run) don't require
+    that export every time. No-ops if python-dotenv isn't installed — the
+    shell-export workflow still works either way."""
+    try:
+        from dotenv import load_dotenv
+    except ImportError:
+        return
+    load_dotenv(REPO_ROOT / ".env.local")
+
+
+def sanity(recs):
+    """True if `recs` looks bad enough to reject: not a list, empty, or no
+    item names a real brand/product. Never fabricate (rule 2 in CLAUDE.md)
+    — a genuinely empty or garbage answer must be skipped and logged, never
+    written as if it were a real snapshot."""
+    if not isinstance(recs, list) or not recs:
+        return True
+    return not any(isinstance(r, dict) and (r.get("brand") or r.get("product")) for r in recs)
+
+
+def sb(method, path, payload=None, params=""):
+    """Minimal Supabase REST client, shared by every script here: harvest.py
+    itself (system_events only), scripts/retest.py (snapshots/reports/leads/
+    system_events) and scripts/founder_digest.py (everything, read-only)."""
+    import urllib.request
+
+    url = os.environ["SUPABASE_URL"].rstrip("/") + "/rest/v1/" + path + params
+    headers = {
+        "apikey": os.environ["SUPABASE_SERVICE_KEY"],
+        "Authorization": "Bearer " + os.environ["SUPABASE_SERVICE_KEY"],
+        "Content-Type": "application/json",
+        "Prefer": "return=representation",
+    }
+    data = json.dumps(payload).encode() if payload is not None else None
+    req = urllib.request.Request(url, data=data, headers=headers, method=method)
+    with urllib.request.urlopen(req, timeout=60) as r:
+        body = r.read().decode()
+        return json.loads(body) if body else []
+
+
+def log_event(event_type, source, context=None):
+    """Best-effort system_events write (supabase/migrations/0003) — self-
+    improvement infra, feeds scripts/founder_digest.py's "system-event
+    patterns" section. Never raises: a logging failure must never break the
+    actual harvest/retest run it's trying to observe."""
+    if not os.environ.get("SUPABASE_URL") or not os.environ.get("SUPABASE_SERVICE_KEY"):
+        return
+    try:
+        sb("POST", "system_events", payload={
+            "event_type": event_type, "source": source, "context": context or {},
+        })
+    except Exception as e:  # noqa: BLE001
+        print(f"  [system_events] log failed: {e}")
+
+
 def load_market_file(market):
     path = DATA_DIR / MARKET_FILES[market]
     with open(path, "r", encoding="utf-8") as f:
@@ -296,6 +357,7 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="Print what would run, call nothing, write nothing.")
     args = ap.parse_args()
 
+    load_env()
     markets = list(MARKET_FILES.keys()) if args.market == "all" else [args.market]
     harvester = None if args.dry_run else ENGINES[args.engine]()
     today = date.today().isoformat()
@@ -356,6 +418,10 @@ def main():
                     total_failed += 1
                     market_failed += 1
                     print(f"{label} FAILED: {type(e).__name__}: {str(e)[:300]}")
+                    log_event("query_failure", "harvest", {
+                        "engine": args.engine, "market": market, "category": cat["id"],
+                        "qid": q["qid"], "error": str(e)[:300],
+                    })
                     if is_quota_error(e):
                         print(
                             "\nQuota/billing exhausted — stopping the whole run rather than "
@@ -374,6 +440,17 @@ def main():
                         }
                         print_market_summary(market_stats)
                         sys.exit(1)
+                    time.sleep(args.sleep)
+                    continue
+
+                if sanity(recs):
+                    total_failed += 1
+                    market_failed += 1
+                    print(f"{label} REJECTED: empty or garbage recommendations")
+                    log_event("sanity_rejection", "harvest", {
+                        "engine": args.engine, "market": market, "category": cat["id"],
+                        "qid": q["qid"], "recs": recs,
+                    })
                     time.sleep(args.sleep)
                     continue
 

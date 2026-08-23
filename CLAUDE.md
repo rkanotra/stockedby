@@ -431,6 +431,39 @@ does nothing until then).
   "reply and we'll install it for you" invitation — there's no /report/
   [slug]-style share link for a fix run to point to) instead of
   sendLeadEmails/buildMerchantEmail's report-summary shape.
+- Self-improvement infrastructure (supabase/migrations/0003_self_improvement_schema.sql):
+  `system_events` (event_type: 'query_failure'|'sanity_rejection'|
+  'parse_failure', source, context jsonb) logs every real failure worth
+  knowing about — written by lib/systemEvents.js's logSystemEvent()
+  (app/api/test/query/route.js, app/api/generate-queries/route.js; both
+  tag their thrown errors with a `.kind` in lib/claudeClient.js so the
+  right event_type gets logged) and by scripts/harvest.py / scripts/
+  retest.py's own log_event(). `brand_appearances` is a SQL view over
+  `snapshots.snapshot_json`'s recommendations array — (brand, category,
+  market, engine, avg_position, appearance_rate) — matched on the brand
+  string as stored, not lib/scoring.js's fuzzy normalize()/matches(), so
+  it's a raw aggregate for ad-hoc queries and the digest below, not a
+  replacement for the app's own brand-matching. scripts/harvest.py now
+  also exports load_env() (loads .env.local via python-dotenv — a more
+  reliable alternative to the README's `export $(grep ...)` one-liner,
+  which breaks on any value containing spaces), sanity(recs) (the same
+  never-fabricate check as lib/claudeClient.js's sanityCheckRecs, applied
+  to harvest.py's own write loop too), sb() (shared Supabase REST client)
+  and log_event() — scripts/retest.py and the new scripts/founder_digest.py
+  both import these instead of redefining their own. scripts/retest.py's
+  Supabase-harvest-adapter imports were broken (referenced functions
+  harvest.py has never exported, and included a Claude/Anthropic
+  re-harvest engine that would have violated hard rule 6 — Claude is
+  always live, never harvested) — fixed to use harvest.py's real
+  GeminiHarvester/OpenAIHarvester classes, Claude dropped entirely, and
+  its digest now includes a month-over-month position diff
+  (positions_as_of() with an `as_of` cutoff ~30 days back) alongside the
+  existing since-last-check diff. scripts/founder_digest.py is new: a
+  weekly, read-only summary (custom-category requests ranked, system_events
+  patterns, first-ever brand appearances per market+category+engine,
+  categories tested most) — see scripts/README.md for both scripts' usage.
+  Neither is wired to a cron yet; both are run manually, same as
+  harvest.py's own documented workflow.
 - app/privacy/page.js — the site's privacy policy (uses the .legal styles
   in app/globals.css), linked from Footer.js. Covers what's collected at
   /test, /audit and the lead gate, who else sees it (Anthropic/Google/

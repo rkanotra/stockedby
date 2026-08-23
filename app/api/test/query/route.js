@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { askShoppingAssistant } from "@/lib/claudeClient";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
+import { logSystemEvent } from "@/lib/systemEvents";
 
 // One live Claude call per request — the client (components/test/TestFlow.js)
 // fires one of these per shopper question, in parallel, instead of a single
@@ -78,6 +79,13 @@ export async function POST(request) {
       citations: value.citations,
     });
   } catch (e) {
+    // Self-improvement infra (supabase/migrations/0003) — best-effort,
+    // never blocks the response below.
+    await logSystemEvent(e?.kind || "query_failure", "test", {
+      text,
+      archetype,
+      error: e?.message,
+    });
     // Never a 5xx for a real, expected "this one question failed" outcome —
     // the client treats any non-"done" status as this question needing its
     // retry (automatic the first time, the report's "Retry" button after

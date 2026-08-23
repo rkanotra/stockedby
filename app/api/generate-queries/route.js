@@ -3,6 +3,7 @@ import { generateCustomQueries } from "@/lib/claudeClient";
 import { listMarkets } from "@/lib/bank";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
 import { supabase } from "@/lib/supabaseClient";
+import { logSystemEvent } from "@/lib/systemEvents";
 
 // Short generation call, not a live web-search test — no need for the
 // 60s ceiling app/api/test/route.js raises for itself.
@@ -83,6 +84,13 @@ export async function POST(request) {
     const queries = await generateCustomQueries({ market, categoryName: category, brand: brandName });
     return NextResponse.json({ ok: true, category, queries });
   } catch (e) {
+    // Self-improvement infra (supabase/migrations/0003) — best-effort.
+    await logSystemEvent(e?.kind || "query_failure", "generate-queries", {
+      market,
+      category,
+      brand: brandName,
+      error: e?.message,
+    });
     return NextResponse.json(
       { error: e?.message || "Query generation failed. Please try again." },
       { status: 502 }

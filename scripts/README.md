@@ -62,3 +62,53 @@ market), so a crash or interruption only risks the one in-flight category.
 On a quota/billing error the run stops immediately rather than burning
 through the rest of the queue on calls that will fail the same way; a final
 per-market ✓/skip/✗ summary (categories/written/failed) prints either way.
+
+harvest.py also exports a few shared utilities the two scripts below import:
+`load_env()` (loads `.env.local` via python-dotenv, a convenience over the
+`export $(grep -v '^#' .env.local | xargs)` one-liner above — note that
+one-liner breaks on any value containing spaces, e.g. `FROM_EMAIL="StockedBy
+<reports@stockedby.com>"`, so `load_env()` is the more reliable option for
+scripts that need multiple env vars), `sanity(recs)` (rejects an empty or
+all-blank "recommendations" list — never fabricate, CLAUDE.md rule 2),
+`sb(method, path, ...)` (a minimal Supabase REST client), and
+`log_event(event_type, source, context)` (writes to `system_events` —
+supabase/migrations/0003, mirrors lib/systemEvents.js on the JS side).
+
+## retest.py
+Re-tests every tracked (brand, market, category) combo — anyone who's saved
+a report — by re-harvesting chatgpt + gemini fresh (same `ENGINES` as
+harvest.py; claude is deliberately never re-harvested here, see harvest.py's
+own note above) and diffing the brand's position both against its last known
+position and against ~30 days ago (month-over-month). Emails the merchant
+when either diff shows real movement, and sends you a digest of every brand
+that changed. A sanity-rejected or errored query is logged to
+`system_events` (`sanity_rejection` / `query_failure`, source `retest`) via
+`log_event()`, same as harvest.py's own main loop.
+
+```
+python3 scripts/retest.py             # re-test everyone, email on changes
+python3 scripts/retest.py --dry-run   # print current positions, harvest/email nothing
+```
+
+Requires `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `GEMINI_API_KEY`,
+`OPENAI_API_KEY`, `RESEND_API_KEY`, `FROM_EMAIL`, `FOUNDER_EMAIL` in
+`.env.local` (loaded automatically via `load_env()`). Not yet wired to a
+cron — run monthly by hand for now.
+
+## founder_digest.py
+Weekly self-improvement summary, entirely from Supabase — no re-harvesting,
+no API cost beyond the read queries themselves: custom-category requests
+ranked by count (candidates for new bank categories), `system_events`
+patterns from the last 7 days, brands appearing in AI recommendations for
+the first time ever (per market+category+engine), and which categories real
+merchants tested most.
+
+```
+python3 scripts/founder_digest.py             # email the digest to FOUNDER_EMAIL
+python3 scripts/founder_digest.py --dry-run   # print it, don't email
+```
+
+Requires `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `RESEND_API_KEY`,
+`FROM_EMAIL`, `FOUNDER_EMAIL`. Not yet wired to a cron — run weekly by hand
+for now (both this and retest.py are meant to move to a Vercel cron once
+the cadence is proven manually).
