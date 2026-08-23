@@ -285,8 +285,17 @@ h1.hero-h1-simple {
   font-size: clamp(34px, 6vw, 54px); letter-spacing: -0.01em; margin: 0 0 12px;
 }
 .page-hero p { color: var(--muted); max-width: 60ch; font-size: 17px; line-height: 1.5; margin: 0; }
-.story-block { max-width: 70ch; }
-.story-block p { color: var(--ink); font-size: 17px; line-height: 1.65; margin: 0 0 18px; }
+/* max-width belongs on the paragraphs, not this container — .story-block
+   also carries the .wrap class (className="wrap story-block"), and .wrap's
+   own margin: 0 auto centers whatever box has the narrowest max-width. A
+   max-width on the CONTAINER here made it centered in the middle of the
+   1160px .wrap instead of left-aligned under the h1 above it — a real bug,
+   found by measuring computed styles (left: 319px for the paragraphs vs.
+   left: 84px for the heading directly above them, same viewport). Same
+   fix pattern as .page-hero p above: constrain each paragraph, not the box
+   they sit in, so the block stays full-width (and therefore flush-left
+   with the heading) while the TEXT still wraps at a readable measure. */
+.story-block p { color: var(--ink); max-width: 680px; font-size: 17px; line-height: 1.65; margin: 0 0 18px; }
 
 /* ---------- aisles (feature sections) ---------- */
 /* Longhand on purpose: section.aisle + .wrap both apply to the same element
