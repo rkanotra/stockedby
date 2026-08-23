@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { safeDecode } from "@/lib/scoring";
 
 // The homepage's entire job is this one input — see CLAUDE.md's homepage
 // philosophy note. Carries straight into /test's domain-first wizard
@@ -15,7 +16,11 @@ export default function DomainCheckForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const d = domain.trim();
+    // safeDecode first: if the pasted text was itself already
+    // percent-encoded (e.g. copied from an already-encoded link), decode it
+    // before re-encoding so /test's query string never ends up
+    // double-encoded (see lib/scoring.js's safeDecode comment).
+    const d = safeDecode(domain.trim());
     router.push(d ? `/test?domain=${encodeURIComponent(d)}` : "/test");
   }
 

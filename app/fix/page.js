@@ -1,5 +1,6 @@
 import FixFlow from "@/components/fix/FixFlow";
 import { buildOpenGraph, buildTwitter } from "@/lib/site";
+import { safeDecode } from "@/lib/scoring";
 
 const TITLE = "Fix your website so AI can read it — StockedBy";
 const DESCRIPTION =
@@ -15,6 +16,6 @@ export const metadata = {
 
 export default async function FixPage({ searchParams }) {
   const params = await searchParams;
-  const domainParam = typeof params?.domain === "string" ? params.domain : "";
+  const domainParam = typeof params?.domain === "string" ? safeDecode(params.domain) : "";
   return <FixFlow initialDomain={domainParam} />;
 }

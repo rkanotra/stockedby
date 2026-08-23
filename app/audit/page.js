@@ -1,5 +1,6 @@
 import AuditFlow from "@/components/audit/AuditFlow";
 import { buildOpenGraph, buildTwitter } from "@/lib/site";
+import { safeDecode } from "@/lib/scoring";
 
 const TITLE = "Can AI apps read your website? — StockedBy";
 const DESCRIPTION =
@@ -15,6 +16,6 @@ export const metadata = {
 
 export default async function AuditPage({ searchParams }) {
   const params = await searchParams;
-  const domainParam = typeof params?.domain === "string" ? params.domain : "";
+  const domainParam = typeof params?.domain === "string" ? safeDecode(params.domain) : "";
   return <AuditFlow initialDomain={domainParam} />;
 }

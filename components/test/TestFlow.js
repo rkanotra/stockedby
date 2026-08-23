@@ -7,7 +7,7 @@ import styles from "./test.module.css";
 import { listMarkets, getMarketCategories, getCategory } from "@/lib/bankStatic";
 import { effectiveQueryText } from "@/lib/queryPersonalize";
 import { staleEnginesFor } from "@/lib/freshness";
-import { ENGINE_ORDER, guessBrandFromDomain } from "@/lib/scoring";
+import { ENGINE_ORDER, guessBrandFromDomain, safeDecode } from "@/lib/scoring";
 import { runAllQueries } from "@/lib/runQueries";
 import DomainStep from "./DomainStep";
 import BrandStep from "./BrandStep";
@@ -28,7 +28,7 @@ const MARKETS = listMarkets();
 export default function TestFlow() {
   const searchParams = useSearchParams();
 
-  const [domain, setDomain] = useState(() => searchParams.get("domain") || "");
+  const [domain, setDomain] = useState(() => safeDecode(searchParams.get("domain") || ""));
   const [brand, setBrand] = useState("");
   const [market, setMarket] = useState(MARKETS[0]);
   const [catSearch, setCatSearch] = useState("");
