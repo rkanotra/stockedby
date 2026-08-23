@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../test.module.css";
 import StoryView from "./StoryView";
 import VerdictCard from "./VerdictCard";
@@ -26,6 +26,33 @@ import FixPlanCTA from "./FixPlanCTA";
 // visitor sees the depth immediately.
 export default function ReportView({ data, onRetry, initialShowFull = false }) {
   const [showFull, setShowFull] = useState(initialShowFull);
+  const expandedRef = useRef(null);
+  // Only auto-scroll when the USER expanded it (a click, or the gate
+  // unlocking) — never on initial mount, so a shared /report/[slug]?full=1
+  // link still lands at the normal page top instead of jumping mid-page.
+  const userExpandedRef = useRef(false);
+
+  function scrollToExpanded() {
+    // rAF-deferred: the DOM needs to actually reflow (blurred/clipped
+    // preview -> full height, or Layer 1 -> Layer 2 appearing) before
+    // scrollIntoView measures a stable position — a same-tick call can
+    // scroll to where the section WAS about to be, not where it ends up.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        expandedRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  }
+
+  function handleSeeFullDetails() {
+    userExpandedRef.current = true;
+    setShowFull(true);
+  }
+
+  useEffect(() => {
+    if (showFull && userExpandedRef.current) scrollToExpanded();
+  }, [showFull]);
+
   const {
     market,
     brand,
@@ -51,10 +78,10 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
         </div>
       )}
 
-      <StoryView data={data} onSeeFullDetails={() => setShowFull(true)} />
+      <StoryView data={data} onSeeFullDetails={handleSeeFullDetails} />
 
       {showFull && (
-        <>
+        <div ref={expandedRef}>
           <VerdictCard market={market} brand={brand} category={category?.name} report={report} onRetry={onRetry} />
           {slug && (
             <div style={{ marginBottom: 14 }}>
@@ -68,6 +95,7 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
             brandWebsite={brandWebsite}
             verdict={report.verdict}
             slug={slug}
+            onUnlock={scrollToExpanded}
           >
             <CheckoutBattleCard brand={brand} brandWebsite={brandWebsite} destinations={report.destinations} />
             <ShareOfVoiceCard market={market} brand={brand} competitor={competitor} shareOfVoice={report.shareOfVoice} />
@@ -78,7 +106,7 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
             <AuditCTA brandWebsite={brandWebsite} />
             <FixPlanCTA brandWebsite={brandWebsite} />
           </LeadGate>
-        </>
+        </div>
       )}
     </>
   );

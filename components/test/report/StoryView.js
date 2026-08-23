@@ -88,13 +88,13 @@ export default function StoryView({ data, onSeeFullDetails }) {
         </ul>
       </div>
 
-      <button type="button" className={styles.btnFullReport} onClick={onSeeFullDetails}>
-        See full report — who, where, and why →
-      </button>
-
       {category?.name && (
         <TestAnotherCTA categoryName={category.name} brand={brand} brandWebsite={brandWebsite} market={market} />
       )}
+
+      <button type="button" className={styles.btnFullReport} onClick={onSeeFullDetails}>
+        See full report — who, where, and why →
+      </button>
     </>
   );
 }

@@ -13,7 +13,7 @@ const CONSENT_TEXT =
 // already fully in the DOM (just blurred + height-clipped) rather than
 // server-redacted, since the gate's job is lead capture, not access
 // control — see app/api/test/route.js's save-report comment.
-export default function LeadGate({ market, category, brand, brandWebsite, verdict, slug, children }) {
+export default function LeadGate({ market, category, brand, brandWebsite, verdict, slug, onUnlock, children }) {
   const [unlocked, setUnlocked] = useState(false);
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState(brandWebsite || "");
@@ -52,6 +52,7 @@ export default function LeadGate({ market, category, brand, brandWebsite, verdic
       // failed) — a 2xx here always means unlock, regardless of what
       // emailResult/persistence sub-flags came back.
       setUnlocked(true);
+      onUnlock?.();
     } catch {
       setError("Network error — please try again.");
     } finally {
