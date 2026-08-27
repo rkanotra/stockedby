@@ -7,8 +7,10 @@ import { findProductSchema, validateProductFields } from "@/lib/audit/jsonld";
 import { detectPlatform, detectStripe } from "@/lib/audit/platform";
 import { scanSitemap, findProductUrlInHtml } from "@/lib/audit/productDiscovery";
 import { buildAuditResult } from "@/lib/audit/score";
+import { buildAuditLayerOne } from "@/lib/audit/layerOne";
 import { gatherAuditSignals, wellKnownResult } from "@/lib/audit/gatherSignals";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
+import { logSystemEvent } from "@/lib/systemEvents";
 
 // Several sequential-ish fetches to an arbitrary domain (robots.txt,
 // llms.txt, two .well-known manifests, homepage, sitemap, one product
@@ -126,6 +128,22 @@ export async function POST(request) {
     productCheck,
     stripeDetected,
   });
+
+  // Contradiction guard (lib/audit/layerOne.js's buildAuditLayerOne):
+  // structurally shouldn't be reachable — the verdict and findings both
+  // read the same checks array — but this is the backstop, and the one
+  // place that CAN actually log it (buildAuditLayerOne stays pure/
+  // client-safe, no Supabase access — see components/audit/
+  // AuditResults.js, which recomputes the same downgraded result).
+  const layer1 = buildAuditLayerOne(result);
+  if (layer1.contradiction) {
+    await logSystemEvent(
+      "contradiction",
+      "audit",
+      { domain: hostname, platform, findings: layer1.findings.map((f) => f.finding) },
+      "critical"
+    );
+  }
 
   return NextResponse.json({ ok: true, ...result, rateLimit });
 }

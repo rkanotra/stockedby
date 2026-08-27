@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "../test/test.module.css";
 import { trackEvent } from "@/lib/analytics";
+import { isValidEmailFormat, isDisposableEmail, isFreeProvider, suggestEmailCorrection } from "@/lib/emailValidation";
 
 const CONSENT_TEXT =
   "I agree StockedBy can email me this fix and occasional updates. We store only what's needed to send it, never sell your data, and you can unsubscribe anytime.";
@@ -12,14 +13,36 @@ const CONSENT_TEXT =
 // gate as reports"). No market/category/brand to collect — the domain is
 // already known — so this is a smaller form than the report gate, but the
 // same presentational blur/clip-then-unlock shape.
-export default function FixLeadGate({ domain, platform, children }) {
+export default function FixLeadGate({ domain, platform, onUnlock, children }) {
   const [unlocked, setUnlocked] = useState(false);
   const [email, setEmail] = useState("");
   const [pain, setPain] = useState("");
   const [consent, setConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [suggestion, setSuggestion] = useState(null);
   const shown = useRef(false);
+
+  function handleEmailBlur() {
+    const trimmed = email.trim();
+    setSuggestion(null);
+    if (!trimmed) {
+      setEmailError("");
+      return;
+    }
+    if (!isValidEmailFormat(trimmed)) {
+      setEmailError("That doesn't look like a valid email address.");
+      return;
+    }
+    if (isDisposableEmail(trimmed)) {
+      setEmailError("Please use an email you check.");
+      return;
+    }
+    setEmailError("");
+    const suggested = suggestEmailCorrection(trimmed);
+    if (suggested) setSuggestion(suggested);
+  }
 
   useEffect(() => {
     if (shown.current) return;
@@ -29,7 +52,16 @@ export default function FixLeadGate({ domain, platform, children }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!email.trim() || !consent || submitting) return;
+    const trimmed = email.trim();
+    if (!trimmed || !consent || submitting) return;
+    if (!isValidEmailFormat(trimmed)) {
+      setEmailError("That doesn't look like a valid email address.");
+      return;
+    }
+    if (isDisposableEmail(trimmed)) {
+      setEmailError("Please use an email you check.");
+      return;
+    }
     setSubmitting(true);
     setError("");
     try {
@@ -37,12 +69,13 @@ export default function FixLeadGate({ domain, platform, children }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: email.trim(),
+          email: trimmed,
           brandWebsite: domain,
           painpoint: pain.trim(),
           consent,
           source: "fix",
           platform,
+          isFreeProvider: isFreeProvider(trimmed),
         }),
       });
       const data = await res.json();
@@ -52,6 +85,7 @@ export default function FixLeadGate({ domain, platform, children }) {
       }
       trackEvent("fix_lead_submitted", { domain });
       setUnlocked(true);
+      onUnlock?.(trimmed);
     } catch {
       setError("Network error — please try again.");
     } finally {
@@ -73,14 +107,31 @@ export default function FixLeadGate({ domain, platform, children }) {
           tell us where to send it.
         </p>
         <input
-          className={styles.input}
+          className={`${styles.input} ${styles.inputRequired}`}
           type="email"
           placeholder="Work email"
           required
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setEmailError("");
+            setSuggestion(null);
+          }}
+          onBlur={handleEmailBlur}
           autoComplete="email"
         />
+        {emailError && <div className={styles.fieldError}>{emailError}</div>}
+        {suggestion && !emailError && (
+          <div className={styles.fieldSuggestion}>
+            <span>Did you mean {suggestion}?</span>
+            <button type="button" onClick={() => { setEmail(suggestion); setSuggestion(null); }}>
+              Use this
+            </button>
+            <button type="button" className={styles.fieldSuggestionDismiss} onClick={() => setSuggestion(null)}>
+              Dismiss
+            </button>
+          </div>
+        )}
         <textarea
           className={styles.qedit}
           style={{ marginBottom: 12 }}
@@ -99,7 +150,11 @@ export default function FixLeadGate({ domain, platform, children }) {
           <span>{CONSENT_TEXT}</span>
         </label>
         {error && <div className={styles.errBanner}>{error}</div>}
-        <button type="submit" className={styles.btn} disabled={!email.trim() || !consent || submitting}>
+        <button
+          type="submit"
+          className={styles.btn}
+          disabled={!email.trim() || !consent || submitting || Boolean(emailError)}
+        >
           {submitting ? "Unlocking…" : "Unlock the full fix — free"}
         </button>
       </form>

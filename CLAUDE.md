@@ -69,14 +69,29 @@ destination) with a "See full details" button that expands the existing,
 more detailed full report (Layer 2, unchanged). The merchant email uses
 Layer 1 content only. The Agent Readiness Audit (/audit) follows the same
 pattern: Layer 1 (components/audit/AuditResults.js, computed by
-lib/audit/layerOne.js) is a plain verdict (YES, AI CAN READ YOUR SHOP /
-SOME PROBLEMS / AI CAN'T READ YOUR SHOP) + up to 4 plain findings with
-fixes, deliberately computed from only the discoverable+readable layers
-(no UCP/ACP/transactable — still roadmap); "See technical details" expands
-the original per-check output, unchanged, for developers. Each surface
-cross-links to the other: the audit result ends with a link to /test, and
-the shelf report's "what should you do" card links to /audit when
-warranted.
+lib/audit/layerOne.js's buildAuditLayerOne()) is a plain THREE-state
+verdict — YES, AI CAN READ YOUR SHOP (green, every check passes) / AI CAN
+READ YOUR SHOP, BUT NOT YOUR PRODUCTS (amber, reachable but product data
+missing/incomplete) / AI CAN'T READ YOUR SHOP (red, blocked/unreachable/
+homepage unreadable) — plus up to 4 plain findings with fixes, most-severe
+first, deliberately computed from only the discoverable+readable layers
+(no UCP/ACP/transactable — still roadmap). The verdict and the findings
+list are computed from the exact same `checks` array (never two separate
+computations that could disagree — a real production bug this fixed: a
+green all-pass verdict rendering directly above a "what's wrong" card);
+buildAuditLayerOne() also returns a `contradiction` boolean as a backstop,
+logged to system_events (severity=critical) by app/api/audit/route.js if
+it's ever true. "See technical details" is a text-link disclosure toggle
+(styles.disclosureToggle, not a button — it must not compete visually with
+the primary "Generate the fix →" CTA) that expands the original per-check
+output, unchanged, for developers. CTA hierarchy end state: one primary
+filled button (only when there's something to fix), one quiet disclosure
+toggle, one framed cross-sell card into /test ("Your site is only half the
+picture"), one smallest-weight plain text link ("Check another website",
+styles.plainLink) — never four competing equal-weight actions. Each
+surface cross-links to the other: the audit result's cross-sell card links
+to /test, and the shelf report's "what should you do" card links to /audit
+when warranted.
 
 Current phase: **Phase 4 complete — persistence, capture & share are live**
 MVP (landing page, full test flow, /api/test) shipped first; Phase 4 added
@@ -97,7 +112,14 @@ the same email gate (hard rule 8, source="fix"), rate-limit pattern (hard
 rule 9) and SSRF guard (hard rule 11) as the rest of the app. Its Supabase
 migration (supabase/migrations/0002_fix_generator_schema.sql) has NOT been
 run against the live project yet — same manual "paste into Supabase's SQL
-editor" step as 0001, still outstanding. Still not started: Phase 5 (real
+editor" step as 0001, still outstanding. The /audit + /fix "agent side" fix
+pass is also done: /audit's verdict logic and CTA hierarchy (hard rule 13's
+neighboring paragraph above), /fix's plain-language platform picker + "send
+to my developer" email action (lib/audit/platform.js's PICKER_PLATFORMS,
+app/api/fix/send-to-developer/route.js), and hard rule 13's email-quality
+infrastructure across every capture point. supabase/migrations/
+0005_email_quality.sql has NOT been run against the live project yet,
+same as 0001/0002. Still not started: Phase 5 (real
 per-email-per-category-per-month rate limiting, privacy policy, analytics,
 Arabic/RTL pass) — analytics here means a real GA property; lib/analytics.js
 ships a safe no-op trackEvent() wrapper ahead of that (fires fix_started/
@@ -206,6 +228,33 @@ does nothing until then).
     it calls assertPublicHostname() before gathering signals, same as
     /api/audit, and reuses fetchTextSafe() throughout for every subsequent
     page fetch.
+12. **Banned-word vocabulary** applies to every user-facing surface (the
+    /test wizard, the report, the merchant email, the PDF — NOT /why or
+    /audit's Layer 2 "technical details", both deliberately exempted): see
+    the full banned-word list and plain-language rules spelled out above
+    under "Site philosophy" — engine, query, telemetry, archetype, fanout,
+    harvest, GEO, agentic, UCP, ACP, manifest, schema, protocol, organic,
+    "share of voice" (say instead: AI apps, questions, what AI searched,
+    site check, "how often AI picks each brand").
+13. **Email quality, every capture point** (report gate, fix gate, any
+    future form): shared, testable logic lives in lib/emailValidation.js —
+    format validated on blur with an inline error (EMAIL_RE, also the
+    server-side check in app/api/lead/route.js); a maintained disposable-
+    domain blocklist (DISPOSABLE_DOMAINS, ~200 entries) blocked inline
+    ("Please use an email you check.") both client- and server-side;
+    free providers (gmail.com etc.) are NEVER blocked — most D2C founders
+    in our markets run on gmail — only flagged via a stored
+    `is_free_provider` boolean (supabase/migrations/0005_email_quality.sql)
+    for later segmentation; near-miss typos (gmial.com, gmai.com, yahooo.com,
+    hotmial.com) get a dismissible "Did you mean…" suggestion
+    (suggestEmailCorrection) that never auto-changes the field. Resend's
+    bounce/complaint webhook (app/api/webhooks/resend/route.js, Svix-scheme
+    signature verification via Node's crypto, no added dependency) is the
+    real verification layer — updates `leads.email_status` ∈ (sent,
+    delivered, bounced, complained); scripts/founder_digest.py's weekly
+    digest surfaces the count. Deliberately NOT implemented: OTP/email
+    verification codes — the added step costs more leads than it saves at
+    current volume; revisit only for paid account login.
 
 ## Repo map
 - docs/prototype-app.jsx — WORKING product logic (port, don't rewrite): Claude
@@ -316,6 +365,11 @@ does nothing until then).
   Supabase with the service-role key (lib/supabaseClient.js), which
   bypasses RLS, so this just guarantees the anon key (never used here, but
   if it ever leaked) grants nothing.
+- supabase/migrations/0005_email_quality.sql — hard rule 13: adds
+  `is_free_provider` (boolean, client-computed) and `email_status` (text,
+  default 'sent', check-constrained to sent/delivered/bounced/complained)
+  + `email_status_updated_at` to `leads`. Not yet applied to the live
+  project, same manual step as every prior migration.
 - lib/supabaseClient.js — server-only Supabase client; returns null (not a
   throw) when SUPABASE_URL/SUPABASE_SERVICE_KEY aren't set, and every
   caller treats that as "Phase 4 feature is off" rather than an error.
@@ -355,7 +409,34 @@ does nothing until then).
   opening line change). Valuable even if the merchant never clicks through
   — every section degrades gracefully when its underlying data is missing
   (no trusted source, no destination data, no report link) rather than
-  showing a broken or empty line.
+  showing a broken or empty line. buildDeveloperFixEmail()/
+  sendDeveloperFixEmail() (same file, same esc()-everything pattern) are
+  the "Send this to my developer" action's email — see app/api/fix/
+  send-to-developer/route.js above; a separate, distinct flow from
+  sendFixLeadEmails/buildFixLeadEmail below (that one is the merchant's own
+  receipt, this one goes to a different, merchant-typed address).
+- lib/emailValidation.js — shared, pure, client-safe email-quality checks
+  (hard rule 13): isValidEmailFormat/EMAIL_RE, isDisposableEmail (
+  DISPOSABLE_DOMAINS, ~200 real throwaway providers), isFreeProvider (
+  FREE_PROVIDERS — gmail.com etc., NEVER blocked, only flagged),
+  suggestEmailCorrection (small edit-distance check against common
+  providers — returns a suggested full address string, never mutates the
+  field itself). Used identically by components/test/report/LeadGate.js
+  and components/fix/FixLeadGate.js (on-blur inline error + dismissible
+  "Did you mean…" suggestion, styles.inputRequired/.fieldError/
+  .fieldSuggestion) and re-imported server-side by app/api/lead/route.js
+  as the backstop validation (a client check can be bypassed). Covered by
+  lib/emailValidation.test.js.
+- app/api/webhooks/resend/route.js — Resend's bounce/complaint webhook
+  (hard rule 13): verifies the Svix-scheme signature
+  (RESEND_WEBHOOK_SECRET) with Node's built-in crypto (no svix package
+  dependency added), then updates every matching `leads` row's
+  email_status ('delivered'/'bounced'/'complained') by email. No-ops
+  (200, not an error) when RESEND_WEBHOOK_SECRET or Supabase isn't
+  configured — same optional-infra pattern as the rest of the app. Needs
+  the webhook actually registered in Resend's dashboard against this
+  route — that registration step, like the Zoho mailbox setup mentioned
+  above, is ops, not code.
 - lib/site.js — SITE_URL constant (NEXT_PUBLIC_SITE_URL, defaults to
   https://stockedby.com) for building absolute /report/[slug] and /audit
   links in emails. components/test/report/ShareButton.js deliberately does
@@ -379,14 +460,20 @@ does nothing until then).
   components/audit/): ssrfGuard.js (mandatory hostname check, see hard
   rule 11), fetchWithTimeout.js (SSRF-safe manual redirect following),
   robots.js, jsonld.js, platform.js (Shopify/WooCommerce/Magento/Salla/
-  Zid fingerprints + Stripe.js detection), productDiscovery.js (sitemap
-  or on-page link), score.js (checks → Discoverable/Readable/
-  Transactable layer scores → verdict, platform-aware fix lines),
-  layerOne.js (parallel to lib/layerOne.js — buildAuditLayerOne() computes
-  the plain-language Layer 1 verdict + up to 4 findings+fixes from only the
-  discoverable+readable layers, rendered by
-  components/audit/AuditResults.js; Layer 2 keeps score.js's full 3-layer
-  output, including transactable, unchanged for developers).
+  Zid/Wix fingerprints + Stripe.js detection, plus the exported
+  PICKER_PLATFORMS short list — Shopify/WooCommerce/Wix/"Something else" —
+  for /fix's manual platform picker, see FixResults.js below),
+  productDiscovery.js (sitemap or on-page link), score.js (checks →
+  Discoverable/Readable/Transactable layer scores → verdict, platform-aware
+  fix lines), layerOne.js (parallel to lib/layerOne.js —
+  buildAuditLayerOne() computes the plain-language, THREE-state Layer 1
+  verdict (see hard rule 13's neighboring "Site philosophy" paragraph above
+  for the exact states) + up to 4 findings+fixes, most-severe first, from
+  only the discoverable+readable layers, plus a `contradiction` boolean
+  backstop — rendered by components/audit/AuditResults.js; Layer 2 keeps
+  score.js's full 3-layer output, including transactable, unchanged for
+  developers). lib/audit/layerOne.test.js covers the verdict-mapping and
+  contradiction-guard logic (node:test, run via `npm test`).
 - lib/audit/gatherSignals.js — gatherAuditSignals(hostname): the 6-way
   parallel fetchTextSafe wave (robots.txt/llms.txt/ucp/acp/homepage/
   sitemap.xml) plus wellKnownResult(), extracted out of app/api/audit/
@@ -413,7 +500,7 @@ does nothing until then).
   the live project — see "Current phase" above).
 - lib/audit/installInstructions.js — getInstallInstructions(platformId):
   exact, platform-specific paste steps (Shopify/WooCommerce/Magento/Salla/
-  Zid + a generic "custom" fallback) for both the JSON-LD blocks and
+  Zid/Wix + a generic "custom" fallback) for both the JSON-LD blocks and
   llms.txt, keyed off the same platform id string
   lib/audit/platform.js's detectPlatform() returns — /audit and /fix can
   never disagree about which platform a site is on.
@@ -422,16 +509,37 @@ does nothing until then).
   mirroring app/audit/page.js + components/audit/'s shape. First 2
   products render free and unlocked; the full product set + llms.txt
   download + platform install steps + the "Verify it worked" before/after
-  diff + the "don't have a developer? reply to your email" CTA sit behind
-  FixLeadGate.js (a domain-keyed twin of components/test/report/
-  LeadGate.js, same blur/clip-then-unlock presentational pattern, hard
-  rule 8's gate extended via source="fix" — see app/api/lead/route.js and
-  lib/email.js's sendFixLeadEmails/buildFixLeadEmail below). Cross-linked
-  from components/audit/AuditResults.js (a "Generate the fix →" button
-  under Layer 1 findings), components/test/report/FixPlanCTA.js (inserted
-  into ReportView.js's LeadGate children alongside AuditCTA.js), and
-  components/AisleWin.js's "Fix generator" card on /why (no longer a
-  "coming soon" chip).
+  diff sit behind FixLeadGate.js (a domain-keyed twin of components/test/
+  report/LeadGate.js, same blur/clip-then-unlock presentational pattern,
+  hard rule 8's gate extended via source="fix" — see app/api/lead/route.js
+  and lib/email.js's sendFixLeadEmails/buildFixLeadEmail below).
+  EscapeHatchCard (ungated, above the gate) is the "copy this page's link
+  to send" path; DeveloperSendCard (gated — needs the full products/
+  llmsTxt content, and the merchant's own email from FixLeadGate's
+  onUnlock callback) is the separate, real "Send this to my developer"
+  email action, POSTing to app/api/fix/send-to-developer/route.js — see
+  its own entry below. PlatformPicker (ungated, shown only when
+  platform === "custom") lets a merchant self-report their platform from
+  lib/audit/platform.js's PICKER_PLATFORMS when auto-detection missed,
+  overriding which install.js instructions render without touching the
+  audit's own detected-platform badge. Cross-linked from
+  components/audit/AuditResults.js (the "Generate the fix →" primary
+  button, only shown when there's something to fix),
+  components/test/report/FixPlanCTA.js (inserted into ReportView.js's
+  LeadGate children alongside AuditCTA.js), and components/AisleWin.js's
+  "Fix generator" card on /why (no longer a "coming soon" chip).
+- app/api/fix/send-to-developer/route.js — the "Send this to my developer"
+  action (hard rule 13's neighboring paragraph, spec item 6): takes the
+  client's ALREADY-generated products/llmsTxt straight from memory (same
+  pattern as LeadGate.js sending report data) and emails them to a
+  developer address the merchant types in, via lib/email.js's
+  buildDeveloperFixEmail()/sendDeveloperFixEmail(). Rate-limited per
+  `${ip}:${domain}` (namespace "fix-dev-send", limit 5) — its own
+  lib/rateLimit.js counter, separate from every other namespace. Logs
+  BOTH the merchant's and the developer's email via
+  lib/systemEvents.js's logSystemEvent("fix_dev_send", "fix", {...}) —
+  reuses the existing system_events audit trail rather than a new
+  Supabase column.
 - lib/analytics.js — trackEvent(name, params): a "use client" no-op
   wrapper around window.gtag, safe to call before a real GA property is
   wired up (that's an ops decision, out of scope here — see "Current
@@ -448,7 +556,13 @@ does nothing until then).
   get lib/email.js's sendFixLeadEmails/buildFixLeadEmail (a receipt + the
   "reply and we'll install it for you" invitation — there's no /report/
   [slug]-style share link for a fix run to point to) instead of
-  sendLeadEmails/buildMerchantEmail's report-summary shape.
+  sendLeadEmails/buildMerchantEmail's report-summary shape. Also (hard
+  rule 13, supabase/migrations/0005_email_quality.sql): rejects a
+  disposable-domain email server-side (lib/emailValidation.js's
+  isDisposableEmail, the backstop behind the client-side block) and
+  persists the client-computed `is_free_provider` boolean straight onto
+  the `leads` insert — never recomputed server-side, so the client and
+  stored value can't drift.
 - Self-improvement infrastructure (supabase/migrations/0003_self_improvement_schema.sql):
   `system_events` (event_type: 'query_failure'|'sanity_rejection'|
   'parse_failure', source, context jsonb) logs every real failure worth
@@ -479,9 +593,10 @@ does nothing until then).
   existing since-last-check diff. scripts/founder_digest.py is new: a
   weekly, read-only summary (custom-category requests ranked, system_events
   patterns, first-ever brand appearances per market+category+engine,
-  categories tested most) — see scripts/README.md for both scripts' usage.
-  Neither is wired to a cron yet; both are run manually, same as
-  harvest.py's own documented workflow.
+  an email bounce/complaint summary from `leads.email_status` — hard rule
+  13 — and categories tested most) — see scripts/README.md for both
+  scripts' usage. Neither is wired to a cron yet; both are run manually,
+  same as harvest.py's own documented workflow.
 - Brand matching (lib/scoring.js, tested — see below): normalizeBrand()
   is THE brand-comparison util (normalize()/matches() are exported aliases
   of it, so every existing caller across the app gets it for free) — fixed

@@ -14,7 +14,7 @@ const VERDICT_CLASS = {
 };
 const PLAIN_VERDICT_CLASS = {
   "YES, AI CAN READ YOUR SHOP": "vGood",
-  "SOME PROBLEMS": "vMid",
+  "AI CAN READ YOUR SHOP, BUT NOT YOUR PRODUCTS": "vMid",
   "AI CAN'T READ YOUR SHOP": "vBad",
 };
 
@@ -25,10 +25,13 @@ const VERDICT_SUBTITLE = {
 };
 
 // Layer 1 (always visible, plain language — no robots.txt/llms.txt/UCP/
-// ACP/JSON-LD here, see lib/audit/layerOne.js) is the default view. "See
-// technical details" reveals Layer 2, which is exactly the audit's
-// original per-check output — unchanged, same three LayerCards, same
-// technical vocabulary, meant for developers.
+// ACP/JSON-LD here, see lib/audit/layerOne.js, whose three-state verdict
+// and findings now read the same checks array so they can't contradict
+// each other) is the default view. CTA hierarchy: one loud button
+// ("Generate the fix", only when there's something to fix), one quiet
+// Layer 2 disclosure toggle (not a button), one framed cross-sell card,
+// one smallest-weight plain text link ("Check another website", in
+// AuditFlow.js) — never four competing equal-weight actions.
 export default function AuditResults({ result }) {
   const [showFull, setShowFull] = useState(false);
   const { domain, platform, verdict, layers } = result;
@@ -59,6 +62,7 @@ export default function AuditResults({ result }) {
               ))}
             </ul>
           </div>
+
           <Link
             href={`/fix?domain=${encodeURIComponent(domain)}`}
             className={styles.btn}
@@ -69,11 +73,14 @@ export default function AuditResults({ result }) {
         </>
       )}
 
-      {!showFull && (
-        <button type="button" className={styles.btn} onClick={() => setShowFull(true)}>
-          See technical details
-        </button>
-      )}
+      <button
+        type="button"
+        className={styles.disclosureToggle}
+        onClick={() => setShowFull((v) => !v)}
+        aria-expanded={showFull}
+      >
+        {showFull ? "Hide technical details" : "See technical details"}
+      </button>
 
       {showFull && (
         <>
@@ -103,9 +110,15 @@ export default function AuditResults({ result }) {
         </>
       )}
 
-      <Link href="/test" className={styles.btnGhost} style={{ display: "block", textAlign: "center", marginTop: 14 }}>
-        Now see if AI recommends you → Check my brand
-      </Link>
+      <div className={styles.card} style={{ marginTop: 14 }}>
+        <div className={styles.h2}>Your site is only half the picture.</div>
+        <p className={styles.sectionHint} style={{ marginBottom: 14 }}>
+          See whether AI actually recommends you.
+        </p>
+        <Link href="/test" className={styles.btnGhost} style={{ display: "block", textAlign: "center" }}>
+          Check my brand — free
+        </Link>
+      </div>
     </>
   );
 }

@@ -3,14 +3,15 @@
 import { useState } from "react";
 import { buildAuditLayerOne } from "@/lib/audit/layerOne";
 import { getInstallInstructions, schemaHonestNote } from "@/lib/audit/installInstructions";
-import { platformLabel } from "@/lib/audit/platform";
+import { platformLabel, PICKER_PLATFORMS } from "@/lib/audit/platform";
+import { isValidEmailFormat } from "@/lib/emailValidation";
 import styles from "../test/test.module.css";
 import ProductJsonLdCard from "./ProductJsonLdCard";
 import FixLeadGate from "./FixLeadGate";
 
 const PLAIN_VERDICT_CLASS = {
   "YES, AI CAN READ YOUR SHOP": "vGood",
-  "SOME PROBLEMS": "vMid",
+  "AI CAN READ YOUR SHOP, BUT NOT YOUR PRODUCTS": "vMid",
   "AI CAN'T READ YOUR SHOP": "vBad",
 };
 
@@ -86,6 +87,114 @@ function EscapeHatchCard() {
   );
 }
 
+// Shown only when detectPlatform() couldn't identify the platform (spec
+// item 6: "if we can't detect it, show a short platform picker") — lets a
+// merchant self-report so the install steps below aren't stuck on the
+// generic fallback. Never shown for a platform we already detected.
+function PlatformPicker({ selected, onSelect }) {
+  return (
+    <div className={styles.card}>
+      <span className={styles.label}>Which platform is your website on?</span>
+      <p className={styles.sectionHint} style={{ marginTop: 0, marginBottom: 12 }}>
+        We couldn&rsquo;t auto-detect it — pick one for exact install steps.
+      </p>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        {PICKER_PLATFORMS.map((p) => (
+          <button
+            key={p.id}
+            type="button"
+            className={styles.btnGhost}
+            style={{
+              width: "auto",
+              padding: "8px 14px",
+              marginTop: 0,
+              ...(selected !== p.id ? { borderColor: "#2e5240", color: "#7fa18c" } : {}),
+            }}
+            onClick={() => onSelect(p.id)}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// "Send this to my developer" (spec item 6) — a real email action,
+// distinct from EscapeHatchCard's "copy this page's link" above. Only
+// rendered once the merchant has unlocked (we already have their own
+// email from FixLeadGate by then) and sends the ALREADY-generated
+// products/llmsTxt straight from this component's own state — the
+// developer's address is logged alongside the merchant's, never
+// substituted for it.
+function DeveloperSendCard({ domain, platform, products, llmsTxt, merchantEmail }) {
+  const [devEmail, setDevEmail] = useState("");
+  const [devEmailError, setDevEmailError] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+
+  async function send(e) {
+    e.preventDefault();
+    const trimmed = devEmail.trim();
+    if (!trimmed || sending) return;
+    if (!isValidEmailFormat(trimmed)) {
+      setDevEmailError("That doesn't look like a valid email address.");
+      return;
+    }
+    setSending(true);
+    setError("");
+    try {
+      const res = await fetch("/api/fix/send-to-developer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ domain, platform, developerEmail: trimmed, merchantEmail, products, llmsTxt }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Something went wrong. Please try again.");
+        return;
+      }
+      setSent(true);
+    } catch {
+      setError("Network error — please try again.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <div className={styles.card}>
+      <span className={styles.label}>Send this to my developer</span>
+      <p className={styles.sectionHint} style={{ marginTop: 0, marginBottom: 12 }}>
+        We&rsquo;ll email them every product&rsquo;s code, llms.txt, and the install steps above.
+      </p>
+      {sent ? (
+        <p className={styles.storyLine}>Sent — check with them once it&rsquo;s installed.</p>
+      ) : (
+        <form onSubmit={send}>
+          <input
+            className={`${styles.input} ${styles.inputRequired}`}
+            type="email"
+            placeholder="Developer's email"
+            value={devEmail}
+            onChange={(e) => {
+              setDevEmail(e.target.value);
+              setDevEmailError("");
+            }}
+            autoComplete="email"
+          />
+          {devEmailError && <div className={styles.fieldError}>{devEmailError}</div>}
+          {error && <div className={styles.errBanner}>{error}</div>}
+          <button type="submit" className={styles.btn} disabled={!devEmail.trim() || sending}>
+            {sending ? "Sending…" : "Send to my developer"}
+          </button>
+        </form>
+      )}
+    </div>
+  );
+}
+
 // First 2 products render free and unlocked (spec item 6); the full set —
 // every product plus llms.txt, install steps and the verify step — sits
 // behind FixLeadGate's same blur/unlock pattern LeadGate.js uses for
@@ -96,12 +205,18 @@ export default function FixResults({ result }) {
   const { domain, platform, products, llmsTxt, auditBefore } = result;
   const doneCount = products.filter((p) => p.status === "done").length;
   const freeProducts = products.slice(0, 2);
-  const install = getInstallInstructions(platform);
-  const honestNote = schemaHonestNote(auditBefore, platform);
 
   const [verifying, setVerifying] = useState(false);
   const [after, setAfter] = useState(null);
   const [verifyError, setVerifyError] = useState("");
+  const [merchantEmail, setMerchantEmail] = useState(null);
+  // Only meaningful when platform === "custom" (detection failed) — see
+  // PlatformPicker above. Left null otherwise so a detected platform is
+  // never second-guessed by a stray selection.
+  const [pickedPlatform, setPickedPlatform] = useState(null);
+  const effectivePlatform = platform === "custom" && pickedPlatform ? pickedPlatform : platform;
+  const install = getInstallInstructions(effectivePlatform);
+  const honestNote = schemaHonestNote(auditBefore, effectivePlatform);
 
   async function verify() {
     setVerifying(true);
@@ -151,11 +266,13 @@ export default function FixResults({ result }) {
 
       <EscapeHatchCard />
 
+      {platform === "custom" && <PlatformPicker selected={pickedPlatform} onSelect={setPickedPlatform} />}
+
       {freeProducts.map((p) => (
         <ProductJsonLdCard key={p.url} result={p} />
       ))}
 
-      <FixLeadGate domain={domain} platform={platform}>
+      <FixLeadGate domain={domain} platform={platform} onUnlock={setMerchantEmail}>
         {products.map((p) => (
           <ProductJsonLdCard key={`full-${p.url}`} result={p} />
         ))}
@@ -180,6 +297,14 @@ export default function FixResults({ result }) {
           <StepList title="Product code" steps={install.productJsonLd} />
           <StepList title="llms.txt" steps={install.llmsTxt} />
         </div>
+
+        <DeveloperSendCard
+          domain={domain}
+          platform={effectivePlatform}
+          products={products}
+          llmsTxt={llmsTxt}
+          merchantEmail={merchantEmail}
+        />
 
         <div className={styles.card}>
           <span className={styles.label}>Verify it worked</span>

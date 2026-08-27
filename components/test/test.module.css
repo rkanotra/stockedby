@@ -99,6 +99,12 @@
   border-color: #2e5240;
   box-shadow: none;
 }
+/* Required-field emphasis (gate forms): the required work-email field gets
+   a visible resting border so it outranks the optional pain-point textarea
+   at a glance, not just on focus. */
+.inputRequired {
+  border-color: rgba(255, 197, 61, 0.55);
+}
 .btn {
   width: 100%;
   background: #ffc53d;
@@ -112,7 +118,9 @@
   cursor: pointer;
 }
 .btn:disabled {
-  opacity: 0.45;
+  background: #4a5248;
+  color: #8a9188;
+  opacity: 1;
   cursor: default;
 }
 .btn:focus-visible {
@@ -350,6 +358,39 @@
   font-size: 13px;
   margin-bottom: 14px;
 }
+.fieldError {
+  color: #ffb3a6;
+  font-size: 12px;
+  margin: -8px 0 12px;
+}
+.fieldSuggestion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: #e8cf8a;
+  font-size: 12px;
+  margin: -8px 0 12px;
+}
+.fieldSuggestion button {
+  background: none;
+  border: none;
+  color: #ffc53d;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  font-family: "Archivo", sans-serif;
+}
+.fieldSuggestionDismiss {
+  color: #7fa18c;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+  font-family: "Archivo", sans-serif;
+}
 .customNote {
   background: rgba(255, 197, 61, 0.08);
   border: 1px solid #4a3f1f;
@@ -471,6 +512,52 @@
   font-weight: 800;
   font-size: clamp(20px, 5vw, 26px);
   color: #9db4a6;
+}
+/* /audit CTA hierarchy: a quiet Layer 2 disclosure toggle (not a button
+   competing with the primary action) and a smallest-weight plain text
+   link (e.g. "check another website") — both real tap targets, neither
+   should ever read as equal-weight to a filled .btn. */
+.disclosureToggle {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  color: #ffc53d;
+  text-decoration: underline;
+  font-family: "Archivo", sans-serif;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px 0;
+  margin-top: 4px;
+}
+.disclosureToggle:hover {
+  color: #fff2cc;
+}
+.disclosureToggle:focus-visible {
+  outline: 3px solid #f1f5ec;
+  outline-offset: 2px;
+}
+.plainLink {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  color: #7fa18c;
+  text-decoration: underline;
+  font-family: "Archivo", sans-serif;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 16px;
+}
+.plainLink:hover {
+  color: #c4d6c9;
+}
+.plainLink:focus-visible {
+  outline: 3px solid #f1f5ec;
+  outline-offset: 2px;
 }
 .sectionHint {
   font-size: 13px;

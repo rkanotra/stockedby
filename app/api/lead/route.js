@@ -6,11 +6,10 @@ import { buildLayerOne } from "@/lib/layerOne";
 import { buildReportPdf } from "@/lib/pdf/buildReportPdf";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
 import { SITE_URL } from "@/lib/site";
+import { isValidEmailFormat, isDisposableEmail } from "@/lib/emailValidation";
 
 export const runtime = "nodejs";
 export const maxDuration = 20;
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function badRequest(message) {
   return NextResponse.json({ error: message }, { status: 400 });
@@ -49,6 +48,7 @@ export async function POST(request) {
     trustedSources,
     competitor,
     mentionCount,
+    isFreeProvider,
   } = body || {};
 
   // "fix" leads (Fix Generator, /fix) reuse this same gate/endpoint per the
@@ -59,8 +59,13 @@ export async function POST(request) {
   const sourceInput = source === "fix" ? "fix" : "report";
 
   const emailInput = typeof email === "string" ? email.trim() : "";
-  if (!emailInput || !EMAIL_RE.test(emailInput)) {
+  if (!emailInput || !isValidEmailFormat(emailInput)) {
     return badRequest("A valid work email is required.");
+  }
+  // Client already blocks this on blur (items 9/10) — this is the
+  // server-side backstop, since the client check can be bypassed.
+  if (isDisposableEmail(emailInput)) {
+    return badRequest("Please use an email you check.");
   }
   const brandWebsiteInput = typeof brandWebsite === "string" ? brandWebsite.trim() : "";
   let brandInput = typeof brand === "string" ? brand.trim() : "";
@@ -103,6 +108,7 @@ export async function POST(request) {
         category: categoryInput || null,
         consent_at: consentAt,
         source: sourceInput,
+        is_free_provider: typeof isFreeProvider === "boolean" ? isFreeProvider : null,
       });
       if (error) console.error("[leads] insert failed", error.message);
     } catch (e) {

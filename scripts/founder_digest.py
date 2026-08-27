@@ -82,6 +82,22 @@ def daily_failure_counts(since):
     return [f"  {day}: {n}" for day, n in sorted(counts.items())]
 
 
+def bounce_summary(since):
+    """Weekly email_status counts from leads (supabase/migrations/0005) —
+    our real verification layer since we deliberately skip OTP/email-
+    verification codes (spec item 13: costs more leads than it saves at
+    current volume). A rising bounced/complained count is the actual
+    signal to watch, not a proxy metric."""
+    rows = sb("GET", "leads", params=f"?created_at=gte.{since}&select=email_status")
+    counts = Counter((r.get("email_status") or "sent") for r in rows)
+    total = len(rows)
+    if not total:
+        return []
+    lines = [f"  {counts.get(s, 0):>3}  {s}" for s in ("sent", "delivered", "bounced", "complained")]
+    lines.append(f"  {total} leads total this week")
+    return lines
+
+
 def categories_tested_most(since):
     rows = sb("GET", "reports", params=f"?created_at=gte.{since}&select=category_id,market")
     counts = Counter((r.get("market"), r.get("category_id")) for r in rows if r.get("category_id"))
@@ -125,6 +141,7 @@ def main():
         section("System-event patterns", system_event_patterns(since)),
         section("Daily failure count", daily_failure_counts(since)),
         section("New brand appearances", new_brand_appearances(since)),
+        section("Email bounce/complaint summary", bounce_summary(since)),
         section("Categories tested most", categories_tested_most(since)),
     ])
     print(body)

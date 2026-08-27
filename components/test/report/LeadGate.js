@@ -3,6 +3,7 @@
 import { useState } from "react";
 import styles from "../test.module.css";
 import GateModal from "./GateModal";
+import { isValidEmailFormat, isDisposableEmail, isFreeProvider, suggestEmailCorrection } from "@/lib/emailValidation";
 
 // Plain-language DPDP (India) / PDPL (UAE, KSA) consent line — hard rule 8.
 const CONSENT_TEXT =
@@ -39,10 +40,41 @@ export default function LeadGate({
   const [consent, setConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [suggestion, setSuggestion] = useState(null);
+
+  function handleEmailBlur() {
+    const trimmed = email.trim();
+    setSuggestion(null);
+    if (!trimmed) {
+      setEmailError("");
+      return;
+    }
+    if (!isValidEmailFormat(trimmed)) {
+      setEmailError("That doesn't look like a valid email address.");
+      return;
+    }
+    if (isDisposableEmail(trimmed)) {
+      setEmailError("Please use an email you check.");
+      return;
+    }
+    setEmailError("");
+    const suggested = suggestEmailCorrection(trimmed);
+    if (suggested) setSuggestion(suggested);
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!email.trim() || !consent || submitting) return;
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail || !consent || submitting) return;
+    if (!isValidEmailFormat(trimmedEmail)) {
+      setEmailError("That doesn't look like a valid email address.");
+      return;
+    }
+    if (isDisposableEmail(trimmedEmail)) {
+      setEmailError("Please use an email you check.");
+      return;
+    }
     setSubmitting(true);
     setError("");
     try {
@@ -50,7 +82,7 @@ export default function LeadGate({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: email.trim(),
+          email: trimmedEmail,
           brand,
           brandWebsite: brandWebsite || "",
           // The domain this test actually ran on — read-only in this form
@@ -75,6 +107,7 @@ export default function LeadGate({
           trustedSources,
           competitor,
           mentionCount,
+          isFreeProvider: isFreeProvider(trimmedEmail),
         }),
       });
       const data = await res.json();
@@ -105,15 +138,32 @@ export default function LeadGate({
         first.
       </p>
       <input
-        className={styles.input}
+        className={`${styles.input} ${styles.inputRequired}`}
         type="email"
         placeholder="Work email"
         required
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => {
+          setEmail(e.target.value);
+          setEmailError("");
+          setSuggestion(null);
+        }}
+        onBlur={handleEmailBlur}
         autoComplete="email"
         autoFocus
       />
+      {emailError && <div className={styles.fieldError}>{emailError}</div>}
+      {suggestion && !emailError && (
+        <div className={styles.fieldSuggestion}>
+          <span>Did you mean {suggestion}?</span>
+          <button type="button" onClick={() => { setEmail(suggestion); setSuggestion(null); }}>
+            Use this
+          </button>
+          <button type="button" className={styles.fieldSuggestionDismiss} onClick={() => setSuggestion(null)}>
+            Dismiss
+          </button>
+        </div>
+      )}
       <input
         className={styles.input}
         type="text"
@@ -134,7 +184,11 @@ export default function LeadGate({
         <span>{CONSENT_TEXT}</span>
       </label>
       {error && <div className={styles.errBanner}>{error}</div>}
-      <button type="submit" className={styles.btn} disabled={!email.trim() || !consent || submitting}>
+      <button
+        type="submit"
+        className={styles.btn}
+        disabled={!email.trim() || !consent || submitting || Boolean(emailError)}
+      >
         {submitting ? "Unlocking…" : "Unlock full report — free"}
       </button>
     </form>

@@ -83,7 +83,7 @@ export default function AuditFlow({ initialDomain = "" }) {
         {phase === "done" && result && (
           <>
             <AuditResults result={result} />
-            <button type="button" className={styles.btnGhost} onClick={auditAnother}>
+            <button type="button" className={styles.plainLink} onClick={auditAnother}>
               Check another website
             </button>
           </>
