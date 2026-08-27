@@ -1,6 +1,7 @@
 "use client";
 
 import styles from "../test/test.module.css";
+import { checkImportance } from "@/lib/audit/journey";
 
 const ICON = { pass: "✓", warn: "!", fail: "✕", unknown: "?" };
 
@@ -35,7 +36,9 @@ export default function LayerCard({ title, hint, layer }) {
         <div className={styles.checkRow} key={c.id}>
           <span className={`${styles.checkIcon} ${styles[c.status]}`}>{ICON[c.status]}</span>
           <div className={styles.checkBody}>
-            <div className={styles.checkLabel}>{c.label}</div>
+            <div className={styles.checkLabel}>
+              {c.label} <span className={styles.founderStatLabel}>· {checkImportance(c)}</span>
+            </div>
             <div className={styles.checkDetail} dir="auto">
               {c.detail}
             </div>

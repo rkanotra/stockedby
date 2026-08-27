@@ -5,25 +5,18 @@ import Link from "next/link";
 import styles from "../test/test.module.css";
 import { platformLabel } from "@/lib/audit/platform";
 import { buildAuditLayerOne } from "@/lib/audit/layerOne";
+import { buildAuditJourney, buildCrawlerSummary } from "@/lib/audit/journey";
 import LayerCard from "./LayerCard";
+import AuditJourney from "./AuditJourney";
+import AuditFindings from "./AuditFindings";
+import CrawlerSummary from "./CrawlerSummary";
+import AuditActionPlan from "./AuditActionPlan";
 
 const VERDICT_CLASS = {
   "AGENT-READY": "vGood",
   "PARTIALLY READY": "vMid",
   "INVISIBLE TO AGENTS": "vBad",
 };
-// Verdict colours (hard rule 5): all-pass gets the plain text-primary
-// headline PLUS an accent underline (the one place a "good" result still
-// earns a small acknowledgement); partial gets the accent headline;
-// blocked is the single, deliberate exception that gets a red headline —
-// .vBlocked, not the shared .vBad other verdict displays use, so this stays
-// the only red headline in the app, not a second default "bad" colour.
-const PLAIN_VERDICT_CLASS = {
-  "YES, AI CAN READ YOUR SHOP": "vGood",
-  "AI CAN READ YOUR SHOP, BUT NOT YOUR PRODUCTS": "vMid",
-  "AI CAN'T READ YOUR SHOP": "vBlocked",
-};
-const ALL_PASS_VERDICT = "YES, AI CAN READ YOUR SHOP";
 
 const VERDICT_SUBTITLE = {
   "AGENT-READY": "Agents can find you, understand your products, and complete a purchase.",
@@ -31,58 +24,45 @@ const VERDICT_SUBTITLE = {
   "INVISIBLE TO AGENTS": "Agents likely can't even discover your store yet — start with the checks below.",
 };
 
-// Layer 1 (always visible, plain language — no robots.txt/llms.txt/UCP/
-// ACP/JSON-LD here, see lib/audit/layerOne.js, whose three-state verdict
-// and findings now read the same checks array so they can't contradict
-// each other) is the default view. CTA hierarchy: one loud button
-// ("Generate the fix", only when there's something to fix), one quiet
-// Layer 2 disclosure toggle (not a button), one framed cross-sell card,
-// one smallest-weight plain text link ("Check another website", in
-// AuditFlow.js) — never four competing equal-weight actions.
+// Founder-first redesign (CLAUDE.md's redesign phase): "Is my store
+// technically ready for AI?" answered with one dynamic headline
+// (lib/audit/journey.js's buildAuditJourney — never a fixed "AI CAN'T
+// READ YOUR SHOP" string unless that's genuinely true), the Find ->
+// Understand -> Buy signature visual (status word carries the severity
+// colour now, not a giant coloured headline), business-impact-structured
+// findings, a grouped crawler summary, and a Fix first / Then / Later
+// action plan. Full per-check technical detail (LayerCard.js, unchanged)
+// stays behind "See technical details" — developers still get everything,
+// it's just no longer the default view.
 export default function AuditResults({ result }) {
   const [showFull, setShowFull] = useState(false);
-  const { domain, platform, verdict, layers } = result;
+  const { domain, platform, verdict, layers, checks } = result;
   const layer1 = buildAuditLayerOne(result);
+  const journey = buildAuditJourney(result);
+  const crawlerSummary = buildCrawlerSummary(checks);
 
   return (
     <>
-      <div className={styles.card}>
-        <span className={styles.label}>Can AI apps read your shop?</span>
-        <div
-          className={`${styles.storyBig} ${styles[PLAIN_VERDICT_CLASS[layer1.verdict]] || ""} ${
-            layer1.verdict === ALL_PASS_VERDICT ? styles.accentUnderline : ""
-          }`}
+      <span className={styles.founderEyebrow}>{domain}</span>
+      <h1 className={styles.founderHeadline}>{journey.headline}</h1>
+
+      <AuditJourney journey={journey} />
+
+      <AuditFindings findings={layer1.findings} />
+
+      {crawlerSummary.restricted.length > 0 && <CrawlerSummary summary={crawlerSummary} />}
+
+      {layer1.findings.length > 0 && (
+        <Link
+          href={`/fix?domain=${encodeURIComponent(domain)}`}
+          className={styles.btn}
+          style={{ display: "block", textAlign: "center" }}
         >
-          {layer1.verdict}
-        </div>
-      </div>
-
-      {layer1.findings.length === 0 ? (
-        <div className={styles.card}>
-          <p className={styles.storyLine}>No problems found — AI apps can read your shop.</p>
-        </div>
-      ) : (
-        <>
-          <div className={styles.card}>
-            <span className={styles.label}>What&rsquo;s wrong</span>
-            <ul className={styles.storyActions}>
-              {layer1.findings.map((f, i) => (
-                <li key={i}>
-                  {f.finding} — {f.fix}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <Link
-            href={`/fix?domain=${encodeURIComponent(domain)}`}
-            className={styles.btn}
-            style={{ display: "block", textAlign: "center" }}
-          >
-            Generate the fix →
-          </Link>
-        </>
+          Generate the fix →
+        </Link>
       )}
+
+      {layer1.findings.length > 0 && <AuditActionPlan findings={layer1.findings} domain={domain} />}
 
       <button
         type="button"
@@ -115,16 +95,16 @@ export default function AuditResults({ result }) {
           />
           <LayerCard
             title="Transactable"
-            hint="Can an agent actually complete a purchase — agentic checkout manifests and payment infrastructure."
+            hint="Can an agent actually complete a purchase — agentic checkout manifests and payment infrastructure. Emerging infrastructure, not a current standard."
             layer={layers.transactable}
           />
         </>
       )}
 
       <div className={styles.card} style={{ marginTop: 14 }}>
-        <div className={styles.h2}>Your site is only half the picture.</div>
+        <div className={styles.h2}>Technical readiness is only half the picture.</div>
         <p className={styles.sectionHint} style={{ marginBottom: 14 }}>
-          See whether AI actually recommends you.
+          Now see whether AI actually recommends your brand.
         </p>
         <Link href="/test" className={styles.btnGhost} style={{ display: "block", textAlign: "center" }}>
           Check my brand — free
