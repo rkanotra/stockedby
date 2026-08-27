@@ -12,55 +12,40 @@ import Link from "next/link";
 // immediately instead of needing to click "See full report" themselves.
 const EXAMPLE_REPORT_SLUG = "";
 
-const PROMISES = [
-  {
-    line: "See who AI recommends — you or your rival",
-    icon: (
-      <>
-        <circle cx="12" cy="12" r="3" />
-        <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" />
-      </>
-    ),
-  },
-  {
-    line: "See where AI sends buyers to pay",
-    icon: (
-      <>
-        <path d="M6 8h12l-1.2 11.2a1 1 0 0 1-1 .8H8.2a1 1 0 0 1-1-.8L6 8z" />
-        <path d="M9 8V6a3 3 0 0 1 6 0v2" />
-      </>
-    ),
-  },
-  {
-    line: "Get simple steps to fix it",
-    icon: (
-      <>
-        <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.8 2.8-3-3 2.8-2.8z" />
-      </>
-    ),
-  },
+// "Three questions StockedBy answers" (brief section 16) — editorial
+// numbering instead of three identical icon cards. Same three promises
+// this section always made, just given the weight they deserve: this IS
+// the product, not a feature list.
+const QUESTIONS = [
+  { n: "01", title: "Do I show up?", line: "See whether AI recommends your brand." },
+  { n: "02", title: "Who gets picked instead?", line: "See which competitors and marketplaces get the recommendation." },
+  { n: "03", title: "What should I fix?", line: "Get the highest-impact actions to improve your visibility." },
 ];
 
 export default function PromiseStrip() {
   return (
     <section className="promises">
       <div className="wrap">
-        <ul className="promise-list">
-          {PROMISES.map((p) => (
-            <li key={p.line} className="promise-line">
-              <svg className="promise-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                {p.icon}
-              </svg>
-              <span>{p.line}</span>
+        <div className="aisle-head rv" style={{ justifyContent: "center", textAlign: "center" }}>
+          <h2 style={{ margin: "0 auto" }}>What StockedBy tells you</h2>
+        </div>
+        <ol className="q-list">
+          {QUESTIONS.map((q) => (
+            <li key={q.n} className="q-item rv">
+              <span className="q-num">{q.n}</span>
+              <div>
+                <div className="q-title">{q.title}</div>
+                <p className="q-line">{q.line}</p>
+              </div>
             </li>
           ))}
-        </ul>
+        </ol>
         {EXAMPLE_REPORT_SLUG && (
           <a href={`/report/${EXAMPLE_REPORT_SLUG}?full=1`} className="promise-link">
             See a real report →
           </a>
         )}
-        <Link href="/audit" className="audit-promo-card">
+        <Link href="/audit" className="audit-promo-card rv">
           <span className="audit-promo-label">For technical teams</span>
           <h3 className="audit-promo-title">Agent-ready check</h3>
           <p className="audit-promo-line">

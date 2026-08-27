@@ -1,6 +1,14 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import ProblemStatement from "@/components/ProblemStatement";
 import PromiseStrip from "@/components/PromiseStrip";
+import ResultExample from "@/components/ResultExample";
+import HowItWorks from "@/components/HowItWorks";
+import Markets from "@/components/Markets";
+import Compare from "@/components/Compare";
+import ImprovementLoop from "@/components/ImprovementLoop";
+import AgenticTeaser from "@/components/AgenticTeaser";
+import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import JsonLd from "@/components/JsonLd";
@@ -46,11 +54,16 @@ const ORG_AND_APP_JSON_LD = {
   ],
 };
 
-// Homepage philosophy (CLAUDE.md): the homepage is the door — Nav, Hero,
-// one promise strip (incl. the audit-promo card), Footer. The pillar/
-// markets/data/compare sections live on /why (app/why/page.js); the
-// 3-step how-it-works section lives on /how (app/how/page.js) — reachable
-// from Nav's "Why StockedBy" / "How it works" links, not from here.
+// Homepage philosophy (CLAUDE.md, "visual/creative revamp" phase —
+// supersedes the earlier "homepage is the door" rule): the homepage now
+// carries the full narrative — hero, live demo, the problem, what
+// StockedBy tells you, a real result example, how it works, why local
+// markets matter, why not the US tools, the improvement loop, an agentic-
+// commerce teaser, final CTA — rather than pushing everything past Hero
+// onto /why and /how. HowItWorks/Markets/Compare are the SAME components
+// /how and /why already render (reused, not forked) — those pages stay
+// untouched and still exist as deeper destinations from Nav, they just no
+// longer hold the ONLY copy of this content.
 export default function Home() {
   return (
     <>
@@ -59,7 +72,15 @@ export default function Home() {
         <Nav />
         <Hero />
       </div>
+      <ProblemStatement />
       <PromiseStrip />
+      <ResultExample />
+      <HowItWorks />
+      <Markets />
+      <Compare />
+      <ImprovementLoop />
+      <AgenticTeaser />
+      <FinalCTA />
       <Footer />
       <ScrollReveal />
     </>

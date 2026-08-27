@@ -54,6 +54,25 @@
      site-wide, not two. */
   --danger: #FF8A80;
   --danger-rgb: 255, 138, 128;
+
+  /* Marketing-site design tokens (visual/creative revamp phase) — the
+     first formal spacing/radius scale this stylesheet has had; every
+     value before this was a hardcoded literal repeated per-selector.
+     Existing classes keep their current literals (no risky mass find/
+     replace across already-shipped pages) — these are used by the new
+     homepage sections below and going forward. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -82,10 +101,10 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--ink); outline-o
 .logo { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 20px; color: var(--ink); letter-spacing: -0.01em; }
 .logo b { background: var(--tag); padding: 1px 6px; border-radius: 5px; font-weight: 800; }
 .nav-links { display: flex; align-items: center; gap: 26px; margin-left: auto; font-size: 14px; font-weight: 500; }
-.nav-links a { color: var(--muted); }
+.nav-links a { color: var(--muted); transition: color .15s ease; }
 .nav-links a:hover { color: var(--ink); }
 @media (max-width: 760px) { .nav-links { display: none; } }
-.btn { display: inline-block; background: var(--ink); color: var(--white); font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer; }
+.btn { display: inline-block; background: var(--ink); color: var(--white); font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer; transition: background .15s ease; }
 .btn:hover { background: var(--hover-nav); }
 /* Below 760px the hero's own yellow "Check my brand" button sits right
    under the fold — the nav's black one is a redundant duplicate at that
@@ -118,11 +137,14 @@ h1.hero-h1 .flip { color: var(--brick2); }
   background: var(--tag); color: var(--ink); font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 16px;
   padding: 15px 28px; border-radius: 10px; border: none; cursor: pointer;
   box-shadow: 0 1px 0 rgba(22,24,15,0.2), 0 10px 26px rgba(255,197,61,0.4);
+  transition: background .15s ease;
 }
 .btn-primary:hover { background: var(--tag-hover); }
 .btn-ghost {
+  display: inline-block;
   color: var(--ink); background: var(--white); border: 1px solid var(--line3);
   font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 16px; padding: 14px 28px; border-radius: 10px;
+  transition: border-color .15s ease;
 }
 .btn-ghost:hover { border-color: var(--ink); }
 .hero-note { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted2); }
@@ -293,7 +315,7 @@ h1.hero-h1-simple {
 .audit-promo-card {
   display: block; text-align: left; max-width: 46ch; margin: 28px auto 0;
   background: var(--white); border: 1.5px solid var(--ink); border-radius: 14px;
-  padding: 20px 22px;
+  padding: 20px 22px; transition: border-color .15s ease;
 }
 .audit-promo-card:hover { border-color: var(--brick); }
 .audit-promo-label {
@@ -308,8 +330,92 @@ h1.hero-h1-simple {
 .audit-promo-btn {
   display: inline-block; font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 14px;
   color: var(--ink); border: 1.5px solid var(--ink); border-radius: 8px; padding: 9px 16px;
+  transition: background .15s ease, color .15s ease;
 }
 .audit-promo-card:hover .audit-promo-btn { background: var(--ink); color: var(--white); }
+
+/* Small secondary link under the hero's CTA, anchor-scrolling to
+   #result-example — a text action, not a second button (brief section
+   41: not every action is a giant CTA). */
+.hero-see-example { display: inline-block; margin-top: 14px; color: var(--muted2); font-size: 12px; transition: color .15s ease; }
+.hero-see-example:hover { color: var(--link-hover); }
+
+/* ---------- homepage narrative (visual/creative revamp phase) ---------- */
+/* components/ProblemStatement.js — editorial statement, big type, no card
+   grid, deliberately no .rv reveal (should just exist, not perform an
+   entrance). Longhand padding only, same .wrap-combination reasoning as
+   section.aisle above. */
+.problem { padding-top: var(--space-8); padding-bottom: var(--space-6); text-align: center; }
+.problem-line {
+  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800;
+  font-size: clamp(26px, 4.6vw, 44px); line-height: 1.22; letter-spacing: -0.015em;
+  max-width: 20ch; margin: 0 auto; color: var(--ink);
+}
+.problem-line-muted { color: var(--muted2); margin-top: 2px; }
+.problem-sub { color: var(--muted); font-size: 16px; max-width: 54ch; margin: var(--space-6) auto 0; }
+
+/* components/PromiseStrip.js's "Three questions" — numbered editorial
+   list replacing the old icon-row treatment. */
+.q-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-7); max-width: 640px; margin: var(--space-6) auto 0; }
+.q-item { display: flex; gap: var(--space-5); align-items: flex-start; text-align: left; }
+.q-num { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 14px; color: var(--muted2); flex-shrink: 0; padding-top: 5px; }
+.q-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(20px, 3vw, 26px); color: var(--ink); margin-bottom: 6px; }
+.q-line { color: var(--muted); font-size: 15px; line-height: 1.5; }
+
+/* components/ResultExample.js — one real, computed example (never a
+   fabricated number, hard rule 2), presented the way a founder actually
+   reads a verdict: brand, verdict, one stat, the one thing that matters,
+   what to do next. */
+.result-example { padding-top: var(--space-8); padding-bottom: var(--space-6); }
+.result-card {
+  max-width: 640px; margin: var(--space-6) auto 0; text-align: left;
+  background: var(--white); border: 1px solid var(--line5); border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-6);
+  box-shadow: 0 20px 50px rgba(60,52,20,0.08);
+}
+.result-brand { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted2); }
+.result-verdict { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(26px, 4vw, 34px); margin: var(--space-2) 0 var(--space-3); color: var(--ink); }
+.result-line { color: var(--muted); font-size: 15px; line-height: 1.5; margin-bottom: var(--space-5); }
+.result-callout { background: var(--card-tint); border-radius: var(--radius-md); padding: var(--space-4) var(--space-5); font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: var(--space-5); }
+.result-dest-list { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-5); }
+.result-dest-row { display: flex; justify-content: space-between; gap: var(--space-3); font-size: 14px; padding: var(--space-3); border: 1px solid var(--line4); border-radius: var(--radius-sm); }
+.result-dest-row span:last-child { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); text-align: right; }
+.result-opportunity { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: var(--space-4); margin-bottom: var(--space-5); }
+.result-opportunity b { color: var(--ink); }
+
+/* components/ImprovementLoop.js — short, mostly-whitespace, static (no
+   GSAP this pass — see CLAUDE.md's homepage-revamp entry). */
+.loop { padding-top: var(--space-8); padding-bottom: var(--space-8); }
+.loop-steps {
+  display: flex; align-items: center; justify-content: center; gap: var(--space-3); flex-wrap: wrap;
+  margin: var(--space-6) 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+}
+.loop-arrow { color: var(--muted2); }
+.loop-rank {
+  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(30px, 6vw, 48px);
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: var(--space-4); color: var(--muted2);
+}
+.loop-rank b { color: var(--green); }
+.loop-arrow2 { font-size: 22px; color: var(--muted2); }
+
+/* components/AgenticTeaser.js — the one deliberately dark, full-bleed
+   moment on the homepage (brief section 38: mix layouts, don't repeat the
+   same light-card-on-cream pattern every section), reusing .steps/.step
+   with a dark-adapted palette rather than a second card system. */
+.agentic-teaser { background: var(--ink); color: var(--cream); padding-top: var(--space-8); padding-bottom: var(--space-8); text-align: center; }
+.agentic-teaser h2 { color: var(--cream); }
+.agentic-teaser .aisle-sub { color: #C7C4B4; }
+.agentic-teaser .steps { margin-top: var(--space-6); text-align: left; }
+.agentic-teaser .step { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); }
+.agentic-teaser .step .n { color: var(--tag); }
+.agentic-teaser .step h3 { color: var(--cream); }
+.agentic-teaser .step p { color: #B8B5A5; }
+.agentic-teaser-link { display: inline-block; margin-top: var(--space-6); font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--tag); transition: color .15s ease; }
+.agentic-teaser-link:hover { color: var(--tag-hover); }
+
+/* components/FinalCTA.js — reuses .receipt's existing card treatment. */
+.final-cta { padding-top: var(--space-8); padding-bottom: var(--space-8); }
 
 /* ---------- /why and /how page headers ---------- */
 /* Longhand top/bottom padding only — same reason as section.aisle above:
