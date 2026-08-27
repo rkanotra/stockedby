@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import styles from "../test.module.css";
-import { ENGINE_ORDER, ENGINE_LABELS, matches, sanitizeBrandLabel } from "@/lib/scoring";
+import { ENGINE_ORDER, ENGINE_LABELS, matches, normalize, sanitizeBrandLabel } from "@/lib/scoring";
 
 // "How AI ranks you" — engines are a supporting dimension, not the story
 // (CLAUDE.md's redesign phase): compact tabs, default to one engine,
@@ -12,19 +12,38 @@ import { ENGINE_ORDER, ENGINE_LABELS, matches, sanitizeBrandLabel } from "@/lib/
 // already used.
 const hasRealData = (engines, e) => (engines[e] || []).some((r) => r.source !== "missing");
 
+// Collapses a raw ranked recs array (which can list several products from
+// the same brand back to back — "Minimalist Vitamin C", "Minimalist 10%",
+// "Minimalist Serum") down to one entry per distinct brand, keeping each
+// brand's best (earliest) position. Founder-facing rank/top3/"who's ahead"
+// all read from this — never the raw per-product list — so a brand's own
+// product catalogue can't masquerade as several different competitors.
+// Raw, un-deduped evidence stays intact in ShelvesCard behind "View full
+// evidence"; this only changes how it's summarized here.
+function dedupedBrandRanking(recs) {
+  const seen = new Set();
+  const list = [];
+  (recs || []).forEach((rec) => {
+    if (!rec) return;
+    const label = sanitizeBrandLabel(rec.brand || rec.product);
+    const key = normalize(label);
+    if (!key || seen.has(key)) return;
+    seen.add(key);
+    list.push(label);
+  });
+  return list;
+}
+
 function questionInsight(row, brand) {
-  const recs = row.recs || [];
-  const idx = recs.findIndex((rec) => rec && (matches(brand, rec.brand) || matches(brand, rec.product)));
+  const ranking = dedupedBrandRanking(row.recs);
+  const idx = ranking.findIndex((label) => matches(brand, label));
   const appeared = idx >= 0;
-  const top3 = recs.slice(0, 3);
+  const top3 = ranking.slice(0, 3);
   let tells = null;
   if (!appeared && top3.length > 0) {
     tells = `AI isn't recommending ${brand} yet for this kind of question.`;
   } else if (appeared && idx > 0) {
-    const ahead = top3
-      .slice(0, idx)
-      .map((r) => sanitizeBrandLabel(r.brand || r.product))
-      .filter(Boolean);
+    const ahead = ranking.slice(0, idx);
     if (ahead.length > 0) tells = `${ahead.join(", ")} appeared before you.`;
   }
   return { appeared, rank: appeared ? idx + 1 : null, top3, tells };
@@ -42,13 +61,13 @@ function QuestionCard({ row, brand }) {
       </div>
       {insight.top3.length > 0 && (
         <ul className={styles.questionTop3}>
-          {insight.top3.map((rec, i) => (
+          {insight.top3.map((label, i) => (
             <li
               key={i}
               className={`${styles.questionTop3Row} ${insight.appeared && i === insight.rank - 1 ? styles.questionTop3RowYou : ""}`}
             >
               <span className={styles.questionTop3Rank}>{i + 1}.</span>
-              <span>{sanitizeBrandLabel(rec.brand || rec.product) || "—"}</span>
+              <span>{label || "—"}</span>
             </li>
           ))}
         </ul>
