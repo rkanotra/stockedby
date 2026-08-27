@@ -13,6 +13,8 @@ import {
   computeFanout,
   computeTrustedSources,
 } from "@/lib/scoring";
+import { buildTopBrands } from "@/lib/layerOne";
+import { logSystemEvent } from "@/lib/systemEvents";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
 
 // This route no longer makes the live per-question Claude calls itself —
@@ -372,6 +374,31 @@ export async function POST(request) {
     organicEngineData: organicScoringEngineData,
     appearanceSummary,
   });
+
+  // Contradiction guard: the exact same buildTopBrands() computation the
+  // report's own "leaders" surfaces (StoryView, the PDF) will run against
+  // this same engineData — if IT says the brand is one of the leaders, the
+  // verdict cannot honestly read NOT STOCKED. This was the actual shape of
+  // a real production bug (a brand ranked #1 with 3 mentions in its own
+  // leaders list while its verdict read NOT STOCKED, 0 of 3, because the
+  // old brand-comparison util failed to match "Dot & Key" against a
+  // slug-derived "Dot and Key") — normalizeBrand() (lib/scoring.js) is the
+  // actual fix; this is the backstop that refuses to ship the report at
+  // all if a contradiction like it ever slips through again, rather than
+  // rendering something self-contradictory.
+  const contradictionCheck = buildTopBrands(engineData, brandName);
+  if (report.verdict === "NOT STOCKED" && contradictionCheck.brandInTop) {
+    await logSystemEvent(
+      "contradiction",
+      "test",
+      { brand: brandName, market, category: category.id, verdict: report.verdict, leaders: contradictionCheck.top.map((b) => b.label) },
+      "critical"
+    );
+    return NextResponse.json(
+      { error: "Something went wrong scoring this test. Please try again — we've been notified." },
+      { status: 500 }
+    );
+  }
 
   const categoryOut = { id: category.id, name: category.name, group: category.group };
   const fanout = computeFanout(liveRuns);

@@ -112,3 +112,34 @@ Requires `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `RESEND_API_KEY`,
 `FROM_EMAIL`, `FOUNDER_EMAIL`. Not yet wired to a cron — run weekly by hand
 for now (both this and retest.py are meant to move to a Vercel cron once
 the cadence is proven manually).
+
+## audit_brand_matches.py
+Finds reports affected by the brand-matching bug lib/scoring.js's
+normalizeBrand() fixes (a brand could rank #1 in its own leaders list with
+real mentions while its saved verdict read NOT STOCKED — the old
+normalize() stripped "&" and all whitespace with nothing put back, so
+"Dot & Key" and a slug/guess-derived "Dot and Key" normalized to two
+different strings). Read-only by default: prints a summary and writes a
+CSV (slug, brand, email, old_verdict, created_at) of every report where
+(a) the brand — recomputed with the FIXED matcher — actually is one of its
+own leaders despite a saved NOT STOCKED verdict, or (b) the brand name
+contains `& . ' - /`, worth a human glance regardless of whether it's
+actually wrong.
+
+```
+python3 scripts/audit_brand_matches.py                # print + write CSV, change nothing
+python3 scripts/audit_brand_matches.py --rerun         # also correct (a) from cached snapshots
+python3 scripts/audit_brand_matches.py --csv out.csv   # custom CSV path
+```
+
+`--rerun` corrects flagged verdicts from already-collected `snapshots`
+rows only — no new engine calls, no spend, and never sends email (the
+script never sends email at all, in either mode). It recomputes the
+appearance-based tier (NOT STOCKED / BARELY STOCKED vs. appearing at all)
+correctly from the fixed matcher, but doesn't re-derive the full
+share-of-voice engine scores computeReport() uses to distinguish OUTSHELVED
+from ON THE SHELF once appearance rate is >= 0.5 — it writes "ON THE
+SHELF" as a floor in that case, not a precise claim; scripts/retest.py (a
+real re-test) is the source of truth for that finer distinction.
+
+Requires `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`.

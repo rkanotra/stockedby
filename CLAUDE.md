@@ -464,6 +464,45 @@ does nothing until then).
   categories tested most) — see scripts/README.md for both scripts' usage.
   Neither is wired to a cron yet; both are run manually, same as
   harvest.py's own documented workflow.
+- Brand matching (lib/scoring.js, tested — see below): normalizeBrand()
+  is THE brand-comparison util (normalize()/matches() are exported aliases
+  of it, so every existing caller across the app gets it for free) — fixed
+  a real production bug where a brand could rank #1 with real mentions in
+  its own leaders list while its saved verdict read NOT STOCKED, because
+  the old normalize() stripped "&" and all whitespace with nothing put
+  back, so "Dot & Key" and a slug/guess-derived "Dot and Key" normalized to
+  two different strings. Handles unicode NFKD + diacritics, "&" <-> "and"
+  (both directions), punctuation as word breaks (not deletion, so "Dr.
+  Sheth's" doesn't collide with an unrelated brand), and trailing
+  corporate suffixes (india/pvt/ltd/inc/co); matchesAny() adds an optional
+  brand_aliases escape hatch for names no normalization rule could ever
+  bridge. sanitizeBrandLabel() strips a stray "/" immediately after an
+  abbreviation period (e.g. "Dr. /Sheth's") without touching a genuine
+  multi-brand "/" answer — applied once, in buildTopBrands() (lib/
+  layerOne.js), so every leaders-style surface gets it. app/api/test/
+  route.js's contradiction guard runs the SAME buildTopBrands() the
+  report's own leaders surfaces will use, right before saving: if the
+  brand is one of its own leaders but the verdict is NOT STOCKED, it logs
+  a `system_events` row (severity 'critical', supabase/migrations/
+  0004_brand_matching_fix.sql) and fails the response rather than saving
+  or rendering a self-contradictory report. That same migration adds
+  explicit brand_display_name/brand_slug/category_display_name/
+  category_slug columns to `reports` (lib/reports.js's saveReport()
+  populates all four; brand/category_id already held the display name/
+  slug respectively and are untouched) — audited every render site (the
+  /test loading screen, the verdict sentence, every leaders/report card,
+  the merchant email, the PDF) and confirmed none of them ever derived a
+  display name from a slug; the one place a brand name genuinely IS
+  slug/domain-derived is guessBrandFromDomain's initial /test wizard
+  auto-fill (always editable), which now renders a hyphenated "and"
+  segment as "&" since a domain can't contain one. scripts/
+  audit_brand_matches.py finds reports still affected (CSV output only,
+  never emails; --rerun corrects the appearance-tier verdict from already-
+  cached snapshots, no new API spend). lib/scoring.test.js (`npm test`,
+  Node's built-in test runner — package.json needed `"type": "module"` for
+  this, and gained a `test` script) covers normalizeBrand/matches/
+  matchesAny/sanitizeBrandLabel/categoryMidSentence/guessBrandFromDomain
+  directly.
 - app/privacy/page.js — the site's privacy policy (uses the .legal styles
   in app/globals.css), linked from Footer.js. Covers what's collected at
   /test, /audit and the lead gate, who else sees it (Anthropic/Google/

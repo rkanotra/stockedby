@@ -2,7 +2,16 @@
 
 import { useState } from "react";
 import styles from "../test.module.css";
-import { ENGINE_ORDER, ENGINE_LABELS, ARCH_LABELS, DEST_LABELS, matches, isRivalFor, effectiveDestination } from "@/lib/scoring";
+import {
+  ENGINE_ORDER,
+  ENGINE_LABELS,
+  ARCH_LABELS,
+  DEST_LABELS,
+  matches,
+  isRivalFor,
+  effectiveDestination,
+  sanitizeBrandLabel,
+} from "@/lib/scoring";
 
 const DEST_COLORS = {
   "brand-direct": "#5bd6a0",
@@ -97,7 +106,7 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
                 return (
                   <div key={j} className={`${styles.tag} ${tagClass}`} title={rec.product}>
                     <span className={styles.rk}>#{j + 1}</span>
-                    {rec.brand}
+                    {sanitizeBrandLabel(rec.brand)}
                     {dest !== "none" && (
                       <span className={styles.dest} style={{ color: j === youIdx ? "#17251f" : DEST_COLORS[dest] }}>
                         → {DEST_LABELS[dest]}
