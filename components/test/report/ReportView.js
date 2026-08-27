@@ -2,7 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import styles from "../test.module.css";
-import StoryView from "./StoryView";
+import { buildFounderReport } from "@/lib/founderReport";
+import AIVisibilityHero from "./AIVisibilityHero";
+import BiggestOpportunityCard from "./BiggestOpportunityCard";
+import BuyerJourney from "./BuyerJourney";
+import TestAnotherCTA from "./TestAnotherCTA";
+import EngineTabs from "./EngineTabs";
+import CompetitorThreat from "./CompetitorThreat";
+import DestinationSummary from "./DestinationSummary";
+import RecommendedActions from "./RecommendedActions";
+import NextMoveCTA from "./NextMoveCTA";
 import VerdictCard from "./VerdictCard";
 import LeadGate from "./LeadGate";
 import ShareButton from "./ShareButton";
@@ -16,45 +25,41 @@ import AuditCTA from "./AuditCTA";
 import FixPlanCTA from "./FixPlanCTA";
 import DownloadPdfButton from "./DownloadPdfButton";
 
-// Layer 1 (StoryView, always visible — see its own comment) is the default
-// view; clicking the full-width "See full report" button reveals Layer 2,
-// which is exactly the report this component rendered before Layer 1
-// existed: VerdictCard, the share button, then the email-gated deep cards.
-// Nothing about Layer 2 or the email gate changed — it just moved one
-// click deeper. initialShowFull lets a caller (app/report/[slug]/page.js,
-// for a `?full=1` link) land straight on Layer 2 instead of requiring the
-// click — used by the homepage's "See a real report" example link so a
-// visitor sees the depth immediately.
+// Founder-first redesign (CLAUDE.md's redesign phase): conclusion first
+// (AIVisibilityHero + BiggestOpportunityCard + BuyerJourney, all free —
+// this is the report's real substance, not a teaser), then the email
+// gate, then the "how/who/where" detail (EngineTabs, CompetitorThreat,
+// DestinationSummary, RecommendedActions), then a single "View full
+// evidence" disclosure wrapping every existing raw-data card
+// (VerdictCard/ShelvesCard/CheckoutBattleCard/ShareOfVoiceCard/
+// SentimentCard/TrustedSourcesCard/FanoutCard) unchanged — technical
+// detail stays fully available, just no longer the default view.
+// lib/founderReport.js's buildFounderReport() is the single source for
+// every number this page shows; the merchant email and PDF read the same
+// function, so the three surfaces can never disagree (hard rule per the
+// redesign brief).
 export default function ReportView({ data, onRetry, initialShowFull = false }) {
-  const [showFull, setShowFull] = useState(initialShowFull);
-  const expandedRef = useRef(null);
-  // Only auto-scroll when the USER expanded it (a click, or the gate
-  // unlocking) — never on initial mount, so a shared /report/[slug]?full=1
-  // link still lands at the normal page top instead of jumping mid-page.
-  // Real state (not a ref) because DownloadPdfButton's GA4 event needs to
-  // read it during render — refs can't be read there.
+  const [showEvidence, setShowEvidence] = useState(initialShowFull);
+  const evidenceRef = useRef(null);
   const [userExpanded, setUserExpanded] = useState(false);
 
-  function scrollToExpanded() {
-    // rAF-deferred: the DOM needs to actually reflow (blurred/clipped
-    // preview -> full height, or Layer 1 -> Layer 2 appearing) before
-    // scrollIntoView measures a stable position — a same-tick call can
-    // scroll to where the section WAS about to be, not where it ends up.
+  function scrollToEvidence() {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        expandedRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        evidenceRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     });
   }
 
-  function handleSeeFullDetails() {
+  function handleSeeFix() {
     setUserExpanded(true);
-    setShowFull(true);
+    setShowEvidence(true);
+    scrollToEvidence();
   }
 
   useEffect(() => {
-    if (showFull && userExpanded) scrollToExpanded();
-  }, [showFull, userExpanded]);
+    if (showEvidence && userExpanded) scrollToEvidence();
+  }, [showEvidence, userExpanded]);
 
   const {
     market,
@@ -72,6 +77,8 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
     slug,
   } = data;
 
+  const founder = buildFounderReport({ report, engines, brand });
+
   return (
     <>
       {isCustom && (
@@ -81,60 +88,91 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
         </div>
       )}
 
-      <StoryView data={data} onSeeFullDetails={handleSeeFullDetails} />
+      <AIVisibilityHero
+        brand={brand}
+        report={report}
+        visibility={founder.visibility}
+        buyerJourney={founder.buyerJourney}
+        biggestOpportunity={founder.biggestOpportunity}
+        competitorThreat={founder.competitorThreat}
+      />
 
-      {showFull && (
-        <div ref={expandedRef}>
-          <VerdictCard market={market} brand={brand} category={category?.name} report={report} onRetry={onRetry} />
-          {slug && (
-            <div style={{ marginBottom: 14 }}>
-              <ShareButton slug={slug} />
-            </div>
-          )}
-          <LeadGate
-            market={market}
-            category={category?.name}
-            brand={brand}
-            brandWebsite={brandWebsite}
-            verdict={report.verdict}
-            slug={slug}
-            onUnlock={scrollToExpanded}
-            report={report}
-            engines={engines}
-            sentiment={sentiment}
-            trustedSources={trustedSources}
-            competitor={competitor}
-            mentionCount={mentionCount}
-          >
+      <BiggestOpportunityCard opportunity={founder.biggestOpportunity} onSeeFix={handleSeeFix} />
+
+      <BuyerJourney buyerJourney={founder.buyerJourney} />
+
+      {category?.name && (
+        <TestAnotherCTA categoryName={category.name} brand={brand} brandWebsite={brandWebsite} market={market} />
+      )}
+
+      <LeadGate
+        market={market}
+        category={category?.name}
+        brand={brand}
+        brandWebsite={brandWebsite}
+        verdict={report.verdict}
+        slug={slug}
+        onUnlock={scrollToEvidence}
+        report={report}
+        engines={engines}
+        sentiment={sentiment}
+        trustedSources={trustedSources}
+        competitor={competitor}
+        mentionCount={mentionCount}
+      >
+        <EngineTabs brand={brand} engines={engines} />
+        <CompetitorThreat competitorThreat={founder.competitorThreat} />
+        <DestinationSummary
+          brand={brand}
+          destinationSplit={founder.destinationSplit}
+          yourDestinations={report.destinations?.yourDestinations}
+        />
+        <RecommendedActions actions={founder.actions} />
+        <NextMoveCTA brand={brand} biggestOpportunity={founder.biggestOpportunity} brandWebsite={brandWebsite} />
+        <AuditCTA brandWebsite={brandWebsite} />
+
+        {slug && (
+          <div style={{ marginBottom: 14 }}>
+            <ShareButton slug={slug} />
+          </div>
+        )}
+
+        <button
+          type="button"
+          className={styles.disclosureToggle}
+          onClick={() => setShowEvidence((v) => !v)}
+          aria-expanded={showEvidence}
+        >
+          {showEvidence ? "Hide full evidence" : "View full evidence →"}
+        </button>
+
+        {showEvidence && (
+          <div ref={evidenceRef}>
+            <VerdictCard market={market} brand={brand} category={category?.name} report={report} onRetry={onRetry} />
             <CheckoutBattleCard brand={brand} brandWebsite={brandWebsite} destinations={report.destinations} />
             <ShareOfVoiceCard market={market} brand={brand} competitor={competitor} shareOfVoice={report.shareOfVoice} />
             <SentimentCard sentiment={sentiment} mentionCount={mentionCount} />
             <ShelvesCard market={market} brand={brand} competitor={competitor} engines={engines} />
             <FanoutCard fanout={fanout} />
             <TrustedSourcesCard trustedSources={trustedSources} />
-            <AuditCTA brandWebsite={brandWebsite} />
             <FixPlanCTA brandWebsite={brandWebsite} />
-          </LeadGate>
-
-          {/* Bottom of the expanded view, after every section — moved out
-              of StoryView.js's Layer 1 action block (that block is now
-              just the two report CTAs, see StoryView.js). */}
-          <DownloadPdfButton
-            brand={brand}
-            categoryName={category?.name}
-            market={market}
-            competitor={competitor}
-            brandWebsite={brandWebsite}
-            report={report}
-            engines={engines}
-            sentiment={sentiment}
-            mentionCount={mentionCount}
-            trustedSources={trustedSources}
-            slug={slug}
-            fullReportExpanded={userExpanded}
-          />
-        </div>
-      )}
+            <DownloadPdfButton
+              brand={brand}
+              categoryName={category?.name}
+              market={market}
+              competitor={competitor}
+              brandWebsite={brandWebsite}
+              report={report}
+              engines={engines}
+              sentiment={sentiment}
+              mentionCount={mentionCount}
+              trustedSources={trustedSources}
+              slug={slug}
+              fullReportExpanded={userExpanded}
+            />
+          </div>
+        )}
+      </LeadGate>
     </>
   );
 }

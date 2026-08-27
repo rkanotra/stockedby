@@ -247,7 +247,7 @@ export default function TestFlow() {
   }
 
   // Full reset, not just phase — this is the plain "start over" button
-  // (distinct from StoryView.js's TestAnotherCTA, which deliberately DOES
+  // (distinct from ReportView.js's TestAnotherCTA, which deliberately DOES
   // carry domain/brand/market forward for the same-brand multi-category
   // flow, via a real navigation to /test?domain=...&brand=...&market=...
   // that re-mounts this component fresh). Before this reset domain/brand/

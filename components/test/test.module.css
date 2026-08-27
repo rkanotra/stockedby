@@ -1162,3 +1162,388 @@
   display: block;
   margin-bottom: 6px;
 }
+
+/* ---------- Founder-first redesign (/test, /audit) ----------
+   Conclusion -> implication -> action -> evidence, per CLAUDE.md's
+   redesign phase: fewer bordered .card boxes, more whitespace-driven
+   sections, monospace reserved for domains/eyebrow labels/raw evidence
+   only. Reuses every existing Ink token — no new colors. */
+.founderEyebrow {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mono);
+  margin: 0 0 8px;
+  display: block;
+}
+.founderHeadline {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 6vw, 40px);
+  line-height: 1.14;
+  margin: 0 0 18px;
+  color: var(--text-primary);
+}
+.founderScoreRow {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+.founderScore {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 40px;
+  color: var(--text-primary);
+}
+.founderScoreMax {
+  font-size: 16px;
+  color: var(--text-muted);
+}
+.founderScoreBand {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.founderExplain {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin: 8px 0 22px;
+  max-width: 56ch;
+}
+.founderStats {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.founderStat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.founderStatValue {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--text-primary);
+}
+.founderStatLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.opportunityCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--accent);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 22px 0 16px;
+}
+.opportunityLabel {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin: 0 0 8px;
+}
+.opportunityTitle {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.25;
+  margin: 0 0 8px;
+  color: var(--text-primary);
+}
+.opportunityDetail {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+/* Signature journey visual — shared shape between /test's Discover ->
+   Consider -> Buy and /audit's Find -> Understand -> Buy. Status colour
+   only (weak/growing/strong via the .journeyStage* modifiers below) —
+   never a raw percentage bar chart, per hard rule 2 ("statuses are
+   enough where data doesn't support a number"). */
+.journey {
+  display: flex;
+  gap: 0;
+  margin: 4px 0 12px;
+}
+.journeyStage {
+  flex: 1;
+  padding: 16px 14px 4px;
+  border-top: 3px solid var(--border-strong);
+}
+.journeyStage.weak {
+  border-top-color: var(--danger);
+}
+.journeyStage.growing {
+  border-top-color: var(--accent);
+}
+.journeyStage.strongStage {
+  border-top-color: var(--text-secondary);
+}
+.journeyStageLabel {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-mono);
+  display: block;
+  margin-bottom: 8px;
+}
+.journeyStagePct {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 2px;
+}
+.journeyStageStatus {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: block;
+}
+.journeyStageStatus.weak {
+  color: var(--danger);
+}
+.journeyStageStatus.growing {
+  color: var(--accent);
+}
+.journeyStageStatus.strongStage {
+  color: var(--text-secondary);
+}
+.journeyStageStatus.notchecked {
+  color: var(--text-muted);
+}
+.journeyStageDetail {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+.journeyInsight {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.3;
+  color: var(--text-primary);
+  margin: 8px 0 16px;
+}
+@media (max-width: 640px) {
+  .journey {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .journeyStage {
+    border-top: none;
+    border-left: 3px solid var(--border-strong);
+    padding: 4px 0 4px 14px;
+  }
+  .journeyStage.weak {
+    border-left-color: var(--danger);
+  }
+  .journeyStage.growing {
+    border-left-color: var(--accent);
+  }
+  .journeyStage.strongStage {
+    border-left-color: var(--text-secondary);
+  }
+}
+
+.questionCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 12px;
+}
+.questionAsked {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0 0 10px;
+}
+.questionStatus {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--text-primary);
+  margin: 0 0 6px;
+}
+.questionSupport {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0 0 12px;
+  line-height: 1.45;
+}
+.questionTop3 {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 0;
+}
+.questionTop3Row {
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  gap: 8px;
+}
+.questionTop3RowYou {
+  color: var(--accent);
+  font-weight: 700;
+}
+.questionTop3Rank {
+  font-family: "IBM Plex Mono", monospace;
+  color: var(--text-mono);
+  flex-shrink: 0;
+  width: 16px;
+}
+.questionTells {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 10px;
+  margin-top: 4px;
+}
+
+.competitorCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.competitorName {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--text-primary);
+  margin: 0 0 10px;
+  line-height: 1.25;
+}
+.competitorStats {
+  display: flex;
+  gap: 22px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.competitorOthers {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.competitorOtherRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.destSplitBar {
+  display: flex;
+  height: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 10px 0 16px;
+}
+.destImpact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+.destImpactColTitle {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+}
+.destImpactList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.destImpactList li {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+@media (max-width: 480px) {
+  .destImpact {
+    grid-template-columns: 1fr;
+  }
+}
+
+.actionItem {
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.actionItemPrimary {
+  border-color: var(--accent);
+  background: var(--bg-surface);
+}
+.actionImpact {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 6px;
+}
+.actionTitle {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+.actionDetail {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* Business-impact structure (/audit's "What we found / Why it matters /
+   What to do") — reused by the /audit findings card. */
+.impactBlock {
+  margin-bottom: 12px;
+}
+.impactBlockLabel {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-mono);
+  display: block;
+  margin-bottom: 4px;
+}
+.impactBlockText {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
