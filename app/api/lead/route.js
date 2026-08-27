@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { sendLeadEmails, sendFixLeadEmails } from "@/lib/email";
 import { getReportBySlug } from "@/lib/reports";
 import { buildLayerOne } from "@/lib/layerOne";
+import { buildFounderReport } from "@/lib/founderReport";
 import { buildReportPdf } from "@/lib/pdf/buildReportPdf";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
 import { SITE_URL } from "@/lib/site";
@@ -135,6 +136,7 @@ export async function POST(request) {
   const slugInput = typeof reportSlug === "string" ? reportSlug : null;
   const testedDomainInput = typeof testedDomain === "string" ? testedDomain.trim() : "";
   let layer1 = null;
+  let founder = null;
   let pdfBuffer = null;
   let effectiveBrandWebsite = testedDomainInput || brandWebsiteInput;
 
@@ -186,6 +188,20 @@ export async function POST(request) {
         layer1 = null;
       }
 
+      // Same graceful degradation as layer1 above — lib/email.js's
+      // buildMerchantEmail falls back to a short, honest email when
+      // either is null, never a 500.
+      try {
+        founder = buildFounderReport({
+          report: reportData.report,
+          engines: reportData.engines,
+          brand: reportData.brand,
+        });
+      } catch (e) {
+        console.error("[leads] building founder report failed", e?.message || e);
+        founder = null;
+      }
+
       // Never blocks the send (spec item 3) — a generation failure just
       // means the email goes out without an attachment.
       try {
@@ -228,6 +244,7 @@ export async function POST(request) {
             verdict: typeof verdict === "string" ? verdict : "",
             reportSlug: slugInput,
             layer1,
+            founder,
             brandWebsite: effectiveBrandWebsite,
             pdfBuffer,
           });
