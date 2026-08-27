@@ -34,7 +34,11 @@ export default function QueryStep({ categoryName, isCustom, brand, queries, onQu
         />
       ))}
 
-      {error && <div className={styles.errBanner}>{error}</div>}
+      {/* Quiet, no red box (the agreed failure pattern — see
+          VerdictCard.js's own partial-failure handling) — a scoring
+          failure isn't the merchant's fault and shouldn't read as an
+          alarm about their input. */}
+      {error && <p className={styles.retryHint}>{error}</p>}
 
       <button type="button" className={styles.btn} onClick={onStart}>
         Show my report

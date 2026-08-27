@@ -185,6 +185,21 @@ export default function TestFlow() {
     return data;
   }
 
+  // One silent retry on the /api/test submission itself before anything
+  // reaches the merchant — app/api/test/route.js's own defensive try/catch
+  // means a scoring failure there is now rare, but a fresh POST with the
+  // same liveRuns is cheap and often just works the second time (a
+  // transient Supabase hiccup, a cold start, ...). Never retries the
+  // Claude questions themselves — lib/runQueries.js already gives each of
+  // those its own retry — this is specifically the scoring step.
+  async function submitLiveRunsWithRetry(liveRuns) {
+    try {
+      return await submitLiveRuns(liveRuns);
+    } catch {
+      return await submitLiveRuns(liveRuns);
+    }
+  }
+
   async function startTest() {
     if (!brand.trim() || queries.length === 0) return;
     setPhase("running");
@@ -196,11 +211,14 @@ export default function TestFlow() {
         archetype: q.archetype,
       }));
       const liveRuns = await runQuestions(finalQueries);
-      const data = await submitLiveRuns(liveRuns);
+      const data = await submitLiveRunsWithRetry(liveRuns);
       setResult(data);
       setPhase("done");
-    } catch (e) {
-      setRunError(e?.message || "Network error — please try again.");
+    } catch {
+      // Quiet, no red box (the agreed failure pattern — see VerdictCard.js's
+      // own partial-failure handling) — a scoring failure isn't the
+      // merchant's fault and shouldn't read as an alarm about their input.
+      setRunError("Couldn't complete this check — try again.");
       setPhase("queries");
     }
   }
@@ -219,21 +237,40 @@ export default function TestFlow() {
       const updates = await runQuestions(failedQueries);
       const updatesByQid = new Map(updates.map((u) => [u.qid, u]));
       const mergedLiveRuns = result.liveRuns.map((r) => updatesByQid.get(r.qid) || r);
-      const data = await submitLiveRuns(mergedLiveRuns);
+      const data = await submitLiveRunsWithRetry(mergedLiveRuns);
       setResult(data);
       setPhase("done");
-    } catch (e) {
-      setRunError(e?.message || "Network error — please try again.");
+    } catch {
+      setRunError("Couldn't complete this check — try again.");
       setPhase("done");
     }
   }
 
+  // Full reset, not just phase — this is the plain "start over" button
+  // (distinct from StoryView.js's TestAnotherCTA, which deliberately DOES
+  // carry domain/brand/market forward for the same-brand multi-category
+  // flow, via a real navigation to /test?domain=...&brand=...&market=...
+  // that re-mounts this component fresh). Before this reset domain/brand/
+  // market/catId/catSearch/queries, a merchant clicking this to test a
+  // genuinely different brand would land back on DomainStep with the
+  // PREVIOUS brand still sitting in state — goToBrand() only re-guesses
+  // from the domain when brand is empty, so BrandStep silently pre-filled
+  // the stale value and, if not noticed and edited, the questions (and the
+  // report) ran under the wrong brand. Real bug: a merchant testing a new
+  // product saw an old brand name leak into a question's text.
   function testAnother() {
     setPhase("domain");
+    setDomain("");
+    setBrand("");
+    setMarket(MARKETS[0]);
+    setCatSearch("");
+    setCatId("");
+    setQueries([]);
     setIsCustom(false);
     setCustomCategoryName("");
     setResult(null);
     setRunError("");
+    setGenError("");
     setLiveStatus({});
   }
 

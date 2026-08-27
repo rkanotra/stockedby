@@ -264,7 +264,33 @@ export async function POST(request) {
   // they were dropped from product scope, and it's silently ignored here
   // rather than erroring. Don't add per-engine validation on
   // category.snapshots; that tolerance is intentional.
-  const engineData = { claude: doneRuns.map((r) => ({ ...r, collected_on: "live", source: "live" })) };
+  // Every rec, from every source, is sanitized to the same plain shape
+  // here — object-shaped and every field defaulted — before it ever
+  // reaches scoring. Claude's own live recs used to be the one path that
+  // skipped this (spread through unmodified from the client-submitted
+  // JSON), which meant a single malformed element in the model's raw
+  // output (or a null slipping past sanityCheckRecs's "at least one real
+  // entry" check — lib/claudeClient.js) could throw deep inside
+  // computeReport/computeAppearanceSummary instead of just being ignored.
+  function sanitizeRec(rec) {
+    if (!rec || typeof rec !== "object") return null;
+    return {
+      brand: rec.brand || "",
+      product: rec.product || "",
+      why: rec.why || "",
+      destination: rec.destination || "none",
+      destination_domain: rec.destination_domain || "",
+    };
+  }
+
+  const engineData = {
+    claude: doneRuns.map((r) => ({
+      ...r,
+      recs: (r.recs || []).map(sanitizeRec).filter(Boolean),
+      collected_on: "live",
+      source: "live",
+    })),
+  };
   for (const engine of ENGINE_ORDER) {
     if (engine === "claude") continue;
     engineData[engine] = finalQueries.map((q) => {
@@ -274,13 +300,7 @@ export async function POST(request) {
           qid: q.qid,
           text: q.text,
           archetype: q.archetype,
-          recs: harvested.slice(0, 5).map((rec) => ({
-            brand: rec.brand || "",
-            product: rec.product || "",
-            why: rec.why || "",
-            destination: rec.destination || "none",
-            destination_domain: rec.destination_domain || "",
-          })),
+          recs: harvested.slice(0, 5).map(sanitizeRec).filter(Boolean),
           collected_on: today,
           source: "live-harvest",
         };
@@ -299,13 +319,7 @@ export async function POST(request) {
         qid: q.qid,
         text: q.text,
         archetype: q.archetype,
-        recs: latest.recommendations.map((rec) => ({
-          brand: rec.brand || "",
-          product: rec.product || "",
-          why: rec.why || "",
-          destination: rec.destination || "none",
-          destination_domain: rec.destination_domain || "",
-        })),
+        recs: (latest.recommendations || []).map(sanitizeRec).filter(Boolean),
         collected_on: latest.collected_on,
         source: "snapshot",
       };
@@ -323,7 +337,7 @@ export async function POST(request) {
     .flat()
     .forEach((r) =>
       r.recs.forEach((rec) => {
-        if ((matches(brandName, rec.brand) || matches(brandName, rec.product)) && rec.why) {
+        if ((matches(brandName, rec?.brand) || matches(brandName, rec?.product)) && rec?.why) {
           mentions.push(rec.why);
         }
       })
@@ -338,60 +352,80 @@ export async function POST(request) {
     }
   }
 
-  // Scoring must only see rows with real data — an engine with zero
-  // snapshots for this category has "missing" placeholder rows so the UI
-  // can render its own data-coming-soon state, but those placeholders
-  // are not a real score of 0 and must not drag the average down or
-  // inflate totalRows (rule 2: never fabricate).
-  const scoringEngineData = Object.fromEntries(
-    Object.entries(engineData).map(([engine, rows]) => [engine, rows.filter((r) => r.source !== "missing")])
-  );
+  // Scoring, the contradiction guard, and everything downstream of them
+  // must never surface as an unhandled 500 — this whole block used to have
+  // no try/catch at all, so a throw anywhere in it (e.g. a malformed rec
+  // slipping past sanitizeRec above, or any other unforeseen shape) hit
+  // Next's own generic error handler: no system_events row, no useful
+  // detail in Vercel's logs beyond a bare stack trace, and the merchant
+  // stranded with a raw failure. Every throw here now gets the real
+  // error's message + stack logged to system_events (severity=critical)
+  // before responding, so a scoring failure is never a mystery again.
+  let report, appearanceSummary;
+  try {
+    // Scoring must only see rows with real data — an engine with zero
+    // snapshots for this category has "missing" placeholder rows so the UI
+    // can render its own data-coming-soon state, but those placeholders
+    // are not a real score of 0 and must not drag the average down or
+    // inflate totalRows (rule 2: never fabricate).
+    const scoringEngineData = Object.fromEntries(
+      Object.entries(engineData).map(([engine, rows]) => [engine, rows.filter((r) => r.source !== "missing")])
+    );
 
-  // The personalized branded-routing question ("where can I buy genuine
-  // {brand}...") always surfaces the brand by construction — it isn't
-  // testing whether AI organically recommends you. Excluded from appearance
-  // rate / Share of Voice / per-engine scores / verdict; it only feeds the
-  // checkout-destination analysis below (computeReport's engineData param,
-  // which stays the full set). From the RAW liveRuns (done + error), not
-  // the filtered scoring data — a failed live call must show up as
-  // "couldn't complete," never silently shrink the denominator the same
-  // way a real "not recommended" would.
-  const organicLiveRuns = liveRuns.filter((r) => r.archetype !== "branded-routing");
-  const organicScoringEngineData = Object.fromEntries(
-    Object.entries(scoringEngineData).map(([engine, rows]) => [
-      engine,
-      rows.filter((r) => r.archetype !== "branded-routing"),
-    ])
-  );
-  const appearanceSummary = computeAppearanceSummary(organicLiveRuns, brandName);
+    // The personalized branded-routing question ("where can I buy genuine
+    // {brand}...") always surfaces the brand by construction — it isn't
+    // testing whether AI organically recommends you. Excluded from appearance
+    // rate / Share of Voice / per-engine scores / verdict; it only feeds the
+    // checkout-destination analysis below (computeReport's engineData param,
+    // which stays the full set). From the RAW liveRuns (done + error), not
+    // the filtered scoring data — a failed live call must show up as
+    // "couldn't complete," never silently shrink the denominator the same
+    // way a real "not recommended" would.
+    const organicLiveRuns = liveRuns.filter((r) => r.archetype !== "branded-routing");
+    const organicScoringEngineData = Object.fromEntries(
+      Object.entries(scoringEngineData).map(([engine, rows]) => [
+        engine,
+        rows.filter((r) => r.archetype !== "branded-routing"),
+      ])
+    );
+    appearanceSummary = computeAppearanceSummary(organicLiveRuns, brandName);
 
-  const report = computeReport({
-    market,
-    brand: brandName,
-    competitor: competitorName,
-    brandWebsite: brandWebsiteInput,
-    engineData: scoringEngineData,
-    organicEngineData: organicScoringEngineData,
-    appearanceSummary,
-  });
+    report = computeReport({
+      market,
+      brand: brandName,
+      competitor: competitorName,
+      brandWebsite: brandWebsiteInput,
+      engineData: scoringEngineData,
+      organicEngineData: organicScoringEngineData,
+      appearanceSummary,
+    });
 
-  // Contradiction guard: the exact same buildTopBrands() computation the
-  // report's own "leaders" surfaces (StoryView, the PDF) will run against
-  // this same engineData — if IT says the brand is one of the leaders, the
-  // verdict cannot honestly read NOT STOCKED. This was the actual shape of
-  // a real production bug (a brand ranked #1 with 3 mentions in its own
-  // leaders list while its verdict read NOT STOCKED, 0 of 3, because the
-  // old brand-comparison util failed to match "Dot & Key" against a
-  // slug-derived "Dot and Key") — normalizeBrand() (lib/scoring.js) is the
-  // actual fix; this is the backstop that refuses to ship the report at
-  // all if a contradiction like it ever slips through again, rather than
-  // rendering something self-contradictory.
-  const contradictionCheck = buildTopBrands(engineData, brandName);
-  if (report.verdict === "NOT STOCKED" && contradictionCheck.brandInTop) {
+    // Contradiction guard: the exact same buildTopBrands() computation the
+    // report's own "leaders" surfaces (StoryView, the PDF) will run against
+    // this same engineData — if IT says the brand is one of the leaders, the
+    // verdict cannot honestly read NOT STOCKED. Root cause of this actually
+    // firing in production: computeReport()'s NOT STOCKED gate used to look
+    // at Claude's live run alone, so any brand ChatGPT/Gemini's snapshot
+    // recommended but Claude didn't mention THIS run tripped it — ordinary
+    // engine disagreement, not a data bug (fixed in lib/scoring.js; see its
+    // own comment). This guard is now a pure backstop for whatever it still
+    // doesn't catch — it must never fail the whole request over it: log
+    // critical for investigation and correct the verdict in place instead.
+    const contradictionCheck = buildTopBrands(engineData, brandName);
+    if (report.verdict === "NOT STOCKED" && contradictionCheck.brandInTop) {
+      await logSystemEvent(
+        "contradiction",
+        "test",
+        { brand: brandName, market, category: category.id, verdict: report.verdict, leaders: contradictionCheck.top.map((b) => b.label) },
+        "critical"
+      );
+      report = { ...report, verdict: "BARELY STOCKED" };
+    }
+  } catch (e) {
     await logSystemEvent(
-      "contradiction",
+      "scoring_exception",
       "test",
-      { brand: brandName, market, category: category.id, verdict: report.verdict, leaders: contradictionCheck.top.map((b) => b.label) },
+      { brand: brandName, market, category: category.id, message: e?.message || String(e), stack: e?.stack || null },
       "critical"
     );
     return NextResponse.json(

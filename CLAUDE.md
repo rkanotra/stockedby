@@ -659,8 +659,48 @@ does nothing until then).
   report's own leaders surfaces will use, right before saving: if the
   brand is one of its own leaders but the verdict is NOT STOCKED, it logs
   a `system_events` row (severity 'critical', supabase/migrations/
-  0004_brand_matching_fix.sql) and fails the response rather than saving
-  or rendering a self-contradictory report. That same migration adds
+  0004_brand_matching_fix.sql) and — as of the fix below — corrects the
+  verdict in place (bumps it to BARELY STOCKED) and still returns the
+  report, rather than failing the whole request; it's a pure backstop now,
+  not the primary defense. The guard used to fire constantly, not on rare
+  data corruption: computeReport()'s (lib/scoring.js) NOT STOCKED gate
+  looked at `appearanceSummary.appearedIn` alone — Claude's own LIVE run
+  only, since ChatGPT/Gemini are never re-asked live, only read from a
+  cached snapshot (see the Engines repo map entry) — so any brand one of
+  THEM recommended, while Claude simply didn't mention it that run, read
+  NOT STOCKED even though buildTopBrands (which scans all three engines)
+  plainly showed it as a leader — ordinary engine disagreement, not a bug,
+  but the verdict and the leaders list disagreed about it. Fixed by
+  gating NOT STOCKED on `appeared === 0 && appearRows === 0` — appearRows
+  being the same all-three-engines organic scan buildTopBrands runs, now
+  computed before the verdict decision instead of after (it used to be
+  computed but never used by it). Every `rec.brand`/`rec.product`/etc.
+  access across lib/scoring.js, lib/layerOne.js and lib/pdf/
+  buildReportPdf.js is now optional-chained (`rec?.brand`) — a single
+  malformed or null element in a recs array (a real risk on Claude's own
+  live output, which used to be the one path that skipped the same
+  per-element field-defaulting chatgpt/gemini's harvested/snapshot rows
+  already got) would otherwise throw deep inside computeReport/
+  computeAppearanceSummary; app/api/test/route.js's sanitizeRec() now
+  applies that same defaulting to every source, and the whole scoring
+  section (previously bare, no try/catch at all) is now wrapped so ANY
+  throw there logs the real error's message+stack to system_events
+  (event_type 'scoring_exception', severity 'critical') before responding,
+  instead of surfacing as an unhandled 500 with nothing written anywhere.
+  lib/scoring.test.js covers the cross-engine verdict fix directly
+  (reproduces the exact contradiction) and the null/malformed-rec
+  defensive guards. Separately: TestFlow.js's testAnother() ("Test another
+  product," the plain reset button, not StoryView.js's TestAnotherCTA
+  link, which deliberately DOES carry brand/domain/market forward for the
+  same-brand multi-category flow) didn't reset domain/brand/market/catId/
+  catSearch/queries state — a merchant testing a second, different brand
+  without noticing/editing BrandStep's still-stale pre-filled value would
+  have every question (and the report) silently run under the wrong
+  brand. Fixed to fully reset. And the submission failure path (QueryStep,
+  after `/api/test` fails) now retries the SAME liveRuns once before
+  surfacing anything, and shows a quiet, non-alarming message (no red
+  box — same treatment as VerdictCard.js's partial-failure handling)
+  instead of `.errBanner` if it still fails. That same migration adds
   explicit brand_display_name/brand_slug/category_display_name/
   category_slug columns to `reports` (lib/reports.js's saveReport()
   populates all four; brand/category_id already held the display name/
