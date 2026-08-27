@@ -128,29 +128,6 @@
   outline: 3px solid #f1f5ec;
   outline-offset: 2px;
 }
-/* Full-width, outlined, but sized like .btn (not .btnGhost's smaller
-   secondary weight) — the "See full report" expander needs to read as a
-   real next step directly under the 4 story cards, not a minor aside. */
-.btnFullReport {
-  width: 100%;
-  background: transparent;
-  color: #ffc53d;
-  border: 1.5px solid #ffc53d;
-  border-radius: 10px;
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
-  font-size: 16px;
-  padding: 14px;
-  margin-top: 4px;
-  cursor: pointer;
-}
-.btnFullReport:hover {
-  background: rgba(255, 197, 61, 0.1);
-}
-.btnFullReport:focus-visible {
-  outline: 3px solid #f1f5ec;
-  outline-offset: 2px;
-}
 .tabsRow {
   display: flex;
   gap: 10px;

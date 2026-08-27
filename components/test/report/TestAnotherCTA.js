@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import styles from "../test.module.css";
+import { categoryMidSentence } from "@/lib/scoring";
 
 // Cross-sell CTA for multi-category brands — ungated (Layer 1, StoryView.js)
 // since it doesn't need any deep report data, just what's already known
@@ -17,11 +18,11 @@ export default function TestAnotherCTA({ categoryName, brand, brandWebsite, mark
 
   return (
     <div className={styles.card}>
-      <div className={styles.h2}>Sell more than {categoryName}?</div>
+      <div className={styles.h2}>Sell more than {categoryMidSentence(categoryName)}?</div>
       <p className={styles.sectionHint} style={{ marginBottom: 14 }}>
         You can test another product right after — each gets its own report.
       </p>
-      <Link href={href} className={styles.btn} style={{ display: "block", textAlign: "center" }}>
+      <Link href={href} className={styles.btnGhost} style={{ display: "block", textAlign: "center" }}>
         Test your next product →
       </Link>
     </div>

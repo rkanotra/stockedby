@@ -14,6 +14,7 @@ import FanoutCard from "./FanoutCard";
 import TrustedSourcesCard from "./TrustedSourcesCard";
 import AuditCTA from "./AuditCTA";
 import FixPlanCTA from "./FixPlanCTA";
+import DownloadPdfButton from "./DownloadPdfButton";
 
 // Layer 1 (StoryView, always visible — see its own comment) is the default
 // view; clicking the full-width "See full report" button reveals Layer 2,
@@ -30,7 +31,9 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
   // Only auto-scroll when the USER expanded it (a click, or the gate
   // unlocking) — never on initial mount, so a shared /report/[slug]?full=1
   // link still lands at the normal page top instead of jumping mid-page.
-  const userExpandedRef = useRef(false);
+  // Real state (not a ref) because DownloadPdfButton's GA4 event needs to
+  // read it during render — refs can't be read there.
+  const [userExpanded, setUserExpanded] = useState(false);
 
   function scrollToExpanded() {
     // rAF-deferred: the DOM needs to actually reflow (blurred/clipped
@@ -45,13 +48,13 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
   }
 
   function handleSeeFullDetails() {
-    userExpandedRef.current = true;
+    setUserExpanded(true);
     setShowFull(true);
   }
 
   useEffect(() => {
-    if (showFull && userExpandedRef.current) scrollToExpanded();
-  }, [showFull]);
+    if (showFull && userExpanded) scrollToExpanded();
+  }, [showFull, userExpanded]);
 
   const {
     market,
@@ -110,6 +113,22 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
             <AuditCTA brandWebsite={brandWebsite} />
             <FixPlanCTA brandWebsite={brandWebsite} />
           </LeadGate>
+
+          {/* Bottom of the expanded view, after every section — moved out
+              of StoryView.js's Layer 1 action block (that block is now
+              just the two report CTAs, see StoryView.js). */}
+          <DownloadPdfButton
+            brand={brand}
+            categoryName={category?.name}
+            market={market}
+            brandWebsite={brandWebsite}
+            report={report}
+            engines={engines}
+            sentiment={sentiment}
+            trustedSources={trustedSources}
+            slug={slug}
+            fullReportExpanded={userExpanded}
+          />
         </div>
       )}
     </>

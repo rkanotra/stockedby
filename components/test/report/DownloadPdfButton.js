@@ -2,11 +2,27 @@
 
 import { useState } from "react";
 import styles from "../test.module.css";
+import { trackEvent } from "@/lib/analytics";
 
 // Same lib/pdf/buildReportPdf.js the merchant email attaches, regenerated
-// on demand — ungated (Layer 1), since the PDF's content is the same
-// substance the free email already delivers.
-export default function DownloadPdfButton({ brand, categoryName, market, brandWebsite, report, engines, sentiment, trustedSources, slug }) {
+// on demand. Lives at the bottom of the expanded full report (Layer 2) —
+// see ReportView.js — so by the time this is reachable, showFull is
+// always true; `fullReportExpanded` distinguishes WHY it's true (the
+// merchant clicked "See full report" themselves this session, vs. landed
+// already-expanded via a shared /report/[slug]?full=1 link) for the GA4
+// event, since "was it expanded" is otherwise a constant, not a signal.
+export default function DownloadPdfButton({
+  brand,
+  categoryName,
+  market,
+  brandWebsite,
+  report,
+  engines,
+  sentiment,
+  trustedSources,
+  slug,
+  fullReportExpanded,
+}) {
   const [downloading, setDownloading] = useState(false);
   const [error, setError] = useState("");
 
@@ -39,6 +55,7 @@ export default function DownloadPdfButton({ brand, categoryName, market, brandWe
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+      trackEvent("pdf_downloaded", { full_report_expanded: Boolean(fullReportExpanded) });
     } catch {
       setError("Couldn't generate the PDF. Please try again.");
     } finally {
