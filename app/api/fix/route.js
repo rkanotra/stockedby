@@ -17,6 +17,9 @@ import {
   extractMetaDescription,
   extractTitle,
   buildLlmsTxt,
+  normalizeProductUrl,
+  validateGeneratedJsonLd,
+  productAlreadyComplete,
 } from "@/lib/audit/fixGenerator";
 import { extractProductData } from "@/lib/claudeClient";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
@@ -37,18 +40,38 @@ function badRequest(message) {
 
 // Never lets one page's extraction throw and take the whole
 // Promise.all down — a fetch or Claude-call failure becomes a normal
-// "couldn't parse" result, not a 500.
+// "couldn't parse" result, not a 500. Two founder-facing outcomes beyond
+// done/error, both gating whether we generate anything at all:
+// "already-good" (the page's own EXISTING JSON-LD already covers every
+// required field — lib/audit/jsonld.js's findProductSchema/
+// validateProductFields, the same functions the audit itself uses — so
+// we never paper a duplicate, possibly-conflicting Product block on top
+// of one that's already correct) and "invalid" (the code we generated
+// failed lib/audit/fixGenerator.js's own validation — never shown as if
+// it were ready to paste).
 async function extractOne(url, headers) {
   try {
     const page = await fetchTextSafe(url, { headers });
     if (!page.ok || !page.text) {
       return { url, status: "error", error: "Couldn't fetch this page." };
     }
+
+    const existing = findProductSchema(page.text);
+    const existingFieldCheck = validateProductFields(existing.product);
+    if (productAlreadyComplete(existing.hasAnyJsonLd, existingFieldCheck)) {
+      return { url, status: "already-good", product: existing.product };
+    }
+
     const product = await extractProductData(page.text, url);
     if (!product) {
       return { url, status: "error", error: "Fetched the page, but it didn't look like a real product page." };
     }
-    return { url, status: "done", product, jsonLd: buildProductJsonLd(product, url) };
+    const jsonLd = buildProductJsonLd(product, url);
+    const validation = validateGeneratedJsonLd(jsonLd);
+    if (!validation.ok) {
+      return { url, status: "invalid", product, error: "We couldn't safely generate this fix yet." };
+    }
+    return { url, status: "done", product, jsonLd };
   } catch (e) {
     return { url, status: "error", error: e?.message || "Something went wrong reading this page." };
   }
@@ -108,17 +131,22 @@ export async function POST(request) {
   // fetched and scanned for the product links they list. Tier 3: the
   // homepage's own links. Each tier only runs if the previous one didn't
   // fill MAX_PRODUCTS — cheapest/most-likely-correct source first.
+  // Every URL is normalized (trailing slash/www/tracking params/fragment
+  // stripped — lib/audit/fixGenerator.js's normalizeProductUrl) before
+  // it's added or checked against `seen`, so the same page reached two
+  // different ways (a sitemap entry and a homepage link, say) never
+  // becomes two separate "fixes" for the same product.
   let productUrls = [];
   if (sitemapXml.ok && sitemapXml.text) {
     const scan = scanSitemapMulti(sitemapXml.text, MAX_PRODUCTS);
-    productUrls = scan.productUrls;
+    productUrls = scan.productUrls.map(normalizeProductUrl);
     if (productUrls.length === 0 && scan.subSitemap) {
       try {
         const subHost = new URL(scan.subSitemap).hostname;
         if (subHost === hostname) {
           const sub = await fetchTextSafe(scan.subSitemap, { headers });
           if (sub.ok && sub.text) {
-            productUrls = scanSitemapMulti(sub.text, MAX_PRODUCTS).productUrls;
+            productUrls = scanSitemapMulti(sub.text, MAX_PRODUCTS).productUrls.map(normalizeProductUrl);
           }
         }
       } catch {
@@ -135,7 +163,8 @@ export async function POST(request) {
     const seen = new Set(productUrls);
     for (const page of listingPages) {
       if (!page.ok || !page.text) continue;
-      for (const u of findProductUrlsInHtml(page.text, base, remaining)) {
+      for (const raw of findProductUrlsInHtml(page.text, base, remaining)) {
+        const u = normalizeProductUrl(raw);
         if (!seen.has(u)) {
           seen.add(u);
           productUrls.push(u);
@@ -148,7 +177,8 @@ export async function POST(request) {
   if (productUrls.length < MAX_PRODUCTS) {
     const remaining = MAX_PRODUCTS - productUrls.length;
     const seen = new Set(productUrls);
-    for (const u of findProductUrlsInHtml(homepage.text, base, remaining)) {
+    for (const raw of findProductUrlsInHtml(homepage.text, base, remaining)) {
+      const u = normalizeProductUrl(raw);
       if (!seen.has(u)) {
         seen.add(u);
         productUrls.push(u);
@@ -177,18 +207,20 @@ export async function POST(request) {
     domain: hostname,
     title,
     description,
-    products: products.filter((p) => p.status === "done").map((p) => ({
-      name: p.product.name,
-      url: p.url,
-      description: p.product.description,
-    })),
+    products: products
+      .filter((p) => p.status === "done" || p.status === "already-good")
+      .map((p) => ({
+        name: p.product.name,
+        url: p.url,
+        description: p.product.description,
+      })),
   });
 
   // ---- "Before" snapshot — same computation /api/audit uses, from
   // signals already gathered above plus the first product page this run
   // itself fetched, so "Verify it worked" has a real baseline to diff a
   // fresh /api/audit call against without a second round-trip up front. ----
-  const firstDone = products.find((p) => p.status === "done");
+  const firstDone = products.find((p) => p.status === "done" || p.status === "already-good");
   const firstProductUrl = firstDone?.url || productUrls[0] || null;
   let productCheck = { productUrl: firstProductUrl, fetched: false, hasAnyJsonLd: false, product: null, fieldCheck: null };
   if (firstProductUrl) {
