@@ -4,7 +4,7 @@ import Link from "next/link";
 import styles from "../test.module.css";
 import { categoryMidSentence } from "@/lib/scoring";
 
-// Cross-sell CTA for multi-category brands — ungated (Layer 1, StoryView.js)
+// Cross-sell CTA for multi-category brands — ungated (the report's free tier)
 // since it doesn't need any deep report data, just what's already known
 // from setup. domain+brand+market ride along in the URL so TestFlow.js can
 // skip straight to the category step for a returning merchant instead of

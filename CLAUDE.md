@@ -60,38 +60,58 @@ harvest, GEO, agentic, UCP, ACP, manifest, schema, protocol, organic,
 "share of voice" (say instead: AI apps, questions, what AI searched, site
 check, "how often AI picks each brand") — short sentences (max ~12 words),
 buttons that state their outcome ("Check my brand — free", "Show my
-report", "Test another product"). The report page
-(components/test/report/) renders a 4-card Layer 1 story by default
-(StoryView.js, computed by lib/layerOne.js: YES/SOMETIMES/NO, who AI
-recommends, where buyers pay in counts not percentages, 3 next steps — one
-of which links to /audit when the brand's own site never appeared as a
-destination) with a "See full details" button that expands the existing,
-more detailed full report (Layer 2, unchanged). The merchant email uses
-Layer 1 content only. The Agent Readiness Audit (/audit) follows the same
-pattern: Layer 1 (components/audit/AuditResults.js, computed by
-lib/audit/layerOne.js's buildAuditLayerOne()) is a plain THREE-state
-verdict — YES, AI CAN READ YOUR SHOP (green, every check passes) / AI CAN
-READ YOUR SHOP, BUT NOT YOUR PRODUCTS (amber, reachable but product data
-missing/incomplete) / AI CAN'T READ YOUR SHOP (red, blocked/unreachable/
-homepage unreadable) — plus up to 4 plain findings with fixes, most-severe
-first, deliberately computed from only the discoverable+readable layers
-(no UCP/ACP/transactable — still roadmap). The verdict and the findings
-list are computed from the exact same `checks` array (never two separate
-computations that could disagree — a real production bug this fixed: a
-green all-pass verdict rendering directly above a "what's wrong" card);
-buildAuditLayerOne() also returns a `contradiction` boolean as a backstop,
-logged to system_events (severity=critical) by app/api/audit/route.js if
-it's ever true. "See technical details" is a text-link disclosure toggle
-(styles.disclosureToggle, not a button — it must not compete visually with
-the primary "Generate the fix →" CTA) that expands the original per-check
-output, unchanged, for developers. CTA hierarchy end state: one primary
-filled button (only when there's something to fix), one quiet disclosure
-toggle, one framed cross-sell card into /test ("Your site is only half the
-picture"), one smallest-weight plain text link ("Check another website",
-styles.plainLink) — never four competing equal-weight actions. Each
-surface cross-links to the other: the audit result's cross-sell card links
-to /test, and the shelf report's "what should you do" card links to /audit
-when warranted.
+report", "Test another product").
+
+**Founder-first redesign** (current phase, supersedes the earlier "Layer
+1/Layer 2" report structure below): the /test report, /audit and /fix are
+now built as an "executive AI brand report," not a dashboard — conclusion
+first, business implication, biggest opportunity, recommended action,
+evidence, raw technical detail last and mostly hidden. lib/founderReport.js
+(new, pure, tested) is the single derivation layer for /test's numbers —
+AI Visibility Score (report.avgYou verbatim, never a new metric),
+the Discover → Consider → Buy Buyer Journey (real per-archetype
+appearance rates, `null` not a fabricated 0% with no data), Biggest
+Opportunity, Competitor Threat (real average rank, deduped by question
+not row), Destination Split (own-site vs. marketplace, "none" excluded
+from the denominator, `null` when there's no real data), and up to 3
+specific Recommended Actions. components/test/report/ReportView.js,
+app/api/lead/route.js (merchant email) and lib/pdf/buildReportPdf.js all
+call the SAME buildFounderReport() — one calculation, three consistent
+surfaces, never independently recomputed (a `buildFounderReport` call
+with the same input twice is asserted deterministic in
+lib/founderReport.test.js). StoryView.js is deleted; its role is now
+AIVisibilityHero.js (dynamic result headline + score + 3 inline stats,
+never 4 boxed cards) + BiggestOpportunityCard.js + BuyerJourney.js, all
+free/ungated — this is the new free tier hard rule 8 refers to.
+Everything else (EngineTabs.js — compact tabs defaulting to one engine,
+each shopper question told as a story via ShopperQuestionInsight-shaped
+cards, showing only the biggest win + biggest loss initially —
+CompetitorThreat.js, DestinationSummary.js, RecommendedActions.js,
+NextMoveCTA.js) sits behind the email gate (LeadGate.js, unchanged
+mechanism). The old raw-evidence components (VerdictCard.js,
+ShelvesCard.js, CheckoutBattleCard.js, ShareOfVoiceCard.js,
+SentimentCard.js, TrustedSourcesCard.js, FanoutCard.js) are unchanged and
+still inside the gate, just moved behind a single "View full evidence"
+disclosure toggle rather than always-expanded. /audit mirrors this:
+lib/audit/layerOne.js's `buildAuditLayerOne()` (verdict + findings,
+findings now carrying a real `why`/`tier` alongside `finding`/`fix`) and
+the new lib/audit/journey.js's `buildAuditJourney()` (maps
+discoverable/readable/transactable straight onto Find → Understand → Buy,
+a dynamic hero headline from a small decision table over the real
+per-stage statuses — never a fixed "AI CAN'T READ YOUR SHOP" string
+unless that's genuinely true — plus `buildCrawlerSummary()` grouping the
+6 AI-bot checks into 4 platform buckets) together drive
+components/audit/AuditResults.js's AuditJourney.js/AuditFindings.js
+("What we found / Why it matters / What to do")/CrawlerSummary.js/
+AuditActionPlan.js ("Fix first / Then / Later"). lib/audit/score.js's
+underlying checks/layers/scoring are completely unchanged — this is a
+presentation-layer redesign, and "unknown never counts as pass" was
+already true there before this phase. CTA hierarchy discipline (one
+primary filled button, one quiet disclosure toggle, one framed cross-sell
+card, one smallest-weight plain text link — never four competing
+equal-weight actions) still governs both surfaces, and every surface
+cross-links to the others (report → /audit, audit → /test, post-fix-
+verify → /test) per this same principle.
 
 Current phase: **Phase 4 complete — persistence, capture & share are live**
 MVP (landing page, full test flow, /api/test) shipped first; Phase 4 added
@@ -412,6 +432,17 @@ does nothing until then).
   default 'sent', check-constrained to sent/delivered/bounced/complained)
   + `email_status_updated_at` to `leads`. Not yet applied to the live
   project, same manual step as every prior migration.
+- supabase/migrations/0006_marketing_consent.sql — founder-first redesign
+  (brief section 57): adds a nullable `marketing_opt_in` boolean (default
+  false) to `leads`, separate from the required DPDP/PDPL data-processing
+  consent checkbox (hard rule 8, unchanged legal requirement).
+  components/test/report/LeadGate.js and components/fix/FixLeadGate.js
+  both now render two checkboxes — the required consent (CONSENT_TEXT)
+  and a genuinely optional "send me occasional updates" one
+  (MARKETING_TEXT) — instead of one bundled checkbox; app/api/lead/
+  route.js writes the client-computed value straight onto the insert,
+  same never-recompute-server-side pattern as `is_free_provider`. Not yet
+  applied to the live project, same manual step as every prior migration.
 - lib/supabaseClient.js — server-only Supabase client; returns null (not a
   throw) when SUPABASE_URL/SUPABASE_SERVICE_KEY aren't set, and every
   caller treats that as "Phase 4 feature is off" rather than an error.
@@ -440,18 +471,25 @@ does nothing until then).
   escaped before interpolation. Independent per-recipient success flags
   (Promise.allSettled) — one send failing (e.g. an unverified Resend
   sending domain, which restricts merchant-address sends) never blocks the
-  other. buildMerchantEmail() (exported, pure) builds the merchant email —
-  a plain, personal-feeling email (both html and text parts), not a
-  marketing template: one-line verdict, who AI recommends instead, the
-  "money line" (only when buyers actually go elsewhere), three tips from
-  lib/layerOne.js's buildEmailTips(), a plain link to the report, and a
-  reply-inviting sign-off. Subject line is keyed off the Layer 1
-  YES/SOMETIMES/NO appearance verdict, not the 4-tier report.verdict —
-  three fixed variants, same structure for all three (only the subject and
-  opening line change). Valuable even if the merchant never clicks through
-  — every section degrades gracefully when its underlying data is missing
-  (no trusted source, no destination data, no report link) rather than
-  showing a broken or empty line. buildDeveloperFixEmail()/
+  other. buildMerchantEmail({brand, category, market, appearance, founder,
+  reportUrl, brandWebsite}) (exported, pure) builds the merchant email — a
+  plain, personal-feeling email (both html and text parts), not a
+  marketing template: one-line verdict (appearanceLine(appearance), where
+  `appearance` is lib/layerOne.js's buildAppearanceStory() output — see
+  that file's own entry below), the biggest gap title, up to 3 short
+  actions (from lib/founderReport.js's `founder.actions` — the SAME
+  computation /test and the PDF read, so the email can never say
+  something the report doesn't back up), a plain link to the report, and
+  a reply-inviting sign-off. subjectFor(brand, appearance, founder) is
+  genuinely dynamic (founder-first redesign) — chosen from the real
+  result combination (absent/weak, strong-with-no-gap, destination
+  problem, named competitor threat, generic moderate), not a fixed
+  3-string switch. Falls back to a short, honest, data-free version when
+  `!appearance || !founder` (report data couldn't be loaded) rather than
+  a substance-free templated email. Valuable even if the merchant never
+  clicks through — every section degrades gracefully when its underlying
+  data is missing rather than showing a broken or empty line.
+  buildDeveloperFixEmail()/
   sendDeveloperFixEmail() (same file, same esc()-everything pattern) are
   the "Send this to my developer" action's email — see app/api/fix/
   send-to-developer/route.js above; a separate, distinct flow from
@@ -484,20 +522,45 @@ does nothing until then).
   links in emails. components/test/report/ShareButton.js deliberately does
   NOT use this — it reads window.location.origin instead, so the copied
   link always matches whatever domain/environment is actually being viewed.
-- lib/layerOne.js — pure computation for the shelf report's Layer 1 story
-  (buildAppearanceStory/buildTopBrands/buildDestinationStory/buildActions,
-  combined by buildLayerOne), shared verbatim by
-  components/test/report/StoryView.js (client) and app/api/lead/route.js's
-  merchant email, so the on-screen story and the email can never drift.
-  buildActions() returns {text, href} objects — href is set (to /audit,
-  prefilled with the brand's domain when known) only when the brand's own
-  site never appeared as a destination, the report's cross-link into the
-  free site check. buildEmailTips() is the email's own parallel fix-plan —
-  same underlying signals (trusted sources, destination data) as
-  buildActions, but always exactly 3 fixed tips in a fixed order (not a
-  cascade of candidates) — lib/email.js's buildMerchantEmail() is the only
-  caller. Both land on buildLayerOne's return value as `.actions` and
-  `.emailTips` respectively.
+- lib/layerOne.js — down to two small, still-live pure functions after the
+  founder-first redesign (below) replaced its old role.
+  buildAppearanceStory(appearanceSummary) → {verdict: YES/SOMETIMES/NO,
+  appearedIn, totalAttempted}, read directly by
+  components/test/report/AIVisibilityHero.js, lib/pdf/buildReportPdf.js,
+  and app/api/lead/route.js (as `appearance`, passed to lib/email.js's
+  buildMerchantEmail/sendLeadEmails). buildTopBrands(engines, brand) →
+  combined top-recommended-brands tally across every engine's organic
+  (non branded-routing) rows, read directly by lib/founderReport.js and
+  app/api/test/route.js's contradiction guard. This file used to be the
+  founder-first redesign's whole data layer (buildLayerOne() combined
+  these two with buildActions/buildFixPlan/buildEmailTips/
+  buildDestinationStory into one "Layer 1" object for the old
+  StoryView.js + the merchant email); that role now belongs to
+  lib/founderReport.js, which reuses buildTopBrands directly rather than
+  duplicating it. The other four functions were deleted with their only
+  caller (buildLayerOne) once nothing read their output anymore — see git
+  history if the old "3 tips" / "5-item fix plan" shape is ever needed
+  again.
+- lib/founderReport.js — the founder-first redesign's central data layer
+  (CLAUDE.md's "Site philosophy" section above): "one normalized result →
+  multiple consistent surfaces." buildFounderReport({report, engines,
+  brand}) wires together buildVisibilityScore (reuses report.avgYou
+  verbatim + a band), buildBuyerJourney (maps category-discovery→Discover,
+  problem-first+replacement→Consider, branded-routing→Buy; each stage
+  {pct, band, detail}, `pct` null — never a fabricated 0% — with zero
+  rows), buildBiggestOpportunity, buildCompetitorThreat (dedupes "seen in
+  N questions" by distinct qid across engines, not raw row count — never
+  mixes denominators), buildDestinationSplit (excludes "none" from the
+  denominator, null when there's no real destination data), and
+  buildFounderActions (max 3, every item traceable to a real signal
+  above, never generic filler). Called by exactly 3 places — 
+  components/test/report/ReportView.js (the web report),
+  app/api/lead/route.js (the merchant email), lib/pdf/buildReportPdf.js
+  (the PDF) — confirmed via grep, so those three surfaces can never
+  silently disagree. lib/founderReport.test.js asserts every function's
+  never-fabricate behavior plus an end-to-end determinism check
+  (buildFounderReport called twice on identical input → assert.deepEqual)
+  as a structural guard against future drift.
 - lib/audit/ — Agent Readiness Audit (app/api/audit, app/audit,
   components/audit/): ssrfGuard.js (mandatory hostname check, see hard
   rule 11), fetchWithTimeout.js (SSRF-safe manual redirect following),
@@ -515,7 +578,31 @@ does nothing until then).
   backstop — rendered by components/audit/AuditResults.js; Layer 2 keeps
   score.js's full 3-layer output, including transactable, unchanged for
   developers). lib/audit/layerOne.test.js covers the verdict-mapping and
-  contradiction-guard logic (node:test, run via `npm test`).
+  contradiction-guard logic (node:test, run via `npm test`). Its
+  FINDING_RULES entries also carry `tier` ("fix-first"|"then") and `why`
+  (the plain-language business consequence) fields, consumed by
+  components/audit/AuditActionPlan.js/AuditFindings.js below.
+- lib/audit/journey.js — the founder-first redesign's /audit mirror of
+  lib/founderReport.js's buyer journey: buildAuditJourney(result) maps
+  layers.discoverable/readable/transactable straight onto Find/
+  Understand/Buy stages, each {label, score, status}. stageStatus(score)
+  → "Not checked"|"Not ready"|"Needs work"|"Ready" — the SAME status
+  vocabulary for all three stages including Buy (what changes for Buy is
+  the detail copy, forward-framed as "future-ready," not the status
+  word). buildAuditHeadline(stages) picks a genuinely dynamic hero
+  headline from a small decision table over the three real statuses
+  (never one fixed string). buildCrawlerSummary(checks) groups the 6
+  robots-* checks (lib/audit/robots.js's AI_BOTS) into 4 founder-legible
+  platform buckets (OpenAI, Google AI, Anthropic, Perplexity), each
+  Restricted or Accessible — per-bot technical detail stays behind the
+  existing Layer 2 disclosure. checkImportance(check) labels a check
+  "Optional / emerging" (llms.txt) or "Future-ready" (transactable layer)
+  or "Important now" — consumed by components/audit/LayerCard.js's Layer
+  2 detail. Called by exactly components/audit/AuditResults.js and
+  components/fix/FixResults.js (confirmed via grep — /fix's verify
+  section uses it for its before/after status comparison, see below).
+  lib/audit/journey.test.js covers the status thresholds, the headline
+  decision table, and crawler grouping.
 - lib/audit/gatherSignals.js — gatherAuditSignals(hostname): the 6-way
   parallel fetchTextSafe wave (robots.txt/llms.txt/ucp/acp/homepage/
   sitemap.xml) plus wellKnownResult(), extracted out of app/api/audit/
@@ -528,13 +615,26 @@ does nothing until then).
   collections/ paths, then the homepage's own links via
   findProductUrlsInHtml — all additive multi-URL siblings of /api/audit's
   original single-URL functions, kept genuinely separate so /api/audit's
-  shipped behavior can't regress), extracts each page with
-  lib/claudeClient.js's extractProductData (haiku, see hard rule 7),
-  builds schema.org Product JSON-LD per product and a site-level llms.txt
-  (lib/audit/fixGenerator.js — every field conditional on real extracted
-  data, per hard rule 2: a page that can't be read returns an honest
-  {status:"error"}, never invented product data), and computes a full
-  "before" audit snapshot inline (reusing gatherAuditSignals +
+  shipped behavior can't regress), deduping every discovered candidate
+  via lib/audit/fixGenerator.js's normalizeProductUrl() (strips trailing
+  slash/www/tracking params/fragment — a real gap before the founder-
+  first redesign, where two URLs differing only by a tracking param could
+  both get extracted). extractOne() now checks the page's OWN existing
+  JSON-LD first (via the already-imported findProductSchema/
+  validateProductFields) before ever calling Claude: a page whose
+  existing schema is already complete (fixGenerator.js's
+  productAlreadyComplete()) is marked status "already-good" and skipped,
+  never re-extracted. Otherwise extracts with lib/claudeClient.js's
+  extractProductData (haiku, see hard rule 7), builds schema.org Product
+  JSON-LD (lib/audit/fixGenerator.js — every field conditional on real
+  extracted data, per hard rule 2), then validates the generated JSON-LD
+  via fixGenerator.js's validateGeneratedJsonLd() (rejects a broken
+  @context/@type/name/price/currency, and asserts no invented
+  aggregateRating/review/sku/gtin/mpn) — a validation failure marks the
+  product status "invalid" rather than shipping broken code. So
+  products[].status is now one of "already-good"|"done"|"invalid"|
+  "error", up from the original "done"|"error". Computes a full "before"
+  audit snapshot inline (reusing gatherAuditSignals +
   lib/audit/score.js's buildAuditResult) so the results page's "Verify it
   worked" button only needs one fresh /api/audit call to diff against —
   no second endpoint. Best-effort persists to Supabase's `fix_runs` table
@@ -547,24 +647,41 @@ does nothing until then).
   lib/audit/platform.js's detectPlatform() returns — /audit and /fix can
   never disagree about which platform a site is on.
 - app/fix/page.js + components/fix/ (FixFlow.js phase state machine →
-  FixResults.js → ProductJsonLdCard.js, FixLeadGate.js) — the /fix UI,
-  mirroring app/audit/page.js + components/audit/'s shape. First 2
-  products render free and unlocked; the full product set + llms.txt
-  download + platform install steps + the "Verify it worked" before/after
-  diff sit behind FixLeadGate.js (a domain-keyed twin of components/test/
-  report/LeadGate.js, same blur/clip-then-unlock presentational pattern,
-  hard rule 8's gate extended via source="fix" — see app/api/lead/route.js
-  and lib/email.js's sendFixLeadEmails/buildFixLeadEmail below).
-  EscapeHatchCard (ungated, above the gate) is the "copy this page's link
-  to send" path; DeveloperSendCard (gated — needs the full products/
-  llmsTxt content, and the merchant's own email from FixLeadGate's
-  onUnlock callback) is the separate, real "Send this to my developer"
-  email action, POSTing to app/api/fix/send-to-developer/route.js — see
-  its own entry below. PlatformPicker (ungated, shown only when
-  platform === "custom") lets a merchant self-report their platform from
-  lib/audit/platform.js's PICKER_PLATFORMS when auto-detection missed,
-  overriding which install.js instructions render without touching the
-  audit's own detected-platform badge. Cross-linked from
+  FixResults.js → FixPlan.js, InstallationMode.js, ProductJsonLdCard.js,
+  FixLeadGate.js) — the /fix UI, mirroring app/audit/page.js +
+  components/audit/'s shape, rebuilt in the founder-first redesign around
+  a single installation-mode chooser instead of several competing gates.
+  FixPlan.js renders an up-to-3-item overview ("Improve product
+  information — fix first" / "Add a store summary — improve next" /
+  always "Prepare AI checkout — future-ready") before any code is shown.
+  First 2 products render free and unlocked; InstallationMode.js ("I'll
+  do it myself" vs. "Send to my developer") then decides which single
+  panel FixLeadGate.js reveals — the old EscapeHatchCard's separate
+  "copy link" affordance was folded into this one flow rather than
+  competing with it as a second path. In the self-install panel,
+  ReusableSnippetCard (FixResults.js-local) renders lib/audit/
+  fixGenerator.js's buildReusableSnippet() — ONE dynamic Liquid/PHP
+  template per platform (REUSABLE_TEMPLATE_PLATFORMS = shopify,
+  woocommerce) instead of N static per-product JSON-LD blocks — before
+  the per-product ProductJsonLdCard.js list; other platforms keep
+  per-product code. ProductJsonLdCard.js handles all 4 product statuses
+  from app/api/fix/route.js (already-good/done/invalid/error), with a
+  HumanReadablePreview (plain Product/Brand/Price/Availability rows)
+  shown above the code, which is now collapsed by default behind a "View
+  code" toggle. The verify section reuses lib/audit/journey.js's
+  buildAuditJourney() status vocabulary for its before/after comparison
+  (not the old raw verdict string), with a "Technical blocker removed."
+  headline shown only when a stage genuinely improved to "Ready," plus a
+  closing "Check whether AI recommends my brand →" link into /test.
+  DeveloperSendCard (in the developer-send panel — needs the full
+  products/llmsTxt content, and the merchant's own email from
+  FixLeadGate's onUnlock callback) is the real "Send this to my
+  developer" email action, POSTing to app/api/fix/send-to-developer/
+  route.js — see its own entry below. PlatformPicker (ungated, shown only
+  when platform === "custom") lets a merchant self-report their platform
+  from lib/audit/platform.js's PICKER_PLATFORMS when auto-detection
+  missed, overriding which install.js instructions render without
+  touching the audit's own detected-platform badge. Cross-linked from
   components/audit/AuditResults.js (the "Generate the fix →" primary
   button, only shown when there's something to fix),
   components/test/report/FixPlanCTA.js (inserted into ReportView.js's
@@ -728,23 +845,35 @@ does nothing until then).
 - lib/pdf/buildReportPdf.js — the merchant email's PDF attachment and
   POST /api/report-pdf's on-demand download (components/test/report/
   DownloadPdfButton.js, at the bottom of the expanded full report — see
-  hard rule 8), rebuilt for full content parity with the web report: exec
-  summary, per-engine appearance, leaders table, the checkout battle,
-  "how often AI picks each brand", sentiment, the COMPLETE trusted-source
-  list (not top-5), a question-by-question breakdown per engine, and the
-  fix plan — dark theme matching the app/report screens (hard rule 5),
-  StockedBy wordmark + a faint diagonal watermark on every page (paintPage()),
-  dynamic pagination via ensureSpace() using REAL measured text heights
-  (doc.heightOfString()) rather than fixed guesses — a fixed guess had
-  pdfkit's own auto-pagination silently inserting unpainted, unfooted
-  extra pages whenever real content ran longer than guessed. The footer
-  (page number + "Generated by StockedBy — stockedby.com", once per page,
-  no signoff) had its own separate bug: drawing text past a page's own
-  margins.bottom makes pdfkit's .text() think it doesn't fit and
-  auto-adds a new page for it, even after switchToPage() — two .text()
-  calls per footer meant two extra pages per real page, each carrying
-  half the footer (the reported "triple-repeat"). Fixed by zeroing
-  `doc.page.margins.bottom` for just the footer draw, then restoring it.
+  hard rule 8). Rebuilt in the founder-first redesign to read
+  lib/founderReport.js's buildFounderReport() instead of the old
+  lib/layerOne.js aggregate — same function, same data, same 3-page cap
+  as the web report and email (no independent recalculation). Page 1:
+  dynamic headline (same 3-case logic as AIVisibilityHero.js), score +
+  band, up to 4 metric chips, Biggest opportunity, the AI Buyer Journey
+  (drawBuyerJourney() — same status vocabulary/colors as the web
+  BuyerJourney.js), Who is winning instead, Where AI sends shoppers (with
+  an honest fallback line when there's no real destination data). Page 2:
+  How AI describes your brand (only when sentiment has >=2 real mentions,
+  per hard rule 2 — else "No clear positioning pattern yet."), Sources
+  appearing in AI research (relabeled from "Times read," capped at 5),
+  Most important questions (best result + biggest loss only), What should
+  you do next (up to 3 founder.actions). An optional page 3 appendix (full
+  per-engine Q&A) renders only when there's enough real question data to
+  warrant it — 2 pages by default, not a fixed-length dump. Dark theme
+  matching the app/report screens (hard rule 5), StockedBy wordmark + a
+  faint diagonal watermark on every page (paintPage()), dynamic pagination
+  via ensureSpace() using REAL measured text heights (doc.heightOfString())
+  rather than fixed guesses — a fixed guess had pdfkit's own
+  auto-pagination silently inserting unpainted, unfooted extra pages
+  whenever real content ran longer than guessed. The footer (page number +
+  "Generated by StockedBy — stockedby.com", once per page, no signoff) had
+  its own separate bug: drawing text past a page's own margins.bottom
+  makes pdfkit's .text() think it doesn't fit and auto-adds a new page for
+  it, even after switchToPage() — two .text() calls per footer meant two
+  extra pages per real page, each carrying half the footer (the reported
+  "triple-repeat"). Fixed by zeroing `doc.page.margins.bottom` for just
+  the footer draw, then restoring it.
 - app/privacy/page.js — the site's privacy policy (uses the .legal styles
   in app/globals.css), linked from Footer.js. Covers what's collected at
   /test, /audit and the lead gate, who else sees it (Anthropic/Google/

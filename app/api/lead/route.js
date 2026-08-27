@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 import { sendLeadEmails, sendFixLeadEmails } from "@/lib/email";
 import { getReportBySlug } from "@/lib/reports";
-import { buildLayerOne } from "@/lib/layerOne";
+import { buildAppearanceStory } from "@/lib/layerOne";
 import { buildFounderReport } from "@/lib/founderReport";
 import { buildReportPdf } from "@/lib/pdf/buildReportPdf";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
@@ -121,21 +121,21 @@ export async function POST(request) {
     console.log("[leads] SUPABASE not configured — lead not persisted:", emailInput, brandInput, marketInput, categoryInput);
   }
 
-  // Merchant email = Layer-1 content only + link (report simplification
-  // spec) — reuses the exact same lib/layerOne.js functions StoryView.js
-  // renders from. Preferred path: the client (LeadGate.js) already sent
-  // this report's real data (report/engines/sentiment/trustedSources)
-  // straight from memory, so layer1 can always be computed here without
+  // Merchant email = the founder-first content (lib/founderReport.js) +
+  // the plain appearance verdict (lib/layerOne.js's buildAppearanceStory)
+  // + link. Preferred path: the client (LeadGate.js) already sent this
+  // report's real data (report/engines/sentiment/trustedSources) straight
+  // from memory, so appearance/founder can always be computed here without
   // depending on Supabase having actually saved (and re-served) the report
   // — a Supabase outage, a not-yet-applied migration, or read-after-write
   // lag used to silently produce an empty, substance-free email (the
-  // `!layer1` fallback in lib/email.js's buildMerchantEmail) even though
-  // the merchant's real data was sitting right there in the browser the
-  // whole time. Falls back to the old getReportBySlug lookup only when the
-  // client didn't send this data (e.g. a stale cached page).
+  // `!appearance` fallback in lib/email.js's buildMerchantEmail) even
+  // though the merchant's real data was sitting right there in the
+  // browser the whole time. Falls back to the old getReportBySlug lookup
+  // only when the client didn't send this data (e.g. a stale cached page).
   const slugInput = typeof reportSlug === "string" ? reportSlug : null;
   const testedDomainInput = typeof testedDomain === "string" ? testedDomain.trim() : "";
-  let layer1 = null;
+  let appearance = null;
   let founder = null;
   let pdfBuffer = null;
   let effectiveBrandWebsite = testedDomainInput || brandWebsiteInput;
@@ -173,22 +173,15 @@ export async function POST(request) {
       // shape) must never 500 the whole request — that would leave the
       // merchant NOT unlocked, a worse failure than a substance-free email.
       // lib/email.js's buildMerchantEmail already has an honest, graceful
-      // fallback for layer1 === null.
+      // fallback for appearance === null.
       try {
-        layer1 = buildLayerOne({
-          brand: reportData.brand,
-          report: reportData.report,
-          engines: reportData.engines,
-          sentiment: reportData.sentiment,
-          trustedSources: reportData.trustedSources,
-          brandWebsite: reportData.brandWebsite,
-        });
+        appearance = buildAppearanceStory(reportData.report?.appearanceSummary);
       } catch (e) {
-        console.error("[leads] building layer1 failed", e?.message || e);
-        layer1 = null;
+        console.error("[leads] building appearance story failed", e?.message || e);
+        appearance = null;
       }
 
-      // Same graceful degradation as layer1 above — lib/email.js's
+      // Same graceful degradation as appearance above — lib/email.js's
       // buildMerchantEmail falls back to a short, honest email when
       // either is null, never a 500.
       try {
@@ -243,7 +236,7 @@ export async function POST(request) {
             painpoint: painpointInput,
             verdict: typeof verdict === "string" ? verdict : "",
             reportSlug: slugInput,
-            layer1,
+            appearance,
             founder,
             brandWebsite: effectiveBrandWebsite,
             pdfBuffer,

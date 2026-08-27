@@ -401,7 +401,7 @@ export async function POST(request) {
     });
 
     // Contradiction guard: the exact same buildTopBrands() computation the
-    // report's own "leaders" surfaces (StoryView, the PDF) will run against
+    // report's own "leaders" surfaces (lib/founderReport.js, the PDF) will run against
     // this same engineData — if IT says the brand is one of the leaders, the
     // verdict cannot honestly read NOT STOCKED. Root cause of this actually
     // firing in production: computeReport()'s NOT STOCKED gate used to look

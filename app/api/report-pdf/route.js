@@ -9,7 +9,8 @@ function badRequest(message) {
 }
 
 // Backs the report page's "Download PDF" button (components/test/report/
-// StoryView.js) — the same lib/pdf/buildReportPdf.js the merchant email
+// DownloadPdfButton.js, inside ReportView.js's "View full evidence"
+// disclosure) — the same lib/pdf/buildReportPdf.js the merchant email
 // attaches, just regenerated on demand from the exact data ReportView.js
 // already has in memory (live test flow or the shared /report/[slug]
 // page) rather than persisted anywhere: there's no file storage layer in
