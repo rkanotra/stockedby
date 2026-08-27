@@ -5,8 +5,12 @@ import styles from "../test/test.module.css";
 import { trackEvent } from "@/lib/analytics";
 import { isValidEmailFormat, isDisposableEmail, isFreeProvider, suggestEmailCorrection } from "@/lib/emailValidation";
 
-const CONSENT_TEXT =
-  "I agree StockedBy can email me this fix and occasional updates. We store only what's needed to send it, never sell your data, and you can unsubscribe anytime.";
+// Required (DPDP/PDPL data-processing consent) and optional (marketing)
+// are two DISTINCT checkboxes now — CLAUDE.md's redesign phase: bundling
+// them meant getting the fix required agreeing to marketing updates too.
+// The required one covers only what's needed to send the fix.
+const CONSENT_TEXT = "I agree StockedBy can process my details to send me this fix.";
+const MARKETING_TEXT = "Also send me occasional product updates. You can unsubscribe anytime.";
 
 // Domain-keyed twin of components/test/report/LeadGate.js (hard rule 8's
 // gate, extended to source="fix" per the Fix Generator spec's "same email
@@ -18,6 +22,7 @@ export default function FixLeadGate({ domain, platform, onUnlock, children }) {
   const [email, setEmail] = useState("");
   const [pain, setPain] = useState("");
   const [consent, setConsent] = useState(false);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -76,6 +81,7 @@ export default function FixLeadGate({ domain, platform, onUnlock, children }) {
           source: "fix",
           platform,
           isFreeProvider: isFreeProvider(trimmed),
+          marketingOptIn,
         }),
       });
       const data = await res.json();
@@ -149,13 +155,21 @@ export default function FixLeadGate({ domain, platform, onUnlock, children }) {
           />
           <span>{CONSENT_TEXT}</span>
         </label>
+        <label className={styles.consentRow}>
+          <input
+            type="checkbox"
+            checked={marketingOptIn}
+            onChange={(e) => setMarketingOptIn(e.target.checked)}
+          />
+          <span>{MARKETING_TEXT}</span>
+        </label>
         {error && <div className={styles.errBanner}>{error}</div>}
         <button
           type="submit"
           className={styles.btn}
           disabled={!email.trim() || !consent || submitting || Boolean(emailError)}
         >
-          {submitting ? "Unlocking…" : "Unlock the full fix — free"}
+          {submitting ? "Sending…" : "Get the full fix — free"}
         </button>
       </form>
     </div>

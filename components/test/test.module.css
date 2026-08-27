@@ -485,6 +485,27 @@
 .gateForm {
   margin-top: 0;
 }
+/* FixLeadGate.js's blur/clip-then-unlock preview — genuinely blurred and
+   non-interactive (not just visually hinted at) so the gated content is
+   never actually readable before the form is submitted. Real bug this
+   fixes: these two classes were referenced but never defined, so the
+   "locked" preview rendered fully visible, unblurred, right above the
+   unlock form. */
+.gateWrap {
+  display: flex;
+  flex-direction: column;
+}
+.gatePreview {
+  filter: blur(6px);
+  opacity: 0.45;
+  pointer-events: none;
+  user-select: none;
+  max-height: 220px;
+  overflow: hidden;
+  margin-bottom: -40px;
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+  mask-image: linear-gradient(to bottom, black, transparent);
+}
 .consentRow {
   display: flex;
   align-items: flex-start;

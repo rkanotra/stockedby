@@ -5,9 +5,12 @@ import styles from "../test.module.css";
 import GateModal from "./GateModal";
 import { isValidEmailFormat, isDisposableEmail, isFreeProvider, suggestEmailCorrection } from "@/lib/emailValidation";
 
-// Plain-language DPDP (India) / PDPL (UAE, KSA) consent line — hard rule 8.
-const CONSENT_TEXT =
-  "I agree StockedBy can email me this report and occasional updates. We store only what's needed to send it, never sell your data, and you can unsubscribe anytime.";
+// Plain-language DPDP (India) / PDPL (UAE, KSA) consent line — hard rule
+// 8. Required (data-processing) and optional (marketing) are two
+// DISTINCT checkboxes — bundling them meant getting the report required
+// agreeing to marketing updates too (CLAUDE.md's redesign phase).
+const CONSENT_TEXT = "I agree StockedBy can process my details to send me this report.";
+const MARKETING_TEXT = "Also send me occasional product updates. You can unsubscribe anytime.";
 
 // Email gate (hard rule 8, un-deferred in Phase 4): verdict + engine
 // scoreboxes (VerdictCard) render free, everything else — the cards passed
@@ -38,6 +41,7 @@ export default function LeadGate({
   const [email, setEmail] = useState("");
   const [pain, setPain] = useState("");
   const [consent, setConsent] = useState(false);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -108,6 +112,7 @@ export default function LeadGate({
           competitor,
           mentionCount,
           isFreeProvider: isFreeProvider(trimmedEmail),
+          marketingOptIn,
         }),
       });
       const data = await res.json();
@@ -183,13 +188,17 @@ export default function LeadGate({
         <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} required />
         <span>{CONSENT_TEXT}</span>
       </label>
+      <label className={styles.consentRow}>
+        <input type="checkbox" checked={marketingOptIn} onChange={(e) => setMarketingOptIn(e.target.checked)} />
+        <span>{MARKETING_TEXT}</span>
+      </label>
       {error && <div className={styles.errBanner}>{error}</div>}
       <button
         type="submit"
         className={styles.btn}
         disabled={!email.trim() || !consent || submitting || Boolean(emailError)}
       >
-        {submitting ? "Unlocking…" : "Unlock full report — free"}
+        {submitting ? "Sending…" : "Get the full report — free"}
       </button>
     </form>
   );
@@ -199,7 +208,7 @@ export default function LeadGate({
       {modalOpen && <GateModal onClose={() => setModalOpen(false)}>{form}</GateModal>}
       {!modalOpen && (
         <button type="button" className={styles.btnGhost} onClick={() => setModalOpen(true)}>
-          Unlock full report — free
+          Get the full report — free
         </button>
       )}
     </>

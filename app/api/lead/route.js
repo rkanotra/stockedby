@@ -49,6 +49,7 @@ export async function POST(request) {
     competitor,
     mentionCount,
     isFreeProvider,
+    marketingOptIn,
   } = body || {};
 
   // "fix" leads (Fix Generator, /fix) reuse this same gate/endpoint per the
@@ -109,6 +110,7 @@ export async function POST(request) {
         consent_at: consentAt,
         source: sourceInput,
         is_free_provider: typeof isFreeProvider === "boolean" ? isFreeProvider : null,
+        marketing_opt_in: marketingOptIn === true,
       });
       if (error) console.error("[leads] insert failed", error.message);
     } catch (e) {
