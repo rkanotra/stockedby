@@ -338,6 +338,9 @@ export default function FixResults({ result }) {
           </button>
           {beforeJourney && afterJourney && (
             <>
+              {beforeJourney.stages.some(
+                (before, i) => before.status !== "Ready" && afterJourney.stages[i]?.status === "Ready"
+              ) && <div className={styles.h2}>Technical blocker removed.</div>}
               <div className={styles.verifyGrid}>
                 <div className={styles.verifyCol}>
                   <span className={styles.verifyColLabel}>Before</span>

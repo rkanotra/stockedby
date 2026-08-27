@@ -7,13 +7,12 @@ export default function AuditCTA({ brandWebsite }) {
   const href = brandWebsite ? `/audit?domain=${encodeURIComponent(brandWebsite)}` : "/audit";
   return (
     <div className={styles.card}>
-      <div className={styles.h2}>Next: check if AI agents can actually buy from you</div>
+      <div className={styles.h2}>Recommendation visibility is only part of the picture.</div>
       <p className={styles.sectionHint} style={{ marginBottom: 14 }}>
-        Getting recommended is one thing — being findable, readable and actually purchasable by an
-        AI agent is another. Free agent readiness audit, no signup.
+        Check whether AI can properly access and understand your website.
       </p>
       <Link href={href} className={styles.btn} style={{ display: "block", textAlign: "center" }}>
-        Run the agent readiness audit
+        Run AI Store Audit →
       </Link>
     </div>
   );
