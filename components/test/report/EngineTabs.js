@@ -87,6 +87,7 @@ export default function EngineTabs({ brand, engines }) {
               key={e}
               type="button"
               className={`${styles.tab} ${activeEngine === e ? styles.active : ""}`}
+              aria-pressed={activeEngine === e}
               onClick={() => {
                 setActiveEngine(e);
                 setShowAll(false);

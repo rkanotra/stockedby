@@ -76,6 +76,7 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
             key={e}
             type="button"
             className={`${styles.tab} ${activeEngine === e ? styles.active : ""}`}
+            aria-pressed={activeEngine === e}
             onClick={() => setActiveEngine(e)}
             title={e !== "claude" ? FRESHNESS_EXPLAINER : undefined}
           >

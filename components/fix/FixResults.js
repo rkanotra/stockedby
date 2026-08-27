@@ -113,9 +113,11 @@ function PlatformPicker({ selected, onSelect }) {
             key={p.id}
             type="button"
             className={styles.btnGhost}
+            aria-pressed={selected === p.id}
             style={{
               width: "auto",
-              padding: "8px 14px",
+              padding: "12px 14px",
+              minHeight: 44,
               marginTop: 0,
               ...(selected !== p.id ? { borderColor: "var(--border-strong)", color: "var(--text-muted)" } : {}),
             }}

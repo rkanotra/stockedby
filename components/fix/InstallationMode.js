@@ -14,10 +14,12 @@ export default function InstallationMode({ mode, onChange }) {
         <button
           type="button"
           className={styles.btnGhost}
+          aria-pressed={mode === "self"}
           style={{
             width: "auto",
             flex: "1 1 160px",
             marginTop: 0,
+            minHeight: 44,
             ...(mode === "self" ? {} : { borderColor: "var(--border-strong)", color: "var(--text-muted)" }),
           }}
           onClick={() => onChange("self")}
@@ -27,10 +29,12 @@ export default function InstallationMode({ mode, onChange }) {
         <button
           type="button"
           className={styles.btnGhost}
+          aria-pressed={mode === "developer"}
           style={{
             width: "auto",
             flex: "1 1 160px",
             marginTop: 0,
+            minHeight: 44,
             ...(mode === "developer" ? {} : { borderColor: "var(--border-strong)", color: "var(--text-muted)" }),
           }}
           onClick={() => onChange("developer")}
