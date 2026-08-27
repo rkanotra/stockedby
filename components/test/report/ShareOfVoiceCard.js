@@ -14,11 +14,15 @@ export default function ShareOfVoiceCard({ market, brand, competitor, shareOfVoi
         Of every recommendation slot AI handed out across these questions, how many went to you
         versus the competition.
       </p>
+      {/* Verdict-adjacent colours (hard rule 5): "you" is the one accent
+          segment; competitor keeps its own distinct brand-comparison blue
+          (unrelated to the pine/verdict migration); rival and other are
+          neutral — no red for losing a slot, this isn't a pass/fail. */}
       <div className={styles.sov}>
-        <div style={{ width: `${shareOfVoice.you}%`, background: "#ffc53d" }} />
+        <div style={{ width: `${shareOfVoice.you}%`, background: "var(--accent)" }} />
         {hasComp && <div style={{ width: `${shareOfVoice.competitor}%`, background: "#4a9fd8" }} />}
-        <div style={{ width: `${shareOfVoice.rival}%`, background: "#ff6b57" }} />
-        <div style={{ width: `${shareOfVoice.other}%`, background: "#3a5a48" }} />
+        <div style={{ width: `${shareOfVoice.rival}%`, background: "var(--text-secondary)" }} />
+        <div style={{ width: `${shareOfVoice.other}%`, background: "var(--border-strong)" }} />
       </div>
       <div className={styles.sovrow}>
         <span>You · {brand}</span>

@@ -31,14 +31,14 @@ export default function CategoryStep({ categories, search, onSearch, onPick, onC
         {filtered.length === 0 && search.trim() && (
           <div
             className={styles.catrowBig}
-            style={{ color: "#ffc53d" }}
+            style={{ color: "var(--accent)" }}
             onClick={() => onCustomPick(search.trim())}
           >
             Test &ldquo;{search.trim()}&rdquo; — we&rsquo;ll write the questions →
           </div>
         )}
         {filtered.length === 0 && !search.trim() && (
-          <div className={styles.catrowBig} style={{ cursor: "default", color: "#7fa18c" }}>
+          <div className={styles.catrowBig} style={{ cursor: "default", color: "var(--text-muted)" }}>
             Type to search
           </div>
         )}

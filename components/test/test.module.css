@@ -1,11 +1,17 @@
-/* Dark app theme (CLAUDE.md §5): pine #0E1F18, card #14291F, tag yellow #FFC53D.
-   Ported from docs/prototype-app.jsx's embedded CSS block — same values,
-   camelCase class names for CSS-module scoping. */
+/* Dark app theme (CLAUDE.md hard rule 5): the Ink palette. Tokens are
+   defined once in app/globals.css's :root (--bg-base, --bg-surface,
+   --bg-inset, --border-subtle, --border-strong, --text-primary,
+   --text-secondary, --text-muted, --text-mono, --accent, --accent-hover,
+   --on-accent, --danger) — no raw hex below. Replaces the old pine palette
+   (#0E1F18 and its derived greens); green is retired as a colour entirely,
+   not just as a verdict colour — see the verdict-colour rules called out
+   inline below. Ported from docs/prototype-app.jsx's embedded CSS block
+   originally, camelCase class names for CSS-module scoping. */
 
 .root {
   min-height: 100vh;
-  background: #0e1f18;
-  color: #f1f5ec;
+  background: var(--bg-base);
+  color: var(--text-primary);
   font-family: "Archivo", sans-serif;
   padding: 20px 16px 48px;
   box-sizing: border-box;
@@ -24,11 +30,11 @@
   font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 800;
   font-size: 18px;
-  color: #f1f5ec;
+  color: var(--text-primary);
 }
 .logo b {
-  background: #ffc53d;
-  color: #16180f;
+  background: var(--accent);
+  color: var(--on-accent);
   padding: 1px 6px;
   border-radius: 5px;
 }
@@ -36,7 +42,7 @@
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
   letter-spacing: 0.22em;
-  color: #ffc53d;
+  color: var(--accent);
   text-transform: uppercase;
 }
 .title {
@@ -47,15 +53,15 @@
   margin: 8px 0 6px;
 }
 .sub {
-  color: #9db4a6;
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.5;
   margin: 0 0 22px;
   max-width: 50ch;
 }
 .card {
-  background: #14291f;
-  border: 1px solid #264434;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
   border-radius: 14px;
   padding: 18px;
   margin-bottom: 14px;
@@ -65,22 +71,22 @@
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #7fa18c;
+  color: var(--text-mono);
   display: block;
   margin: 0 0 6px;
 }
 .hint {
   font-size: 12px;
-  color: #7fa18c;
+  color: var(--text-muted);
   margin: -4px 0 12px;
 }
 .input {
   width: 100%;
   box-sizing: border-box;
-  background: #0e1f18;
-  border: 1px solid #2e5240;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
-  color: #f1f5ec;
+  color: var(--text-primary);
   font-size: 16px;
   padding: 12px;
   margin-bottom: 12px;
@@ -88,27 +94,27 @@
   font-family: "Archivo", sans-serif;
 }
 .input:focus {
-  border-color: #ffc53d;
-  box-shadow: 0 0 0 2px rgba(255, 197, 61, 0.25);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.25);
 }
 .input:read-only {
-  color: #9db4a6;
+  color: var(--text-secondary);
   cursor: default;
 }
 .input:read-only:focus {
-  border-color: #2e5240;
+  border-color: var(--border-strong);
   box-shadow: none;
 }
 /* Required-field emphasis (gate forms): the required work-email field gets
    a visible resting border so it outranks the optional pain-point textarea
    at a glance, not just on focus. */
 .inputRequired {
-  border-color: rgba(255, 197, 61, 0.55);
+  border-color: rgba(var(--accent-rgb), 0.55);
 }
 .btn {
   width: 100%;
-  background: #ffc53d;
-  color: #17251f;
+  background: var(--accent);
+  color: var(--on-accent);
   border: none;
   border-radius: 10px;
   font-family: "Bricolage Grotesque", sans-serif;
@@ -118,20 +124,20 @@
   cursor: pointer;
 }
 .btn:disabled {
-  background: #4a5248;
-  color: #8a9188;
+  background: var(--border-strong);
+  color: var(--text-muted);
   opacity: 1;
   cursor: default;
 }
 .btn:focus-visible {
-  outline: 3px solid #f1f5ec;
+  outline: 3px solid var(--text-primary);
   outline-offset: 2px;
 }
 .btnGhost {
   width: 100%;
   background: transparent;
-  color: #ffc53d;
-  border: 1px solid #ffc53d;
+  color: var(--accent);
+  border: 1px solid var(--accent);
   border-radius: 10px;
   font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 600;
@@ -141,7 +147,7 @@
   cursor: pointer;
 }
 .btnGhost:focus-visible {
-  outline: 3px solid #f1f5ec;
+  outline: 3px solid var(--text-primary);
   outline-offset: 2px;
 }
 .tabsRow {
@@ -151,9 +157,9 @@
 }
 .marketTab {
   flex: 1;
-  background: #0e1f18;
-  border: 1px solid #2e5240;
-  color: #c4d6c9;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
   border-radius: 10px;
   padding: 10px 12px;
   font-family: "Archivo", sans-serif;
@@ -163,9 +169,9 @@
   text-align: left;
 }
 .marketTab.active {
-  background: #ffc53d;
-  color: #17251f;
-  border-color: #ffc53d;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
 }
 .marketTab .st {
   display: block;
@@ -178,13 +184,13 @@
 .catlist {
   max-height: 320px;
   overflow-y: auto;
-  border: 1px solid #264434;
+  border: 1px solid var(--border-subtle);
   border-radius: 8px;
 }
 .catrow {
   padding: 11px 12px;
   font-size: 14px;
-  border-bottom: 1px dashed #264434;
+  border-bottom: 1px dashed var(--border-subtle);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -194,12 +200,12 @@
   border-bottom: none;
 }
 .catrow:hover {
-  background: #1b3628;
+  background: var(--bg-inset);
 }
 .catrow .g {
   font-family: "IBM Plex Mono", monospace;
   font-size: 10px;
-  color: #5bd6a0;
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 /* MarketStep.js: market is its own one-decision screen now, not a row of
@@ -212,9 +218,9 @@
   margin-bottom: 16px;
 }
 .marketCard {
-  background: #0e1f18;
-  border: 1px solid #2e5240;
-  color: #f1f5ec;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
   border-radius: 12px;
   padding: 18px 20px;
   font-family: "Archivo", sans-serif;
@@ -226,7 +232,7 @@
   min-height: 64px;
 }
 .marketCard:hover {
-  border-color: #ffc53d;
+  border-color: var(--accent);
 }
 .marketCardName {
   font-family: "Bricolage Grotesque", sans-serif;
@@ -235,21 +241,21 @@
 }
 .marketCardLine {
   font-size: 13px;
-  color: #9db4a6;
+  color: var(--text-secondary);
 }
 /* CategoryStep.js: same idea — full-width rows with generous padding
    instead of a dense list, for a thumb on a small screen. */
 .catlistBig {
   max-height: 400px;
   overflow-y: auto;
-  border: 1px solid #264434;
+  border: 1px solid var(--border-subtle);
   border-radius: 10px;
   margin-bottom: 16px;
 }
 .catrowBig {
   padding: 16px 18px;
   font-size: 16px;
-  border-bottom: 1px dashed #264434;
+  border-bottom: 1px dashed var(--border-subtle);
   cursor: pointer;
   min-height: 52px;
   display: flex;
@@ -259,15 +265,15 @@
   border-bottom: none;
 }
 .catrowBig:hover {
-  background: #1b3628;
+  background: var(--bg-inset);
 }
 .qedit {
   width: 100%;
   box-sizing: border-box;
-  background: #0e1f18;
-  border: 1px solid #2e5240;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
-  color: #f1f5ec;
+  color: var(--text-primary);
   font-family: "IBM Plex Mono", monospace;
   font-size: 13px;
   line-height: 1.45;
@@ -278,7 +284,7 @@
   min-height: 50px;
 }
 .qedit:focus {
-  border-color: #ffc53d;
+  border-color: var(--accent);
 }
 .arch {
   display: inline-flex;
@@ -288,14 +294,14 @@
   font-size: 9px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #7fa18c;
-  border: 1px solid #2e5240;
+  color: var(--text-mono);
+  border: 1px solid var(--border-strong);
   border-radius: 999px;
   padding: 3px 8px;
   margin-bottom: 10px;
 }
 .arch .lang {
-  color: #5bd6a0;
+  color: var(--text-muted);
 }
 .queryline {
   display: flex;
@@ -303,9 +309,9 @@
   gap: 10px;
   font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
-  color: #c4d6c9;
+  color: var(--text-secondary);
   padding: 8px 0;
-  border-bottom: 1px dashed #264434;
+  border-bottom: 1px dashed var(--border-subtle);
 }
 .queryline:last-child {
   border-bottom: none;
@@ -317,17 +323,20 @@
   flex-shrink: 0;
 }
 .dotWaiting {
-  background: #3a5a48;
+  background: var(--border-strong);
 }
 .dotSearching {
-  background: #ffc53d;
+  background: var(--accent);
   animation: pulse 1s infinite;
 }
+/* "Done" is outcome-neutral (the question finished, not a verdict) — no
+   green, per hard rule 5's verdict-colour rules extended to every status
+   dot, not just the report headline. */
 .dotDone {
-  background: #5bd6a0;
+  background: var(--text-secondary);
 }
 .dotError {
-  background: #ff6b57;
+  background: var(--danger);
 }
 @keyframes pulse {
   0%,
@@ -343,23 +352,36 @@
     animation: none;
   }
 }
+/* /test engine status (hard rule 6's sibling rule): a live engine (Claude,
+   always; ChatGPT/Gemini when harvesting on demand) shows this small
+   accent dot next to its tab; a cached engine shows text-muted status text
+   and no dot at all — see RunningPanel.js. */
+.tabStatusDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 4px;
+  vertical-align: middle;
+}
 .runningNote {
   font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
-  color: #7fa18c;
+  color: var(--text-muted);
   margin: -4px 0 12px;
 }
 .errBanner {
-  background: rgba(255, 107, 87, 0.1);
-  border: 1px solid #6b3a32;
-  color: #ffb3a6;
+  background: rgba(var(--danger-rgb), 0.12);
+  border: 1px solid rgba(var(--danger-rgb), 0.4);
+  color: var(--danger);
   border-radius: 10px;
   padding: 12px 14px;
   font-size: 13px;
   margin-bottom: 14px;
 }
 .fieldError {
-  color: #ffb3a6;
+  color: var(--danger);
   font-size: 12px;
   margin: -8px 0 12px;
 }
@@ -368,14 +390,14 @@
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  color: #e8cf8a;
+  color: var(--text-secondary);
   font-size: 12px;
   margin: -8px 0 12px;
 }
 .fieldSuggestion button {
   background: none;
   border: none;
-  color: #ffc53d;
+  color: var(--accent);
   text-decoration: underline;
   cursor: pointer;
   font-size: 12px;
@@ -383,7 +405,7 @@
   font-family: "Archivo", sans-serif;
 }
 .fieldSuggestionDismiss {
-  color: #7fa18c;
+  color: var(--text-muted);
   cursor: pointer;
   background: none;
   border: none;
@@ -392,9 +414,9 @@
   font-family: "Archivo", sans-serif;
 }
 .customNote {
-  background: rgba(255, 197, 61, 0.08);
-  border: 1px solid #4a3f1f;
-  color: #e8cf8a;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
   border-radius: 10px;
   padding: 10px 14px;
   font-size: 12px;
@@ -410,7 +432,7 @@
 .gateModalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(14, 31, 24, 0.75);
+  background: rgba(20, 23, 30, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -423,8 +445,8 @@
   max-width: 440px;
   max-height: 90vh;
   overflow-y: auto;
-  background: #14291f;
-  border: 1px solid #264434;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
   border-radius: 16px;
   padding: 24px;
 }
@@ -434,7 +456,7 @@
   right: 14px;
   background: transparent;
   border: none;
-  color: #9db4a6;
+  color: var(--text-secondary);
   font-size: 18px;
   line-height: 1;
   cursor: pointer;
@@ -442,10 +464,10 @@
   border-radius: 6px;
 }
 .gateModalClose:hover {
-  color: #f1f5ec;
+  color: var(--text-primary);
 }
 .gateModalClose:focus-visible {
-  outline: 3px solid #f1f5ec;
+  outline: 3px solid var(--text-primary);
   outline-offset: 2px;
 }
 @media (max-width: 640px) {
@@ -469,7 +491,7 @@
   gap: 10px;
   font-size: 11px;
   line-height: 1.5;
-  color: #9db4a6;
+  color: var(--text-secondary);
   margin: 4px 0 14px;
 }
 .consentRow input[type="checkbox"] {
@@ -477,7 +499,7 @@
   width: 16px;
   height: 16px;
   margin-top: 2px;
-  accent-color: #ffc53d;
+  accent-color: var(--accent);
 }
 /* Partial-failure handling (VerdictCard.js) — quiet, no red, no border,
    no box: a failed question that couldn't affect the verdict shows
@@ -487,12 +509,12 @@
 .retryHint {
   margin-top: 8px;
   font-size: 12px;
-  color: #7fa18c;
+  color: var(--text-muted);
 }
 .retryHintBtn {
   background: none;
   border: none;
-  color: #7fa18c;
+  color: var(--text-muted);
   text-decoration: underline;
   font-size: 12px;
   cursor: pointer;
@@ -500,10 +522,10 @@
   font-family: "Archivo", sans-serif;
 }
 .retryHintBtn:hover {
-  color: #f1f5ec;
+  color: var(--text-primary);
 }
 .retryHintBtn:focus-visible {
-  outline: 3px solid #f1f5ec;
+  outline: 3px solid var(--text-primary);
   outline-offset: 2px;
 }
 /* 2+ failed questions — no verdict is shown at all, this replaces it. */
@@ -511,7 +533,7 @@
   font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 800;
   font-size: clamp(20px, 5vw, 26px);
-  color: #9db4a6;
+  color: var(--text-secondary);
 }
 /* /audit CTA hierarchy: a quiet Layer 2 disclosure toggle (not a button
    competing with the primary action) and a smallest-weight plain text
@@ -522,7 +544,7 @@
   width: 100%;
   background: none;
   border: none;
-  color: #ffc53d;
+  color: var(--accent);
   text-decoration: underline;
   font-family: "Archivo", sans-serif;
   font-size: 14px;
@@ -532,10 +554,10 @@
   margin-top: 4px;
 }
 .disclosureToggle:hover {
-  color: #fff2cc;
+  color: var(--accent-hover);
 }
 .disclosureToggle:focus-visible {
-  outline: 3px solid #f1f5ec;
+  outline: 3px solid var(--text-primary);
   outline-offset: 2px;
 }
 .plainLink {
@@ -543,7 +565,7 @@
   width: 100%;
   background: none;
   border: none;
-  color: #7fa18c;
+  color: var(--text-muted);
   text-decoration: underline;
   font-family: "Archivo", sans-serif;
   font-size: 12px;
@@ -553,15 +575,15 @@
   margin-top: 16px;
 }
 .plainLink:hover {
-  color: #c4d6c9;
+  color: var(--text-secondary);
 }
 .plainLink:focus-visible {
-  outline: 3px solid #f1f5ec;
+  outline: 3px solid var(--text-primary);
   outline-offset: 2px;
 }
 .sectionHint {
   font-size: 13px;
-  color: #7fa18c;
+  color: var(--text-muted);
   margin: -4px 0 14px;
   line-height: 1.5;
 }
@@ -571,18 +593,39 @@
   font-size: clamp(26px, 6vw, 36px);
   margin: 0 0 4px;
 }
+/* Verdict colours (hard rule 5): green is retired entirely, never mapped
+   back onto a "good" verdict. .vGood and .vBad share the SAME plain
+   text-primary treatment on purpose — a good and a bad verdict read the
+   same way, the words carry the meaning, not an alarm colour. .vMid is
+   the one case that earns the accent (amber = "look here"). .vBlocked is
+   the single, deliberate exception carved out for /audit's fully-blocked
+   state only (components/audit/AuditResults.js) — never reused elsewhere,
+   so red stays rare instead of becoming a second default "bad" colour. */
 .vGood {
-  color: #5bd6a0;
+  color: var(--text-primary);
 }
 .vBad {
-  color: #ff6b57;
+  color: var(--text-primary);
+}
+.vBlocked {
+  color: var(--danger);
 }
 .vMid {
-  color: #ffc53d;
+  color: var(--accent);
+}
+/* Paired with .vGood only for /audit's all-checks-pass headline — an
+   accent underline instead of an accent fill, so "everything's fine"
+   still gets a small acknowledgement without reintroducing a second
+   saturated colour next to amber. */
+.accentUnderline {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
 }
 .subline {
   font-size: 14px;
-  color: #9db4a6;
+  color: var(--text-secondary);
 }
 /* StoryView.js — Layer 1's 4 cards. Reuses .vGood/.vMid/.vBad (defined
    above) for color, just bigger: "giant" per spec, vs. the full report's
@@ -597,7 +640,7 @@
 .storyLine {
   font-size: 15px;
   line-height: 1.5;
-  color: #c4d6c9;
+  color: var(--text-secondary);
   margin-top: 6px;
 }
 .storyBrandList {
@@ -611,13 +654,13 @@
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
-  border: 1px solid #264434;
+  border: 1px solid var(--border-subtle);
   border-radius: 8px;
   font-size: 15px;
 }
 .storyBrandRowYou {
-  background: #1b3628;
-  border-color: #ffc53d;
+  background: var(--bg-inset);
+  border-color: var(--accent);
   font-weight: 700;
 }
 .storyYouTag {
@@ -626,8 +669,8 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  background: #ffc53d;
-  color: #16180f;
+  background: var(--accent);
+  color: var(--on-accent);
   padding: 2px 8px;
   border-radius: 4px;
 }
@@ -641,7 +684,7 @@
 .storyActions li {
   font-size: 15px;
   line-height: 1.5;
-  color: #f1f5ec;
+  color: var(--text-primary);
   padding-left: 22px;
   position: relative;
 }
@@ -649,7 +692,7 @@
   content: "→";
   position: absolute;
   left: 0;
-  color: #ffc53d;
+  color: var(--accent);
 }
 .engines {
   display: flex;
@@ -660,8 +703,8 @@
 .enginebox {
   flex: 1;
   min-width: 130px;
-  background: #0e1f18;
-  border: 1px solid #264434;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
   border-radius: 10px;
   padding: 10px 12px;
 }
@@ -670,17 +713,17 @@
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #7fa18c;
+  color: var(--text-mono);
 }
 .enginebox .sc {
   font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 800;
   font-size: 26px;
-  color: #ffc53d;
+  color: var(--accent);
 }
 .enginebox .vs {
   font-size: 11px;
-  color: #9db4a6;
+  color: var(--text-secondary);
   font-family: "IBM Plex Mono", monospace;
 }
 .tabs {
@@ -692,9 +735,9 @@
 .tab {
   flex: 1;
   min-width: 80px;
-  background: #0e1f18;
-  border: 1px solid #2e5240;
-  color: #c4d6c9;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
   border-radius: 8px;
   padding: 9px 6px;
   font-family: "IBM Plex Mono", monospace;
@@ -705,16 +748,16 @@
   text-align: center;
 }
 .tab.active {
-  background: #ffc53d;
-  color: #17251f;
-  border-color: #ffc53d;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
   font-weight: 600;
 }
 .tab .st {
   display: block;
   font-size: 9px;
   margin-top: 2px;
-  opacity: 0.75;
+  color: var(--text-muted);
   text-transform: none;
   letter-spacing: 0;
 }
@@ -724,7 +767,7 @@
   cursor: default;
 }
 .tab:focus-visible {
-  outline: 2px solid #f1f5ec;
+  outline: 2px solid var(--text-primary);
   outline-offset: 2px;
 }
 .shelf {
@@ -733,7 +776,7 @@
 .shelfQ {
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
-  color: #9db4a6;
+  color: var(--text-secondary);
   margin: 0 0 10px;
 }
 .slots {
@@ -751,16 +794,16 @@
   font-weight: 600;
   line-height: 1.25;
   overflow-wrap: break-word;
-  border: 1px solid #2e5240;
+  border: 1px solid var(--border-strong);
   border-bottom: none;
-  background: #1b3628;
-  color: #c4d6c9;
+  background: var(--bg-inset);
+  color: var(--text-secondary);
 }
 .tag .rk {
   display: block;
   font-family: "IBM Plex Mono", monospace;
   font-size: 9px;
-  color: #7fa18c;
+  color: var(--text-mono);
   margin-bottom: 3px;
 }
 .tag .dest {
@@ -771,15 +814,19 @@
   opacity: 0.85;
 }
 .tagYou {
-  background: #ffc53d;
-  color: #17251f;
-  border-color: #ffc53d;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
   transform: translateY(-6px);
-  box-shadow: 0 6px 14px rgba(255, 197, 61, 0.3);
+  box-shadow: 0 6px 14px rgba(var(--accent-rgb), 0.3);
 }
 .tagYou .rk {
-  color: #17251f;
+  color: var(--on-accent);
 }
+/* Destination-type tags (marketplace/named competitor) — distinct brand
+   colours for telling two different DESTINATIONS apart on the shelf, not
+   a pass/fail verdict; out of scope of the pine→Ink migration and the
+   verdict-colour rules, left as-is. */
 .tagAmz {
   background: #3a2320;
   color: #ffb3a6;
@@ -792,21 +839,21 @@
 }
 .plank {
   height: 7px;
-  background: linear-gradient(#4a6b54, #2e4a3a);
+  background: linear-gradient(var(--border-strong), var(--bg-inset));
   border-radius: 2px;
 }
 .missing {
   margin-top: 8px;
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
-  color: #ff6b57;
+  color: var(--danger);
 }
 .notharvested {
-  border: 1px dashed #2e5240;
+  border: 1px dashed var(--border-strong);
   border-radius: 10px;
   padding: 14px;
   font-size: 13px;
-  color: #9db4a6;
+  color: var(--text-secondary);
   margin-top: 10px;
   line-height: 1.5;
 }
@@ -822,7 +869,7 @@
   justify-content: space-between;
   font-size: 13px;
   padding: 5px 0;
-  color: #c4d6c9;
+  color: var(--text-secondary);
 }
 .sovrow .p {
   font-family: "IBM Plex Mono", monospace;
@@ -853,15 +900,15 @@
 .sentisum {
   font-size: 14px;
   line-height: 1.55;
-  color: #c4d6c9;
+  color: var(--text-secondary);
   margin: 0;
 }
 .fanout {
   font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
-  color: #c4d6c9;
+  color: var(--text-secondary);
   padding: 7px 0 7px 16px;
-  border-bottom: 1px dashed #264434;
+  border-bottom: 1px dashed var(--border-subtle);
   position: relative;
 }
 .fanout:last-child {
@@ -871,7 +918,7 @@
   content: "↳";
   position: absolute;
   left: 0;
-  color: #ffc53d;
+  color: var(--accent);
 }
 .srcrow {
   display: flex;
@@ -882,32 +929,32 @@
 .srcname {
   font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
-  color: #e4ede2;
+  color: var(--text-secondary);
   width: 44%;
   overflow-wrap: break-word;
 }
 .srcbar {
   flex: 1;
   height: 8px;
-  background: #0e1f18;
+  background: var(--bg-inset);
   border-radius: 4px;
   overflow: hidden;
 }
 .srcbar span {
   display: block;
   height: 100%;
-  background: #5bd6a0;
+  background: var(--text-muted);
   border-radius: 4px;
 }
 .srccount {
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
-  color: #7fa18c;
+  color: var(--text-mono);
   width: 28px;
   text-align: right;
 }
 .err {
-  color: #ff6b57;
+  color: var(--danger);
   font-size: 13px;
   font-family: "IBM Plex Mono", monospace;
   margin-top: 10px;
@@ -916,8 +963,8 @@
   display: inline-block;
   font-family: "IBM Plex Mono", monospace;
   font-size: 9px;
-  color: #5bd6a0;
-  border: 1px solid #2e5240;
+  color: var(--text-muted);
+  border: 1px solid var(--border-strong);
   border-radius: 999px;
   padding: 2px 8px;
   margin-left: 8px;
@@ -941,7 +988,7 @@
   display: flex;
   gap: 10px;
   padding: 12px 0;
-  border-bottom: 1px dashed #264434;
+  border-bottom: 1px dashed var(--border-subtle);
 }
 .checkRow:last-child {
   border-bottom: none;
@@ -958,21 +1005,24 @@
   font-weight: 700;
   margin-top: 1px;
 }
+/* Layer 2 is de-emphasized developer detail (CLAUDE.md) — a passing check
+   doesn't need a colour, it needs to be quiet. Only warn (accent) and fail
+   (danger) carry colour; pass and unknown stay neutral. */
 .checkIcon.pass {
-  background: rgba(91, 214, 160, 0.15);
-  color: #5bd6a0;
+  background: var(--border-subtle);
+  color: var(--text-primary);
 }
 .checkIcon.warn {
-  background: rgba(255, 197, 61, 0.15);
-  color: #ffc53d;
+  background: rgba(var(--accent-rgb), 0.15);
+  color: var(--accent);
 }
 .checkIcon.fail {
-  background: rgba(255, 107, 87, 0.15);
-  color: #ff6b57;
+  background: var(--border-subtle);
+  color: var(--danger);
 }
 .checkIcon.unknown {
-  background: rgba(154, 164, 178, 0.15);
-  color: #9db4a6;
+  background: var(--border-subtle);
+  color: var(--text-muted);
 }
 .checkBody {
   flex: 1;
@@ -981,28 +1031,28 @@
 .checkLabel {
   font-weight: 600;
   font-size: 14px;
-  color: #f1f5ec;
+  color: var(--text-primary);
 }
 .checkDetail {
   font-size: 13px;
-  color: #9db4a6;
+  color: var(--text-secondary);
   margin-top: 3px;
   line-height: 1.5;
 }
 .checkFix {
   font-size: 13px;
-  color: #ffc53d;
+  color: var(--accent);
   margin-top: 6px;
   line-height: 1.5;
   padding-left: 10px;
-  border-left: 2px solid #2e5240;
+  border-left: 2px solid var(--border-strong);
 }
 .platformBadge {
   display: inline-block;
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
-  color: #c4d6c9;
-  border: 1px solid #2e5240;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
   border-radius: 999px;
   padding: 4px 12px;
   margin-bottom: 4px;
@@ -1018,13 +1068,13 @@
 }
 .productMeta {
   font-size: 12px;
-  color: #7fa18c;
+  color: var(--text-muted);
   margin: 0 0 10px;
   word-break: break-all;
 }
 .productErr {
   font-size: 13px;
-  color: #ffb3a6;
+  color: var(--danger);
   line-height: 1.5;
 }
 .codeBlockHead {
@@ -1035,8 +1085,8 @@
 }
 .copyBtn {
   background: transparent;
-  color: #ffc53d;
-  border: 1px solid #4a3f1f;
+  color: var(--accent);
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
@@ -1045,12 +1095,12 @@
   flex-shrink: 0;
 }
 .copyBtn:focus-visible {
-  outline: 3px solid #f1f5ec;
+  outline: 3px solid var(--text-primary);
   outline-offset: 2px;
 }
 .codeBlock {
-  background: #0e1f18;
-  border: 1px solid #264434;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
   border-radius: 10px;
   padding: 12px;
   margin: 0;
@@ -1058,7 +1108,7 @@
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
   line-height: 1.5;
-  color: #c4d6c9;
+  color: var(--text-secondary);
   white-space: pre;
 }
 .lockedHint {
@@ -1066,7 +1116,7 @@
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #ffc53d;
+  color: var(--accent);
   margin: 0 0 10px;
 }
 .installStep {
@@ -1074,7 +1124,7 @@
   gap: 10px;
   font-size: 14px;
   line-height: 1.5;
-  color: #c4d6c9;
+  color: var(--text-secondary);
   margin-bottom: 10px;
 }
 .installStepNum {
@@ -1082,8 +1132,8 @@
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
   font-weight: 700;
-  color: #16180f;
-  background: #ffc53d;
+  color: var(--on-accent);
+  background: var(--accent);
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -1099,7 +1149,7 @@
   margin-top: 10px;
 }
 .verifyCol {
-  border: 1px solid #264434;
+  border: 1px solid var(--border-subtle);
   border-radius: 10px;
   padding: 10px 12px;
 }
@@ -1108,7 +1158,7 @@
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #7fa18c;
+  color: var(--text-mono);
   display: block;
   margin-bottom: 6px;
 }

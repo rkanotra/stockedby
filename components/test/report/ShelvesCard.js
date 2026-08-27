@@ -13,11 +13,14 @@ import {
   sanitizeBrandLabel,
 } from "@/lib/scoring";
 
+// Same treatment as components/test/report/CheckoutBattleCard.js's
+// DEST_COLORS (hard rule 5): neutral for brand-direct, the one accent for
+// marketplace, aggregator keeps its own distinct comparison-blue.
 const DEST_COLORS = {
-  "brand-direct": "#5bd6a0",
-  marketplace: "#ff6b57",
+  "brand-direct": "var(--text-secondary)",
+  marketplace: "var(--accent)",
   aggregator: "#4a9fd8",
-  none: "#3a5a48",
+  none: "var(--border-strong)",
 };
 
 const hasRealData = (engines, e) => (engines[e] || []).some((r) => r.source !== "missing");
@@ -108,7 +111,7 @@ export default function ShelvesCard({ market, brand, competitor, engines }) {
                     <span className={styles.rk}>#{j + 1}</span>
                     {sanitizeBrandLabel(rec.brand)}
                     {dest !== "none" && (
-                      <span className={styles.dest} style={{ color: j === youIdx ? "#17251f" : DEST_COLORS[dest] }}>
+                      <span className={styles.dest} style={{ color: j === youIdx ? "var(--on-accent)" : DEST_COLORS[dest] }}>
                         → {DEST_LABELS[dest]}
                       </span>
                     )}

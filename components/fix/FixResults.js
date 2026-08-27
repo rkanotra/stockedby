@@ -9,10 +9,13 @@ import styles from "../test/test.module.css";
 import ProductJsonLdCard from "./ProductJsonLdCard";
 import FixLeadGate from "./FixLeadGate";
 
+// Same mapping as components/audit/AuditResults.js — vBlocked (not the
+// shared, neutral vBad) for the blocked case, so the before/after diff
+// still reads clearly bad-to-good without inventing a third colour scheme.
 const PLAIN_VERDICT_CLASS = {
   "YES, AI CAN READ YOUR SHOP": "vGood",
   "AI CAN READ YOUR SHOP, BUT NOT YOUR PRODUCTS": "vMid",
-  "AI CAN'T READ YOUR SHOP": "vBad",
+  "AI CAN'T READ YOUR SHOP": "vBlocked",
 };
 
 function downloadLlmsTxt(text) {
@@ -108,7 +111,7 @@ function PlatformPicker({ selected, onSelect }) {
               width: "auto",
               padding: "8px 14px",
               marginTop: 0,
-              ...(selected !== p.id ? { borderColor: "#2e5240", color: "#7fa18c" } : {}),
+              ...(selected !== p.id ? { borderColor: "var(--border-strong)", color: "var(--text-muted)" } : {}),
             }}
             onClick={() => onSelect(p.id)}
           >

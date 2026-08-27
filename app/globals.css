@@ -19,6 +19,41 @@
   --link-hover: #8A6D1B;
   --white: #FFFFFF;
   --hover-nav: #2A2D1F;
+
+  /* App/report dark theme (Ink palette, CLAUDE.md hard rule 5) — used by
+     components/test/test.module.css across /test, /report, the email gate,
+     /audit and /fix. Scoped by usage, not by selector: the marketing
+     tokens above never reference these, and test.module.css never
+     references the marketing ones — the light/dark split stays deliberate
+     even though both live in one :root. Replaces the old pine palette
+     (#0E1F18 and its derived greens) — green is retired as a colour
+     entirely here, not just as a verdict colour, see lib/theme.js. */
+  --bg-base: #14171E;
+  --bg-surface: #181C25;
+  --bg-inset: #11141A;
+  --border-subtle: #262B36;
+  --border-strong: #2C3240;
+  --text-primary: #F4F4F6;
+  --text-secondary: #DDE1E9;
+  --text-muted: #B7BCC8;
+  /* --text-mono on --bg-surface is the tightest pair in this palette —
+     verified at ~5.5:1 (WCAG relative-luminance calc), clears 4.5:1. Kept
+     to genuinely decorative uppercase mono labels only (.label, .arch,
+     .enginebox .nm, .tag .rk, .srccount, .verifyColLabel in
+     test.module.css) — anything closer to real paragraph/body text uses
+     --text-muted instead, which has more headroom, even where a similar
+     hex was used for both roles in the old pine palette. */
+  --text-mono: #8B93A5;
+  --accent: #F5B840;
+  --accent-rgb: 245, 184, 64;
+  --accent-hover: #FFD070;
+  --on-accent: #181C25;
+  /* Real form/request errors (invalid email, rate limit) — a different
+     category from "verdict colour"; reuses the audit's one sanctioned red
+     (see hard rule 5's verdict-colour rules) so there's exactly one red hue
+     site-wide, not two. */
+  --danger: #FF8A80;
+  --danger-rgb: 255, 138, 128;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }

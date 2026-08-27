@@ -3,11 +3,16 @@
 import styles from "../test.module.css";
 import { DEST_LABELS, domainsMatch } from "@/lib/scoring";
 
+// Verdict-adjacent colours (hard rule 5): brand-direct is neutral (no
+// green — a good outcome doesn't need to shout), marketplace is the one
+// accent segment (the commission-loss problem this card exists to
+// surface), aggregator keeps its own distinct brand-comparison blue
+// (unrelated to the pine/verdict migration), none is the darkest neutral.
 const DEST_COLORS = {
-  "brand-direct": "#5bd6a0",
-  marketplace: "#ff6b57",
+  "brand-direct": "var(--text-secondary)",
+  marketplace: "var(--accent)",
   aggregator: "#4a9fd8",
-  none: "#3a5a48",
+  none: "var(--border-strong)",
 };
 
 export default function CheckoutBattleCard({ brand, brandWebsite, destinations }) {

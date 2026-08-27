@@ -12,11 +12,18 @@ const VERDICT_CLASS = {
   "PARTIALLY READY": "vMid",
   "INVISIBLE TO AGENTS": "vBad",
 };
+// Verdict colours (hard rule 5): all-pass gets the plain text-primary
+// headline PLUS an accent underline (the one place a "good" result still
+// earns a small acknowledgement); partial gets the accent headline;
+// blocked is the single, deliberate exception that gets a red headline —
+// .vBlocked, not the shared .vBad other verdict displays use, so this stays
+// the only red headline in the app, not a second default "bad" colour.
 const PLAIN_VERDICT_CLASS = {
   "YES, AI CAN READ YOUR SHOP": "vGood",
   "AI CAN READ YOUR SHOP, BUT NOT YOUR PRODUCTS": "vMid",
-  "AI CAN'T READ YOUR SHOP": "vBad",
+  "AI CAN'T READ YOUR SHOP": "vBlocked",
 };
+const ALL_PASS_VERDICT = "YES, AI CAN READ YOUR SHOP";
 
 const VERDICT_SUBTITLE = {
   "AGENT-READY": "Agents can find you, understand your products, and complete a purchase.",
@@ -41,7 +48,11 @@ export default function AuditResults({ result }) {
     <>
       <div className={styles.card}>
         <span className={styles.label}>Can AI apps read your shop?</span>
-        <div className={`${styles.storyBig} ${styles[PLAIN_VERDICT_CLASS[layer1.verdict]] || ""}`}>
+        <div
+          className={`${styles.storyBig} ${styles[PLAIN_VERDICT_CLASS[layer1.verdict]] || ""} ${
+            layer1.verdict === ALL_PASS_VERDICT ? styles.accentUnderline : ""
+          }`}
+        >
           {layer1.verdict}
         </div>
       </div>

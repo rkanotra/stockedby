@@ -142,12 +142,54 @@ does nothing until then).
 4. **RTL/Arabic support** is required for UAE/KSA market pages and Arabic queries.
 5. **Design source of truth is docs/design/** (Claude Design exports).
    Marketing site is LIGHT theme (cream #FCFBF7, ink #16180F, tag yellow
-   #FFC53D, brick #C2471F/#E8503A, greens #1E7A50/#2FA772). The APP/report
-   screens are DARK theme (pine #0E1F18, card #14291F, tag yellow #FFC53D) so
-   report screenshots pop on social. Fonts: Bricolage Grotesque (display),
-   Archivo (body), IBM Plex Mono (labels/data) — load from Google Fonts, do NOT
-   embed woff2 from the design export. Favicon: done — app/icon.svg (tag-yellow
-   rounded mark, "by" in ink, matches the nav logo) + app/apple-icon.png.
+   #FFC53D, brick #C2471F/#E8503A, greens #1E7A50/#2FA772) — CSS custom
+   properties in app/globals.css's `:root` (--cream/--ink/--tag/etc.),
+   unchanged and untouched by the app-side migration below. The APP/report
+   screens are DARK theme, the **Ink palette** (migrated off the old pine
+   palette — #0E1F18 and its derived greens are fully retired, not just as
+   a verdict colour): --bg-base #14171E (page), --bg-surface #181C25
+   (cards), --bg-inset #11141A (inputs/wells/code blocks), --border-subtle
+   #262B36, --border-strong #2C3240, --text-primary #F4F4F6, --text-
+   secondary #DDE1E9 (readable body/caption text), --text-muted #B7BCC8
+   (hints, short supporting lines), --text-mono #8B93A5 (short uppercase
+   mono eyebrow labels only — verified ~5.5:1 against --bg-surface, the
+   tightest pair; anything longer than a label uses --text-muted instead,
+   which has more headroom), --accent #F5B840 (deliberately its own hex,
+   not the marketing site's --tag — the light/dark split is real, not
+   just a colour scheme), --accent-hover #FFD070, --on-accent #181C25
+   (text on filled accent buttons), --danger #FF8A80 (real form/request
+   errors only — invalid email, rate limits — never a report verdict, see
+   below). Defined once in app/globals.css's `:root` alongside the
+   marketing tokens (scoped by usage, not by selector — marketing
+   components never reference the Ink tokens and vice versa) — every app/
+   report component reads these via `var(--token)`, never a raw hex.
+   lib/theme.js exports the same values as plain JS constants for the two
+   surfaces that can't use CSS custom properties: lib/pdf/buildReportPdf.js
+   (pdfkit, no CSS at all) and lib/email.js's inline-styled HTML (custom
+   properties are unreliable across email clients). **Verdict colours**:
+   green is never used as a "good" signal anywhere in the app, on-screen
+   or in the PDF/email — a wall of red or green reads as an alarm on a
+   report that gets screenshotted and forwarded, not an analysis. The
+   shelf report's YES/SOMETIMES/NO headline (StoryView.js) and the 4-tier
+   full-report verdict (VerdictCard.js) both render in plain --text-primary
+   regardless of good or bad — the words carry the meaning — with only the
+   mid-tier (SOMETIMES/BARELY STOCKED/OUTSHELVED) earning the --accent
+   "look here" treatment and the one genuinely actionable "money line"
+   (buyers going to a competitor's site) also getting --accent. /audit's
+   three states get the one deliberate exception: all-pass is --text-
+   primary with an --accent underline (styles.accentUnderline), partial is
+   --accent, and fully-blocked is the ONLY place in the app that uses red
+   as a verdict colour (styles.vBlocked, not the shared, neutral .vBad
+   every other verdict display uses) — so it stays rare instead of
+   becoming a second default "bad" colour. /test's per-engine status
+   during a live run (RunningPanel.js) follows the same spirit: a live
+   engine (Claude, always; ChatGPT/Gemini when harvesting on demand) gets
+   a small --accent dot next to its tab; a cached engine shows plain
+   --text-muted status text and no dot. Fonts: Bricolage Grotesque
+   (display), Archivo (body), IBM Plex Mono (labels/data) — load from
+   Google Fonts, do NOT embed woff2 from the design export. Favicon:
+   done — app/icon.svg (tag-yellow rounded mark, "by" in ink, matches the
+   nav logo) + app/apple-icon.png.
 6. **Engines.** Product scope is exactly three, in this canonical order:
    chatgpt, gemini, claude — defined once as ENGINE_ORDER in lib/scoring.js;
    every engine tab, scorebox, and iteration derives from it, never a
@@ -636,6 +678,13 @@ does nothing until then).
   this, and gained a `test` script) covers normalizeBrand/matches/
   matchesAny/sanitizeBrandLabel/categoryMidSentence/guessBrandFromDomain/
   couldChangeVerdict/engineStatusLabel directly.
+- lib/theme.js — INK: the Ink palette's hex values as plain JS constants,
+  the single source of truth shared by lib/pdf/buildReportPdf.js and
+  lib/email.js (the two surfaces that can't use the CSS custom properties
+  app/globals.css defines for every React component — pdfkit has no CSS,
+  and custom properties are unreliable across email clients). Hard rule
+  5 has the full token list and the verdict-colour rules both this file
+  and the CSS tokens implement identically.
 - lib/pdf/buildReportPdf.js — the merchant email's PDF attachment and
   POST /api/report-pdf's on-demand download (components/test/report/
   DownloadPdfButton.js, at the bottom of the expanded full report — see

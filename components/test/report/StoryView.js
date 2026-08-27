@@ -6,8 +6,13 @@ import { matches } from "@/lib/scoring";
 import { buildLayerOne } from "@/lib/layerOne";
 import TestAnotherCTA from "./TestAnotherCTA";
 
-const APPEAR_COLOR = { YES: "#5bd6a0", SOMETIMES: "#ffc53d", NO: "#ff6b57" };
-const APPEAR_CLASS = { YES: "vGood", SOMETIMES: "vMid", NO: "vBad" };
+// Verdict colours (hard rule 5): the big headline is ALWAYS text-primary —
+// YES/SOMETIMES/NO get identical treatment, the words state the fact, no
+// green for a good result and no red for a bad one (a wall of colour reads
+// as an alarm, not an analysis, on a report that gets screenshotted and
+// forwarded). Only the count line below it varies: accent for YES (the one
+// "look here" moment), the default secondary tone otherwise.
+const COUNT_LINE_COLOR = { YES: "var(--accent)" };
 
 // Layer 1 — the report's default view (CLAUDE.md-style philosophy: simple
 // first, detail on request). Four cards, phrased as the questions a
@@ -30,10 +35,8 @@ export default function StoryView({ data, onSeeFullDetails }) {
     <>
       <div className={styles.card}>
         <span className={styles.label}>Do AI apps recommend {brand}?</span>
-        <div className={`${styles.storyBig} ${styles[APPEAR_CLASS[appearance.verdict]]}`}>
-          {appearance.verdict}
-        </div>
-        <p className={styles.storyLine}>
+        <div className={styles.storyBig}>{appearance.verdict}</div>
+        <p className={styles.storyLine} style={{ color: COUNT_LINE_COLOR[appearance.verdict] }}>
           You appeared in {appearance.appearedIn} of {appearance.totalAttempted} shopper questions.
         </p>
       </div>
@@ -56,9 +59,7 @@ export default function StoryView({ data, onSeeFullDetails }) {
           </div>
         )}
         {!brands.brandInTop && brands.top.length > 0 && (
-          <p className={styles.storyLine} style={{ color: "#ff6b57" }}>
-            {brand} is missing from this list.
-          </p>
+          <p className={styles.storyLine}>{brand} is missing from this list.</p>
         )}
       </div>
 
@@ -68,14 +69,12 @@ export default function StoryView({ data, onSeeFullDetails }) {
           Your shop: {destinations.yours} times · Other shops: {destinations.others} times
         </p>
         {destinations.others > destinations.yours && destinations.topOtherDomain && (
-          <p className={styles.storyLine} style={{ color: "#ff6b57" }}>
+          <p className={styles.storyLine} style={{ color: "var(--accent)" }}>
             Buyers go to {destinations.topOtherDomain}. That shop takes commission from your sale.
           </p>
         )}
         {destinations.yours > 0 && destinations.yours >= destinations.others && (
-          <p className={styles.storyLine} style={{ color: "#5bd6a0" }}>
-            Most buyers go straight to your shop.
-          </p>
+          <p className={styles.storyLine}>Most buyers go straight to your shop.</p>
         )}
       </div>
 

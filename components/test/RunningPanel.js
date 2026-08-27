@@ -36,12 +36,18 @@ export default function RunningPanel({ queries, harvestingEngines = [], liveStat
     <div className={styles.card}>
       <span className={styles.label}>{heading || "Asking ChatGPT, Gemini and Claude right now"}</span>
       <div className={styles.tabs}>
-        {ENGINE_ORDER.map((e) => (
-          <div key={e} className={`${styles.tab} ${styles.tabStatic}`}>
-            {ENGINE_LABELS[e]}
-            <span className={styles.st}>{engineStatusLabel(e, harvestingEngines)}</span>
-          </div>
-        ))}
+        {ENGINE_ORDER.map((e) => {
+          const isLive = e === "claude" || harvestingEngines.includes(e);
+          return (
+            <div key={e} className={`${styles.tab} ${styles.tabStatic}`}>
+              {ENGINE_LABELS[e]}
+              <span className={styles.st}>
+                {isLive && <span className={styles.tabStatusDot} />}
+                {engineStatusLabel(e, harvestingEngines)}
+              </span>
+            </div>
+          );
+        })}
       </div>
       <p className={styles.runningNote}>
         {label || `Asking ${queries.length} question${queries.length === 1 ? "" : "s"}…`}

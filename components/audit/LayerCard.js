@@ -4,9 +4,20 @@ import styles from "../test/test.module.css";
 
 const ICON = { pass: "✓", warn: "!", fail: "✕", unknown: "?" };
 
+// Layer 2 is de-emphasized developer detail — a passing score doesn't
+// need to shout (hard rule 5): only a low score (needs attention) or a
+// very low one (danger) get colour, mirroring .checkIcon's warn/fail
+// treatment in test.module.css.
 export default function LayerCard({ title, hint, layer }) {
   const { checks, score } = layer;
-  const scoreColor = score === null ? "#9db4a6" : score >= 70 ? "#5bd6a0" : score >= 40 ? "#ffc53d" : "#ff6b57";
+  const scoreColor =
+    score === null
+      ? "var(--text-muted)"
+      : score >= 70
+      ? "var(--text-primary)"
+      : score >= 40
+      ? "var(--accent)"
+      : "var(--danger)";
 
   return (
     <div className={styles.card}>
