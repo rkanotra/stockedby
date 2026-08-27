@@ -247,7 +247,8 @@ export default function TestFlow() {
         </div>
         <div className={styles.mark}>StockedBy · {market}</div>
         <p className={styles.sub}>
-          Your customers ask ChatGPT what to buy. See if it says your name — or your competitor&rsquo;s.
+          Your customers ask AI what to buy. See if ChatGPT, Gemini and Claude say your name —
+          or your competitor&rsquo;s.
         </p>
 
         {phase === "domain" && <DomainStep domain={domain} onDomain={setDomain} onNext={goToBrand} />}
@@ -305,6 +306,7 @@ export default function TestFlow() {
               .filter((q) => q.qid in liveStatus)
               .map((q) => ({ ...q, text: effectiveQueryText(q, brand) }))}
             liveStatus={liveStatus}
+            heading="Rechecking your shelf across ChatGPT, Gemini and Claude"
             label={`Rechecking ${Object.keys(liveStatus).length} question${
               Object.keys(liveStatus).length === 1 ? "" : "s"
             }…`}

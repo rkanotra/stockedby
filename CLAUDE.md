@@ -49,11 +49,16 @@ homepage per its own "for technical teams" label. This extends to the /test
 wizard too: domain-first, one decision per screen (components/test/
 DomainStep.js -> BrandStep.js -> MarketStep.js -> CategoryStep.js ->
 QueryStep.js), persistent header (eyebrow "StockedBy · {market}" + subtitle
-"Your customers ask ChatGPT what to buy. See if it says your name — or
-your competitor's."), plain language throughout — banned words on every
-user-facing surface: engine, query, telemetry, archetype, fanout, harvest,
-GEO, agentic, UCP, ACP, manifest, schema, protocol (say instead: AI apps,
-questions, what AI searched, site check) — short sentences (max ~12 words),
+"Your customers ask AI what to buy. See if ChatGPT, Gemini and Claude say
+your name — or your competitor's." — the homepage keeps its own,
+deliberately different ChatGPT-focused copy, see components/Hero.js),
+plain language throughout — banned words on every user-facing surface
+(the /test wizard, the report, the merchant email, the PDF — NOT /why or
+/audit's Layer 2 "technical details", both deliberately exempted, see
+their own entries below): engine, query, telemetry, archetype, fanout,
+harvest, GEO, agentic, UCP, ACP, manifest, schema, protocol, organic,
+"share of voice" (say instead: AI apps, questions, what AI searched, site
+check, "how often AI picks each brand") — short sentences (max ~12 words),
 buttons that state their outcome ("Check my brand — free", "Show my
 report", "Test another product"). The report page
 (components/test/report/) renders a 4-card Layer 1 story by default
@@ -149,22 +154,35 @@ does nothing until then).
    exceeding maxDuration rather than saving cost.
 8. **Email gate before deep results** (live, Phase 4): verdict + engine
    scoreboxes (VerdictCard) are free; everything else (checkout battle,
-   Share of AI Voice, sentiment, the shelves, fanout, trusted sources, audit
-   CTA) sits behind components/test/report/LeadGate.js — work email +
-   optional brand website/pain point + a required DPDP (India) / PDPL (UAE,
-   KSA) consent checkbox. POST /api/lead → Supabase `leads` insert + Resend
-   (founder notification + merchant confirmation, both carrying the
-   /report/[slug] link) — see lib/email.js (adapted from
-   docs/api-lead-resend.ts) and lib/reports.js. The gate is a client-side
-   presentational blur/clip over already-rendered children, not server-side
-   redaction — LeadGate's own comment explains why (lead capture, not
-   access control; a shared /report/[slug] link re-gates for each new
-   visitor by design, which doubles as further lead-gen off shares).
-   Graceful throughout: a Supabase or Resend failure still unlocks the UI
-   and still returns `ok`, per hard rule 1's "never block the merchant over
-   an optional infra dependency" pattern — only a bad request (missing
-   email/consent) or the /api/lead rate limit (its own IP-cap namespace,
-   separate from /api/test's) blocks submission.
+   "How often AI picks each brand" — formerly "Share of AI Voice", renamed
+   off the banned-word list, see hard rule 12 — sentiment, the shelves,
+   fanout, trusted sources, audit CTA) sits behind components/test/report/
+   LeadGate.js — work email + optional pain point + a read-only brand-
+   website field (prefilled from the test, can't be changed — it's the
+   completed test's own domain, not an editable lead-form field anymore) +
+   a required DPDP (India) / PDPL (UAE, KSA) consent checkbox. POST
+   /api/lead → Supabase `leads` insert + Resend (founder notification +
+   merchant confirmation, both carrying the /report/[slug] link) — see
+   lib/email.js (adapted from docs/api-lead-resend.ts) and lib/reports.js.
+   The gate opens as components/test/report/GateModal.js — a centered
+   modal (desktop) / full-screen bottom sheet (mobile) — the INSTANT
+   "See full report" is clicked (LeadGate.js mounts the modal open by
+   default), not a blurred/clipped teaser in document flow a merchant had
+   to scroll down past (that read as "nothing happened" when the button
+   was near the bottom of the viewport — see hard rule 12's ReportView.js
+   auto-scroll, which is now a secondary assist, not the primary fix).
+   Closing the modal without submitting leaves a small "Unlock full
+   report" button in its place, not a dead end. On submit the modal closes
+   and the deep cards render inline exactly where LeadGate.js sits (unlike
+   the old design, unlocking is still purely a client-side presentational
+   gate, not server-side redaction — LeadGate's own comment explains why:
+   lead capture, not access control; a shared /report/[slug] link re-gates
+   for each new visitor by design, which doubles as further lead-gen off
+   shares). Graceful throughout: a Supabase or Resend failure still
+   unlocks the UI and still returns `ok`, per hard rule 1's "never block
+   the merchant over an optional infra dependency" pattern — only a bad
+   request (missing email/consent) or the /api/lead rate limit (its own
+   IP-cap namespace, separate from /api/test's) blocks submission.
 9. **Rate limit**: cap tests per IP per day at 10 in app/api/test (also
    applied, with their own separate counters, to app/api/generate-queries,
    app/api/lead, and app/api/test/query (limit 200 — abuse-prevention only,
@@ -501,8 +519,28 @@ does nothing until then).
   cached snapshots, no new API spend). lib/scoring.test.js (`npm test`,
   Node's built-in test runner — package.json needed `"type": "module"` for
   this, and gained a `test` script) covers normalizeBrand/matches/
-  matchesAny/sanitizeBrandLabel/categoryMidSentence/guessBrandFromDomain
-  directly.
+  matchesAny/sanitizeBrandLabel/categoryMidSentence/guessBrandFromDomain/
+  couldChangeVerdict/engineStatusLabel directly.
+- lib/pdf/buildReportPdf.js — the merchant email's PDF attachment and
+  POST /api/report-pdf's on-demand download (components/test/report/
+  DownloadPdfButton.js, at the bottom of the expanded full report — see
+  hard rule 8), rebuilt for full content parity with the web report: exec
+  summary, per-engine appearance, leaders table, the checkout battle,
+  "how often AI picks each brand", sentiment, the COMPLETE trusted-source
+  list (not top-5), a question-by-question breakdown per engine, and the
+  fix plan — dark theme matching the app/report screens (hard rule 5),
+  StockedBy wordmark + a faint diagonal watermark on every page (paintPage()),
+  dynamic pagination via ensureSpace() using REAL measured text heights
+  (doc.heightOfString()) rather than fixed guesses — a fixed guess had
+  pdfkit's own auto-pagination silently inserting unpainted, unfooted
+  extra pages whenever real content ran longer than guessed. The footer
+  (page number + "Generated by StockedBy — stockedby.com", once per page,
+  no signoff) had its own separate bug: drawing text past a page's own
+  margins.bottom makes pdfkit's .text() think it doesn't fit and
+  auto-adds a new page for it, even after switchToPage() — two .text()
+  calls per footer meant two extra pages per real page, each carrying
+  half the footer (the reported "triple-repeat"). Fixed by zeroing
+  `doc.page.margins.bottom` for just the footer draw, then restoring it.
 - app/privacy/page.js — the site's privacy policy (uses the .legal styles
   in app/globals.css), linked from Footer.js. Covers what's collected at
   /test, /audit and the lead gate, who else sees it (Anthropic/Google/

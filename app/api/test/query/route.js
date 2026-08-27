@@ -82,6 +82,7 @@ export async function POST(request) {
     // Self-improvement infra (supabase/migrations/0003) — best-effort,
     // never blocks the response below.
     await logSystemEvent(e?.kind || "query_failure", "test", {
+      engine: "claude",
       text,
       archetype,
       error: e?.message,

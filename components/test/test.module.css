@@ -91,6 +91,14 @@
   border-color: #ffc53d;
   box-shadow: 0 0 0 2px rgba(255, 197, 61, 0.25);
 }
+.input:read-only {
+  color: #9db4a6;
+  cursor: default;
+}
+.input:read-only:focus {
+  border-color: #2e5240;
+  box-shadow: none;
+}
 .btn {
   width: 100%;
   background: #ffc53d;
@@ -352,24 +360,67 @@
   line-height: 1.5;
   margin: 10px 0 14px;
 }
-/* Email gate (LeadGate.js): a clipped, blurred teaser of the locked cards
-   in normal document flow, followed by the unlock form — no absolute
-   overlay, so it can never misbehave on mobile viewport heights it hasn't
-   been tested at (hard rule 3). */
-.gateWrap {
-  margin-bottom: 14px;
+/* Email gate modal (GateModal.js): opens immediately when "See full
+   report" is clicked (LeadGate.js mounts it as soon as it renders
+   unlocked=false) — centered panel on desktop, full-screen bottom sheet
+   on mobile (hard rule 3). Replaces the old blurred-teaser-in-document-
+   flow pattern, which read as "nothing happened" when the button was
+   near the bottom of the viewport. */
+.gateModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 31, 24, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
 }
-.gatePreview {
-  max-height: 220px;
-  overflow: hidden;
-  filter: blur(5px);
-  pointer-events: none;
-  user-select: none;
-  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 92%);
-  mask-image: linear-gradient(to bottom, #000 35%, transparent 92%);
+.gateModalPanel {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #14291f;
+  border: 1px solid #264434;
+  border-radius: 16px;
+  padding: 24px;
+}
+.gateModalClose {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: #9db4a6;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+}
+.gateModalClose:hover {
+  color: #f1f5ec;
+}
+.gateModalClose:focus-visible {
+  outline: 3px solid #f1f5ec;
+  outline-offset: 2px;
+}
+@media (max-width: 640px) {
+  .gateModalOverlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .gateModalPanel {
+    max-width: 100%;
+    width: 100%;
+    max-height: 92vh;
+    border-radius: 16px 16px 0 0;
+  }
 }
 .gateForm {
-  margin-top: -8px;
+  margin-top: 0;
 }
 .consentRow {
   display: flex;
@@ -387,32 +438,39 @@
   margin-top: 2px;
   accent-color: #ffc53d;
 }
-.retryRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 10px;
-  padding: 8px 12px;
-  border: 1px dashed #6b3a32;
-  border-radius: 8px;
+/* Partial-failure handling (VerdictCard.js) — quiet, no red, no border,
+   no box: a failed question that couldn't affect the verdict shows
+   nothing at all; one that could shows this single grey line instead of
+   the old dashed red box, which read as an alarming error even when the
+   verdict was already solid. */
+.retryHint {
+  margin-top: 8px;
   font-size: 12px;
-  color: #ffb3a6;
+  color: #7fa18c;
 }
-.retryBtn {
-  flex-shrink: 0;
-  background: transparent;
-  color: #ffb3a6;
-  border: 1px solid #ffb3a6;
-  border-radius: 6px;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 5px 10px;
+.retryHintBtn {
+  background: none;
+  border: none;
+  color: #7fa18c;
+  text-decoration: underline;
+  font-size: 12px;
   cursor: pointer;
+  padding: 0;
+  font-family: "Archivo", sans-serif;
 }
-.retryBtn:hover {
-  background: rgba(255, 107, 87, 0.12);
+.retryHintBtn:hover {
+  color: #f1f5ec;
+}
+.retryHintBtn:focus-visible {
+  outline: 3px solid #f1f5ec;
+  outline-offset: 2px;
+}
+/* 2+ failed questions — no verdict is shown at all, this replaces it. */
+.incompleteNotice {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-weight: 800;
+  font-size: clamp(20px, 5vw, 26px);
+  color: #9db4a6;
 }
 .sectionHint {
   font-size: 13px;

@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./test.module.css";
-import { ENGINE_ORDER, ENGINE_LABELS } from "@/lib/scoring";
+import { ENGINE_ORDER, ENGINE_LABELS, engineStatusLabel } from "@/lib/scoring";
 
 // Each question now runs as its own request (lib/runQueries.js, called
 // from components/test/TestFlow.js) instead of one /api/test invocation
@@ -18,31 +18,28 @@ import { ENGINE_ORDER, ENGINE_LABELS } from "@/lib/scoring";
 // in advance. No data is fabricated either way — if the on-demand harvest
 // doesn't happen, the post-run tab correctly falls back to the real
 // snapshot date or "data coming soon" once the response lands.
+// engineStatusLabel() (lib/scoring.js) is the one shared function both the
+// first run and the recheck screen use for the per-card freshness detail —
+// exactly two states, no confusing third "checking live now…" middle
+// state that read backwards for chatgpt/gemini when they were actually
+// the ones being live-harvested.
 //
-// label overrides the default "Asking N questions…" line — TestFlow.js
-// uses this for the report's "Retry" flow, scoped to just the question(s)
-// actually being retried.
+// heading overrides the top line ("Asking ChatGPT, Gemini and Claude
+// right now") — TestFlow.js's retry flow uses "Rechecking your shelf
+// across ChatGPT, Gemini and Claude" instead. label overrides the
+// "Asking N questions…" line below the tabs, scoped to just the
+// question(s) actually being retried.
 const DOT_CLASS = { searching: "dotSearching", done: "dotDone", error: "dotError" };
 
-export default function RunningPanel({ queries, harvestingEngines = [], liveStatus = {}, label }) {
-  const engineStatus = (e) => {
-    if (e === "claude") return "checking now";
-    if (harvestingEngines.includes(e)) return "checking live now…";
-    return "using recent answers";
-  };
-
+export default function RunningPanel({ queries, harvestingEngines = [], liveStatus = {}, label, heading }) {
   return (
     <div className={styles.card}>
-      <span className={styles.label}>
-        Checking with Claude now
-        {harvestingEngines.length > 0 &&
-          ` — also checking ${harvestingEngines.map((e) => ENGINE_LABELS[e]).join(" and ")}`}
-      </span>
+      <span className={styles.label}>{heading || "Asking ChatGPT, Gemini and Claude right now"}</span>
       <div className={styles.tabs}>
         {ENGINE_ORDER.map((e) => (
           <div key={e} className={`${styles.tab} ${styles.tabStatic}`}>
             {ENGINE_LABELS[e]}
-            <span className={styles.st}>{engineStatus(e)}</span>
+            <span className={styles.st}>{engineStatusLabel(e, harvestingEngines)}</span>
           </div>
         ))}
       </div>

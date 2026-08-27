@@ -103,6 +103,8 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
             engines={engines}
             sentiment={sentiment}
             trustedSources={trustedSources}
+            competitor={competitor}
+            mentionCount={mentionCount}
           >
             <CheckoutBattleCard brand={brand} brandWebsite={brandWebsite} destinations={report.destinations} />
             <ShareOfVoiceCard market={market} brand={brand} competitor={competitor} shareOfVoice={report.shareOfVoice} />
@@ -121,10 +123,12 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
             brand={brand}
             categoryName={category?.name}
             market={market}
+            competitor={competitor}
             brandWebsite={brandWebsite}
             report={report}
             engines={engines}
             sentiment={sentiment}
+            mentionCount={mentionCount}
             trustedSources={trustedSources}
             slug={slug}
             fullReportExpanded={userExpanded}

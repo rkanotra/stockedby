@@ -23,7 +23,8 @@ export async function POST(request) {
     return badRequest("Invalid JSON body.");
   }
 
-  const { brand, category, market, brandWebsite, report, engines, sentiment, trustedSources, reportUrl } = body || {};
+  const { brand, category, market, competitor, brandWebsite, report, engines, sentiment, mentionCount, trustedSources, reportUrl } =
+    body || {};
 
   const brandInput = typeof brand === "string" ? brand.trim() : "";
   if (!brandInput || !report || !engines) {
@@ -35,10 +36,12 @@ export async function POST(request) {
       brand: brandInput,
       categoryName: typeof category === "string" ? category : "",
       market: typeof market === "string" ? market : "",
+      competitor: typeof competitor === "string" ? competitor : null,
       brandWebsite: typeof brandWebsite === "string" ? brandWebsite : "",
       report,
       engines,
       sentiment,
+      mentionCount: typeof mentionCount === "number" ? mentionCount : undefined,
       trustedSources,
       reportUrl: typeof reportUrl === "string" ? reportUrl : null,
     });

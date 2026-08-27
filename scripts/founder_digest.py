@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """StockedBy weekly founder digest — self-improvement infrastructure.
 
-Summarizes the last 7 days across four real Supabase signals, nothing
+Summarizes the last 7 days across five real Supabase signals, nothing
 estimated:
   1. Custom-category requests ranked by count (what merchants ask for that
      the bank doesn't have yet — candidates for new bank categories).
@@ -9,10 +9,15 @@ estimated:
      failures (supabase/migrations/0003's system_events table, written by
      lib/systemEvents.js and scripts/harvest.py / scripts/retest.py's own
      log_event()).
-  3. New brand appearances — brands showing up in AI recommendations, per
+  3. Daily failure count — the same system_events rows, grouped by day, so
+     a spike is visible even if the per-pattern breakdown above looks
+     routine. Every failed question writes here regardless of what the
+     merchant ends up seeing on screen (VerdictCard.js's quiet-line / no-
+     verdict handling never suppresses the underlying log).
+  4. New brand appearances — brands showing up in AI recommendations, per
      market+category+engine, for the first time ever this week (not just a
      brand that happens to rank well — a genuinely first sighting).
-  4. Categories tested most — from `reports`, i.e. real merchant tests.
+  5. Categories tested most — from `reports`, i.e. real merchant tests.
 
 Run weekly (manually for now):  python3 scripts/founder_digest.py
 Dry run (print, don't email):   python3 scripts/founder_digest.py --dry-run
@@ -65,6 +70,18 @@ def system_event_patterns(since):
     return lines
 
 
+def daily_failure_counts(since):
+    """Per-day count of every system_events row this week — item 11's
+    "add daily failure count to the founder digest": a live-test question
+    that fails still writes a query_failure/sanity_rejection/parse_failure
+    row here regardless of what the merchant ends up seeing on screen
+    (VerdictCard.js's quiet-line / no-verdict handling), so this is the
+    real, complete failure volume, not just what was visibly retried."""
+    rows = sb("GET", "system_events", params=f"?created_at=gte.{since}&select=created_at")
+    counts = Counter((r.get("created_at") or "")[:10] for r in rows if r.get("created_at"))
+    return [f"  {day}: {n}" for day, n in sorted(counts.items())]
+
+
 def categories_tested_most(since):
     rows = sb("GET", "reports", params=f"?created_at=gte.{since}&select=category_id,market")
     counts = Counter((r.get("market"), r.get("category_id")) for r in rows if r.get("category_id"))
@@ -106,6 +123,7 @@ def main():
     body = f"StockedBy weekly digest — since {since}\n\n" + "\n\n".join([
         section("Custom-category requests (ranked)", custom_category_requests(since)),
         section("System-event patterns", system_event_patterns(since)),
+        section("Daily failure count", daily_failure_counts(since)),
         section("New brand appearances", new_brand_appearances(since)),
         section("Categories tested most", categories_tested_most(since)),
     ])

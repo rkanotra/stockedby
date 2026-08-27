@@ -47,6 +47,8 @@ export async function POST(request) {
     engines,
     sentiment,
     trustedSources,
+    competitor,
+    mentionCount,
   } = body || {};
 
   // "fix" leads (Fix Generator, /fix) reuse this same gate/endpoint per the
@@ -130,7 +132,18 @@ export async function POST(request) {
 
   if (sourceInput === "report") {
     let reportData =
-      report && engines ? { brand: brandInput, report, engines, sentiment, trustedSources, brandWebsite: effectiveBrandWebsite } : null;
+      report && engines
+        ? {
+            brand: brandInput,
+            report,
+            engines,
+            sentiment,
+            trustedSources,
+            brandWebsite: effectiveBrandWebsite,
+            competitor: typeof competitor === "string" ? competitor : null,
+            mentionCount: typeof mentionCount === "number" ? mentionCount : undefined,
+          }
+        : null;
 
     if (!reportData && slugInput) {
       try {
@@ -172,10 +185,12 @@ export async function POST(request) {
           brand: reportData.brand,
           categoryName: categoryInput,
           market: marketInput,
+          competitor: reportData.competitor,
           brandWebsite: reportData.brandWebsite,
           report: reportData.report,
           engines: reportData.engines,
           sentiment: reportData.sentiment,
+          mentionCount: reportData.mentionCount,
           trustedSources: reportData.trustedSources,
           reportUrl: slugInput ? `${SITE_URL}/report/${slugInput}` : null,
         });

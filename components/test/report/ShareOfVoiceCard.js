@@ -9,7 +9,7 @@ export default function ShareOfVoiceCard({ market, brand, competitor, shareOfVoi
 
   return (
     <div className={styles.card}>
-      <div className={styles.h2}>Share of AI Voice</div>
+      <div className={styles.h2}>How often AI picks each brand</div>
       <p className={styles.sectionHint}>
         Of every recommendation slot AI handed out across these questions, how many went to you
         versus the competition.
