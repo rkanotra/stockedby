@@ -92,6 +92,7 @@
   margin-bottom: 12px;
   outline: none;
   font-family: "Archivo", sans-serif;
+  transition: border-color 0.15s ease;
 }
 .input:focus {
   border-color: var(--accent);
@@ -122,6 +123,10 @@
   font-size: 17px;
   padding: 14px;
   cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn:hover:not(:disabled) {
+  background: var(--accent-hover);
 }
 .btn:disabled {
   background: var(--border-strong);
@@ -145,6 +150,13 @@
   padding: 10px;
   margin-top: 6px;
   cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+/* Restrained hover — a wash, not a full invert, so it never fights the
+   inline color/border overrides InstallationMode.js and FixResults.js's
+   PlatformPicker use to show an "inactive" toggle state. */
+.btnGhost:hover {
+  background: rgba(var(--accent-rgb), 0.12);
 }
 .btnGhost:focus-visible {
   outline: 3px solid var(--text-primary);
@@ -167,6 +179,7 @@
   font-size: 14px;
   cursor: pointer;
   text-align: left;
+  transition: border-color 0.15s ease;
 }
 .marketTab.active {
   background: var(--accent);
@@ -195,6 +208,7 @@
   display: flex;
   justify-content: space-between;
   gap: 8px;
+  transition: background 0.12s ease;
 }
 .catrow:last-child {
   border-bottom: none;
@@ -230,9 +244,11 @@
   flex-direction: column;
   gap: 4px;
   min-height: 64px;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 .marketCard:hover {
   border-color: var(--accent);
+  background: var(--bg-surface);
 }
 .marketCardName {
   font-family: "Bricolage Grotesque", sans-serif;
@@ -260,6 +276,7 @@
   min-height: 52px;
   display: flex;
   align-items: center;
+  transition: background 0.12s ease;
 }
 .catrowBig:last-child {
   border-bottom: none;
@@ -282,6 +299,7 @@
   outline: none;
   resize: vertical;
   min-height: 50px;
+  transition: border-color 0.15s ease;
 }
 .qedit:focus {
   border-color: var(--accent);
@@ -462,6 +480,7 @@
   cursor: pointer;
   padding: 6px;
   border-radius: 6px;
+  transition: color 0.15s ease;
 }
 .gateModalClose:hover {
   color: var(--text-primary);
@@ -541,6 +560,7 @@
   cursor: pointer;
   padding: 0;
   font-family: "Archivo", sans-serif;
+  transition: color 0.15s ease;
 }
 .retryHintBtn:hover {
   color: var(--text-primary);
@@ -573,6 +593,7 @@
   cursor: pointer;
   padding: 10px 0;
   margin-top: 4px;
+  transition: color 0.15s ease;
 }
 .disclosureToggle:hover {
   color: var(--accent-hover);
@@ -594,6 +615,7 @@
   cursor: pointer;
   padding: 12px 0;
   margin-top: 16px;
+  transition: color 0.15s ease;
 }
 .plainLink:hover {
   color: var(--text-secondary);
@@ -648,6 +670,19 @@
   font-size: 14px;
   color: var(--text-secondary);
 }
+/* General-purpose muted supporting line — used by AuditFindings.js,
+   CrawlerSummary.js, ProductJsonLdCard.js and FixResults.js. (Named for
+   its original home in the now-deleted StoryView.js; kept under the same
+   name rather than a rename-only churn across 4 files — a real regression
+   found during the visual-revamp pass: an earlier cleanup deleted this
+   class believing it was StoryView-only dead code, without checking these
+   other call sites, which silently lost their styling.) */
+.storyLine {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
 .engines {
   display: flex;
   gap: 8px;
@@ -701,6 +736,11 @@
   text-transform: uppercase;
   cursor: pointer;
   text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.tab:not(.active):not(.tabStatic):hover {
+  border-color: var(--text-muted);
+  color: var(--text-primary);
 }
 .tab.active {
   background: var(--accent);
@@ -1048,6 +1088,10 @@
   padding: 5px 10px;
   cursor: pointer;
   flex-shrink: 0;
+  transition: border-color 0.15s ease;
+}
+.copyBtn:hover {
+  border-color: var(--accent);
 }
 .copyBtn:focus-visible {
   outline: 3px solid var(--text-primary);

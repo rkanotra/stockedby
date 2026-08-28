@@ -179,9 +179,31 @@ sequences (a pinned-scroll shelf population, an engine-answer transition,
 a scroll-linked improvement-loop) — this session has no browser tool
 enabled to visually review animation timing/feel while building it, so
 that work waits for a follow-up pass where it can actually be watched
-render, not shipped blind. `/test`, `/audit`, `/fix` and the report/result
-pages were NOT touched by the visual revamp — they keep the dark Ink
-treatment from the founder-first redesign phase above, unchanged.
+render, not shipped blind. A following pass extended the same restraint
+to `/test` and `/audit`'s shared components/test/test.module.css: light
+hover/focus `transition`s (border-color/background/color, 0.12-0.15s)
+added to every previously-static interactive element — `.btn`/`.btnGhost`/
+`.input`/`.qedit`/`.tab`/`.marketTab`/`.marketCard`/`.catrow`/
+`.catrowBig`/`.copyBtn`/`.disclosureToggle`/`.plainLink`/
+`.retryHintBtn`/`.gateModalClose` — none of which had any before. No
+class renames, no layout changes, no new radius/spacing values (this
+file's existing 8/10/12/14/16px progression was already coherent enough
+not to warrant a risky mass token substitution this pass). `/audit`'s own
+information architecture (dynamic headline, Find/Understand/Buy journey,
+business-impact findings, action plan, technical detail behind
+disclosure) was already right from the founder-first redesign phase
+above — confirmed via direct read, nothing there needed changing. **Real
+regression found and fixed during this pass**: the Phase-9 cleanup
+earlier this session (commit 1ccc2d3) deleted `.storyLine` believing it
+was dead code left over from the deleted StoryView.js — a grep for
+`storyBig` (0 matches) was checked, but `.storyLine` itself was deleted
+in the same sweep without being individually re-checked, even though
+AuditFindings.js, CrawlerSummary.js, ProductJsonLdCard.js and
+FixResults.js (5 call sites total) all still reference it as a
+general-purpose muted supporting-line style, unrelated to StoryView.js.
+That shipped to production unstyled for one deploy; restored under the
+same name (renaming 5 call sites for a cosmetic-only class was not worth
+the churn) with a comment explaining why it survived.
 
 ## Hard rules
 1. **API keys server-side only.** ANTHROPIC_API_KEY, GEMINI_API_KEY,
