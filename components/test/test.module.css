@@ -339,19 +339,46 @@
   height: 9px;
   border-radius: 50%;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 .dotWaiting {
   background: var(--border-strong);
 }
+/* A real spinning ring, not a pulsing fill — real users reported the site
+   "looked frozen" during a live run, and a same-color dot that only
+   breathes between full and 30% opacity reads as barely-there on a phone
+   screen, especially next to a same-hued error dot (accent amber vs.
+   danger salmon look close to identical at 9px). Motion that's
+   unmistakably "spinning," not just color, is the fix — legible even to
+   someone who can't distinguish the two hues at a glance. */
 .dotSearching {
-  background: var(--accent);
-  animation: pulse 1s infinite;
+  width: 12px;
+  height: 12px;
+  margin: -1.5px;
+  background: transparent;
+  border: 2px solid rgba(var(--accent-rgb), 0.25);
+  border-top-color: var(--accent);
+  animation: spin 0.7s linear infinite;
 }
 /* "Done" is outcome-neutral (the question finished, not a verdict) — no
    green, per hard rule 5's verdict-colour rules extended to every status
-   dot, not just the report headline. */
+   dot, not just the report headline. A small checkmark (still rendered in
+   plain --text-secondary, not green) distinguishes "finished" from
+   "waiting" at a glance without relying on color alone. */
 .dotDone {
   background: var(--text-secondary);
+  position: relative;
+}
+.dotDone::after {
+  content: "";
+  position: absolute;
+  left: 2.5px;
+  top: 1px;
+  width: 3px;
+  height: 5px;
+  border: solid var(--bg-surface);
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
 }
 .dotError {
   background: var(--danger);
@@ -365,29 +392,68 @@
     opacity: 0.3;
   }
 }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .dotSearching {
     animation: none;
+    border-top-color: rgba(var(--accent-rgb), 0.25);
+  }
+  .tabStatusDot {
+    animation: none !important;
   }
 }
 /* /test engine status (hard rule 6's sibling rule): a live engine (Claude,
    always; ChatGPT/Gemini when harvesting on demand) shows this small
-   accent dot next to its tab; a cached engine shows text-muted status text
-   and no dot at all — see RunningPanel.js. */
+   spinning ring next to its tab; a cached engine shows text-muted status
+   text and no dot at all — see RunningPanel.js. Same spin treatment as
+   .dotSearching, smaller, so the "checking now" text has real motion next
+   to it instead of a static dot that never visibly changes. */
 .tabStatusDot {
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: var(--accent);
+  border: 1.5px solid rgba(var(--accent-rgb), 0.25);
+  border-top-color: var(--accent);
   margin-right: 4px;
   vertical-align: middle;
+  animation: spin 0.7s linear infinite;
 }
 .runningNote {
   font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
   color: var(--text-muted);
-  margin: -4px 0 12px;
+  margin: -4px 0 4px;
+  min-height: 1.5em;
+}
+/* Rotating reassurance line under .runningNote (RunningPanel.js) — real
+   content changing over time is the strongest "this isn't frozen" signal
+   there is, stronger than any single animated dot. Instant swap under
+   reduced-motion (the MESSAGE still rotates — that's real information,
+   not gratuitous motion — only the crossfade transition is disabled). */
+.runningStatus {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+  min-height: 1.5em;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .runningStatus {
+    animation: none;
+  }
 }
 .errBanner {
   background: rgba(var(--danger-rgb), 0.12);
