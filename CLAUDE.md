@@ -14,10 +14,16 @@ economy, built on three pillars:
   JSON-LD). Recommendation fraud detection is still roadmap too.
 
 The free shelf test is the acquisition wedge; monitoring subscriptions are the
-revenue; commerce trust infrastructure is the long-term moat. Markets:
-India, UAE, KSA (Saudi Arabia) — the go-to-market advantage. Pakistan and
-SEA are unannounced future expansion markets — do not mention them in
-user-facing copy until launched.
+revenue; commerce trust infrastructure is the long-term moat. Markets (see
+lib/marketProfiles.js — the single source of truth, "Market expansion"
+section below): India, UAE, Saudi Arabia (full, original three) + Qatar,
+Kuwait (full, new) + Oman, Bahrain (inherit Saudi Arabia's query bank) —
+all six listed and shown in the UI. Pakistan is wired through end to end
+(its own bank, wizard/API support) but deliberately `listed: false` —
+accepted via an explicit `?market=Pakistan`/`?market=PK` link, never
+rendered in the market picker, never mentioned in any copy, meta tag,
+sitemap or marketing surface. SEA remains an unannounced future expansion
+market — do not mention it in user-facing copy until launched.
 
 **Site philosophy — homepage narrative (restraint pass, narrows the
 "visual/creative revamp" phase's fuller narrative back down): hero, a real
@@ -222,6 +228,31 @@ rewrote several lines of generic/defensive marketing copy into shorter,
 concrete ones — a pure subtraction pass, no new sections or components
 added, per that pass's own explicit "the page should become shorter, not
 replace deleted content with new content" instruction.
+
+**Market expansion** (most recent phase — see the repo map's
+lib/marketProfiles.js entry and hard rule 6's note below for the full
+architecture): India/UAE/Saudi Arabia stay full-localized and unchanged
+in behavior; Qatar and Kuwait are new, full, listed markets (their own
+18-category priority query banks); Oman and Bahrain are new, listed,
+inherited-coverage markets (they read Saudi Arabia's query bank
+directly — no bank file of their own — but keep their own currency/
+retailer context); Pakistan is fully wired through (its own 18-category
+bank, wizard support, API validation) but `listed: false` — reachable
+only via an explicit `?market=Pakistan`/`?market=PK` link, never in the
+picker, never in copy. Query banks are now versioned (`version`/
+`generatedAt` on every bank file; every completed report persists which
+`queryBankVersion` produced it) and every /test submission logs two new
+freshness signals (a shopper's question edits; a zero-result category
+search) that a still-manual, human-reviewed refresh job will eventually
+consume — see lib/marketProfiles.js's repo-map entry for the full list of
+new files. **[RESEARCH — still needs founder sign-off, do not treat as
+verified]**: Oman and Bahrain's retailer lists (Oman: Noon only,
+cross-border; Bahrain: empty, thin market largely served via amazon.ae)
+and Pakistan's beauty-vertical coverage beyond Daraz — all three carry
+`needsVerification: true` in lib/marketProfiles.js itself. Also still
+outstanding, same as every prior migration: `0007_market_expansion_
+freshness.sql` (query_edits/failed_category_searches/autocomplete_pulls)
+has not been run against the live Supabase project yet.
 
 ## Hard rules
 1. **API keys server-side only.** ANTHROPIC_API_KEY, GEMINI_API_KEY,
@@ -439,19 +470,41 @@ replace deleted content with new content" instruction.
   historical export, not a rule override; components/Hero.js (the live
   component) has already dropped them and is the one that matters.
 - docs/api-lead-resend.ts — lead endpoint reference implementation.
-- data/india.json — accepted India query bank (ChatGPT-generated, 100 cats ×
-  4 queries). Flags resolved: "route me" phrasing reworded; leader brands
-  verified ("Modest Essentials", "Nykaa Cosmetics").
+- data/india.json — accepted India query bank (ChatGPT-generated, 101 cats
+  × 4 queries; `version: 1`, `generatedAt` — market-expansion phase's
+  versioning baseline, every bank file that existed before versioning was
+  introduced gets `version: 1`, not a retroactive lie). Flags resolved:
+  "route me" phrasing reworded; leader brands verified ("Modest
+  Essentials", "Nykaa Cosmetics").
 - data/india-v2-grok.json — accepted Grok-generated variant bank; "Grok"
   here is only the phrasing-generation source for these -v2 query variants
   (answer-stability metrics), not a claim that Grok is a tested/displayed
   engine — it isn't, and never was wired into lib/bank.js. Flags resolved:
   Hinglish problem-first language fields relabeled; "Local modest brands"
   leader replaced with "Shiddat".
-- data/uae.json — accepted UAE query bank (50 categories). Harvested Claude
-  snapshots ship inline in the bank file (no separate seed file).
-- data/ksa.json — accepted KSA query bank (47 categories). No snapshots
-  harvested yet — engine tabs show "data coming soon" until harvested.
+- data/uae.json — accepted UAE query bank (51 categories, `version: 1`).
+  Harvested Claude snapshots ship inline in the bank file (no separate
+  seed file). `group` is present on only 41/51 categories (a real, minor
+  data inconsistency vs. India/KSA's 100% — not yet normalized).
+- data/ksa.json — accepted KSA query bank (48 categories, 120 real
+  harvested snapshots already inline, `version: 1`).
+- data/qatar.json, data/kuwait.json — market-expansion phase, new full
+  banks (18 priority categories each, `version: 1`): QAR/KWD price bands,
+  Gulf Arabic + English, retailer context from lib/marketProfiles.js
+  (Boutiqaat/Sephora.me/Snoonu/Talabat for Qatar; Kuwait's own list adds
+  X-cite for the electronics category specifically). Both pass
+  scripts/check_query_bank.py with zero warnings. Not full 100-category
+  parity with India — matches UAE/KSA's own precedent of never reaching
+  that scale either; a deliberate priority-set scope decision, not a
+  shortcut.
+- data/pakistan.json — market-expansion phase, new full bank (18
+  categories, Roman Urdu + English, PKR bands, Daraz context, `version:
+  1`). `listed: false` in lib/marketProfiles.js — this bank is real and
+  fully wired through the wizard/API, just never surfaced in the market
+  picker or mentioned in copy. Oman and Bahrain deliberately have NO bank
+  file of their own — lib/marketProfiles.js's `queryBankKey: "KSA"` makes
+  lib/bank.js read data/ksa.json directly for both, while their own
+  currency/retailer context still comes from their own profile entry.
 - data/snapshots-india-seed.json — real harvested Claude snapshots (TWS
   earbuds, boAt routing, vitamin-C serum) for India, merged into india.json's
   categories by lib/bank.js / lib/bankMerge.js. Its category ids must match
@@ -464,7 +517,69 @@ replace deleted content with new content" instruction.
   picker (fixed by renaming it) — and mergeBank() itself used to replace a
   matching bank category wholesale instead of merging, which had silently
   discarded 8 of "tws-earbuds"'s 10 real harvested snapshots (also fixed).
-- scripts/check_query_bank.py — acceptance gate for all bank batches.
+- scripts/check_query_bank.py — acceptance gate for all bank batches; six
+  failure-mode checks (its own docstring — one more than docs/stockedby-
+  data-kit.md §2b's "five," a "budget gaming" check added later that the
+  doc text was never updated to mention). Its `CURRENCY` dict has a
+  per-market entry for every market now (India/UAE/KSA/Qatar/Kuwait/Oman/
+  Bahrain/Pakistan, plus a generic "GCC" fallback kept for backward
+  compatibility) — market-expansion phase; before this, only India/GCC/
+  Pakistan existed, so UAE's and KSA's own bank files weren't being
+  currency-checked at all (neither "UAE" nor "KSA" matched any key).
+- lib/marketProfiles.js — the single source of truth for every market's
+  country/currency/language/retailer data (market-expansion phase).
+  Exports `MARKET_PROFILES` (keyed by the existing "India"/"UAE"/"KSA"-
+  style names, not ISO codes — `countryCode` is a FIELD inside each
+  profile, not the lookup key, to avoid a breaking rename of already-
+  persisted data), `listMarkets({includeUnlisted})` (Pakistan is
+  `listed: false` — only visible with `includeUnlisted: true`),
+  `getMarketProfile()`, `guessMarketFromDomain()` (TLD match only, never
+  infers from `.com`), `resolveMarketParam()` (accepts either the
+  canonical key or a profile's `countryCode` case-insensitively, so
+  `?market=Pakistan` and `?market=PK` both work), and
+  `allMarketplaceDomains()` (flattens every profile's `marketplaces[]` +
+  `retailersByCategory{}` into lib/scoring.js's destination-classification
+  override list). lib/scoring.js's `RIVALS`/`RIVAL_LABELS`/
+  `MARKET_LABELS`/`MARKET_LOCALE`/`KNOWN_MARKETPLACE_ROOTS` are now thin
+  derived exports computed from this file, kept as the same named exports
+  so no existing importer needed to change. `lib/bank.js` and
+  lib/bankStatic.js's market→bank-file maps derive their filename from
+  each profile's `queryBankKey` (Oman/Bahrain → `"KSA"` → `ksa.json`, no
+  separate file). Every `needsVerification: true` profile field (Oman,
+  Bahrain, Pakistan) is a `[RESEARCH]` flag from the market-expansion
+  brief — real retailer/coverage data not yet founder-confirmed, never
+  silently treated as verified.
+- supabase/migrations/0007_market_expansion_freshness.sql — three new
+  tables, all read-only signal collection for scripts/
+  refresh_query_bank.py's future refresh loop: `query_edits` (a shopper
+  editing a prefilled question away from its generated original — logged
+  from components/test/TestFlow.js's `startTest()`, via
+  app/api/test/route.js, after a report saves successfully), `failed_
+  category_searches` (a zero-result category search the user did NOT
+  proceed past — components/test/CategoryStep.js's debounced client
+  trigger, ~800ms settle + >=3 chars to avoid logging every keystroke of
+  an incomplete search, via the new app/api/log-failed-search/route.js;
+  deliberately a different signal from the existing `custom_category_
+  requests`, which only logs a request the user DID proceed with), and
+  `autocomplete_pulls` (scripts/autocomplete_pull.py's external drift
+  data). Not yet applied to the live project, same manual step as every
+  prior migration.
+- scripts/autocomplete_pull.py — monthly-runnable, manual (no cron), pulls
+  Google's public autocomplete suggestions for each market's category
+  seed terms with a `gl=`/`hl=` country/language parameter per market, via
+  `harvest.py`'s shared `sb()`/`load_env()`/`log_event()`. No UI.
+- scripts/refresh_query_bank.py — the market-expansion brief's explicitly-
+  scoped SKELETON: real data-loading (`query_edits` + latest
+  `autocomplete_pulls` per market), real validation pass-through
+  (subprocess into `check_query_bank.py`), and a real, independently-
+  tested `write_drift_report()` (language-mix delta, budget-number delta,
+  sample old-vs-new questions per category, side by side) — but
+  `generate_candidate_bank()` (the actual "assemble docs/stockedby-data-
+  kit.md §2b's prompt, call an LLM, parse a candidate bank" step) is a
+  documented `NotImplementedError` stub, deliberately deferred follow-up
+  work. Never auto-publishes anything — the script's own header warns
+  twice — always stops after writing a candidate + drift report for a
+  human to review.
 - lib/freshness.js — SNAPSHOT_MAX_AGE_DAYS + staleEnginesFor(), shared
   client+server (no fs/API keys), used by app/api/test/route.js to decide
   when to harvest on demand and by components/test/TestFlow.js to preview
