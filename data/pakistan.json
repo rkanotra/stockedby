@@ -1,0 +1,673 @@
+{
+  "market": "Pakistan",
+  "version": 1,
+  "generatedAt": "2026-08-28",
+  "categories": [
+    {
+      "id": "face-serum-vitamin-c",
+      "name": "Face serum · vitamin C",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "face-serum-vitamin-c-discovery",
+          "text": "Vitamin C serum for dull skin, budget around PKR 2000.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "face-serum-vitamin-c-local",
+          "text": "chehre ki rangat nikharne wala serum jo sasta bhi ho aur asar bhi kare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "face-serum-vitamin-c-branded",
+          "text": "Is The Ordinary serum genuine on Daraz or better to order from abroad?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "The Ordinary"
+        },
+        {
+          "qid": "face-serum-vitamin-c-problem",
+          "text": "My face looks tired and dull no matter how much I sleep, what would actually fix that?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sunscreen",
+      "name": "Sunscreen",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "sunscreen-discovery",
+          "text": "Sunscreen that doesn't feel greasy in this heat, under PKR 1500.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sunscreen-local",
+          "text": "garmi mein bhi chipchipa na lage aisa sunblock chahiye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "sunscreen-branded",
+          "text": "Where can I find real La Roche-Posay sunscreen in Karachi or Lahore, not a fake?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "La Roche-Posay"
+        },
+        {
+          "qid": "sunscreen-problem",
+          "text": "My skin breaks out the second summer starts, what should I actually be putting on it?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "hair-oil",
+      "name": "Hair oil",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "hair-oil-discovery",
+          "text": "Hair oil that stops breakage, budget under PKR 800.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hair-oil-local",
+          "text": "baalon ka girna kam karne wala tel jo asli mein kaam kare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "hair-oil-branded",
+          "text": "Is Dabur hair oil worth it compared to the local brands sold everywhere?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Dabur"
+        },
+        {
+          "qid": "hair-oil-problem",
+          "text": "My hair keeps snapping off no matter how gently I handle it, what's actually going wrong?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "mens-sunglasses",
+      "name": "Men's sunglasses",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "mens-sunglasses-discovery",
+          "text": "Sunglasses that actually block glare while driving, around PKR 3000.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mens-sunglasses-local",
+          "text": "dhoop mein driving ke liye acha chashma jo sasta bhi ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "mens-sunglasses-branded",
+          "text": "Are Nike sunglasses cheaper at a local mall or ordering through Daraz?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nike"
+        },
+        {
+          "qid": "mens-sunglasses-problem",
+          "text": "The sun here is brutal on my eyes even with sunglasses on, am I buying the wrong kind?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "abayas-modest-fashion",
+      "name": "Modest fashion",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "abayas-modest-fashion-discovery",
+          "text": "Something modest and comfortable for daily wear, budget PKR 5000.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "abayas-modest-fashion-local",
+          "text": "roz pehnne ke liye halka aur sadha libas chahiye jo garmi mein bhi theek rahe",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "abayas-modest-fashion-branded",
+          "text": "Is Khaadi actually worth the price compared to what's stitched locally?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Khaadi"
+        },
+        {
+          "qid": "abayas-modest-fashion-problem",
+          "text": "Everything I own either feels too heavy or doesn't hold up after a few washes, what actually lasts?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sneakers",
+      "name": "Sneakers",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "sneakers-discovery",
+          "text": "Sneakers that don't hurt after a full day on your feet, under PKR 6000.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sneakers-local",
+          "text": "poora din pehnne ke liye aaram wala joota jo mehnga na ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "sneakers-branded",
+          "text": "Are Nike sneakers genuine on Daraz or should I only trust the outlet stores?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nike"
+        },
+        {
+          "qid": "sneakers-problem",
+          "text": "By the end of the day my feet are aching even in shoes people call comfortable, what am I missing?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "protein-powder",
+      "name": "Protein powder",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "protein-powder-discovery",
+          "text": "Whey protein that actually dissolves properly, budget around PKR 10000.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "protein-powder-local",
+          "text": "whey protein jo achi tarah ghul jaye aur zaiqa bhi bura na ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "protein-powder-branded",
+          "text": "Is Optimum Nutrition whey from Daraz actually genuine or mostly fake stock?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Optimum Nutrition"
+        },
+        {
+          "qid": "protein-powder-problem",
+          "text": "I've been at the gym for months with barely any visible change, could my diet be the actual problem?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "healthy-snacks",
+      "name": "Healthy snacks",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "healthy-snacks-discovery",
+          "text": "Snacks under PKR 500 that don't feel like junk food.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "healthy-snacks-local",
+          "text": "office ke liye halka healthy snack jo zyada mehnga na ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "healthy-snacks-branded",
+          "text": "Does Nature Valley actually taste good or is it just marketed as healthy?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nature Valley"
+        },
+        {
+          "qid": "healthy-snacks-problem",
+          "text": "By late afternoon I'm starving and grab whatever's closest, what would actually keep me full longer?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "coffee",
+      "name": "Coffee",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "coffee-discovery",
+          "text": "Instant coffee that doesn't taste bitter, around PKR 900.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "coffee-local",
+          "text": "coffee jiska taste kadwa na ho aur ghar par asani se bane",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "coffee-branded",
+          "text": "Is Nescafé Gold really different from the regular jar or just packaging?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nescafé"
+        },
+        {
+          "qid": "coffee-problem",
+          "text": "Whatever I make at home always turns out bitter no matter the brand, what step am I missing?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "multivitamins",
+      "name": "Multivitamins",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "multivitamins-discovery",
+          "text": "A daily multivitamin for energy, budget under PKR 1500.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "multivitamins-local",
+          "text": "roz ki thakawat ke liye vitamin jo pait kharab na kare",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "multivitamins-branded",
+          "text": "Is Centrum actually better than the cheaper pharmacy-brand multivitamins?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Centrum"
+        },
+        {
+          "qid": "multivitamins-problem",
+          "text": "I sleep a full night and I'm still exhausted by noon, could that be something I'm missing in my diet?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "wellness-supplements",
+      "name": "Wellness supplements",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "wellness-supplements-discovery",
+          "text": "A herbal tonic for general energy, budget around PKR 1000.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "wellness-supplements-local",
+          "text": "jism ki kamzori aur thakan ke liye acha herbal tonic chahiye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "wellness-supplements-branded",
+          "text": "Does Hamdard's Cinkara or Sualin actually help, or is it more of a placebo?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Hamdard"
+        },
+        {
+          "qid": "wellness-supplements-problem",
+          "text": "I feel run down most days even though nothing's medically wrong, what actually helps with that?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "baby-skincare",
+      "name": "Baby skincare",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "baby-skincare-discovery",
+          "text": "A gentle lotion for newborn skin, under PKR 1200.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "baby-skincare-local",
+          "text": "naye paida hue bacche ki jild ke liye nazuk lotion chahiye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "baby-skincare-branded",
+          "text": "Is Johnson's Baby lotion still the safest option or have better ones come out?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Johnson's Baby"
+        },
+        {
+          "qid": "baby-skincare-problem",
+          "text": "My baby keeps getting red patches no matter what cream we use, what's actually causing it?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "bedsheets",
+      "name": "Bedsheets",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "bedsheets-discovery",
+          "text": "Cotton sheets that stay cool through summer nights, around PKR 4000 a set.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "bedsheets-local",
+          "text": "garmi ki raaton mein thandi rehne wali cotton chadar chahiye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "bedsheets-branded",
+          "text": "Is Al-Karam bedding good quality for the price or is it overpriced now?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Al-Karam"
+        },
+        {
+          "qid": "bedsheets-problem",
+          "text": "I wake up sweating most nights even with the fan on full, could the bedding be part of the problem?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cookware",
+      "name": "Cookware",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "cookware-discovery",
+          "text": "A non-stick set that doesn't wear out within a year, budget PKR 8000.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cookware-local",
+          "text": "roz ke istemal ke liye tikau non-stick bartan chahiye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "cookware-branded",
+          "text": "Is Prestige cookware from the local store genuine or should I check for fakes?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Prestige"
+        },
+        {
+          "qid": "cookware-problem",
+          "text": "Food sticks to every pan I own no matter how much oil I use, is it the pan or my cooking?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "tws-earbuds",
+      "name": "TWS earbuds",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "tws-earbuds-discovery",
+          "text": "Earbuds with a battery that lasts a full day, under PKR 6000.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "tws-earbuds-local",
+          "text": "aise earbuds chahiye jinki battery poora din chale aur awaz saaf ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "tws-earbuds-branded",
+          "text": "Are Samsung Galaxy Buds genuine on Daraz or is it safer to buy from an authorized store?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Samsung"
+        },
+        {
+          "qid": "tws-earbuds-problem",
+          "text": "My earbuds keep dropping connection every few minutes even with my phone right there, what's wrong?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "smartwatches",
+      "name": "Smartwatches",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "smartwatches-discovery",
+          "text": "A smartwatch that tracks sleep accurately, budget around PKR 15000.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "smartwatches-local",
+          "text": "neend aur qadam sahi track karne wali smartwatch chahiye",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "smartwatches-branded",
+          "text": "Is the Apple Watch SE worth it in Pakistan or do local alternatives track just as well?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Apple"
+        },
+        {
+          "qid": "smartwatches-problem",
+          "text": "My watch and my phone show totally different step counts every single day, which one should I trust?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sensitive-skincare",
+      "name": "Sensitive skincare",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "sensitive-skincare-discovery",
+          "text": "A fragrance-free moisturizer, budget around PKR 1800.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sensitive-skincare-local",
+          "text": "khushbu wale bagair aisi cream jo hassas jild ke liye theek ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "sensitive-skincare-branded",
+          "text": "Does Cetaphil genuinely help with eczema-prone skin or is it just hype?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Cetaphil"
+        },
+        {
+          "qid": "sensitive-skincare-problem",
+          "text": "My skin stings within minutes of trying anything new, is there something gentle enough to actually use?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cricket-gear",
+      "name": "Cricket gear",
+      "group": "Fitness & Sports",
+      "queries": [
+        {
+          "qid": "cricket-gear-discovery",
+          "text": "A decent bat for weekend tape-ball matches, budget under PKR 6000.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cricket-gear-local",
+          "text": "tape ball ke liye achi bat chahiye jo mehngi na ho",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ur-en"
+        },
+        {
+          "qid": "cricket-gear-branded",
+          "text": "Are Grays bats worth the price over the local brands sold at the market?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Grays"
+        },
+        {
+          "qid": "cricket-gear-problem",
+          "text": "My shots keep mistiming even though my technique feels fine, could the equipment actually be the issue?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    }
+  ]
+}

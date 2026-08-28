@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { getCategory, listMarkets } from "@/lib/bank";
+import { getCategory, listMarkets, getBankVersion } from "@/lib/bank";
 import { analyzeSentiment } from "@/lib/claudeClient";
 import { HARVEST_ENGINES } from "@/lib/harvestClients";
 import { staleEnginesFor } from "@/lib/freshness";
 import { fetchCachedSnapshots, writeThroughSnapshot } from "@/lib/snapshotCache";
 import { saveReport } from "@/lib/reports";
+import { supabase } from "@/lib/supabaseClient";
 import {
   ENGINE_ORDER,
   matches,
@@ -65,9 +66,21 @@ export async function POST(request) {
     queries: queryOverrides,
     customCategory,
     liveRuns: clientLiveRuns,
+    queryEdits: clientQueryEdits,
   } = body || {};
 
-  if (!market || !listMarkets().includes(market)) {
+  // includeUnlisted: true — Pakistan is a real, testable market (accepted
+  // via an explicit ?market=Pakistan/?market=PK link) even though it's
+  // never shown in MarketStep's picker. "market is persisted data, not UI
+  // state" (market-expansion phase) — this validation is the one place
+  // that distinction actually matters: a hidden market still has to be a
+  // REAL market, and an unrecognized one still fails loudly here, never a
+  // silent fallback to India.
+  // The error message only ever lists LISTED markets, even though the
+  // check itself accepts unlisted ones too (Pakistan) — an invalid-market
+  // 400 is a public response; it must never be how a curious prober
+  // discovers a market that's supposed to stay hidden.
+  if (!market || !listMarkets({ includeUnlisted: true }).includes(market)) {
     return badRequest(`"market" must be one of: ${listMarkets().join(", ")}.`);
   }
   if (!customCategory && (!categoryId || typeof categoryId !== "string")) {
@@ -208,10 +221,28 @@ export async function POST(request) {
   // 4 queries = 8 extra calls, max, run in parallel below.
   const HARVEST_QUERY_CAP = 4;
   const HARVEST_ENV_KEY = { gemini: "GEMINI_API_KEY", chatgpt: "OPENAI_API_KEY" };
-  const harvestEngines = staleEnginesFor(
+  let harvestEngines = staleEnginesFor(
     { snapshots: allSnapshots },
     ENGINE_ORDER.filter((e) => e !== "claude")
   ).filter((e) => Boolean(process.env[HARVEST_ENV_KEY[e]]));
+
+  // Cost control (market-expansion phase): a per-market daily cap plus one
+  // global ceiling on ON-DEMAND HARVEST specifically (never on the free
+  // test itself — checkAndConsume(ip) above already caps that). Reuses the
+  // exact composite-key trick app/api/fix established (a plain string
+  // passed as the "identity" to key on, no changes to lib/rateLimit.js
+  // needed) — keying on market/"global" instead of an IP. A tripped cap
+  // never fails the test: it just skips harvest for this run and falls
+  // through to the existing snapshot/"missing" behavior below, same as
+  // when no API key is configured at all.
+  if (harvestEngines.length > 0) {
+    const marketCap = checkAndConsume(market, { namespace: "harvest-market", limit: 30 });
+    const globalCap = checkAndConsume("global", { namespace: "harvest-global", limit: 150 });
+    if (!marketCap.allowed || !globalCap.allowed) {
+      await logSystemEvent("harvest_cap_trip", "test", { market, marketAllowed: marketCap.allowed, globalAllowed: globalCap.allowed });
+      harvestEngines = [];
+    }
+  }
   const harvestQueries = finalQueries.slice(0, HARVEST_QUERY_CAP);
   const harvestJobs = harvestEngines.flatMap((engine) => harvestQueries.map((q) => ({ engine, q })));
 
@@ -437,6 +468,9 @@ export async function POST(request) {
   const categoryOut = { id: category.id, name: category.name, group: category.group };
   const fanout = computeFanout(liveRuns);
   const trustedSources = computeTrustedSources(liveRuns);
+  // Query-bank versioning (market-expansion phase): null for a custom
+  // category, since that never reads from a bank file at all.
+  const queryBankVersion = customCategory ? null : getBankVersion(market);
 
   // Every completed test is saved (slug "{brand}-{category}-{shortid}"),
   // gate or no gate — components/test/report/ReportView.js's blur-lock is a
@@ -463,12 +497,40 @@ export async function POST(request) {
       engines: engineData,
       fanout,
       trustedSources,
+      queryBankVersion,
     },
   });
+
+  // Freshness signal (market-expansion phase): best-effort, never blocks
+  // the response — same non-blocking pattern as every other Supabase write
+  // in this route. Logged AFTER the report saves (not earlier) so an edit
+  // is only recorded against a test that actually completed, and can carry
+  // the report's own slug as its test_id.
+  if (Array.isArray(clientQueryEdits) && clientQueryEdits.length > 0) {
+    const db = supabase();
+    if (db) {
+      try {
+        await db.from("query_edits").insert(
+          clientQueryEdits
+            .filter((e) => e && typeof e.originalText === "string" && typeof e.editedText === "string")
+            .map((e) => ({
+              market,
+              category: typeof e.category === "string" ? e.category : null,
+              original_text: e.originalText,
+              edited_text: e.editedText,
+              test_id: slug || null,
+            }))
+        );
+      } catch (e) {
+        console.error("[test] query_edits insert failed", e?.message || e);
+      }
+    }
+  }
 
   return NextResponse.json({
     ok: true,
     market,
+    queryBankVersion,
     category: categoryOut,
     isCustom: Boolean(customCategory),
     brand: brandName,

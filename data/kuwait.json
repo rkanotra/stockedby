@@ -1,0 +1,673 @@
+{
+  "market": "Kuwait",
+  "version": 1,
+  "generatedAt": "2026-08-28",
+  "categories": [
+    {
+      "id": "face-serum-vitamin-c",
+      "name": "Face serum · vitamin C",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "face-serum-vitamin-c-discovery",
+          "text": "Vitamin C serum that won't sting, budget around KWD 20.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "face-serum-vitamin-c-local",
+          "text": "سيروم فيتامين سي يفتح البشرة بدون ما يهيجها",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "face-serum-vitamin-c-branded",
+          "text": "Can I find The Ordinary vitamin C serum at Boots Kuwait or is it only sold online?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "The Ordinary"
+        },
+        {
+          "qid": "face-serum-vitamin-c-problem",
+          "text": "No matter what I put on my face it still looks tired and uneven, what would actually fix that?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sunscreen",
+      "name": "Sunscreen",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "sunscreen-discovery",
+          "text": "Lightweight sunscreen for humid weather, under KWD 8.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sunscreen-local",
+          "text": "واقي شمس خفيف ما يخلي البشرة دهنية بالصيف",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sunscreen-branded",
+          "text": "Is La Roche-Posay sunscreen genuine at the pharmacies in Kuwait or should I order direct?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "La Roche-Posay"
+        },
+        {
+          "qid": "sunscreen-problem",
+          "text": "Five minutes outside and my skin starts stinging, what am I supposed to be protecting it with?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "hair-oil",
+      "name": "Hair oil",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "hair-oil-discovery",
+          "text": "Hair oil that actually absorbs instead of sitting greasy, under KWD 6.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hair-oil-local",
+          "text": "زيت للشعر يقلل التقصف بدون ما يثقل الشعر",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "hair-oil-branded",
+          "text": "Where's the best place in Kuwait to buy real Moroccanoil, not a knockoff?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Moroccanoil"
+        },
+        {
+          "qid": "hair-oil-problem",
+          "text": "My hair snaps off at the ends no matter how careful I am, what's actually going wrong?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "oud-products",
+      "name": "Oud",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "oud-products-discovery",
+          "text": "Oud that lasts through a whole evening out, budget KWD 35.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "oud-products-local",
+          "text": "عود ريحته تدوم طويل بسعر مو مبالغ فيه",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "oud-products-branded",
+          "text": "Is it worth buying Arabian Oud in-store or does their website have better prices?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Arabian Oud"
+        },
+        {
+          "qid": "oud-products-problem",
+          "text": "By the time I get anywhere the scent I put on this morning is already gone, is that normal?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "mens-sunglasses",
+      "name": "Men's sunglasses",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "mens-sunglasses-discovery",
+          "text": "Sunglasses that actually cut the glare while driving, around KWD 25.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mens-sunglasses-local",
+          "text": "نظارة شمسية رجالية تناسب قيادة السيارة بالنهار",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "mens-sunglasses-branded",
+          "text": "Do Ray-Ban prices at The Avenues make sense or is ordering online cheaper?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ray-Ban"
+        },
+        {
+          "qid": "mens-sunglasses-problem",
+          "text": "The sun here is brutal on my eyes even with sunglasses on, what am I doing wrong?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "abayas-modest-fashion",
+      "name": "Abayas",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "abayas-modest-fashion-discovery",
+          "text": "A plain abaya that doesn't feel heavy in summer, budget KWD 30.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "abayas-modest-fashion-local",
+          "text": "عباية يومية خفيفة تتحمل الحر بسعر مناسب",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "abayas-modest-fashion-branded",
+          "text": "How long does Modanisa actually take to ship an abaya order to Kuwait?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Modanisa"
+        },
+        {
+          "qid": "abayas-modest-fashion-problem",
+          "text": "Half of what I own for modest wear is too warm to wear most of the year, is there a fabric that actually helps?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sneakers",
+      "name": "Sneakers",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "sneakers-discovery",
+          "text": "Sneakers I can wear all day without my feet aching, under KWD 35.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sneakers-local",
+          "text": "حذاء رياضي مريح للمشي الطويل بسعر معقول",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sneakers-branded",
+          "text": "Are Nike sneakers cheaper bought locally in Kuwait or shipped from Nike's own site?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nike"
+        },
+        {
+          "qid": "sneakers-problem",
+          "text": "By evening my feet are killing me even in shoes that are supposed to be comfortable, what's missing?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "protein-powder",
+      "name": "Protein powder",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "protein-powder-discovery",
+          "text": "Whey protein that mixes smoothly, budget around KWD 18.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "protein-powder-local",
+          "text": "بروتين واي يذوب زين وطعمه مو مزعج",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "protein-powder-branded",
+          "text": "Is Optimum Nutrition whey from the Kuwait supplement stores actually authentic?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Optimum Nutrition"
+        },
+        {
+          "qid": "protein-powder-problem",
+          "text": "Months at the gym and my progress has basically stalled, could my diet be holding me back?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "healthy-snacks",
+      "name": "Healthy snacks",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "healthy-snacks-discovery",
+          "text": "Snacks under KWD 3 that still feel like a treat.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "healthy-snacks-local",
+          "text": "سناكس صحية للسيارة أو الشغل بدون سكر زيادة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "healthy-snacks-branded",
+          "text": "Does Bayara sell their nut mixes at Sultan Center or only their own shops?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Bayara"
+        },
+        {
+          "qid": "healthy-snacks-problem",
+          "text": "By mid-afternoon I'm starving and end up grabbing whatever's nearby, what would actually hold me over?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "coffee",
+      "name": "Coffee",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "coffee-discovery",
+          "text": "Medium roast beans with real flavor, around KWD 5 a bag.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "coffee-local",
+          "text": "قهوة محمصة نص تحميص طعمها غني ومو حامضة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "coffee-branded",
+          "text": "Does Nescafé taste any different between the local jars and imported ones?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nescafé"
+        },
+        {
+          "qid": "coffee-problem",
+          "text": "Whatever I brew tastes bitter no matter the machine I use, what step am I missing?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "dates",
+      "name": "Dates",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "dates-discovery",
+          "text": "Nice dates for gifting relatives, budget KWD 8 a box.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "dates-local",
+          "text": "تمر فاخر يصلح هدية للأهل بسعر معقول",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "dates-branded",
+          "text": "Is Bateel worth the price over what's sold at the Kuwait souq?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Bateel"
+        },
+        {
+          "qid": "dates-problem",
+          "text": "The gift box I bring every year looks identical to the last one, what would actually stand out?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "multivitamins",
+      "name": "Multivitamins",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "multivitamins-discovery",
+          "text": "A daily multivitamin that doesn't upset my stomach, under KWD 10.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "multivitamins-local",
+          "text": "فيتامينات يومية تساعد على التعب وقلة التركيز",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "multivitamins-branded",
+          "text": "Is Centrum genuinely better than the pharmacy's own-brand multivitamin in Kuwait?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Centrum"
+        },
+        {
+          "qid": "multivitamins-problem",
+          "text": "I sleep enough but I'm still exhausted by midday, could that be a diet gap?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "baby-skincare",
+      "name": "Baby skincare",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "baby-skincare-discovery",
+          "text": "Something gentle for newborn skin, under KWD 8.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "baby-skincare-local",
+          "text": "كريم مرطب للأطفال حديثي الولادة بمكونات آمنة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "baby-skincare-branded",
+          "text": "Is Mustela really necessary for a newborn or is it fine to wait a bit?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Mustela"
+        },
+        {
+          "qid": "baby-skincare-problem",
+          "text": "My baby's cheeks keep getting red and irritated no matter what cream we try, why?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "bedsheets",
+      "name": "Bedsheets",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "bedsheets-discovery",
+          "text": "Sheets that actually stay cool overnight, around KWD 20 a set.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "bedsheets-local",
+          "text": "شراشف قطن باردة ومريحة لليالي الحارة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "bedsheets-branded",
+          "text": "Is IKEA bedding good value in Kuwait or is it worth paying more elsewhere?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "IKEA"
+        },
+        {
+          "qid": "bedsheets-problem",
+          "text": "I wake up sweating most nights even with the AC running, could the bedding be part of it?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cookware",
+      "name": "Cookware",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "cookware-discovery",
+          "text": "A non-stick set that doesn't wear out in a year, budget KWD 40.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cookware-local",
+          "text": "أواني طبخ تتحمل الاستخدام اليومي وما تتقشر بسرعة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "cookware-branded",
+          "text": "Is Tefal from Lulu Hypermarket in Kuwait the same quality as buying direct?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Tefal"
+        },
+        {
+          "qid": "cookware-problem",
+          "text": "Food sticks to every pan I own no matter how much oil I use, is it the pan or my technique?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "tws-earbuds",
+      "name": "TWS earbuds",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "tws-earbuds-discovery",
+          "text": "Earbuds with a battery that actually lasts a full day, under KWD 30.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "tws-earbuds-local",
+          "text": "سماعات لاسلكية بطاريتها تدوم وصوتها واضح",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "tws-earbuds-branded",
+          "text": "Is X-cite the cheapest place in Kuwait for genuine Samsung Galaxy Buds?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Samsung"
+        },
+        {
+          "qid": "tws-earbuds-problem",
+          "text": "My earbuds drop connection constantly even with my phone in my pocket, what's causing that?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "smartwatches",
+      "name": "Smartwatches",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "smartwatches-discovery",
+          "text": "A smartwatch that tracks sleep accurately, budget KWD 70.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "smartwatches-local",
+          "text": "ساعة ذكية دقيقة بتتبع النوم والخطوات",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "smartwatches-branded",
+          "text": "Does X-cite carry the Apple Watch SE, or is it cheaper ordered from Apple directly?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Apple"
+        },
+        {
+          "qid": "smartwatches-problem",
+          "text": "My watch and my phone show completely different step counts every day, which am I supposed to trust?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sensitive-skincare",
+      "name": "Sensitive skincare",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "sensitive-skincare-discovery",
+          "text": "A moisturizer with zero fragrance, around KWD 9.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sensitive-skincare-local",
+          "text": "مرطب للبشرة الحساسة خالي من العطور",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sensitive-skincare-branded",
+          "text": "Does Cetaphil genuinely help with eczema or is that just marketing?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Cetaphil"
+        },
+        {
+          "qid": "sensitive-skincare-problem",
+          "text": "Every new product makes my skin sting within minutes, is there anything actually gentle enough?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    }
+  ]
+}

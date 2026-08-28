@@ -36,7 +36,9 @@ export async function POST(request) {
 
   const { market, categoryName, brand } = body || {};
 
-  if (!market || !listMarkets().includes(market)) {
+  // Error message only ever lists LISTED markets — see the identical note
+  // in app/api/test/route.js.
+  if (!market || !listMarkets({ includeUnlisted: true }).includes(market)) {
     return badRequest(`"market" must be one of: ${listMarkets().join(", ")}.`);
   }
   const category = typeof categoryName === "string" ? categoryName.trim() : "";

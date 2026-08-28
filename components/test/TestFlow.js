@@ -8,6 +8,7 @@ import { listMarkets, getMarketCategories, getCategory } from "@/lib/bankStatic"
 import { effectiveQueryText } from "@/lib/queryPersonalize";
 import { staleEnginesFor } from "@/lib/freshness";
 import { ENGINE_ORDER, guessBrandFromDomain, safeDecode } from "@/lib/scoring";
+import { resolveMarketParam, guessMarketFromDomain } from "@/lib/marketProfiles";
 import { runAllQueries } from "@/lib/runQueries";
 import DomainStep from "./DomainStep";
 import BrandStep from "./BrandStep";
@@ -34,7 +35,10 @@ function returnContextFromParams(searchParams) {
   const domain = safeDecode(searchParams.get("domain") || "");
   const brand = safeDecode(searchParams.get("brand") || "");
   const marketParam = safeDecode(searchParams.get("market") || "");
-  const market = MARKETS.includes(marketParam) ? marketParam : null;
+  // includeUnlisted: true — a returning Pakistan merchant's saved link
+  // (?market=Pakistan or ?market=PK) must keep working even though
+  // Pakistan is never shown in MarketStep's own picker.
+  const market = resolveMarketParam(marketParam, { includeUnlisted: true });
   return { domain, brand, market, isReturn: Boolean(domain && brand && market) };
 }
 
@@ -151,7 +155,7 @@ export default function TestFlow() {
   // scoring, harvest, sentiment and persistence — shared by both a fresh
   // run and a retry, since both ultimately need the same server-side work
   // re-done over a (possibly partially updated) set of question results.
-  async function submitLiveRuns(liveRuns) {
+  async function submitLiveRuns(liveRuns, queryEdits = []) {
     const payload = {
       market,
       brand: brand.trim(),
@@ -159,6 +163,7 @@ export default function TestFlow() {
       brandWebsite: domain.trim(),
       liveRuns,
     };
+    if (queryEdits.length > 0) payload.queryEdits = queryEdits;
     if (isCustom) {
       // Custom queries ARE the category definition — nothing to look up
       // or override server-side, and nothing gets written into data/*.json.
@@ -192,11 +197,11 @@ export default function TestFlow() {
   // transient Supabase hiccup, a cold start, ...). Never retries the
   // Claude questions themselves — lib/runQueries.js already gives each of
   // those its own retry — this is specifically the scoring step.
-  async function submitLiveRunsWithRetry(liveRuns) {
+  async function submitLiveRunsWithRetry(liveRuns, queryEdits = []) {
     try {
-      return await submitLiveRuns(liveRuns);
+      return await submitLiveRuns(liveRuns, queryEdits);
     } catch {
-      return await submitLiveRuns(liveRuns);
+      return await submitLiveRuns(liveRuns, queryEdits);
     }
   }
 
@@ -210,8 +215,22 @@ export default function TestFlow() {
         text: effectiveQueryText(q, brand),
         archetype: q.archetype,
       }));
+      // Freshness signal (market-expansion phase): native-speaker correction
+      // data — a user editing a prefilled question away from its generated
+      // original is the highest-value dialect-drift signal available. Diffed
+      // here (not in QueryStep.js, which holds no state of its own) because
+      // this is the one place q.originalText and the effective submitted
+      // text are both simultaneously in scope.
+      const queryEdits = finalQueries
+        .map((fq) => {
+          const q = queries.find((qq) => qq.qid === fq.qid);
+          return q && q.userEdited && fq.text !== q.originalText
+            ? { qid: fq.qid, category: category?.name || customCategoryName || catId, originalText: q.originalText, editedText: fq.text }
+            : null;
+        })
+        .filter(Boolean);
       const liveRuns = await runQuestions(finalQueries);
-      const data = await submitLiveRunsWithRetry(liveRuns);
+      const data = await submitLiveRunsWithRetry(liveRuns, queryEdits);
       setResult(data);
       setPhase("done");
     } catch {
@@ -294,10 +313,21 @@ export default function TestFlow() {
           <BrandStep brand={brand} onBrand={setBrand} onNext={() => setPhase("market")} onBack={() => setPhase("domain")} />
         )}
 
-        {phase === "market" && <MarketStep markets={MARKETS} onPick={pickMarket} onBack={() => setPhase("brand")} />}
+        {phase === "market" && (
+          <MarketStep
+            markets={MARKETS}
+            // Never hint a market that isn't even in the picker — Pakistan's
+            // .pk TLD would otherwise guess a market with no visible card
+            // to pick, which reads as a broken suggestion, not a helpful one.
+            guessedMarket={MARKETS.includes(guessMarketFromDomain(domain)) ? guessMarketFromDomain(domain) : null}
+            onPick={pickMarket}
+            onBack={() => setPhase("brand")}
+          />
+        )}
 
         {phase === "category" && (
           <CategoryStep
+            market={market}
             categories={categories}
             search={catSearch}
             onSearch={setCatSearch}

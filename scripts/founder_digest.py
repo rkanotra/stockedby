@@ -104,6 +104,18 @@ def categories_tested_most(since):
     return [f"  {n:>3}x  {market}/{cat}" for (market, cat), n in counts.most_common(10)]
 
 
+def market_test_counts(since):
+    """Market-expansion phase (hard rule 9's cost-control section) — same
+    `reports` query categories_tested_most() above already runs, just
+    counted by market alone so it's obvious which new markets (Qatar,
+    Kuwait, Oman, Bahrain, and — since it's still a real market even
+    though hidden from the UI — Pakistan) are getting genuine use versus
+    sitting untested."""
+    rows = sb("GET", "reports", params=f"?created_at=gte.{since}&select=market")
+    counts = Counter(r.get("market") for r in rows if r.get("market"))
+    return [f"  {n:>3}x  {market}" for market, n in counts.most_common()]
+
+
 def new_brand_appearances(since):
     """Brands seen in this week's snapshot recommendations that were never
     seen (by market+category+engine) before `since` — pulls every snapshot
@@ -143,6 +155,7 @@ def main():
         section("New brand appearances", new_brand_appearances(since)),
         section("Email bounce/complaint summary", bounce_summary(since)),
         section("Categories tested most", categories_tested_most(since)),
+        section("Tests per market", market_test_counts(since)),
     ])
     print(body)
 

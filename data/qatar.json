@@ -1,0 +1,673 @@
+{
+  "market": "Qatar",
+  "version": 1,
+  "generatedAt": "2026-08-28",
+  "categories": [
+    {
+      "id": "face-serum-vitamin-c",
+      "name": "Face serum · vitamin C",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "face-serum-vitamin-c-discovery",
+          "text": "Vitamin C serum for dull skin, budget QAR 200 or under?",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "face-serum-vitamin-c-local",
+          "text": "أفضل سيروم فيتامين سي للبشرة الدهنية بسعر معقول",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "face-serum-vitamin-c-branded",
+          "text": "Is The Ordinary vitamin C serum worth buying from Sephora.me or somewhere else in Doha?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "The Ordinary"
+        },
+        {
+          "qid": "face-serum-vitamin-c-problem",
+          "text": "My skin looks dull and tired all the time no matter how much I sleep, what actually helps?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sunscreen",
+      "name": "Sunscreen",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "sunscreen-discovery",
+          "text": "Need a sunscreen that doesn't leave a white cast, around QAR 80.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sunscreen-local",
+          "text": "واقي شمس مناسب للجو الحار في قطر وما يسبب حبوب",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sunscreen-branded",
+          "text": "Where can I get genuine La Roche-Posay sunscreen delivered in Qatar?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "La Roche-Posay"
+        },
+        {
+          "qid": "sunscreen-problem",
+          "text": "My face breaks out every summer the moment the heat starts, what should I be using outside?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "hair-oil",
+      "name": "Hair oil",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "hair-oil-discovery",
+          "text": "Hair oil for dry frizzy hair, something under QAR 60 that actually works.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "hair-oil-local",
+          "text": "زيت شعر طبيعي يقوي الشعر ويقلل التساقط",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "hair-oil-branded",
+          "text": "Is Moroccanoil hair oil available at Boots Qatar or only online?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Moroccanoil"
+        },
+        {
+          "qid": "hair-oil-problem",
+          "text": "I'm losing more hair than usual after switching shampoos, is that normal or should I worry?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "oud-products",
+      "name": "Oud",
+      "group": "Beauty & Personal Care",
+      "queries": [
+        {
+          "qid": "oud-products-discovery",
+          "text": "Looking for a long-lasting oud oil, budget around QAR 350 for a gift.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "oud-products-local",
+          "text": "عود فاخر للمناسبات بسعر مناسب مو غالي بزيادة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "oud-products-branded",
+          "text": "Genuine Arabian Oud products, where's the real store versus resellers in Doha?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Arabian Oud"
+        },
+        {
+          "qid": "oud-products-problem",
+          "text": "Every oud I've tried fades within an hour on my skin, what actually lasts?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "mens-sunglasses",
+      "name": "Men's sunglasses",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "mens-sunglasses-discovery",
+          "text": "Polarized sunglasses for driving, budget QAR 250.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "mens-sunglasses-local",
+          "text": "نظارة شمسية رجالية بتصميم عصري وسعر كويس",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "mens-sunglasses-branded",
+          "text": "Are Ray-Ban sunglasses cheaper at the Doha Festival City store or ordering online?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Ray-Ban"
+        },
+        {
+          "qid": "mens-sunglasses-problem",
+          "text": "My eyes hurt from glare on the highway even with cheap sunglasses on, what am I doing wrong?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "abayas-modest-fashion",
+      "name": "Abayas",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "abayas-modest-fashion-discovery",
+          "text": "Everyday abaya, not too heavy for summer, around QAR 300.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "abayas-modest-fashion-local",
+          "text": "عباية سوداء بسيطة للمناسبات اليومية بسعر معقول",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "abayas-modest-fashion-branded",
+          "text": "Does Modanisa ship abayas to Qatar and how long does it take?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Modanisa"
+        },
+        {
+          "qid": "abayas-modest-fashion-problem",
+          "text": "Every abaya I own is either too hot to wear or too thin to look good, is there a middle ground?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sneakers",
+      "name": "Sneakers",
+      "group": "Fashion & Accessories",
+      "queries": [
+        {
+          "qid": "sneakers-discovery",
+          "text": "White sneakers that go with everything, under QAR 400.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sneakers-local",
+          "text": "حذاء رياضي مريح للمشي اليومي بسعر مناسب",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sneakers-branded",
+          "text": "Are Nike Air Force 1s cheaper at City Center Doha or through Nike's own site?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nike"
+        },
+        {
+          "qid": "sneakers-problem",
+          "text": "My feet hurt by the end of the day even in shoes people say are comfortable, what's actually going on?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "protein-powder",
+      "name": "Protein powder",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "protein-powder-discovery",
+          "text": "Whey protein that doesn't taste chalky, budget QAR 220 a tub.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "protein-powder-local",
+          "text": "بروتين واي طعمه كويس مو مثل الدوا",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "protein-powder-branded",
+          "text": "Where's the cheapest place to buy genuine Optimum Nutrition whey in Qatar?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Optimum Nutrition"
+        },
+        {
+          "qid": "protein-powder-problem",
+          "text": "I've been going to the gym for months and barely see any change, is my diet the problem?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "healthy-snacks",
+      "name": "Healthy snacks",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "healthy-snacks-discovery",
+          "text": "Snacks under QAR 30 that won't wreck a diet.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "healthy-snacks-local",
+          "text": "سناكس صحية للمكتب ما تكون فيها سكر زيادة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "healthy-snacks-branded",
+          "text": "Does Bayara sell their snack mixes at Carrefour Qatar or only at their own shops?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Bayara"
+        },
+        {
+          "qid": "healthy-snacks-problem",
+          "text": "I get so hungry by 4pm that I end up eating whatever's around, what actually keeps me full?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "coffee",
+      "name": "Coffee",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "coffee-discovery",
+          "text": "Specialty coffee beans, medium roast, around QAR 50 a bag.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "coffee-local",
+          "text": "قهوة مختصة نكهتها قوية بس مو مرة زيادة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "coffee-branded",
+          "text": "Is Nescafé Gold actually different from regular Nescafé or just marketing?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Nescafé"
+        },
+        {
+          "qid": "coffee-problem",
+          "text": "Whatever I brew at home always tastes burnt no matter what machine I use, what am I missing?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "dates",
+      "name": "Dates",
+      "group": "Food & Beverage",
+      "queries": [
+        {
+          "qid": "dates-discovery",
+          "text": "Premium dates for gifting, box around QAR 150.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "dates-local",
+          "text": "تمر فاخر يصلح هدية بدون ما يكون غالي بزيادة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "dates-branded",
+          "text": "Are Bateel dates worth the price compared to what's sold at the local souq?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Bateel"
+        },
+        {
+          "qid": "dates-problem",
+          "text": "Every gift box I bring for guests looks the same as last year, what's actually different or better?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "multivitamins",
+      "name": "Multivitamins",
+      "group": "Health & Wellness",
+      "queries": [
+        {
+          "qid": "multivitamins-discovery",
+          "text": "Daily multivitamin for energy, budget QAR 90.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "multivitamins-local",
+          "text": "فيتامينات يومية تساعد على التعب والإرهاق",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "multivitamins-branded",
+          "text": "Is Centrum multivitamin actually better than the pharmacy's own brand?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Centrum"
+        },
+        {
+          "qid": "multivitamins-problem",
+          "text": "I'm tired all the time even after eight hours of sleep, could that be something I'm missing in my diet?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "baby-skincare",
+      "name": "Baby skincare",
+      "group": "Baby & Kids",
+      "queries": [
+        {
+          "qid": "baby-skincare-discovery",
+          "text": "Baby lotion for sensitive skin, under QAR 70.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "baby-skincare-local",
+          "text": "كريم للأطفال يمنع الطفح الجلدي بمكونات آمنة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "baby-skincare-branded",
+          "text": "Is Mustela baby range safe for newborns or better to wait a few months?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Mustela"
+        },
+        {
+          "qid": "baby-skincare-problem",
+          "text": "My baby keeps getting red patches on his cheeks no matter what I use, what's actually causing it?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "bedsheets",
+      "name": "Bedsheets",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "bedsheets-discovery",
+          "text": "Cotton bedsheets that stay cool at night, around QAR 200 a set.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "bedsheets-local",
+          "text": "شراشف قطن ناعمة ومناسبة للجو الحار",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "bedsheets-branded",
+          "text": "Are IKEA bedsheets good quality or is it worth spending more elsewhere in Doha?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "IKEA"
+        },
+        {
+          "qid": "bedsheets-problem",
+          "text": "I wake up sweating every night even with the AC on, could my bedding be part of the problem?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "cookware",
+      "name": "Cookware",
+      "group": "Home & Living",
+      "queries": [
+        {
+          "qid": "cookware-discovery",
+          "text": "Non-stick cookware set, budget QAR 400.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "cookware-local",
+          "text": "أواني طبخ ما تلزق فيها الأكل وتدوم طويل",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "cookware-branded",
+          "text": "Is Tefal cookware from Lulu Hypermarket genuine or should I buy from their own store?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Tefal"
+        },
+        {
+          "qid": "cookware-problem",
+          "text": "Everything sticks to my pans no matter how much oil I use, is it the pan or how I'm cooking?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "tws-earbuds",
+      "name": "TWS earbuds",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "tws-earbuds-discovery",
+          "text": "Wireless earbuds with good battery life, under QAR 300.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "tws-earbuds-local",
+          "text": "سماعات لاسلكية صوتها واضح وما تنفصل عن الجوال بسرعة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "tws-earbuds-branded",
+          "text": "Are Samsung Galaxy Buds worth it over cheaper alternatives at Virgin Megastore?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Samsung"
+        },
+        {
+          "qid": "tws-earbuds-problem",
+          "text": "My earbuds keep cutting out every few minutes even when my phone is right next to me, what's going wrong?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "smartwatches",
+      "name": "Smartwatches",
+      "group": "Electronics & Accessories",
+      "queries": [
+        {
+          "qid": "smartwatches-discovery",
+          "text": "Smartwatch that tracks sleep properly, budget QAR 800.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "smartwatches-local",
+          "text": "ساعة ذكية تراقب النوم والخطوات بدقة",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "smartwatches-branded",
+          "text": "Is the Apple Watch SE enough or do I need the full Apple Watch for basic fitness tracking?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Apple"
+        },
+        {
+          "qid": "smartwatches-problem",
+          "text": "My fitness tracker says completely different numbers than my phone every single day, which one do I trust?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    },
+    {
+      "id": "sensitive-skincare",
+      "name": "Sensitive skincare",
+      "group": "Other high-velocity D2C",
+      "queries": [
+        {
+          "qid": "sensitive-skincare-discovery",
+          "text": "Fragrance-free moisturizer for sensitive skin, around QAR 100.",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "en"
+        },
+        {
+          "qid": "sensitive-skincare-local",
+          "text": "مرطب للبشرة الحساسة بدون عطور يهيج الجلد",
+          "archetype": "category-discovery",
+          "intent": "commercial",
+          "language": "ar"
+        },
+        {
+          "qid": "sensitive-skincare-branded",
+          "text": "Does Cetaphil actually work for eczema-prone skin or is it just hype?",
+          "archetype": "branded-routing",
+          "intent": "commercial",
+          "language": "en",
+          "leader_brand": "Cetaphil"
+        },
+        {
+          "qid": "sensitive-skincare-problem",
+          "text": "My skin turns red and stings every time I try a new product, is there anything gentle enough to actually use?",
+          "archetype": "problem-first",
+          "intent": "commercial",
+          "language": "en"
+        }
+      ],
+      "snapshots": []
+    }
+  ]
+}

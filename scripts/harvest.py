@@ -44,7 +44,16 @@ MARKET_FILES = {
     "India": "india.json",
     "UAE": "uae.json",
     "KSA": "ksa.json",
+    "Qatar": "qatar.json",
+    "Kuwait": "kuwait.json",
+    "Pakistan": "pakistan.json",
 }
+# Oman and Bahrain deliberately NOT listed here — they're "inherited"
+# coverage (queryBankKey: "KSA" in lib/marketProfiles.js), reading KSA's
+# bank file directly rather than owning one of their own. Harvesting
+# market-specific snapshots for an inherited market (vs. reusing KSA's) is
+# a real, separate design question this pass didn't need to answer — out
+# of scope until a market genuinely needs its own harvested data.
 
 # The safe default scope for a --market all run: the star-priority
 # categories from docs/stockedby-data-kit.md §3 ("Start with * = priority
@@ -72,6 +81,28 @@ DEFAULT_IDS = {
         "skincare-serum", "sunscreen", "beard-grooming", "perfume-attar", "oud-products",
         "mens-sunglasses", "abayas-modest-fashion", "sneakers", "whey-protein", "multivitamins",
         "baby-skincare", "bedsheets-bedding", "cookware", "tws-earbuds", "smartwatches",
+    ],
+    # Qatar/Kuwait/Pakistan: the whole bank IS the priority set (18
+    # categories each, ~20-25 target per the market-expansion phase) — no
+    # separate star-priority subset needed, unlike India/UAE/KSA's much
+    # larger full banks.
+    "Qatar": [
+        "face-serum-vitamin-c", "sunscreen", "hair-oil", "oud-products", "mens-sunglasses",
+        "abayas-modest-fashion", "sneakers", "protein-powder", "healthy-snacks", "coffee", "dates",
+        "multivitamins", "baby-skincare", "bedsheets", "cookware", "tws-earbuds", "smartwatches",
+        "sensitive-skincare",
+    ],
+    "Kuwait": [
+        "face-serum-vitamin-c", "sunscreen", "hair-oil", "oud-products", "mens-sunglasses",
+        "abayas-modest-fashion", "sneakers", "protein-powder", "healthy-snacks", "coffee", "dates",
+        "multivitamins", "baby-skincare", "bedsheets", "cookware", "tws-earbuds", "smartwatches",
+        "sensitive-skincare",
+    ],
+    "Pakistan": [
+        "face-serum-vitamin-c", "sunscreen", "hair-oil", "mens-sunglasses", "abayas-modest-fashion",
+        "sneakers", "protein-powder", "healthy-snacks", "coffee", "multivitamins",
+        "wellness-supplements", "baby-skincare", "bedsheets", "cookware", "tws-earbuds",
+        "smartwatches", "sensitive-skincare", "cricket-gear",
     ],
 }
 
