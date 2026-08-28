@@ -7,7 +7,7 @@ import { buildOpenGraph, buildTwitter } from "@/lib/site";
 
 const TITLE = "Blog — StockedBy";
 const DESCRIPTION =
-  "How AI recommends brands, and how to make sure it recommends yours — for brands in India, UAE and Saudi Arabia.";
+  "How AI recommends brands, and how to make sure it recommends yours — for brands across India and the Gulf.";
 
 export const metadata = {
   title: TITLE,

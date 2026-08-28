@@ -3,7 +3,7 @@ import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
 
 const TITLE = "StockedBy — Does AI recommend your brand?";
 const DESCRIPTION =
-  "Check if ChatGPT, Gemini and Claude recommend your brand. Free AI visibility test for brands in India, UAE and Saudi Arabia.";
+  "Check if ChatGPT, Gemini and Claude recommend your brand. Free AI visibility test for brands across India and the Gulf.";
 
 // Root-level defaults — every page below sets its own full metadata export
 // (title/description/canonical/openGraph/twitter, via lib/site.js's

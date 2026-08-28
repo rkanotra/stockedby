@@ -10,9 +10,9 @@ import Compare from "@/components/Compare";
 import ScrollReveal from "@/components/ScrollReveal";
 import { buildOpenGraph, buildTwitter } from "@/lib/site";
 
-const TITLE = "Why StockedBy — AI visibility built for India, UAE and Saudi Arabia";
+const TITLE = "Why StockedBy — AI visibility built for India and the Gulf";
 const DESCRIPTION =
-  "AI visibility scoring, fix tooling and agent-readiness infrastructure for brands in India, UAE and Saudi Arabia — not a US tool with your currency swapped in.";
+  "AI visibility scoring, fix tooling and agent-readiness infrastructure for brands across India and the Gulf — not a US tool with your currency swapped in.";
 
 export const metadata = {
   title: TITLE,
@@ -35,7 +35,7 @@ export default function WhyPage() {
       <div className="wrap page-hero">
         <h1>Why StockedBy</h1>
         <p>
-          The three pillars, built for India, UAE and Saudi Arabia specifically — not a US tool
+          The three pillars, built for India and the Gulf specifically — not a US tool
           with your currency swapped in.
         </p>
       </div>

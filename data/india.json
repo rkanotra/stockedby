@@ -1,5 +1,7 @@
 {
   "market": "India",
+  "version": 1,
+  "generatedAt": "2026-08-28",
   "categories": [
     {
       "id": "face-serum-vitamin-c",

@@ -53,7 +53,7 @@ export default async function Image() {
           Does AI recommend your brand — or your competitor?
         </div>
         <div style={{ display: "flex", marginTop: 40, fontSize: 28, color: "#666355" }}>
-          Free AI visibility test for India, UAE and Saudi Arabia
+          Free AI visibility test for India and the Gulf
         </div>
       </div>
     ),

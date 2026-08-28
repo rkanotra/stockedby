@@ -11,8 +11,8 @@ export const FAQS = [
     a: "Run StockedBy's free brand check. Pick your product category, and we ask ChatGPT, Gemini and Claude the same questions your customers already ask — then show you exactly what each one says, and where it sends buyers to pay.",
   },
   {
-    q: "Does StockedBy work for brands in India, UAE and Saudi Arabia?",
-    a: "Yes — that's what it's built for. Real local rivals (Flipkart, Noon, Amazon), local languages (Hinglish, Arabic), and local shopping habits, not a US tool with your currency swapped in.",
+    q: "Does StockedBy work for brands across India and the Gulf?",
+    a: "Yes — that's what it's built for. Real local rivals (Flipkart, Noon, Boutiqaat), local languages (Hinglish, Arabic), and local shopping habits, market by market — not a US tool with your currency swapped in.",
   },
   {
     q: "Is the AI brand check really free?",

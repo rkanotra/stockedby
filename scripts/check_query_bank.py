@@ -15,8 +15,25 @@ Exit code 0 = pass, 1 = fail.
 """
 import json, re, sys, collections
 
+# Per-market pairs, not just a shared "GCC" bucket (market-expansion
+# phase) - a Qatar bank quoting AED or SAR is just as much a market-mixing
+# bug as quoting rupees would be; the brief's own "do NOT FX-convert SAR
+# bands" instruction implies each Gulf market needs its OWN currency
+# checked precisely, not any-Gulf-currency-is-fine. Arabic script only
+# used for AED's darham (dirham is unambiguous); SAR/QAR/KWD/OMR/BHD all
+# share the Arabic word for riyal/dinar across multiple countries, so
+# those rely on the Latin currency code instead, which is what the
+# generated queries actually use per docs/stockedby-data-kit.md section 2b's fill-ins.
 CURRENCY = {
-    "India": (r"₹|\bINR\b|rupee", r"AED|\bPKR\b|\bIDR\b|\bTHB\b|\bSAR\b"),
+    "India": (r"₹|\bINR\b|rupee", r"AED|\bPKR\b|\bIDR\b|\bTHB\b|\bSAR\b|\bQAR\b|\bKWD\b|\bOMR\b|\bBHD\b"),
+    "UAE": (r"AED|درهم", r"₹|\bINR\b|\bPKR\b|\bSAR\b|\bQAR\b|\bKWD\b|\bOMR\b|\bBHD\b|\bIDR\b"),
+    "KSA": (r"\bSAR\b", r"₹|\bINR\b|\bPKR\b|AED|درهم|\bQAR\b|\bKWD\b|\bOMR\b|\bBHD\b|\bIDR\b"),
+    "Qatar": (r"\bQAR\b", r"₹|\bINR\b|\bPKR\b|AED|درهم|\bSAR\b|\bKWD\b|\bOMR\b|\bBHD\b|\bIDR\b"),
+    "Kuwait": (r"\bKWD\b", r"₹|\bINR\b|\bPKR\b|AED|درهم|\bSAR\b|\bQAR\b|\bOMR\b|\bBHD\b|\bIDR\b"),
+    "Oman": (r"\bOMR\b", r"₹|\bINR\b|\bPKR\b|AED|درهم|\bSAR\b|\bQAR\b|\bKWD\b|\bBHD\b|\bIDR\b"),
+    "Bahrain": (r"\bBHD\b", r"₹|\bINR\b|\bPKR\b|AED|درهم|\bSAR\b|\bQAR\b|\bKWD\b|\bOMR\b|\bIDR\b"),
+    # Generic fallback for any check invoked with the shared "GCC" label
+    # instead of a specific country — kept for backward compatibility.
     "GCC": (r"AED|\bSAR\b|درهم|ريال", r"₹|\bINR\b|\bPKR\b|\bIDR\b"),
     "Pakistan": (r"\bPKR\b|\bRs\.?\b|rupay", r"₹(?!\s*\d)|AED|\bIDR\b"),
 }

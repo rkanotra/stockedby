@@ -10,9 +10,9 @@ import ScrollReveal from "@/components/ScrollReveal";
 import JsonLd from "@/components/JsonLd";
 import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
 
-const TITLE = "StockedBy — Check if AI recommends your brand | India, UAE, Saudi Arabia";
+const TITLE = "StockedBy — Check if AI recommends your brand | India & the Gulf";
 const DESCRIPTION =
-  "Free test: see if ChatGPT, Gemini and Claude recommend your brand — or your competitor's. Built for brands in India, UAE and Saudi Arabia.";
+  "Free test: see if ChatGPT, Gemini and Claude recommend your brand — or your competitor's. Built for brands across India and the Gulf.";
 
 export const metadata = {
   title: TITLE,
@@ -35,7 +35,7 @@ const ORG_AND_APP_JSON_LD = {
       url: SITE_URL,
       logo: `${SITE_URL}/apple-icon.png`,
       description:
-        "AI visibility scoring and agent-readiness tools for brands in India, UAE and Saudi Arabia.",
+        "AI visibility scoring and agent-readiness tools for brands across India and the Gulf.",
     },
     {
       "@type": "WebApplication",

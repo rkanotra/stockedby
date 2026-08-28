@@ -7,7 +7,7 @@ export default function Hero() {
     <header className="hero" id="top-hero">
       <div className="eyebrow">
         <span className="eyebrow-dot" />
-        For brands in India · UAE · Saudi Arabia
+        For brands in India and the Gulf
       </div>
       <h1 className="hero-h1-simple">When customers ask AI what to buy, does your brand show up?</h1>
       <DomainCheckForm />
