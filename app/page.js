@@ -1,13 +1,9 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import ResultExample from "@/components/ResultExample";
 import ProblemStatement from "@/components/ProblemStatement";
 import PromiseStrip from "@/components/PromiseStrip";
-import ResultExample from "@/components/ResultExample";
-import HowItWorks from "@/components/HowItWorks";
 import Markets from "@/components/Markets";
-import Compare from "@/components/Compare";
-import ImprovementLoop from "@/components/ImprovementLoop";
-import AgenticTeaser from "@/components/AgenticTeaser";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -54,16 +50,17 @@ const ORG_AND_APP_JSON_LD = {
   ],
 };
 
-// Homepage philosophy (CLAUDE.md, "visual/creative revamp" phase —
-// supersedes the earlier "homepage is the door" rule): the homepage now
-// carries the full narrative — hero, live demo, the problem, what
-// StockedBy tells you, a real result example, how it works, why local
-// markets matter, why not the US tools, the improvement loop, an agentic-
-// commerce teaser, final CTA — rather than pushing everything past Hero
-// onto /why and /how. HowItWorks/Markets/Compare are the SAME components
-// /how and /why already render (reused, not forked) — those pages stay
-// untouched and still exist as deeper destinations from Nav, they just no
-// longer hold the ONLY copy of this content.
+// Homepage philosophy (CLAUDE.md, "restraint pass" — narrows the earlier
+// "visual/creative revamp" phase's fuller narrative back down): hero, a
+// real example, one strong statement, a simple explanation, market proof,
+// final CTA. Nothing else. How-it-works detail lives on /how; the
+// competitor comparison table lives on /why only — a homepage doesn't
+// need to argue with competitors before a visitor understands the
+// product, and repeating "how the test works" twice on one page (once as
+// three questions, once as three steps) was the same idea explained
+// twice. Markets is the SAME component /why already renders (reused, not
+// forked) — that page stays untouched and still exists as the deeper
+// destination from Nav.
 export default function Home() {
   return (
     <>
@@ -72,14 +69,10 @@ export default function Home() {
         <Nav />
         <Hero />
       </div>
+      <ResultExample />
       <ProblemStatement />
       <PromiseStrip />
-      <ResultExample />
-      <HowItWorks />
       <Markets />
-      <Compare />
-      <ImprovementLoop />
-      <AgenticTeaser />
       <FinalCTA />
       <Footer />
       <ScrollReveal />

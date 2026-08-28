@@ -47,7 +47,7 @@ export default function Hero() {
                 </div>
               </div>
               <div>
-                <div className="report-label">AI apps stocking you</div>
+                <div className="report-label">AI apps recommending you</div>
                 <div className="engine-badges">
                   <span className="engine-badge yes">ChatGPT ✓</span>
                   <span className="engine-badge yes">Gemini ✓</span>

@@ -12,14 +12,12 @@ import Link from "next/link";
 // immediately instead of needing to click "See full report" themselves.
 const EXAMPLE_REPORT_SLUG = "";
 
-// "Three questions StockedBy answers" (brief section 16) — editorial
-// numbering instead of three identical icon cards. Same three promises
-// this section always made, just given the weight they deserve: this IS
-// the product, not a feature list.
+// Three questions StockedBy actually answers — editorial numbering, not
+// three identical icon cards. This is the product, not a feature list.
 const QUESTIONS = [
-  { n: "01", title: "Do I show up?", line: "See whether AI recommends your brand." },
-  { n: "02", title: "Who gets picked instead?", line: "See which competitors and marketplaces get the recommendation." },
-  { n: "03", title: "What should I fix?", line: "Get the highest-impact actions to improve your visibility." },
+  { n: "01", title: "Do I show up?", line: "Whether ChatGPT, Gemini and Claude recommend your brand." },
+  { n: "02", title: "Who gets picked instead?", line: "Which competitors and marketplaces get the recommendation." },
+  { n: "03", title: "What should I fix?", line: "The three things most likely to change the answer." },
 ];
 
 export default function PromiseStrip() {
@@ -48,10 +46,7 @@ export default function PromiseStrip() {
         <Link href="/audit" className="audit-promo-card rv">
           <span className="audit-promo-label">For technical teams</span>
           <h3 className="audit-promo-title">Agent-ready check</h3>
-          <p className="audit-promo-line">
-            As agentic commerce arrives (ChatGPT checkout, Google UCP), can AI agents read and
-            buy from your store? Free 30-second audit.
-          </p>
+          <p className="audit-promo-line">Can an AI agent actually read your site and buy from it? Free 30-second check.</p>
           <span className="audit-promo-btn">Run agent check</span>
         </Link>
       </div>

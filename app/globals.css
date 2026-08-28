@@ -385,37 +385,6 @@ h1.hero-h1-simple {
 .result-opportunity { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: var(--space-4); margin-bottom: var(--space-5); }
 .result-opportunity b { color: var(--ink); }
 
-/* components/ImprovementLoop.js — short, mostly-whitespace, static (no
-   GSAP this pass — see CLAUDE.md's homepage-revamp entry). */
-.loop { padding-top: var(--space-8); padding-bottom: var(--space-8); }
-.loop-steps {
-  display: flex; align-items: center; justify-content: center; gap: var(--space-3); flex-wrap: wrap;
-  margin: var(--space-6) 0; font-family: 'IBM Plex Mono', monospace; font-size: 13px;
-  letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
-}
-.loop-arrow { color: var(--muted2); }
-.loop-rank {
-  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(30px, 6vw, 48px);
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: var(--space-4); color: var(--muted2);
-}
-.loop-rank b { color: var(--green); }
-.loop-arrow2 { font-size: 22px; color: var(--muted2); }
-
-/* components/AgenticTeaser.js — the one deliberately dark, full-bleed
-   moment on the homepage (brief section 38: mix layouts, don't repeat the
-   same light-card-on-cream pattern every section), reusing .steps/.step
-   with a dark-adapted palette rather than a second card system. */
-.agentic-teaser { background: var(--ink); color: var(--cream); padding-top: var(--space-8); padding-bottom: var(--space-8); text-align: center; }
-.agentic-teaser h2 { color: var(--cream); }
-.agentic-teaser .aisle-sub { color: #C7C4B4; }
-.agentic-teaser .steps { margin-top: var(--space-6); text-align: left; }
-.agentic-teaser .step { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); }
-.agentic-teaser .step .n { color: var(--tag); }
-.agentic-teaser .step h3 { color: var(--cream); }
-.agentic-teaser .step p { color: #B8B5A5; }
-.agentic-teaser-link { display: inline-block; margin-top: var(--space-6); font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--tag); transition: color .15s ease; }
-.agentic-teaser-link:hover { color: var(--tag-hover); }
-
 /* components/FinalCTA.js — reuses .receipt's existing card treatment. */
 .final-cta { padding-top: var(--space-8); padding-bottom: var(--space-8); }
 

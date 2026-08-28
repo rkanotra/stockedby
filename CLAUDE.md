@@ -19,60 +19,70 @@ India, UAE, KSA (Saudi Arabia) — the go-to-market advantage. Pakistan and
 SEA are unannounced future expansion markets — do not mention them in
 user-facing copy until launched.
 
-**Site philosophy — homepage narrative (visual/creative revamp phase,
-supersedes the earlier "homepage is the door" rule below): the homepage now
-carries the full story instead of pushing everything past Hero onto /why
-and /how.** app/page.js assembles, in order: Nav + Hero (eyebrow "For
-brands in India · UAE · Saudi Arabia" + single domain input + one button +
-the interactive report-card demo, which must show the India serum
-DISCOVERY shelf with Indian brands — never a problem-first snapshot with
-non-India results — plus a small "See an example ↓" link anchoring to
-ResultExample) → ProblemStatement.js (new, editorial "your next competitor
-may be the answer AI gives" statement, big type, no card grid, deliberately
-no scroll-reveal — should just exist, not perform an entrance) →
-PromiseStrip.js (evolved from three icon-led one-liners into an editorial
-01/02/03 "Three questions StockedBy answers" list — same three promises,
-given the weight they deserve — still carrying the bordered "Agent-ready
-check" card, className `audit-promo-card`, deliberately outlined/dark
-rather than the homepage's yellow CTA color, allowed slightly more
-technical language ("agentic commerce", "UCP") per its own "for technical
-teams" label) → ResultExample.js (new — "what a result looks like," every
-number computed from the SAME real snapshot data Hero's demo reads via the
-new lib/heroExample.js, hard rule 2: never fabricate, never a second
-independently-typed example) → HowItWorks.js, Markets.js, Compare.js (all
-three REUSED UNCHANGED from /how and /why — not forked — so the homepage
-and those pages can never silently disagree about this content; /how and
-/why themselves are untouched and still exist as deeper destinations) →
-ImprovementLoop.js (new, short/mostly-whitespace "Check → Understand → Fix
-→ Recheck" static illustration, no GSAP) → AgenticTeaser.js (new,
-condensed TODAY/NEXT/LATER roadmap teaser reusing the `.steps`/`.step` CSS
-pattern with a dark-adapted palette — deliberately NOT AisleProtect.js's
-full depth, no UCP/ACP/agent-identity language, links to /why#protect for
-that) → FinalCTA.js (new, closing CTA band reusing the existing `.receipt`
-card treatment) → Footer + ScrollReveal. Nav (components/Nav.js) is
+**Site philosophy — homepage narrative (restraint pass, narrows the
+"visual/creative revamp" phase's fuller narrative back down): hero, a real
+example, one strong statement, a simple explanation, market proof, final
+CTA — six sections, not ten.** A first pass at the fuller narrative added
+five new sections in one go (ProblemStatement, an evolved PromiseStrip,
+ResultExample, plus new ImprovementLoop and AgenticTeaser sections, and
+reused HowItWorks/Compare alongside Markets) and, on reflection, repeated
+itself — "how the test works" explained twice (once as three questions,
+once as three steps), a competitor comparison table before the visitor
+understood the product, and a whole dedicated section selling the agentic-
+commerce roadmap. All were cut back. app/page.js now assembles, in order:
+Nav + Hero (eyebrow "For brands in India · UAE · Saudi Arabia" as a plain
+text label, not a pill badge — see hard rule 5's "no template tells" note
+below — + single domain input + one button + the interactive report-card
+demo, which must show the India serum DISCOVERY shelf with Indian brands
+— never a problem-first snapshot with non-India results — plus a small
+"See an example ↓" link anchoring to ResultExample) → ResultExample.js
+("what a result looks like," every number computed from the SAME real
+snapshot data Hero's demo reads via lib/heroExample.js, hard rule 2: never
+fabricate, never a second independently-typed example) →
+ProblemStatement.js (one short editorial statement, big type, no card
+grid, no scroll-reveal — should just exist, not perform an entrance) →
+PromiseStrip.js (an editorial 01/02/03 "three questions StockedBy
+answers" list, plain language, still carrying the bordered "Agent-ready
+check" cross-sell card into /audit, className `audit-promo-card`) →
+Markets.js (REUSED UNCHANGED from /why — not forked — so the homepage and
+/why can never silently disagree about this content; its own intro line
+was rewritten from a defensive "US tools test English queries..." framing
+to a concrete "₹, AED and SAR budgets. Hinglish and Arabic questions.
+Marketplaces like Nykaa, Noon and Amazon.ae." one) → FinalCTA.js (closing
+CTA band reusing the existing `.receipt` card treatment) → Footer +
+ScrollReveal. HowItWorks.js and Compare.js are NOT on the homepage —
+HowItWorks stays exclusive to /how (its own dedicated page for that
+detail, avoiding explaining "how it works" twice on one page); Compare's
+competitor comparison table stays exclusive to /why (a homepage shouldn't
+argue with competitors before a visitor understands the product).
+ImprovementLoop.js and AgenticTeaser.js (the "Check → Understand → Fix →
+Recheck" loop and the TODAY/NEXT/LATER roadmap teaser) were deleted
+entirely, not just unlinked — both were dead code the moment they came off
+the homepage (confirmed via grep, no other callers), and a whole section
+selling the agentic-commerce future was exactly what this pass's brief
+said not to do on the homepage; /why's AisleProtect.js keeps the full
+roadmap depth, reachable from Nav, unaffected. Nav (components/Nav.js) is
 unchanged: four items max: logo, "How it works" (/how), "Why StockedBy"
 (/why), "Blog" (/blog), "Agent check" (/audit), then the one button ("Check
-my brand — free") — the links hide below 760px so mobile keeps the minimal
-logo+button nav; Footer links are the same "How it works · Why StockedBy ·
-Blog · Privacy". /why (app/why/page.js) still renders the pillar/markets/
-data/compare sections (components/Aisle*.js, Markets.js, DataSection.js,
-Compare.js) UNCHANGED — including AisleProtect's full TODAY/NEXT/THEN
-roadmap framing (UCP/ACP/agent-identity/transaction-risk depth), which
-stays exclusive to /why; the homepage's AgenticTeaser is a condensed teaser
-of the same TODAY/NEXT/(LATER) shape, not a duplicate of AisleProtect's
-depth. /how (app/how/page.js) still has its own short "every AI assistant
-is now a shop" story paragraph before HowItWorks.js. Design tokens: a first
-formal spacing/radius scale (`--space-1`..`--space-8`, `--radius-sm/md/
-lg/pill`) was added to app/globals.css's marketing `:root` block alongside
-hard rule 5's Ink tokens — used by the new homepage sections above; existing
-classes elsewhere keep their pre-existing literal values (no mass
-find/replace across already-shipped, unrelated pages). This pass also added
-the stylesheet's first `transition` properties beyond `.chip` (light hover/
-focus transitions on `.btn`/`.btn-primary`/`.btn-ghost`/`.nav-links a`/
-`.audit-promo-card`) — still no motion library (GSAP/framer-motion), which
-remains a deliberately deferred follow-up (see "Current phase" below) since
-this session has no browser tool enabled to visually review animation
-timing/feel while building it. This extends to the /test
+my brand — free," used identically everywhere a primary CTA appears on the
+homepage — Nav, Hero's form, ResultExample, FinalCTA — deliberately never
+rotated to a different label) — the links hide below 760px so mobile keeps
+the minimal logo+button nav; Footer links are the same "How it works · Why
+StockedBy · Blog · Privacy". /why (app/why/page.js) and /how
+(app/how/page.js) are both untouched and still hold the full pillar/
+markets/data/compare/how-it-works content, reachable from Nav. Design
+tokens: a first formal spacing/radius scale (`--space-1`..`--space-8`,
+`--radius-sm/md/lg/pill`) was added to app/globals.css's marketing `:root`
+block alongside hard rule 5's Ink tokens — used by the homepage sections
+above; existing classes elsewhere keep their pre-existing literal values
+(no mass find/replace across already-shipped, unrelated pages). This pass
+also added the stylesheet's first `transition` properties beyond `.chip`
+(light hover/focus transitions on `.btn`/`.btn-primary`/`.btn-ghost`/
+`.nav-links a`/`.audit-promo-card`) — still no motion library (GSAP/
+framer-motion), which remains a deliberately deferred follow-up (see
+"Current phase" below) since this session has no browser tool enabled to
+visually review animation timing/feel while building it. This extends to
+the /test
 wizard too: domain-first, one decision per screen (components/test/
 DomainStep.js -> BrandStep.js -> MarketStep.js -> CategoryStep.js ->
 QueryStep.js), persistent header (eyebrow "StockedBy · {market}" + subtitle
@@ -203,7 +213,15 @@ FixResults.js (5 call sites total) all still reference it as a
 general-purpose muted supporting-line style, unrelated to StoryView.js.
 That shipped to production unstyled for one deploy; restored under the
 same name (renaming 5 call sites for a cosmetic-only class was not worth
-the churn) with a comment explaining why it survived.
+the churn) with a comment explaining why it survived. A final **restraint
+pass** (see "Site philosophy" above) narrowed the homepage from ten
+sections back to six, deleted two sections' worth of dead code
+(ImprovementLoop.js, AgenticTeaser.js) once they came off the page,
+converted the Hero eyebrow from a pill badge into a plain text label, and
+rewrote several lines of generic/defensive marketing copy into shorter,
+concrete ones — a pure subtraction pass, no new sections or components
+added, per that pass's own explicit "the page should become shorter, not
+replace deleted content with new content" instruction.
 
 ## Hard rules
 1. **API keys server-side only.** ANTHROPIC_API_KEY, GEMINI_API_KEY,
@@ -384,20 +402,24 @@ the churn) with a comment explaining why it survived.
     current volume; revisit only for paid account login.
 
 ## Repo map
-- app/page.js + lib/heroExample.js — the homepage narrative (visual/
-  creative revamp phase, see "Site philosophy" above for the full section
-  order and rationale). lib/heroExample.js is the real-data resolution
-  logic extracted out of components/Hero.js (HERO_BRAND, HERO_ENGINES —
+- app/page.js + lib/heroExample.js — the homepage narrative (restraint
+  pass, see "Site philosophy" above for the full section order and
+  rationale). lib/heroExample.js is the real-data resolution logic
+  extracted out of components/Hero.js (HERO_BRAND, HERO_ENGINES —
   resolved once at module load from data/india.json + data/
   snapshots-india-seed.json, no fetch, hard rule 2) so components/
   Hero.js's live demo and components/ResultExample.js's static example
   read the exact same real snapshot, never two independently-typed ones.
-  components/ProblemStatement.js, components/ImprovementLoop.js,
-  components/AgenticTeaser.js and components/FinalCTA.js are new,
-  self-contained, no props — components/ResultExample.js is the only new
-  one with real logic (computes appearedCount/engineCount, bestRank, and
-  an own-site-vs-marketplace destination tally straight from
+  components/ProblemStatement.js is self-contained, no props, no logic —
+  components/ResultExample.js is the only homepage component with real
+  logic (computes appearedCount/engineCount, bestRank, and an
+  own-site-vs-marketplace destination tally straight from
   lib/heroExample.js's HERO_ENGINES, never a hardcoded percentage).
+  components/ImprovementLoop.js and components/AgenticTeaser.js existed
+  briefly during the fuller-narrative phase and were deleted once cut
+  from the homepage — check git history if that "Check → Understand →
+  Fix → Recheck" loop or TODAY/NEXT/LATER teaser shape is ever wanted
+  again, rather than re-inventing it.
 - docs/prototype-app.jsx — WORKING product logic (port, don't rewrite): Claude
   shopping-assistant prompt, telemetry extraction (server_tool_use →
   query fanout, web_search_tool_result → trusted sources), destination
