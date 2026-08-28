@@ -26,12 +26,12 @@ export default function PromiseStrip() {
   return (
     <section className="promises">
       <div className="wrap">
-        <div className="aisle-head rv" style={{ justifyContent: "center", textAlign: "center" }}>
+        <div className="aisle-head" style={{ justifyContent: "center", textAlign: "center" }}>
           <h2 style={{ margin: "0 auto" }}>What StockedBy tells you</h2>
         </div>
         <ol className="q-list">
           {QUESTIONS.map((q) => (
-            <li key={q.n} className="q-item rv">
+            <li key={q.n} className="q-item">
               <span className="q-num">{q.n}</span>
               <div>
                 <div className="q-title">{q.title}</div>

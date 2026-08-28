@@ -20,9 +20,9 @@ const ownSiteCount = appearedEngines.filter((e) => e.youDestKey === "brand-direc
 
 let callout = null;
 if (marketplaceCount > ownSiteCount) {
-  callout = `AI recommends ${HERO_BRAND} — but sends buyers to a marketplace instead of ${HERO_BRAND}'s own site.`;
+  callout = `AI recommends ${HERO_BRAND}. It sends buyers to a marketplace instead of ${HERO_BRAND}'s own site.`;
 } else if (ownSiteCount > 0) {
-  callout = `AI recommends ${HERO_BRAND} — and sends buyers straight to ${HERO_BRAND}'s own site.`;
+  callout = `AI recommends ${HERO_BRAND}. It sends buyers straight to ${HERO_BRAND}'s own site.`;
 }
 
 let opportunity = null;
@@ -36,10 +36,10 @@ export default function ResultExample() {
   return (
     <section id="result-example" className="result-example">
       <div className="wrap">
-        <div className="aisle-head rv">
+        <div className="aisle-head">
           <h2>What a result looks like</h2>
         </div>
-        <p className="aisle-sub rv">A real example, from a real test — not a mockup.</p>
+        <p className="aisle-sub">A real example, from a real test. Not a mockup.</p>
 
         <div className="result-card rv">
           <div className="result-brand mono">{HERO_BRAND}</div>
@@ -62,7 +62,7 @@ export default function ResultExample() {
 
           {opportunity && (
             <p className="result-opportunity">
-              <b>Biggest opportunity</b> — {opportunity}
+              <b>Biggest opportunity.</b> {opportunity}
             </p>
           )}
 

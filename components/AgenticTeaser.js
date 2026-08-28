@@ -9,22 +9,22 @@ export default function AgenticTeaser() {
   return (
     <section className="agentic-teaser">
       <div className="wrap">
-        <div className="aisle-head rv" style={{ justifyContent: "center", textAlign: "center" }}>
+        <div className="aisle-head" style={{ justifyContent: "center", textAlign: "center" }}>
           <h2>
             Today AI recommends.
             <br />
             Tomorrow it may buy.
           </h2>
         </div>
-        <p className="aisle-sub rv" style={{ margin: "12px auto 0", textAlign: "center", maxWidth: "54ch" }}>
+        <p className="aisle-sub" style={{ margin: "12px auto 0", textAlign: "center", maxWidth: "54ch" }}>
           StockedBy is building toward visibility, trust and transaction intelligence for a world
-          where AI agents don&apos;t just recommend brands — they buy from them.
+          where AI agents don&apos;t just recommend brands. They buy from them.
         </p>
-        <div className="steps rv">
+        <div className="steps">
           <div className="step">
             <span className="n">TODAY</span>
             <h3>AI visibility</h3>
-            <p>See whether AI recommends your brand — free, right now.</p>
+            <p>See whether AI recommends your brand. Free, right now.</p>
           </div>
           <div className="step">
             <span className="n">NEXT</span>

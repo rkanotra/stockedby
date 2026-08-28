@@ -5,13 +5,13 @@ export default function ImprovementLoop() {
   return (
     <section className="loop">
       <div className="wrap">
-        <div className="aisle-head rv" style={{ justifyContent: "center", textAlign: "center" }}>
+        <div className="aisle-head" style={{ justifyContent: "center", textAlign: "center" }}>
           <h2 style={{ margin: "0 auto" }}>Check. Understand. Fix. Recheck.</h2>
         </div>
-        <p className="aisle-sub rv" style={{ margin: "12px auto 0", textAlign: "center" }}>
+        <p className="aisle-sub" style={{ margin: "12px auto 0", textAlign: "center" }}>
           AI answers change. One test is a snapshot, not a certificate.
         </p>
-        <div className="loop-steps rv">
+        <div className="loop-steps">
           <b>Check</b>
           <span className="loop-arrow">→</span>
           <b>Understand</b>
@@ -20,7 +20,7 @@ export default function ImprovementLoop() {
           <span className="loop-arrow">→</span>
           <b>Recheck</b>
         </div>
-        <div className="loop-rank rv">
+        <div className="loop-rank">
           <span>#4</span>
           <span className="loop-arrow2">→</span>
           <span>#3</span>

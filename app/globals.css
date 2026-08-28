@@ -118,11 +118,13 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--ink); outline-o
 /* ---------- hero ---------- */
 .hero-shell { position: relative; overflow: hidden; background: var(--cream); }
 .hero { position: relative; z-index: 2; max-width: 1160px; margin: 0 auto; padding: 84px 24px 0; text-align: center; }
+/* Plain text label, not a pill/badge above the headline (brief section 6
+   lists that as a template tell) — the market-targeting line still needs
+   to be there, it just shouldn't announce itself as a UI chrome element. */
 .eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--muted); border: 1px solid var(--line2); background: var(--white);
-  padding: 7px 14px; border-radius: 999px; margin-bottom: 30px;
+  color: var(--muted); margin-bottom: 18px;
 }
 .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green2); }
 h1.hero-h1 {

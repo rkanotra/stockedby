@@ -8,9 +8,9 @@ export default function FinalCTA() {
   return (
     <section className="final-cta">
       <div className="wrap">
-        <div className="receipt rv">
+        <div className="receipt">
           <h2>Ask AI about your category.</h2>
-          <p className="r-sub">See if it says your name — or your competitor&rsquo;s.</p>
+          <p className="r-sub">See if it says your name, or your competitor&rsquo;s.</p>
           <Link href="/test" className="btn-primary" style={{ display: "block", textAlign: "center" }}>
             Check my brand — free
           </Link>
