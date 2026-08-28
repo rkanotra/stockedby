@@ -41,9 +41,12 @@ Seasonal/timely (publish ~1 month before Diwali; Ramadan version for Gulf later)
 Slug: /blog/100-categories-ai-recommendations-study
 Your data moat as content — the linkable "study" post that earns backlinks. Stats from your bank: % of shelves marketplace-routed, categories where D2C wins direct, biggest cross-AI disagreements. Charts. Press-worthy.
 
-**POST 12 — "AI agents will soon buy FROM your store. Is it ready?"**
-Slug: /blog/ai-agents-buying-from-your-store
-The forward-looking authority post (technical audience OK here): agentic checkout arriving (ChatGPT checkout, Google's commerce protocol), what "agent-ready" means, the free agent check. Establishes StockedBy as ahead of the curve.
+**POST 12 — "AI agents will soon buy FROM your store. Is it ready?"** — SUPERSEDED, PUBLISHED as three posts instead of one.
+The single-post outline below was written before ChatGPT Instant Checkout, Google's UCP/AP2 and NPCI's Unified Agent Protocol were all real, shipping (or actively regulator-reviewed) things — one post trying to cover all three was going to be either too shallow or too long. Published 2026-08-28 as three separate, deeper posts instead, cross-linked to each other:
+- content/blogs/blog-4-npci-unified-agent-protocol-upi.md — /blog/npci-unified-agent-protocol-upi-ai-agents
+- content/blogs/blog-5-chatgpt-instant-checkout-acp.md — /blog/chatgpt-instant-checkout-agentic-commerce-protocol
+- content/blogs/blog-6-google-ucp-ap2-explained.md — /blog/google-universal-commerce-protocol-ap2-explained
+Original outline, kept for reference: agentic checkout arriving (ChatGPT checkout, Google's commerce protocol), what "agent-ready" means, the free agent check. Establishes StockedBy as ahead of the curve.
 
 =====================================================================
 # PUBLISHING NOTES
