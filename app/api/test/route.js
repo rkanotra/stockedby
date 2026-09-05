@@ -174,6 +174,7 @@ export async function POST(request) {
         qid: q.qid,
         text: q.text,
         archetype: q.archetype,
+        language: q.language,
         status: "done",
         recs: Array.isArray(r.recs) ? r.recs : [],
         searches: Array.isArray(r.searches) ? r.searches : [],
@@ -184,6 +185,7 @@ export async function POST(request) {
       qid: q.qid,
       text: q.text,
       archetype: q.archetype,
+      language: q.language,
       status: "error",
       recs: [],
       searches: [],
@@ -274,8 +276,7 @@ export async function POST(request) {
         return;
       }
       const recs = result.value.recommendations || [];
-      harvestedByEngineQid.set(`${job.engine}:${job.q.qid}`, recs);
-      await writeThroughSnapshot({
+      const written = await writeThroughSnapshot({
         market,
         categoryId: category.id,
         qid: job.q.qid,
@@ -284,6 +285,10 @@ export async function POST(request) {
         recommendations: recs,
         sources: result.value.sources,
       });
+      // snapshotDbId: the real Supabase `snapshots` row id just written,
+      // threaded through to lib/observations.js as provenance (Phase 1.5
+      // hardening) — null only if the write-through itself failed.
+      harvestedByEngineQid.set(`${job.engine}:${job.q.qid}`, { recs, snapshotDbId: written?.id ?? null });
     })
   );
 
@@ -332,9 +337,11 @@ export async function POST(request) {
           qid: q.qid,
           text: q.text,
           archetype: q.archetype,
-          recs: harvested.slice(0, 5).map(sanitizeRec).filter(Boolean),
+          language: q.language,
+          recs: harvested.recs.slice(0, 5).map(sanitizeRec).filter(Boolean),
           collected_on: today,
           source: "live-harvest",
+          snapshotId: harvested.snapshotDbId,
         };
       }
       const snaps = allSnapshots.filter((s) => s.qid === q.qid && s.engine === engine);
@@ -345,15 +352,22 @@ export async function POST(request) {
       // write-through) shared a collected_on.
       const latest = snaps.sort((a, b) => (a.collected_on > b.collected_on ? -1 : a.collected_on < b.collected_on ? 1 : 0))[0];
       if (!latest) {
-        return { qid: q.qid, text: q.text, archetype: q.archetype, recs: [], collected_on: null, source: "missing" };
+        return { qid: q.qid, text: q.text, archetype: q.archetype, language: q.language, recs: [], collected_on: null, source: "missing" };
       }
       return {
         qid: q.qid,
         text: q.text,
         archetype: q.archetype,
+        language: q.language,
         recs: (latest.recommendations || []).map(sanitizeRec).filter(Boolean),
         collected_on: latest.collected_on,
         source: "snapshot",
+        // A real DB row id when this came from the Supabase cache; a
+        // deterministic (not fabricated) reference string when it came from
+        // a bank file's inline seed instead, which has no DB row at all —
+        // lib/observations.js's collection_method makes clear which kind it
+        // is, so neither is ever mistaken for the other.
+        snapshotId: latest.snapshotDbId || `bank-seed:${market}:${category.id}:${q.qid}:${engine}:${latest.collected_on}`,
       };
     });
   }

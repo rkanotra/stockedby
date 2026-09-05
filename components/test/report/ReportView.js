@@ -129,9 +129,7 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
           destinationSplitByEngine={founder.destinationSplitByEngine}
           yourDestinations={report.destinations?.yourDestinations}
         />
-        {!isCustom && category?.id && (
-          <VisibilityHistoryCard brand={brand} market={market} categoryId={category.id} />
-        )}
+        {!isCustom && slug && <VisibilityHistoryCard brand={brand} slug={slug} />}
         <RecommendedActions actions={founder.actions} />
         <NextMoveCTA brand={brand} biggestOpportunity={founder.biggestOpportunity} brandWebsite={brandWebsite} />
         <AuditCTA brandWebsite={brandWebsite} />
