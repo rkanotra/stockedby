@@ -10,6 +10,7 @@ import styles from "../test.module.css";
 export default function CompetitorThreat({ competitorThreat }) {
   if (!competitorThreat) return null;
   const { label, appearedIn, totalQuestions, avgRank, others } = competitorThreat;
+  const winRatePct = totalQuestions > 0 ? Math.round((appearedIn / totalQuestions) * 100) : null;
   return (
     <div className={styles.competitorCard}>
       <div className={styles.h2}>Who is winning instead?</div>
@@ -18,6 +19,7 @@ export default function CompetitorThreat({ competitorThreat }) {
         <div className={styles.founderStat}>
           <span className={styles.founderStatValue}>
             {appearedIn} of {totalQuestions}
+            {winRatePct !== null ? ` (${winRatePct}%)` : ""}
           </span>
           <span className={styles.founderStatLabel}>shopper questions</span>
         </div>

@@ -5,6 +5,7 @@ import { HARVEST_ENGINES } from "@/lib/harvestClients";
 import { staleEnginesFor } from "@/lib/freshness";
 import { fetchCachedSnapshots, writeThroughSnapshot } from "@/lib/snapshotCache";
 import { saveReport } from "@/lib/reports";
+import { recordObservations } from "@/lib/observations";
 import { supabase } from "@/lib/supabaseClient";
 import {
   ENGINE_ORDER,
@@ -499,6 +500,21 @@ export async function POST(request) {
       trustedSources,
       queryBankVersion,
     },
+  });
+
+  // Structured historical AI-observation log (Phase 1 "Foundation" —
+  // supabase/migrations/0008_ai_observations.sql, lib/observations.js):
+  // best-effort, never blocks the response, mirrors saveReport's own
+  // never-fail-the-merchant posture. Logged from the same engineData the
+  // report itself was scored from, so it can never disagree with what the
+  // merchant saw.
+  await recordObservations({
+    reportSlug: slug,
+    market,
+    categoryId: category.id,
+    brand: brandName,
+    brandWebsite: brandWebsiteInput,
+    engineData,
   });
 
   // Freshness signal (market-expansion phase): best-effort, never blocks

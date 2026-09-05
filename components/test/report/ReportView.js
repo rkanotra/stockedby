@@ -10,6 +10,7 @@ import TestAnotherCTA from "./TestAnotherCTA";
 import EngineTabs from "./EngineTabs";
 import CompetitorThreat from "./CompetitorThreat";
 import DestinationSummary from "./DestinationSummary";
+import VisibilityHistoryCard from "./VisibilityHistoryCard";
 import RecommendedActions from "./RecommendedActions";
 import NextMoveCTA from "./NextMoveCTA";
 import VerdictCard from "./VerdictCard";
@@ -125,8 +126,12 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
         <DestinationSummary
           brand={brand}
           destinationSplit={founder.destinationSplit}
+          destinationSplitByEngine={founder.destinationSplitByEngine}
           yourDestinations={report.destinations?.yourDestinations}
         />
+        {!isCustom && category?.id && (
+          <VisibilityHistoryCard brand={brand} market={market} categoryId={category.id} />
+        )}
         <RecommendedActions actions={founder.actions} />
         <NextMoveCTA brand={brand} biggestOpportunity={founder.biggestOpportunity} brandWebsite={brandWebsite} />
         <AuditCTA brandWebsite={brandWebsite} />

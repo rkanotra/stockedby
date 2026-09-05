@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styles from "../test.module.css";
+import { ENGINE_LABELS } from "@/lib/scoring";
 
 // "Where AI sends your customers" (renamed from "the checkout battle" —
 // CLAUDE.md's redesign phase / banned-word list) — the 2-number split
@@ -9,7 +10,7 @@ import styles from "../test.module.css";
 // behind a toggle. Falls back to an honest "we couldn't reliably
 // determine this" state when lib/founderReport.js's buildDestinationSplit()
 // found no real destination data — never forces a conclusion.
-export default function DestinationSummary({ brand, destinationSplit, yourDestinations }) {
+export default function DestinationSummary({ brand, destinationSplit, destinationSplitByEngine, yourDestinations }) {
   const [showLinks, setShowLinks] = useState(false);
 
   if (!destinationSplit) {
@@ -48,6 +49,20 @@ export default function DestinationSummary({ brand, destinationSplit, yourDestin
         <span>Marketplaces</span>
         <span className={styles.p}>{marketplacePct}%</span>
       </div>
+
+      {destinationSplitByEngine && Object.keys(destinationSplitByEngine).length > 1 && (
+        <div style={{ marginTop: 4, marginBottom: 4 }}>
+          <div className={styles.destImpactColTitle}>By AI app</div>
+          {Object.entries(destinationSplitByEngine).map(([engine, split]) => (
+            <div className={styles.sovrow} key={engine}>
+              <span>{ENGINE_LABELS[engine] || engine}</span>
+              <span className={styles.p}>
+                {split.ownSitePct}% own site · {split.marketplacePct}% marketplace
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className={styles.destImpact}>
         <div>
