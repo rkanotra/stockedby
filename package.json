@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --test lib/*.test.js lib/**/*.test.js",
+    "check:sign-in": "node scripts/check-sign-in.mjs",
     "purchase-check:worker": "node scripts/purchase-check-worker.mjs",
     "test:purchase-check:browser": "node scripts/test_purchase_check_runner.mjs",
     "test:purchase-check:db": "node scripts/test_purchase_check_db.mjs"

@@ -4,7 +4,13 @@
 
 Purchase Check is a bounded Shopify purchase-journey checker with a self-service merchant workspace and a private operator inbox. It automates repeat checks and prepares evidence and fix instructions. You remain responsible for verifying bank receipts, handling exceptional customer questions and deciding which integrations to support.
 
-This is working application and worker code, verified with isolated fixtures. It is not yet a validated paid business or a production-tested integration across arbitrary merchant themes. No paid launch, production migration, real-store check, live payment, outbound customer message or scheduled workflow activation was performed during this build.
+This is working application and worker code, verified with isolated fixtures. It is not yet a validated paid business or a production-tested integration across arbitrary merchant themes. The database was connected after the initial deployment, as recorded below. No paid launch, real-store check, live payment, outbound customer message or scheduled workflow activation was performed during the initial build.
+
+### Production sign-in recovery — 15 September 2026
+
+The first production login returned HTTP 503 because Vercel had no `SUPABASE_URL` or `SUPABASE_SERVICE_KEY`. The existing StockedBy Supabase project was also paused, and migrations 0010–0012 had not been applied. Resumed that project, applied those three migrations together in a transaction, verified the account/workspace tables, and saved the existing connection settings as sensitive production environment variables in Vercel with the owner's approval. The `stockedby.com` sender domain is verified in Resend.
+
+Before declaring a deployment ready, run `node --env-file=<intended-environment-file> scripts/check-sign-in.mjs`, then complete a live sign-in. The preflight checks required configuration and table columns without reading customer records or sending mail. It does not prove email delivery or verify that the deployed environment matches the file. If the database stops responding, check its Supabase project status and resume it if paused. Environment changes require a new Vercel deployment.
 
 ### Pages
 
@@ -131,4 +137,4 @@ Before taking real payments, use a merchant-authorized **staging Shopify store**
 
 ### Remaining activation inputs
 
-Database connectivity/migration, operator email, worker repository secrets and activation, original UPI details, launch price and the StockedBy GA4 ID are still required. The application shows unavailable/paused states until configured. Publishing the website through Vercel makes the product page and interactive demo available; it does not apply database migrations, enable the worker or open payments.
+Database connectivity and migrations were completed during the sign-in recovery above. Operator email, worker repository secrets and activation, original UPI details, launch price and the StockedBy GA4 ID are still required. Publishing the website through Vercel does not enable the worker or open payments.
