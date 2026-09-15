@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import Brand from "@/components/home/Brand";
 import styles from "../test/test.module.css";
 import { trackEvent } from "@/lib/analytics";
 import FixResults from "./FixResults";
@@ -49,9 +49,7 @@ export default function FixFlow({ initialDomain = "" }) {
     <div className={styles.root}>
       <div className={styles.wrap}>
         <div className={styles.topNav}>
-          <Link href="/" className={styles.logo}>
-            stocked<b>by</b>
-          </Link>
+          <Brand inverse />
         </div>
         <div className={styles.mark}>Fix generator</div>
         <h1 className={styles.title}>Fix your website so AI can read it</h1>

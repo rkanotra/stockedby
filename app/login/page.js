@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Brand from "@/components/home/Brand";
 import styles from "@/components/test/test.module.css";
 import LoginForm from "@/components/auth/LoginForm";
 
@@ -20,9 +20,7 @@ export default async function LoginPage({ searchParams }) {
     <div className={styles.root}>
       <div className={styles.wrap}>
         <div className={styles.topNav}>
-          <Link href="/" className={styles.logo}>
-            stocked<b>by</b>
-          </Link>
+          <Brand inverse />
         </div>
         <div className={styles.mark}>Merchant sign-in</div>
         <h1 className={styles.title}>Sign in to StockedBy</h1>

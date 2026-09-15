@@ -1,13 +1,12 @@
 import Link from "next/link";
+import Brand from "./home/Brand";
 
 export default function Footer() {
   return (
     <footer>
       <div className="foot wrap">
         <div>
-          <Link className="logo" href="/" style={{ fontSize: "16px" }}>
-            stocked<b>by</b>
-          </Link>
+          <Brand />
           <br />
           <span style={{ fontSize: "12px" }}>
             Every AI app is a shop now. StockedBy tells you if you&rsquo;re stocked.

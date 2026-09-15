@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Brand from "@/components/home/Brand";
 import { buildOpenGraph, buildTwitter } from "@/lib/site";
 
 const TITLE = "Privacy — StockedBy";
@@ -19,9 +20,7 @@ export const metadata = {
 export default function PrivacyPage() {
   return (
     <div className="wrap legal">
-      <Link href="/" className="logo" style={{ display: "inline-block", marginBottom: 24 }}>
-        stocked<b>by</b>
-      </Link>
+      <div style={{ marginBottom: 24 }}><Brand /></div>
       <h1>Privacy</h1>
       <p className="legal-updated">Last updated 2026.</p>
 

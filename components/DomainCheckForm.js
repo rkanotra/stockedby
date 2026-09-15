@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { safeDecode } from "@/lib/scoring";
 
@@ -13,20 +13,32 @@ import { safeDecode } from "@/lib/scoring";
 export default function DomainCheckForm() {
   const [domain, setDomain] = useState("");
   const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const submitting = useRef(false);
+  useEffect(() => {
+    if (!pending) submitting.current = false;
+  }, [pending]);
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (submitting.current) return;
+    submitting.current = true;
     // safeDecode first: if the pasted text was itself already
     // percent-encoded (e.g. copied from an already-encoded link), decode it
     // before re-encoding so /test's query string never ends up
     // double-encoded (see lib/scoring.js's safeDecode comment).
     const d = safeDecode(domain.trim());
-    router.push(d ? `/test?domain=${encodeURIComponent(d)}` : "/test");
+    startTransition(() => {
+      router.push(d ? `/test?domain=${encodeURIComponent(d)}` : "/test");
+    });
   }
 
   return (
     <form className="domain-form" onSubmit={handleSubmit}>
+      <label htmlFor="brand-domain" className="domain-label">Your website</label>
       <input
+        id="brand-domain"
+        aria-describedby="domain-help"
         type="text"
         inputMode="url"
         placeholder="yourbrand.com"
@@ -36,8 +48,8 @@ export default function DomainCheckForm() {
         aria-label="Your website"
         autoComplete="url"
       />
-      <button type="submit" className="btn-primary domain-submit">
-        Check my brand — free
+      <button type="submit" className="btn-primary domain-submit" disabled={pending} aria-busy={pending}>
+        <span>{pending ? "Opening your brand check…" : "Check my brand — free"}</span>
       </button>
     </form>
   );

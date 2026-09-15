@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Brand from "./home/Brand";
 
 // logo, How it works (/how), Why StockedBy (/why), Blog (/blog), Agent
 // check (/audit), then the "Check my brand" CTA — the only button. Fits
@@ -9,9 +10,7 @@ export default function Nav() {
   return (
     <nav className="nav">
       <div className="nav-in">
-        <Link href="/" className="logo">
-          stocked<b>by</b>
-        </Link>
+        <Brand />
         <div className="nav-links">
           <Link href="/how">How it works</Link>
           <Link href="/why">Why StockedBy</Link>

@@ -1,12 +1,4 @@
-import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
-import ResultExample from "@/components/ResultExample";
-import ProblemStatement from "@/components/ProblemStatement";
-import PromiseStrip from "@/components/PromiseStrip";
-import Markets from "@/components/Markets";
-import FinalCTA from "@/components/FinalCTA";
-import Footer from "@/components/Footer";
-import ScrollReveal from "@/components/ScrollReveal";
+import Homepage from "@/components/home/Homepage";
 import JsonLd from "@/components/JsonLd";
 import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
 
@@ -23,9 +15,8 @@ export const metadata = {
 };
 
 // Organization + WebApplication — deliberately minimal, every field
-// something we can actually stand behind (no invented sameAs social
-// profiles, no fabricated ratings). logo points at the real deployed
-// apple-icon.png (hard rule 5's favicon), not a placeholder.
+// something we can actually stand behind (no fabricated ratings).
+// The logo points at the local vector used by the new wordmark.
 const ORG_AND_APP_JSON_LD = {
   "@context": "https://schema.org",
   "@graph": [
@@ -33,7 +24,7 @@ const ORG_AND_APP_JSON_LD = {
       "@type": "Organization",
       name: "StockedBy",
       url: SITE_URL,
-      logo: `${SITE_URL}/apple-icon.png`,
+      logo: `${SITE_URL}/brand/stockedby-mark.svg`,
       description:
         "AI visibility scoring and agent-readiness tools for brands across India and the Gulf.",
     },
@@ -50,32 +41,6 @@ const ORG_AND_APP_JSON_LD = {
   ],
 };
 
-// Homepage philosophy (CLAUDE.md, "restraint pass" — narrows the earlier
-// "visual/creative revamp" phase's fuller narrative back down): hero, a
-// real example, one strong statement, a simple explanation, market proof,
-// final CTA. Nothing else. How-it-works detail lives on /how; the
-// competitor comparison table lives on /why only — a homepage doesn't
-// need to argue with competitors before a visitor understands the
-// product, and repeating "how the test works" twice on one page (once as
-// three questions, once as three steps) was the same idea explained
-// twice. Markets is the SAME component /why already renders (reused, not
-// forked) — that page stays untouched and still exists as the deeper
-// destination from Nav.
 export default function Home() {
-  return (
-    <div className="sb-home">
-      <JsonLd data={ORG_AND_APP_JSON_LD} />
-      <div id="top" className="hero-shell">
-        <Nav />
-        <Hero />
-      </div>
-      <ResultExample />
-      <ProblemStatement />
-      <PromiseStrip />
-      <Markets />
-      <FinalCTA />
-      <Footer />
-      <ScrollReveal />
-    </div>
-  );
+  return <><JsonLd data={ORG_AND_APP_JSON_LD} /><Homepage /></>;
 }

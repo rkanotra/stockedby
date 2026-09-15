@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+import Brand from "@/components/home/Brand";
 import styles from "./test.module.css";
 import { listMarkets, getMarketCategories, getCategory } from "@/lib/bankStatic";
 import { effectiveQueryText } from "@/lib/queryPersonalize";
@@ -297,9 +297,7 @@ export default function TestFlow() {
     <div className={styles.root}>
       <div className={styles.wrap}>
         <div className={styles.topNav}>
-          <Link href="/" className={styles.logo}>
-            stocked<b>by</b>
-          </Link>
+          <Brand inverse />
         </div>
         <div className={styles.mark}>StockedBy · {market}</div>
         <p className={styles.sub}>
