@@ -63,7 +63,7 @@ const ORG_AND_APP_JSON_LD = {
 // destination from Nav.
 export default function Home() {
   return (
-    <>
+    <div className="sb-home">
       <JsonLd data={ORG_AND_APP_JSON_LD} />
       <div id="top" className="hero-shell">
         <Nav />
@@ -76,6 +76,6 @@ export default function Home() {
       <FinalCTA />
       <Footer />
       <ScrollReveal />
-    </>
+    </div>
   );
 }

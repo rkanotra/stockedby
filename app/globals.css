@@ -599,3 +599,319 @@ footer { border-top: 1px solid var(--line); margin-top: 84px; padding: 34px 0 44
   .strip-in { font-size: 10.5px; gap: 6px; }
   .strip-group { gap: 7px; }
 }
+
+/* ================================================================
+   HOMEPAGE — light, playful visual revamp
+   Pearl lilac + coral + mint, deep-plum ink. Scoped entirely under
+   .sb-home (the wrapper app/page.js renders around the whole
+   homepage) so /why, /how, /blog, /test, /report, /audit, /fix and
+   the dark Ink app theme are completely unaffected — none of them
+   render inside .sb-home, and none of these tokens live on :root.
+   Copy, destinations and functionality are unchanged; this section
+   is presentation only. Reduced-motion and pause-animation handling
+   live inline with each motion rule below rather than in one block,
+   so each is easy to audit against the effect it disables.
+   ================================================================ */
+
+.sb-home {
+  --sb-canvas: #F4F0FF;
+  --sb-canvas-mint: #EEF8F4;
+  --sb-canvas-blush: #FFF1F0;
+  --sb-surface: #FFFFFF;
+  --sb-ink: #282139;
+  --sb-muted: #625C72;
+  --sb-primary: #C84352;
+  --sb-primary-hover: #B73546;
+  --sb-coral-soft: #FFDCD8;
+  --sb-lilac: #E6DDFF;
+  --sb-mint: #D9F2E8;
+  --sb-link: #6553C7;
+  --sb-border: #D8D0E6;
+  --sb-control-border: #81768E;
+  --sb-success: #26724C;
+  --sb-font: 'Plus Jakarta Sans', 'Archivo', sans-serif;
+
+  background: var(--sb-canvas);
+  color: var(--sb-ink);
+  font-family: var(--sb-font);
+}
+.sb-home input,
+.sb-home button,
+.sb-home textarea { font-family: var(--sb-font); }
+.sb-home .mono { font-family: 'IBM Plex Mono', monospace; }
+.sb-home a { color: var(--sb-ink); }
+.sb-home ::selection { background: var(--sb-lilac); color: var(--sb-ink); }
+
+/* ---- header ---- */
+.sb-home .nav { background: transparent; border-bottom: none; }
+.sb-home .nav-links a { color: var(--sb-muted); }
+.sb-home .nav-links a:hover { color: var(--sb-ink); }
+.sb-home .nav .btn {
+  background: var(--sb-primary); color: #FFFFFF; border-radius: var(--radius-pill);
+  font-family: var(--sb-font); font-weight: 700;
+  position: relative; overflow: hidden; isolation: isolate;
+}
+.sb-home .nav .btn:hover { background: var(--sb-primary-hover); }
+
+/* ---- hero shell / hero ---- */
+.sb-home .hero-shell {
+  background: linear-gradient(175deg, var(--sb-canvas) 0%, var(--sb-canvas) 60%, var(--sb-canvas-blush) 100%);
+}
+.sb-home .eyebrow { color: var(--sb-muted); }
+.sb-home .eyebrow-dot { background: var(--sb-primary); }
+.sb-home h1.hero-h1-simple {
+  color: var(--sb-ink);
+  font-size: clamp(34px, 7.5vw, 72px);
+  line-height: 1.05;
+}
+.sb-home .hero-note { color: var(--sb-muted); }
+.sb-home .hero-see-example { color: var(--sb-link); }
+.sb-home .hero-see-example:hover { color: var(--sb-primary); }
+
+/* ---- domain check form ---- */
+.sb-home .domain-input {
+  background: var(--sb-surface); border: 1.5px solid var(--sb-border); color: var(--sb-ink);
+  border-radius: var(--radius-md); height: 58px;
+}
+.sb-home .domain-input::placeholder { color: var(--sb-control-border); }
+.sb-home .domain-input:focus {
+  border-color: var(--sb-link); box-shadow: 0 0 0 3px rgba(101, 83, 199, 0.16);
+}
+.sb-home .btn-primary {
+  background: var(--sb-primary); color: #FFFFFF; font-family: var(--sb-font); font-weight: 700;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 26px rgba(200, 67, 82, 0.22), 0 1px 0 rgba(40, 33, 57, 0.12);
+  position: relative; overflow: hidden; isolation: isolate;
+}
+.sb-home .btn-primary:hover { background: var(--sb-primary-hover); }
+.sb-home .btn-ghost {
+  background: var(--sb-surface); border: 1.5px solid var(--sb-border); color: var(--sb-ink);
+  border-radius: var(--radius-md); font-family: var(--sb-font);
+}
+.sb-home .btn-ghost:hover { border-color: var(--sb-link); color: var(--sb-link); }
+
+/* ---- CTA shimmer: a clipped ::before sweeps beneath the label (z-index:
+   -1 inside the button's own isolated stacking context paints it after
+   the button's background but before the in-flow text, per CSS 2.1
+   Appendix E — so the label always stays legible). Plays once ~900ms
+   after the hero settles on the primary form button, and once per
+   intentional hover/keyboard-focus on any primary CTA. Never loops. */
+.sb-home .btn-primary::before {
+  content: "";
+  position: absolute; top: -60%; left: -30%; width: 34%; height: 220%;
+  background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0) 20%, rgba(255,255,255,0.65) 50%, rgba(255,255,255,0) 80%, transparent 100%);
+  transform: translateX(-40%) rotate(10deg);
+  z-index: -1; pointer-events: none; opacity: 0;
+}
+.sb-home .hero .domain-submit::before {
+  animation: sbShimmer 950ms ease-in-out 900ms 1 both;
+}
+.sb-home .btn-primary:hover::before,
+.sb-home .btn-primary:focus-visible::before {
+  animation: sbShimmer 950ms ease-in-out 1;
+}
+@keyframes sbShimmer {
+  0% { transform: translateX(-40%) rotate(10deg); opacity: 0; }
+  20% { opacity: 1; }
+  60% { opacity: 1; }
+  100% { transform: translateX(340%) rotate(10deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sb-home .btn-primary::before { animation: none !important; opacity: 0 !important; }
+}
+
+/* ---- signature hero art (decorative) + pause control ----
+   Every soft edge here comes from a radial/linear-gradient background,
+   never a blurred filter — filters that get transform-animated every
+   frame force a full re-rasterization of that layer each tick, which
+   pegs the main thread (verified directly: an earlier feGaussianBlur
+   version made the tab unresponsive to input for 10s+ at a time). Only
+   cheap, compositor-only transform/opacity properties animate here. */
+.sb-home .hero-art { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.sb-home .hero-art-blob {
+  position: absolute; right: 3%; top: 4%; width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle, var(--sb-coral-soft) 0%, rgba(255, 220, 216, 0) 72%);
+  transform-origin: 50% 50%; animation: sbDriftB 15s ease-in-out infinite;
+}
+.sb-home .hero-art-ribbon {
+  position: absolute; left: -12%; top: 60%; width: 130%; height: 96px; border-radius: var(--radius-pill);
+  background: linear-gradient(100deg, transparent 0%, var(--sb-lilac) 18%, var(--sb-coral-soft) 50%, var(--sb-mint) 82%, transparent 100%);
+  opacity: 0.4; overflow: hidden;
+  transform-origin: 50% 50%; animation: sbDriftA 17s ease-in-out infinite;
+}
+.sb-home .hero-art-sheen {
+  position: absolute; left: 32%; top: 10%; width: 150px; height: 96px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 70%);
+  animation: sbSheenMove 16s ease-in-out infinite;
+}
+.sb-home .hero-art-product { position: absolute; display: block; }
+.sb-home .hero-art-product-bottle { top: 6%; right: 4%; }
+.sb-home .hero-art-product-box { top: 30%; left: 2%; }
+.sb-home .hero-art-product-shoe { top: 46%; right: 6%; }
+.sb-home .hero-art[data-animate="off"] .hero-art-ribbon,
+.sb-home .hero-art[data-animate="off"] .hero-art-blob,
+.sb-home .hero-art[data-animate="off"] .hero-art-sheen { animation-play-state: paused; }
+@keyframes sbDriftA {
+  0% { transform: rotate(-7deg) translate(0, 0); }
+  50% { transform: rotate(-6deg) translate(5px, -4px); }
+  100% { transform: rotate(-8deg) translate(-4px, 3px); }
+}
+@keyframes sbDriftB {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-5px, 4px); }
+  100% { transform: translate(4px, -3px); }
+}
+@keyframes sbSheenMove {
+  0%, 100% { transform: translate(-90px, 0); opacity: 0.25; }
+  50% { transform: translate(90px, 0); opacity: 0.6; }
+}
+.sb-home .motion-toggle {
+  display: inline-flex; align-items: center; min-height: 44px;
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sb-control-border);
+  background: var(--sb-surface); border: 1px solid var(--sb-border); border-radius: var(--radius-pill);
+  padding: 0 16px; margin-top: 16px; cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.sb-home .motion-toggle:hover { border-color: var(--sb-link); color: var(--sb-ink); }
+@media (max-width: 640px) {
+  .sb-home .hero-art-product,
+  .sb-home .hero-art-blob { display: none; }
+  .sb-home .hero-art-ribbon,
+  .sb-home .hero-art-sheen { animation: none; opacity: 0.35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sb-home .hero-art-ribbon,
+  .sb-home .hero-art-blob,
+  .sb-home .hero-art-sheen { animation: none !important; }
+}
+
+/* ---- report card mock (Hero + shared with HeroReportCard.js) ---- */
+.sb-home .report-glow { background: radial-gradient(ellipse at 50% 20%, rgba(200, 67, 82, 0.18), transparent 62%); }
+.sb-home .report-card { background: var(--sb-surface); border: 1px solid var(--sb-border); box-shadow: 0 24px 60px rgba(40, 33, 57, 0.12); }
+.sb-home .report-topbar { border-bottom: 1px solid var(--sb-border); }
+.sb-home .report-dots span { background: var(--sb-lilac); }
+.sb-home .report-url { color: var(--sb-muted); background: var(--sb-canvas); }
+.sb-home .report-live { color: var(--sb-success); }
+.sb-home .report-col-l { border-right: 1px solid var(--sb-border); }
+.sb-home .report-label { color: var(--sb-control-border); }
+.sb-home .report-query { color: var(--sb-ink); }
+.sb-home .chip { color: var(--sb-muted); border: 1px solid var(--sb-border); background: var(--sb-surface); border-radius: var(--radius-sm); }
+.sb-home .chip:hover { border-color: var(--sb-control-border); color: var(--sb-ink); }
+.sb-home .chip.active { background: var(--sb-ink); color: #FFFFFF; border-color: var(--sb-ink); }
+.sb-home .chip.active:hover { border-color: var(--sb-ink); }
+.sb-home .rank-row { border: 1px solid var(--sb-border); }
+.sb-home .rank-row.you { background: var(--sb-coral-soft); border-color: #F0BAB6; }
+.sb-home .rank-n { color: var(--sb-control-border); }
+.sb-home .rank-row.you .rank-n { color: var(--sb-primary); }
+.sb-home .rank-brand { color: #4A4458; }
+.sb-home .rank-row.you .rank-brand { color: var(--sb-ink); }
+.sb-home .rank-you-badge { background: var(--sb-primary); color: #FFFFFF; }
+.sb-home .rank-dest.mktpl { color: var(--sb-primary); }
+.sb-home .rank-dest.direct { color: var(--sb-success); }
+.sb-home .rank-dest.aggr { color: var(--sb-link); }
+.sb-home .you-status.present { color: var(--sb-success); background: rgba(38, 114, 76, 0.08); }
+.sb-home .you-status.absent { color: var(--sb-primary); background: rgba(200, 67, 82, 0.08); }
+.sb-home .verdict-badge { color: var(--sb-success); border-color: #8FD1B0; background: rgba(38, 114, 76, 0.06); }
+.sb-home .verdict-warn { color: var(--sb-primary); }
+.sb-home .sov-legend { color: var(--sb-muted); }
+.sb-home .engine-badge.yes { color: var(--sb-success); background: rgba(38, 114, 76, 0.1); }
+.sb-home .engine-badge.no { color: var(--sb-primary); background: rgba(200, 67, 82, 0.08); }
+@media (max-width: 700px) {
+  .sb-home .report-col-l { border-bottom: 1px solid var(--sb-border); }
+}
+
+/* ---- result example ("what a result looks like") ---- */
+.sb-home .result-example { background: var(--sb-canvas-mint); }
+.sb-home .result-card { background: var(--sb-surface); border: 1px solid var(--sb-border); box-shadow: 0 20px 50px rgba(40, 33, 57, 0.10); }
+.sb-home .result-brand { color: var(--sb-control-border); }
+.sb-home .result-verdict { color: var(--sb-ink); }
+.sb-home .result-line { color: var(--sb-muted); }
+.sb-home .result-callout { background: var(--sb-lilac); color: var(--sb-ink); }
+.sb-home .result-dest-row { border: 1px solid var(--sb-border); }
+.sb-home .result-dest-row.dest-mktpl { background: rgba(200, 67, 82, 0.06); }
+.sb-home .result-dest-row.dest-direct { background: rgba(38, 114, 76, 0.06); }
+.sb-home .result-dest-row.dest-aggr { background: rgba(101, 83, 199, 0.06); }
+.sb-home .result-dest-row span:last-child { color: var(--sb-muted); }
+.sb-home .result-opportunity { color: var(--sb-muted); border-top: 1px solid var(--sb-border); }
+.sb-home .result-opportunity b { color: var(--sb-ink); }
+
+/* ---- problem statement (editorial pause) ---- */
+.sb-home .problem-line { color: var(--sb-ink); }
+.sb-home .problem-line-muted { color: var(--sb-muted); }
+.sb-home .problem-sub { color: var(--sb-muted); }
+
+/* ---- promise strip: "what StockedBy tells you" — three varied
+   compositions (recommendation card / competitor comparison / fix-list)
+   built from the existing three questions, not new copy. ---- */
+.sb-home .promises { background: var(--sb-canvas-blush); border-top: none; border-bottom: none; }
+.sb-home .q-num { color: var(--sb-control-border); }
+.sb-home .q-title { color: var(--sb-ink); }
+.sb-home .q-line { color: var(--sb-muted); }
+.sb-home .q-item { border-radius: var(--radius-lg); padding: var(--space-5); }
+.sb-home .q-item-rec { background: var(--sb-canvas-mint); }
+.sb-home .q-item-cmp { background: var(--sb-canvas); }
+.sb-home .q-item-fix { background: var(--sb-surface); border: 1px solid var(--sb-border); }
+.sb-home .q-visual { margin-top: var(--space-4); }
+.sb-home .q-visual-chip {
+  display: inline-flex; align-items: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  padding: 5px 10px; border-radius: var(--radius-pill); background: var(--sb-surface); color: var(--sb-muted);
+  border: 1px solid var(--sb-border); margin: 0 6px 6px 0;
+}
+.sb-home .q-visual-chip.yes { color: var(--sb-success); border-color: rgba(38, 114, 76, 0.35); background: rgba(38, 114, 76, 0.08); }
+.sb-home .q-visual-bar { height: 10px; border-radius: var(--radius-pill); background: var(--sb-border); overflow: hidden; margin-bottom: 6px; }
+.sb-home .q-visual-bar span { display: block; height: 100%; background: var(--sb-primary); border-radius: inherit; }
+.sb-home .q-visual-bar-muted span { background: var(--sb-link); }
+.sb-home .q-visual-fix { display: flex; gap: 8px; }
+.sb-home .q-visual-step {
+  width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  background: var(--sb-lilac); color: var(--sb-ink); font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600;
+}
+.sb-home .audit-promo-card { background: var(--sb-surface); border: 1.5px solid var(--sb-border); border-radius: var(--radius-lg); }
+.sb-home .audit-promo-card:hover { border-color: var(--sb-link); }
+.sb-home .audit-promo-label { color: var(--sb-control-border); }
+.sb-home .audit-promo-title { color: var(--sb-ink); }
+.sb-home .audit-promo-line { color: var(--sb-muted); }
+.sb-home .audit-promo-btn { color: var(--sb-ink); border: 1.5px solid var(--sb-ink); border-radius: var(--radius-pill); }
+.sb-home .audit-promo-card:hover .audit-promo-btn { background: var(--sb-ink); color: #FFFFFF; }
+
+/* ---- markets ---- */
+.sb-home section.aisle { background: var(--sb-surface); }
+.sb-home .aisle-sub { color: var(--sb-muted); }
+.sb-home .aisle-plank { background: linear-gradient(var(--sb-coral-soft), var(--sb-primary)); }
+.sb-home .mkt { background: var(--sb-surface); border: 1px solid var(--sb-border); border-radius: var(--radius-lg); }
+.sb-home .mkt:nth-child(3n+1) { background: var(--sb-canvas); }
+.sb-home .mkt:nth-child(3n+2) { background: var(--sb-canvas-mint); }
+.sb-home .mkt:nth-child(3n+3) { background: var(--sb-canvas-blush); }
+.sb-home .mkt h3 { color: var(--sb-ink); }
+.sb-home .mkt .vs { color: var(--sb-link); }
+.sb-home .mkt p { color: var(--sb-muted); }
+
+/* ---- final CTA ---- */
+.sb-home .final-cta { background: var(--sb-lilac); }
+.sb-home .receipt { background: var(--sb-surface); border: 1px solid var(--sb-border); box-shadow: 0 24px 60px rgba(40, 33, 57, 0.12); }
+.sb-home .receipt::before {
+  background:
+    linear-gradient(45deg, transparent 33.333%, var(--sb-surface) 33.333%, var(--sb-surface) 66.667%, transparent 66.667%),
+    linear-gradient(-45deg, transparent 33.333%, var(--sb-surface) 33.333%, var(--sb-surface) 66.667%, transparent 66.667%);
+}
+.sb-home .receipt h2 { color: var(--sb-ink); }
+.sb-home .receipt .r-sub { color: var(--sb-muted); }
+.sb-home .r-fine { color: var(--sb-control-border); }
+
+/* ---- footer ---- */
+.sb-home footer { background: var(--sb-canvas); border-top: 1px solid var(--sb-border); }
+.sb-home .foot { color: var(--sb-muted); }
+.sb-home .foot a { color: var(--sb-muted); }
+.sb-home .foot a:hover { color: var(--sb-ink); }
+
+/* ---- entrance reveals: tuned to this pass's 300-450ms / 8-12px spec
+   (base .rv elsewhere on the site keeps its own longer-standing 500ms/
+   14px values — only the homepage gets the tighter numbers). ---- */
+.sb-home .rv { transition: opacity 0.4s ease, transform 0.4s ease; transform: translateY(10px); }
+
+/* Smooth scrolling is a site-wide convenience (html{scroll-behavior:
+   smooth} in :root above); reduced-motion should turn it off everywhere,
+   not just on the homepage, so this one rule is deliberately unscoped. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

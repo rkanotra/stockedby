@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { HERO_BRAND, HERO_ENGINES } from "@/lib/heroExample";
 
+// Small routing-visual hook (brief section 5) — a colour cue per
+// destination type, purely presentational, no new data or copy.
+const DEST_ROW_CLASS = { "brand-direct": "dest-direct", marketplace: "dest-mktpl", aggregator: "dest-aggr" };
+
 // "What a result looks like" (homepage narrative, brief section 17) — every
 // number here is computed from the SAME real snapshot data Hero.js's live
 // demo reads (lib/heroExample.js, hard rule 2: never fabricate), just
@@ -53,7 +57,7 @@ export default function ResultExample() {
 
           <div className="result-dest-list">
             {HERO_ENGINES.map((e) => (
-              <div className="result-dest-row" key={e.id}>
+              <div className={`result-dest-row ${e.youAppears ? DEST_ROW_CLASS[e.youDestKey] || "" : "dest-none"}`} key={e.id}>
                 <span>{e.label}</span>
                 <span>{e.youAppears ? e.youDestLabel || "No link given" : "Not recommended"}</span>
               </div>

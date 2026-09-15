@@ -14,10 +14,13 @@ const EXAMPLE_REPORT_SLUG = "";
 
 // Three questions StockedBy actually answers — editorial numbering, not
 // three identical icon cards. This is the product, not a feature list.
+// Each one gets a distinct visual treatment (a recommendation card, a
+// competitor comparison, a fix-list) built from this same copy — no new
+// text, just varied composition per CLAUDE.md's visual/creative revamp.
 const QUESTIONS = [
-  { n: "01", title: "Do I show up?", line: "Whether ChatGPT, Gemini and Claude recommend your brand." },
-  { n: "02", title: "Who gets picked instead?", line: "Which competitors and marketplaces get the recommendation." },
-  { n: "03", title: "What should I fix?", line: "The three things most likely to change the answer." },
+  { n: "01", title: "Do I show up?", line: "Whether ChatGPT, Gemini and Claude recommend your brand.", kind: "rec" },
+  { n: "02", title: "Who gets picked instead?", line: "Which competitors and marketplaces get the recommendation.", kind: "cmp" },
+  { n: "03", title: "What should I fix?", line: "The three things most likely to change the answer.", kind: "fix" },
 ];
 
 export default function PromiseStrip() {
@@ -29,11 +32,31 @@ export default function PromiseStrip() {
         </div>
         <ol className="q-list">
           {QUESTIONS.map((q) => (
-            <li key={q.n} className="q-item">
+            <li key={q.n} className={`q-item q-item-${q.kind}`}>
               <span className="q-num">{q.n}</span>
-              <div>
+              <div className="q-body">
                 <div className="q-title">{q.title}</div>
                 <p className="q-line">{q.line}</p>
+                {q.kind === "rec" && (
+                  <div className="q-visual q-visual-rec" aria-hidden="true">
+                    <span className="q-visual-chip yes">ChatGPT ✓</span>
+                    <span className="q-visual-chip yes">Claude ✓</span>
+                    <span className="q-visual-chip">Gemini</span>
+                  </div>
+                )}
+                {q.kind === "cmp" && (
+                  <div className="q-visual q-visual-cmp" aria-hidden="true">
+                    <div className="q-visual-bar"><span style={{ width: "38%" }} /></div>
+                    <div className="q-visual-bar q-visual-bar-muted"><span style={{ width: "62%" }} /></div>
+                  </div>
+                )}
+                {q.kind === "fix" && (
+                  <div className="q-visual q-visual-fix" aria-hidden="true">
+                    <span className="q-visual-step">1</span>
+                    <span className="q-visual-step">2</span>
+                    <span className="q-visual-step">3</span>
+                  </div>
+                )}
               </div>
             </li>
           ))}

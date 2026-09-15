@@ -1,6 +1,7 @@
 import { HERO_ENGINES } from "@/lib/heroExample";
 import HeroReportCard from "./HeroReportCard";
 import DomainCheckForm from "./DomainCheckForm";
+import HeroArt from "./HeroArt";
 
 export default function Hero() {
   return (
@@ -17,6 +18,7 @@ export default function Hero() {
       <a href="#result-example" className="hero-see-example mono">
         See an example ↓
       </a>
+      <HeroArt />
 
       {/* product report card mock — tabs + shelf are real snapshot data
           (HERO_ENGINES, from lib/heroExample.js — also read by
@@ -36,13 +38,13 @@ export default function Hero() {
               <div>
                 <div className="report-label">Share of AI voice</div>
                 <div className="sov-bar">
-                  <div style={{ width: "24%", background: "var(--tag)" }} />
-                  <div style={{ width: "39%", background: "var(--brick2)" }} />
-                  <div style={{ width: "37%", background: "var(--chip-bg)" }} />
+                  <div style={{ width: "24%", background: "var(--sb-primary, var(--tag))" }} />
+                  <div style={{ width: "39%", background: "var(--sb-link, var(--brick2))" }} />
+                  <div style={{ width: "37%", background: "var(--sb-border, var(--chip-bg))" }} />
                 </div>
                 <div className="sov-legend">
-                  <span style={{ color: "var(--link-hover)" }}>■ you 24%</span>
-                  <span style={{ color: "var(--brick)" }}>■ marketplaces 39%</span>
+                  <span style={{ color: "var(--sb-primary, var(--link-hover))" }}>■ you 24%</span>
+                  <span style={{ color: "var(--sb-link, var(--brick))" }}>■ marketplaces 39%</span>
                   <span>■ others 37%</span>
                 </div>
               </div>
