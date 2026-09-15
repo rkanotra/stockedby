@@ -15,7 +15,7 @@ An original shopping-shortlist identity: a new S-shaped shelf mark, editorial ty
 - `components/DomainCheckForm.js`: original safeDecode/encodeURIComponent handoff preserved; visible label and actual navigation-pending state, duplicate-submission guard.
 - `lib/heroExample.js`: exposes existing snapshot citations to the preview. No scoring or data changes.
 - Shared Nav/Footer and the existing login, dashboard, report, privacy, test, audit and fix headers: logo replacement only. Their page themes and functionality are unchanged.
-- `public/brand/commerce-shelf.png`: original generated source artwork; `commerce-shelf.webp`: optimized 32,670-byte serving asset. No third-party brand imagery.
+- The folded-shelf artwork was corrected after visual feedback so both shelves face right. Current source: `public/brand/commerce-rack.png`; optimized serving asset: `commerce-rack.webp`. See `../rack-correction.md` for the correction prompt and verification. No third-party brand imagery.
 
 The old preview combined ChatGPT's actual #2 rank with a static #1 summary and hard-coded 24%/39%/37% voice-share figures. Those ungrounded summary figures are omitted in the rebuilt preview. Each assistant's actual rows remain unchanged. Claude's historical August 18 snapshot is labelled as collected, rather than live. The page explicitly explains that Claude's question differs and the snapshots have different dates. No working full-example report link existed; no fictitious report destination was introduced.
 

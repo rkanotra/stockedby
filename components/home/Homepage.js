@@ -29,7 +29,7 @@ export default function Homepage() {
         <div className={styles.assistants}><span>See what shoppers hear from</span><div><span>ChatGPT</span><span>Gemini</span><span>Claude</span></div></div>
         <a className={styles.exampleLink} href="#result-example">Take a look inside <span aria-hidden="true">↓</span></a>
         </div>
-        <div className={styles.heroArtwork} aria-hidden="true"><Image src="/brand/commerce-shelf.webp" alt="" width={1200} height={800} sizes="(max-width: 760px) 100vw, 50vw" priority /></div>
+        <div className={styles.heroArtwork} aria-hidden="true"><Image src="/brand/commerce-rack.webp" alt="" width={1200} height={800} sizes="(max-width: 760px) 100vw, 50vw" priority /></div>
       </section>
       <section id="result-example" className={`${styles.exampleSection} ${styles.container}`}>
         <div className={styles.sectionHeading}><div><p className={styles.kicker}>A REAL EXAMPLE</p><h2>A mention is good.<br/>The full picture is better.</h2></div><p>A clear view of who AI recommends,<br className={styles.desktopBreak}/> where you rank, and where buyers go.</p></div>
