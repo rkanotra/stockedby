@@ -30,7 +30,9 @@ export default function ConnectStoreForm() {
 
   return (
     <form className={styles.gateForm} onSubmit={submit}>
+      <label htmlFor="shopify-domain" className={styles.label}>Your Shopify domain</label>
       <input
+        id="shopify-domain"
         type="text"
         placeholder="your-store.myshopify.com"
         className={styles.input}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Brand from "@/components/home/Brand";
+import AppHeader from "@/components/site/AppHeader";
 import styles from "../test/test.module.css";
 import { trackEvent } from "@/lib/analytics";
 import FixResults from "./FixResults";
@@ -48,9 +48,7 @@ export default function FixFlow({ initialDomain = "" }) {
   return (
     <div className={styles.root}>
       <div className={styles.wrap}>
-        <div className={styles.topNav}>
-          <Brand inverse />
-        </div>
+        <AppHeader />
         <div className={styles.mark}>Fix generator</div>
         <h1 className={styles.title}>Fix your website so AI can read it</h1>
         <p className={styles.sub}>
@@ -60,8 +58,9 @@ export default function FixFlow({ initialDomain = "" }) {
 
         {(phase === "setup" || phase === "running") && (
           <form className={styles.card} onSubmit={runFix}>
-            <span className={styles.label}>Your website</span>
+            <label className={styles.label} htmlFor="fix-domain">Your website</label>
             <input
+              id="fix-domain"
               className={styles.input}
               type="text"
               placeholder="yourbrand.com"

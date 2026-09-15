@@ -45,7 +45,10 @@ export default function LoginForm() {
 
   return (
     <form className={styles.gateForm} onSubmit={submit}>
+      <label htmlFor="login-email" className={styles.label}>Work email</label>
       <input
+        id="login-email"
+        autoComplete="email"
         type="email"
         required
         placeholder="you@yourbrand.com"

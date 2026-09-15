@@ -1,7 +1,7 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
+import PageShell from "@/components/site/PageShell";
 import BlogLink from "@/components/BlogLink";
 import BlogCta from "@/components/BlogCta";
 import JsonLd from "@/components/JsonLd";
@@ -50,10 +50,10 @@ export default async function BlogPostPage({ params }) {
   };
 
   return (
-    <>
+    <PageShell>
       <JsonLd data={jsonLd} />
-      <Nav />
       <article className="article">
+        <Link href="/blog" className="article-back">← Back to the journal</Link>
         <div className="article-meta">
           {formatPostDate(post.date)} · {post.readingMinutes} min read
         </div>
@@ -63,7 +63,6 @@ export default async function BlogPostPage({ params }) {
         </div>
       </article>
       <BlogCta />
-      <Footer />
-    </>
+    </PageShell>
   );
 }

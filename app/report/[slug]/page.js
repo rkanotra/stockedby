@@ -1,6 +1,6 @@
 import { cache } from "react";
 import Link from "next/link";
-import Brand from "@/components/home/Brand";
+import AppHeader from "@/components/site/AppHeader";
 import { notFound } from "next/navigation";
 import { getReportBySlug } from "@/lib/reports";
 import { buildFounderSummary } from "@/lib/scoring";
@@ -64,11 +64,9 @@ export default async function ReportPage({ params, searchParams }) {
   return (
     <div className={styles.root}>
       <div className={styles.wrap}>
-        <div className={styles.topNav}>
-          <Brand inverse />
-        </div>
+        <AppHeader />
         <div className={styles.mark}>StockedBy · {data.market}</div>
-        <h1 className={styles.title}>{data.brand}&rsquo;s AI shelf report</h1>
+        <p className={styles.sub}>{data.brand}&rsquo;s AI shelf report</p>
         <p className={styles.sub}>{data.category?.name}</p>
 
         <ReportView data={{ ...data, slug: row.slug }} initialShowFull={initialShowFull} />

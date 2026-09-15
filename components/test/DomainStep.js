@@ -11,11 +11,12 @@ export default function DomainStep({ domain, onDomain, onNext }) {
 
   return (
     <form className={styles.card} onSubmit={handleSubmit}>
-      <span className={styles.label}>Your website</span>
+      <label className={styles.label} htmlFor="test-domain">Your website</label>
       <p className={styles.hint} style={{ marginTop: 0 }}>
         We use this to guess your brand name and to spot your own site in the report.
       </p>
       <input
+        id="test-domain"
         className={styles.input}
         type="text"
         inputMode="url"

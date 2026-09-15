@@ -1,18 +1,26 @@
-/* Dark app theme (CLAUDE.md hard rule 5): the Ink palette. Tokens are
-   defined once in app/globals.css's :root (--bg-base, --bg-surface,
-   --bg-inset, --border-subtle, --border-strong, --text-primary,
-   --text-secondary, --text-muted, --text-mono, --accent, --accent-hover,
-   --on-accent, --danger) — no raw hex below. Replaces the old pine palette
-   (#0E1F18 and its derived greens); green is retired as a colour entirely,
-   not just as a verdict colour — see the verdict-colour rules called out
-   inline below. Ported from docs/prototype-app.jsx's embedded CSS block
-   originally, camelCase class names for CSS-module scoping. */
-
+/* Shared light product theme. Tokens stay local to the app root; PDF and
+   email palettes are independent. Business logic and report values are unchanged. */
 .root {
+  --bg-base:#fafaf8;
+  --bg-surface:#ffffff;
+  --bg-inset:#f3f5f4;
+  --border-subtle:#d9dfdc;
+  --border-strong:#858b7e;
+  --text-primary:#252725;
+  --text-secondary:#464d48;
+  --text-muted:#626660;
+  --text-mono:#626660;
+  --accent:#a5442d;
+  --accent-rgb:165,68,45;
+  --accent-hover:#893824;
+  --on-accent:#ffffff;
+  --danger:#a72e2a;
+  --danger-rgb:167,46,42;
+  color-scheme:light;
   min-height: 100vh;
   background: var(--bg-base);
   color: var(--text-primary);
-  font-family: "Archivo", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   padding: 20px 16px 48px;
   box-sizing: border-box;
 }
@@ -27,8 +35,8 @@
   margin-bottom: 18px;
 }
 .logo {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 18px;
   color: var(--text-primary);
 }
@@ -39,15 +47,15 @@
   border-radius: 5px;
 }
 .mark {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   letter-spacing: 0.22em;
   color: var(--accent);
   text-transform: uppercase;
 }
 .title {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: clamp(28px, 7vw, 42px);
   line-height: 1.02;
   margin: 8px 0 6px;
@@ -67,7 +75,7 @@
   margin-bottom: 14px;
 }
 .label {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -91,7 +99,7 @@
   padding: 12px;
   margin-bottom: 12px;
   outline: none;
-  font-family: "Archivo", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   transition: border-color 0.15s ease;
 }
 .input:focus {
@@ -118,8 +126,8 @@
   color: var(--on-accent);
   border: none;
   border-radius: 10px;
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 17px;
   padding: 14px;
   cursor: pointer;
@@ -144,7 +152,7 @@
   color: var(--accent);
   border: 1px solid var(--accent);
   border-radius: 10px;
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-weight: 600;
   font-size: 14px;
   padding: 10px;
@@ -174,7 +182,7 @@
   color: var(--text-secondary);
   border-radius: 10px;
   padding: 10px 12px;
-  font-family: "Archivo", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -188,7 +196,7 @@
 }
 .marketTab .st {
   display: block;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 10px;
   font-weight: 500;
   opacity: 0.75;
@@ -217,7 +225,7 @@
   background: var(--bg-inset);
 }
 .catrow .g {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 10px;
   color: var(--text-muted);
   flex-shrink: 0;
@@ -237,7 +245,7 @@
   color: var(--text-primary);
   border-radius: 12px;
   padding: 18px 20px;
-  font-family: "Archivo", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   text-align: left;
   cursor: pointer;
   display: flex;
@@ -251,8 +259,8 @@
   background: var(--bg-surface);
 }
 .marketCardName {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 19px;
 }
 .marketCardLine {
@@ -291,7 +299,7 @@
   border: 1px solid var(--border-strong);
   border-radius: 8px;
   color: var(--text-primary);
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 13px;
   line-height: 1.45;
   padding: 10px 12px;
@@ -308,7 +316,7 @@
   display: inline-flex;
   gap: 6px;
   align-items: center;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 9px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -325,7 +333,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 12px;
   color: var(--text-secondary);
   padding: 8px 0;
@@ -424,7 +432,7 @@
   animation: spin 0.7s linear infinite;
 }
 .runningNote {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 12px;
   color: var(--text-muted);
   margin: -4px 0 4px;
@@ -486,7 +494,7 @@
   cursor: pointer;
   font-size: 12px;
   padding: 0;
-  font-family: "Archivo", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
 }
 .fieldSuggestionDismiss {
   color: var(--text-muted);
@@ -495,7 +503,7 @@
   border: none;
   padding: 0;
   font-size: 12px;
-  font-family: "Archivo", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
 }
 .customNote {
   background: var(--bg-inset);
@@ -625,7 +633,7 @@
   font-size: 12px;
   cursor: pointer;
   padding: 0;
-  font-family: "Archivo", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   transition: color 0.15s ease;
 }
 .retryHintBtn:hover {
@@ -637,8 +645,8 @@
 }
 /* 2+ failed questions — no verdict is shown at all, this replaces it. */
 .incompleteNotice {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: clamp(20px, 5vw, 26px);
   color: var(--text-secondary);
 }
@@ -653,7 +661,7 @@
   border: none;
   color: var(--accent);
   text-decoration: underline;
-  font-family: "Archivo", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 14px;
   text-align: center;
   cursor: pointer;
@@ -675,7 +683,7 @@
   border: none;
   color: var(--text-muted);
   text-decoration: underline;
-  font-family: "Archivo", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 12px;
   text-align: center;
   cursor: pointer;
@@ -697,8 +705,8 @@
   line-height: 1.5;
 }
 .verdict {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: clamp(26px, 6vw, 36px);
   margin: 0 0 4px;
 }
@@ -764,22 +772,22 @@
   padding: 10px 12px;
 }
 .enginebox .nm {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-mono);
 }
 .enginebox .sc {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 26px;
   color: var(--accent);
 }
 .enginebox .vs {
   font-size: 11px;
   color: var(--text-secondary);
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
 }
 .tabs {
   display: flex;
@@ -796,7 +804,7 @@
   border-radius: 8px;
   padding: 11px 6px;
   min-height: 44px;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -835,7 +843,7 @@
   margin: 16px 0 4px;
 }
 .shelfQ {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   color: var(--text-secondary);
   margin: 0 0 10px;
@@ -862,14 +870,14 @@
 }
 .tag .rk {
   display: block;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 9px;
   color: var(--text-mono);
   margin-bottom: 3px;
 }
 .tag .dest {
   display: block;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 8px;
   margin-top: 3px;
   opacity: 0.85;
@@ -889,14 +897,14 @@
    a pass/fail verdict; out of scope of the pine→Ink migration and the
    verdict-colour rules, left as-is. */
 .tagAmz {
-  background: #3a2320;
-  color: #ffb3a6;
-  border-color: #6b3a32;
+  background: #f8eae4;
+  color: #914431;
+  border-color: #d7ac9e;
 }
 .tagComp {
-  background: #14324a;
-  color: #a8d4f0;
-  border-color: #2e5a7a;
+  background: #edf3f8;
+  color: #284e6b;
+  border-color: #a4bacb;
 }
 .plank {
   height: 7px;
@@ -905,7 +913,7 @@
 }
 .missing {
   margin-top: 8px;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   color: var(--danger);
 }
@@ -933,17 +941,17 @@
   color: var(--text-secondary);
 }
 .sovrow .p {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
 }
 .h2 {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 18px;
   margin: 0 0 12px;
 }
 .sentibadge {
   display: inline-block;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -953,8 +961,8 @@
   margin-bottom: 10px;
 }
 .positioning {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 24px;
   margin: 0 0 8px;
 }
@@ -965,7 +973,7 @@
   margin: 0;
 }
 .fanout {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 12px;
   color: var(--text-secondary);
   padding: 7px 0 7px 16px;
@@ -988,7 +996,7 @@
   padding: 7px 0;
 }
 .srcname {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 12px;
   color: var(--text-secondary);
   width: 44%;
@@ -1008,7 +1016,7 @@
   border-radius: 4px;
 }
 .srccount {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   color: var(--text-mono);
   width: 28px;
@@ -1017,12 +1025,12 @@
 .err {
   color: var(--danger);
   font-size: 13px;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   margin-top: 10px;
 }
 .matchBadge {
   display: inline-block;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 9px;
   color: var(--text-muted);
   border: 1px solid var(--border-strong);
@@ -1040,8 +1048,8 @@
   margin-bottom: 4px;
 }
 .layerScore {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 22px;
   flex-shrink: 0;
 }
@@ -1110,7 +1118,7 @@
 }
 .platformBadge {
   display: inline-block;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   color: var(--text-secondary);
   border: 1px solid var(--border-strong);
@@ -1122,7 +1130,7 @@
 /* Fix Generator (app/fix, components/fix/) — product cards, JSON-LD copy
    blocks, install steps, verify diff. Reuses every color token above. */
 .productName {
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-weight: 700;
   font-size: 16px;
   margin: 0 0 2px;
@@ -1149,7 +1157,7 @@
   color: var(--accent);
   border: 1px solid var(--border-strong);
   border-radius: 8px;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   padding: 5px 10px;
   cursor: pointer;
@@ -1170,14 +1178,14 @@
   padding: 12px;
   margin: 0;
   overflow-x: auto;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   line-height: 1.5;
   color: var(--text-secondary);
   white-space: pre;
 }
 .lockedHint {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1194,7 +1202,7 @@
 }
 .installStepNum {
   flex-shrink: 0;
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   font-weight: 700;
   color: var(--on-accent);
@@ -1219,7 +1227,7 @@
   padding: 10px 12px;
 }
 .verifyColLabel {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1234,7 +1242,7 @@
    sections, monospace reserved for domains/eyebrow labels/raw evidence
    only. Reuses every existing Ink token — no new colors. */
 .founderEyebrow {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1243,8 +1251,8 @@
   display: block;
 }
 .founderHeadline {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: clamp(28px, 6vw, 40px);
   line-height: 1.14;
   margin: 0 0 18px;
@@ -1258,8 +1266,8 @@
   flex-wrap: wrap;
 }
 .founderScore {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 40px;
   color: var(--text-primary);
 }
@@ -1268,7 +1276,7 @@
   color: var(--text-muted);
 }
 .founderScoreBand {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1293,7 +1301,7 @@
   gap: 2px;
 }
 .founderStatValue {
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-weight: 700;
   font-size: 17px;
   color: var(--text-primary);
@@ -1311,7 +1319,7 @@
   margin: 22px 0 16px;
 }
 .opportunityLabel {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1320,8 +1328,8 @@
   margin: 0 0 8px;
 }
 .opportunityTitle {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 20px;
   line-height: 1.25;
   margin: 0 0 8px;
@@ -1359,7 +1367,7 @@
   border-top-color: var(--text-secondary);
 }
 .journeyStageLabel {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1368,8 +1376,8 @@
   margin-bottom: 8px;
 }
 .journeyStagePct {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 26px;
   color: var(--text-primary);
   display: block;
@@ -1399,7 +1407,7 @@
   line-height: 1.45;
 }
 .journeyInsight {
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-weight: 700;
   font-size: 17px;
   line-height: 1.3;
@@ -1441,8 +1449,8 @@
   margin: 0 0 10px;
 }
 .questionStatus {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 19px;
   color: var(--text-primary);
   margin: 0 0 6px;
@@ -1472,7 +1480,7 @@
   font-weight: 700;
 }
 .questionTop3Rank {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   color: var(--text-mono);
   flex-shrink: 0;
   width: 16px;
@@ -1494,8 +1502,8 @@
   margin-bottom: 14px;
 }
 .competitorName {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
+  font-weight: 600;
   font-size: 22px;
   color: var(--text-primary);
   margin: 0 0 10px;
@@ -1535,7 +1543,7 @@
   margin: 16px 0;
 }
 .destImpactColTitle {
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-weight: 700;
   font-size: 14px;
   color: var(--text-primary);
@@ -1572,7 +1580,7 @@
   background: var(--bg-surface);
 }
 .actionImpact {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1581,7 +1589,7 @@
   margin-bottom: 6px;
 }
 .actionTitle {
-  font-family: "Bricolage Grotesque", sans-serif;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-weight: 700;
   font-size: 15px;
   color: var(--text-primary);
@@ -1599,7 +1607,7 @@
   margin-bottom: 12px;
 }
 .impactBlockLabel {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "Plus Jakarta Sans", "Archivo", sans-serif;
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1612,3 +1620,77 @@
   color: var(--text-secondary);
   line-height: 1.5;
 }
+
+/* Layout and reading rhythm shared by setup, sign-in, dashboard and reports. */
+.root {padding:0 24px 70px;line-height:1.7;overflow-wrap:anywhere}
+.wrap {max-width:840px}
+.topNav {flex-wrap:wrap;padding-block:16px;min-height:100px;border-bottom:1px solid var(--border-subtle);margin-bottom:46px;gap:24px}
+.appNavLinks {display:flex;align-items:center;gap:18px;font-size:12px;color:var(--text-muted)}
+.appNavLinks a {color:var(--text-muted);display:inline-flex;min-height:44px;align-items:center;gap:10px}
+.mark {font-size:11px;letter-spacing:1.3px;margin-bottom:14px}
+.title {font-size:clamp(32px,4.7vw,48px);font-weight:500;line-height:1.15;letter-spacing:-1.8px;margin-bottom:19px}
+.sub {font-size:16px;line-height:1.8;max-width:640px;margin-bottom:30px}
+.card,.gateForm {padding:30px;border-radius:18px;border:1px solid var(--border-subtle);background:var(--bg-surface);box-shadow:0 8px 25px #25272503;margin-bottom:22px}
+.label {font-size:15px;text-transform:none;font-weight:600;letter-spacing:0;color:var(--text-primary);margin-bottom:10px}
+.hint,.sectionHint {font-size:14px;line-height:1.8;margin-bottom:20px}
+.input {min-height:54px;padding:14px 16px;background:#fff;border-radius:9px;margin-bottom:18px}
+.btn {font-size:15px;font-weight:600;min-height:52px;border-radius:9px}
+.btn:disabled {background:#e2e6df;color:#626660;cursor:not-allowed}
+.btnGhost {min-height:46px;border-radius:9px;border-color:#858b7e;color:var(--text-primary);font-size:14px}
+.btnGhost:hover {background:#f5e8dd}
+.marketCards {display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.marketCard {background:#fff;padding:22px;border:1px solid #858b7e;border-radius:12px;min-height:110px}
+.marketCard:first-child {background:#edf3f8}
+.marketCard:hover {border-color:var(--accent);background:#f5e8dd}
+.marketCardName {font-size:20px;font-weight:500}.marketCardLine {font-size:13px;line-height:1.7;margin-top:8px}
+.catlistBig {border-radius:12px;border:1px solid var(--border-subtle);max-height:390px}
+.catrowBig {display:block;width:100%;border:0;border-bottom:1px solid var(--border-subtle);padding:18px;text-align:left;font:inherit;font-size:15px;background:white;color:var(--text-primary);cursor:pointer}
+.catrowBig:hover {background:#edf3f8}
+.qedit {font-family:inherit;font-size:16px;line-height:1.8;min-height:105px;background:white;border-color:#858b7e;border-radius:10px;padding:16px;margin-bottom:15px}
+.progressSteps {list-style:none;display:flex;justify-content:space-between;gap:8px;border-block:1px solid var(--border-subtle);margin:0 0 28px;padding:17px 0}
+.progressSteps li {display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted)}
+.progressSteps li>span:first-child {display:grid;place-items:center;width:26px;height:26px;border:1px solid #858b7e;border-radius:50%;font-size:10px}
+.progressSteps li[aria-current=step] {color:var(--accent);font-weight:600}
+.progressSteps li[aria-current=step]>span:first-child {background:var(--accent);color:#fff;border-color:var(--accent)}
+.progressSteps .progressDone>span:first-child {background:#edf3f8;border-color:#91a4b2;color:#284e6b}
+.founderHeadline {font-size:clamp(28px,4vw,40px);font-weight:500;letter-spacing:-1.2px;margin-top:28px}
+.founderScore {font-size:56px;letter-spacing:-2px;font-weight:500}
+.founderStats {gap:0;background:#edf3f8;border-radius:14px;padding:22px;margin-top:24px;margin-bottom:24px}
+.founderStat {flex:1;min-width:110px;padding:10px 16px;border-right:1px solid #d2dee7}
+.founderStat:last-child {border-right:0}.founderStatValue {font-size:23px;font-weight:500}.founderStatLabel {font-size:12px}
+.founderExplain {font-size:16px;line-height:1.8}
+.opportunityCard {background:#f5e8dd;border:1px solid #e2cabc;padding:28px;border-radius:16px}
+.opportunityTitle {font-weight:500;font-size:25px;line-height:1.35}
+.opportunityDetail {font-size:15px;line-height:1.8}
+.opportunityLabel,.founderEyebrow,.actionImpact,.journeyStageLabel {font-size:11px;letter-spacing:1px}
+.journey {background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--border-subtle);margin-bottom:20px}
+.journeyStage {padding:22px 18px}.journeyStageLabel {font-size:11px}.journeyStageDetail {font-size:13px;line-height:1.7}
+.h2 {font-size:24px;font-weight:500;letter-spacing:-.5px;margin-bottom:18px}
+.questionCard {background:white;border:1px solid var(--border-subtle);border-radius:14px;padding:24px}
+.questionAsked {font-size:15px;line-height:1.8}.questionStatus {font-size:22px;font-weight:500}
+.questionTop3RowYou {background:#f5e8dd}.questionTop3Row {padding:13px}.questionTells {font-size:14px;line-height:1.7}
+.actionItem {padding:24px 0}.actionItemPrimary {background:#edf3f8;padding:24px;border-radius:14px}
+.actionTitle {font-size:20px;font-weight:500}.actionDetail {font-size:15px;line-height:1.8}
+.competitorCard {background:#edf3f8;border-color:#cbd9e3;padding:25px;border-radius:14px}
+.competitorName {font-weight:500}.competitorStats,.competitorOtherRow,.destImpactList {font-size:14px}
+.codeBlock {font-family:'IBM Plex Mono',monospace;font-size:13px;background:#f3f5f4;border:1px solid var(--border-subtle);border-radius:10px;color:var(--text-primary)}
+.checkLabel {font-size:15px}.checkDetail,.checkFix {font-size:14px;line-height:1.75}
+.checkRow {padding:18px 0}.layerScore {font-weight:500;font-size:34px}
+.errBanner {font-size:14px;border-radius:10px;padding:16px}.fieldError {font-size:13px}
+.runningNote,.queryline {font-size:14px;line-height:1.8}.runningStatus {background:#edf3f8}
+.tabs .tab {font-size:13px;min-height:48px}.tab .st {font-size:11px}.tab.active {background:#edf3f8;color:#284e6b;border-color:#57768b}
+.root :is(a,button,input,textarea,summary):focus-visible {outline:3px solid var(--accent);outline-offset:4px}
+.root :is(input,textarea) {scroll-margin-top:24px}
+.root button {transition:background .18s,border-color .18s,transform .18s}.root button:active:not(:disabled) {transform:translateY(1px)}
+.gateModalOverlay {background:rgba(37,39,37,.35)}.gateModalPanel {border-radius:20px;box-shadow:0 24px 80px #25272525}.gateModalClose {min-width:44px;min-height:44px}
+@media(max-width:640px){
+ .root{padding:0 22px 45px}.topNav{min-height:80px;margin-bottom:32px}.appNavLinks{gap:10px;font-size:11px}
+ .title{font-size:34px;letter-spacing:-1.3px}.sub{font-size:15px}
+ .card,.gateForm{padding:23px 20px;border-radius:15px}.marketCards{grid-template-columns:1fr}.marketCard{min-height:92px;padding:20px}
+ .progressSteps{gap:4px}.progressSteps li{flex-direction:column;gap:5px;font-size:10px}.progressSteps li>span:first-child{width:24px;height:24px}
+ .founderStats{padding:10px}.founderStat{min-width:100px;padding:12px;border:0}.founderScore{font-size:48px}
+ .opportunityCard{padding:23px}.questionCard{padding:20px}.journeyStage{padding:18px 15px}
+ .verifyGrid{grid-template-columns:1fr}.tabs{flex-wrap:wrap}.tab{flex:1;min-width:90px}.codeBlock{max-width:100%;overflow-x:auto}
+ .founderHeadline{font-size:29px}.h2{font-size:23px}
+}
+@media(prefers-reduced-motion:reduce){.root *,.root *::before,.root *::after{animation:none!important;transition:none!important}}

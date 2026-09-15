@@ -1,7 +1,5 @@
 import Link from "next/link";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-import ScrollReveal from "@/components/ScrollReveal";
+import PageShell from "@/components/site/PageShell";
 import { getAllPosts, formatPostDate } from "@/lib/blog";
 import { buildOpenGraph, buildTwitter } from "@/lib/site";
 
@@ -21,25 +19,25 @@ export default function BlogIndexPage() {
   const posts = getAllPosts();
 
   return (
-    <>
-      <Nav />
+    <PageShell>
       <div className="wrap blog-hero">
-        <h1>Blog</h1>
-        <p>How AI recommends brands — and how to make sure it recommends yours.</p>
+        <span className="page-kicker">THE STOCKEDBY JOURNAL</span>
+        <h1>The next era<br />of <em>shopping.</em></h1>
+        <p>Ideas, explainers and practical guides for brands navigating AI commerce.</p>
       </div>
       <div className="blog-list">
-        {posts.map((post) => (
-          <Link key={post.slug} href={`/blog/${post.slug}`} className="blog-card rv">
+        {posts.map((post, index) => (
+          <Link key={post.slug} href={`/blog/${post.slug}`} className={`blog-card ${index === 0 ? "blog-featured" : ""}`}>
+            <span className="blog-issue" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
             <span className="blog-card-date">
               {formatPostDate(post.date)} · {post.readingMinutes} min read
             </span>
             <h2>{post.title}</h2>
             <p>{post.description}</p>
+            <span className="blog-read">Read the story <span aria-hidden="true">↗</span></span>
           </Link>
         ))}
       </div>
-      <Footer />
-      <ScrollReveal />
-    </>
+    </PageShell>
   );
 }

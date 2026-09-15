@@ -1,4 +1,4 @@
-import Brand from "@/components/home/Brand";
+import AppHeader from "@/components/site/AppHeader";
 import styles from "@/components/test/test.module.css";
 import LoginForm from "@/components/auth/LoginForm";
 
@@ -19,9 +19,7 @@ export default async function LoginPage({ searchParams }) {
   return (
     <div className={styles.root}>
       <div className={styles.wrap}>
-        <div className={styles.topNav}>
-          <Brand inverse />
-        </div>
+        <AppHeader />
         <div className={styles.mark}>Merchant sign-in</div>
         <h1 className={styles.title}>Sign in to StockedBy</h1>
         <p className={styles.sub}>

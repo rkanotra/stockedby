@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Brand from "@/components/home/Brand";
+import AppHeader from "@/components/site/AppHeader";
+import CheckProgress from "@/components/site/CheckProgress";
 import styles from "./test.module.css";
 import { listMarkets, getMarketCategories, getCategory } from "@/lib/bankStatic";
 import { effectiveQueryText } from "@/lib/queryPersonalize";
@@ -296,14 +297,15 @@ export default function TestFlow() {
   return (
     <div className={styles.root}>
       <div className={styles.wrap}>
-        <div className={styles.topNav}>
-          <Brand inverse />
-        </div>
-        <div className={styles.mark}>StockedBy · {market}</div>
+        <AppHeader />
+        <div className={styles.mark}>Your brand check · {market}</div>
+        <h1 className={styles.title} hidden={phase === "done"}>{phase === "running" || phase === "retrying" ? "Your brand check is running." : "Let’s see where you stand."}</h1>
         <p className={styles.sub}>
           Your customers ask AI what to buy. See if ChatGPT, Gemini and Claude say your name —
           or your competitor&rsquo;s.
         </p>
+
+        <CheckProgress phase={phase} />
 
         {phase === "domain" && <DomainStep domain={domain} onDomain={setDomain} onNext={goToBrand} />}
 

@@ -1,23 +1,20 @@
-import Link from "next/link";
-import Brand from "./home/Brand";
+import Link from 'next/link';
+import Brand from './home/Brand';
+import styles from './home/home.module.css';
 
 export default function Footer() {
-  return (
-    <footer>
-      <div className="foot wrap">
-        <div>
-          <Brand />
-          <br />
-          <span style={{ fontSize: "12px" }}>
-            Every AI app is a shop now. StockedBy tells you if you&rsquo;re stocked.
-          </span>
-        </div>
-        <div className="mono" style={{ fontSize: "11px" }}>
-          <Link href="/how">How it works</Link> · <Link href="/why">Why StockedBy</Link> ·{" "}
-          <Link href="/blog">Blog</Link> · <Link href="/privacy">Privacy</Link>
-          <br />© 2026 StockedBy
+  return <footer className={styles.footer}>
+    <div className={styles.container}>
+      <div className={styles.footerTop}>
+        <div><Brand /><p>Know where your brand stands<br />in the next era of shopping.</p></div>
+        <div className={styles.footerLinks}>
+          <Link href="/how">How it works</Link><Link href="/why">Why StockedBy</Link>
+          <Link href="/blog">Journal</Link><Link href="/privacy">Privacy</Link>
         </div>
       </div>
-    </footer>
-  );
+      <div className={styles.footerBottom}>
+        <span>© 2026 StockedBy</span><span>Made for brands in India and the Gulf.</span><a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>;
 }

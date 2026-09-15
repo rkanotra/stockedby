@@ -42,24 +42,25 @@ export default function CategoryStep({ market, categories, search, onSearch, onP
       <input
         className={styles.input}
         placeholder="e.g. serum, earbuds, abaya"
+        aria-label="Search product categories"
         value={search}
         onChange={(e) => onSearch(e.target.value)}
         autoFocus
       />
       <div className={styles.catlistBig}>
         {filtered.slice(0, 40).map((c) => (
-          <div className={styles.catrowBig} key={c.id} onClick={() => onPick(c.id)}>
+          <button type="button" className={styles.catrowBig} key={c.id} onClick={() => onPick(c.id)}>
             {c.name}
-          </div>
+          </button>
         ))}
         {filtered.length === 0 && search.trim() && (
-          <div
+          <button type="button"
             className={styles.catrowBig}
             style={{ color: "var(--accent)" }}
             onClick={() => onCustomPick(search.trim())}
           >
             Test &ldquo;{search.trim()}&rdquo; — we&rsquo;ll write the questions →
-          </div>
+          </button>
         )}
         {filtered.length === 0 && !search.trim() && (
           <div className={styles.catrowBig} style={{ cursor: "default", color: "var(--text-muted)" }}>

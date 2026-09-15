@@ -1,62 +1,25 @@
 import { ImageResponse } from "next/og";
 
-// Site-wide default OG/Twitter image (Next.js file convention — applies to
-// every route that doesn't define its own opengraph-image.js). Uses the
-// real brand tokens from app/globals.css (hard rule 5's design source of
-// truth), not an external asset — no logo file exists to embed, and this
-// avoids a build-time network fetch for a custom font just for one image.
-export const alt = "StockedBy — does AI recommend your brand?";
+export const alt = "StockedBy — Get on AI’s shopping shortlist.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default async function Image() {
+export default function Image() {
   return new ImageResponse(
-    (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "80px 90px",
-          background: "#FCFBF7",
-          fontFamily: "sans-serif",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", marginBottom: 56 }}>
-          <span style={{ fontSize: 44, fontWeight: 800, color: "#16180F" }}>stocked</span>
-          <span
-            style={{
-              fontSize: 44,
-              fontWeight: 800,
-              color: "#16180F",
-              background: "#FFC53D",
-              padding: "2px 14px",
-              borderRadius: 10,
-              marginLeft: 2,
-            }}
-          >
-            by
-          </span>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            fontSize: 64,
-            fontWeight: 800,
-            lineHeight: 1.15,
-            color: "#16180F",
-            maxWidth: 920,
-          }}
-        >
-          Does AI recommend your brand — or your competitor?
-        </div>
-        <div style={{ display: "flex", marginTop: 40, fontSize: 28, color: "#666355" }}>
-          Free AI visibility test for India and the Gulf
-        </div>
+    <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", padding: "64px 80px", background: "#fafaf8", color: "#252725", fontFamily: "sans-serif" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 36, fontWeight: 700 }}>
+        <svg width="52" height="52" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#252725"/><path d="M28 12H12v8h16v8H12" fill="none" stroke="white" strokeWidth="4"/></svg>
+        stockedby<span style={{ color: "#a5442d", marginLeft: -16 }}>.</span>
       </div>
-    ),
-    { ...size }
+      <div style={{ display: "flex", flexDirection: "column", fontSize: 76, letterSpacing: -3, lineHeight: 1.12, marginTop: 56 }}>
+        <span>Get on AI’s</span>
+        <span style={{ color: "#a5442d", fontStyle: "italic", fontFamily: "serif" }}>shopping shortlist.</span>
+      </div>
+      <div style={{ display: "flex", marginTop: "auto", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid #dedfd9", paddingTop: 28, fontSize: 23, color: "#626660" }}>
+        <span>Find out where your brand stands.</span>
+        <span style={{ background: "#edf3f8", padding: "12px 20px", borderRadius: 8, color: "#252725" }}>India + the Gulf ↗</span>
+      </div>
+    </div>,
+    size
   );
 }

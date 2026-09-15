@@ -1,5 +1,4 @@
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
+import PageShell from "@/components/site/PageShell";
 import AisleMonitor from "@/components/AisleMonitor";
 import AisleDiagnose from "@/components/AisleDiagnose";
 import AisleWin from "@/components/AisleWin";
@@ -7,7 +6,6 @@ import AisleProtect from "@/components/AisleProtect";
 import Markets from "@/components/Markets";
 import DataSection from "@/components/DataSection";
 import Compare from "@/components/Compare";
-import ScrollReveal from "@/components/ScrollReveal";
 import { buildOpenGraph, buildTwitter } from "@/lib/site";
 
 const TITLE = "Why StockedBy — AI visibility built for India and the Gulf";
@@ -30,13 +28,13 @@ export const metadata = {
 // its own story paragraph — see that page.
 export default function WhyPage() {
   return (
-    <>
-      <Nav />
+    <PageShell>
       <div className="wrap page-hero">
-        <h1>Why StockedBy</h1>
+        <span className="page-kicker">WHY STOCKEDBY</span>
+        <h1>Your market.<br />Your customers. <em>Your shelf.</em></h1>
         <p>
-          The three pillars, built for India and the Gulf specifically — not a US tool
-          with your currency swapped in.
+          See your AI visibility in the context that matters: local questions, local competitors,
+          and the places your customers actually shop.
         </p>
       </div>
       <AisleMonitor />
@@ -46,8 +44,6 @@ export default function WhyPage() {
       <Markets />
       <DataSection />
       <Compare />
-      <Footer />
-      <ScrollReveal />
-    </>
+    </PageShell>
   );
 }

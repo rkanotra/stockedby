@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Brand from "@/components/home/Brand";
+import PageShell from "@/components/site/PageShell";
 import { buildOpenGraph, buildTwitter } from "@/lib/site";
 
 const TITLE = "Privacy — StockedBy";
@@ -19,8 +19,9 @@ export const metadata = {
 // changes; don't describe a practice before it's real.
 export default function PrivacyPage() {
   return (
-    <div className="wrap legal">
-      <div style={{ marginBottom: 24 }}><Brand /></div>
+    <PageShell>
+    <article className="wrap legal">
+      <span className="page-kicker">YOUR INFORMATION</span>
       <h1>Privacy</h1>
       <p className="legal-updated">Last updated 2026.</p>
 
@@ -59,6 +60,7 @@ export default function PrivacyPage() {
       <Link href="/" className="btn-ghost" style={{ display: "inline-block", marginTop: 24 }}>
         Back home
       </Link>
-    </div>
+    </article>
+    </PageShell>
   );
 }

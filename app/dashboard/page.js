@@ -1,4 +1,4 @@
-import Brand from "@/components/home/Brand";
+import AppHeader from "@/components/site/AppHeader";
 import styles from "@/components/test/test.module.css";
 import { requireMerchant } from "@/lib/auth/requireMerchant";
 import { getStoreForMerchant } from "@/lib/shopify/stores";
@@ -23,10 +23,7 @@ export default async function DashboardPage() {
   return (
     <div className={styles.root}>
       <div className={styles.wrap}>
-        <div className={styles.topNav}>
-          <Brand inverse />
-          <LogoutButton />
-        </div>
+        <AppHeader><LogoutButton /></AppHeader>
         <div className={styles.mark}>Merchant dashboard</div>
         <h1 className={styles.title}>Commerce readiness</h1>
         <p className={styles.sub}>Signed in as {merchant.email}</p>

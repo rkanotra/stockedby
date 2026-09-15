@@ -1,4 +1,5 @@
 import DomainCheckForm from "./DomainCheckForm";
+import styles from "./home/home.module.css";
 
 // The same conversion moment as the homepage hero — every post ends here
 // so a reader who's just been convinced never has to go hunting for the
@@ -9,8 +10,8 @@ export default function BlogCta() {
     <section className="wrap blog-cta">
       <div className="blog-cta-in">
         <h2>Does AI recommend your brand?</h2>
-        <p className="hero-note mono">Free. 2 minutes. See what ChatGPT, Gemini and Claude tell your customers.</p>
-        <DomainCheckForm />
+        <p id="domain-help" className="hero-note mono">Free. 2 minutes. See what ChatGPT, Gemini and Claude tell your customers.</p>
+        <div className={styles.formWrap}><DomainCheckForm /></div>
       </div>
     </section>
   );

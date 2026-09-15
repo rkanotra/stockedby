@@ -1,0 +1,125 @@
+[
+  {
+    "path": "how",
+    "width": 390,
+    "background": "rgb(250, 250, 248)",
+    "overflow": false,
+    "title": "From your websiteto a clearer picture."
+  },
+  {
+    "path": "why",
+    "width": 390,
+    "background": "rgb(250, 250, 248)",
+    "overflow": false,
+    "title": "Your market.Your customers. Your shelf."
+  },
+  {
+    "path": "blog",
+    "width": 390,
+    "background": "rgb(250, 250, 248)",
+    "overflow": false,
+    "title": "The next eraof shopping."
+  },
+  {
+    "path": "blog/npci-unified-agent-protocol-upi-ai-agents",
+    "width": 390,
+    "background": "rgb(250, 250, 248)",
+    "overflow": false,
+    "title": "NPCI's Unified Agent Protocol: What It Means When AI Starts Paying on UPI"
+  },
+  {
+    "path": "privacy",
+    "width": 390,
+    "background": "rgb(250, 250, 248)",
+    "overflow": false,
+    "title": "Privacy"
+  },
+  {
+    "path": "test",
+    "width": 390,
+    "background": "rgba(0, 0, 0, 0)",
+    "overflow": false,
+    "title": "Let’s see where you stand."
+  },
+  {
+    "path": "audit",
+    "width": 390,
+    "background": "rgba(0, 0, 0, 0)",
+    "overflow": false,
+    "title": "Can AI apps read your website?"
+  },
+  {
+    "path": "fix",
+    "width": 390,
+    "background": "rgba(0, 0, 0, 0)",
+    "overflow": false,
+    "title": "Fix your website so AI can read it"
+  },
+  {
+    "path": "login",
+    "width": 390,
+    "background": "rgba(0, 0, 0, 0)",
+    "overflow": false,
+    "title": "Sign in to StockedBy"
+  },
+  {
+    "path": "page-that-does-not-exist",
+    "width": 390,
+    "overflow": false,
+    "title": "We couldn’t findthat page."
+  },
+  {
+    "path": "how",
+    "width": 1440,
+    "overflow": false,
+    "title": "From your websiteto a clearer picture."
+  },
+  {
+    "path": "why",
+    "width": 1440,
+    "overflow": false,
+    "title": "Your market.Your customers. Your shelf."
+  },
+  {
+    "path": "blog",
+    "width": 1440,
+    "overflow": false,
+    "title": "The next eraof shopping."
+  },
+  {
+    "path": "blog/npci-unified-agent-protocol-upi-ai-agents",
+    "width": 1440,
+    "overflow": false,
+    "title": "NPCI's Unified Agent Protocol: What It Means When AI Starts Paying on UPI"
+  },
+  {
+    "path": "privacy",
+    "width": 1440,
+    "overflow": false,
+    "title": "Privacy"
+  },
+  {
+    "path": "test",
+    "width": 1440,
+    "overflow": false,
+    "title": "Let’s see where you stand."
+  },
+  {
+    "path": "audit",
+    "width": 1440,
+    "overflow": false,
+    "title": "Can AI apps read your website?"
+  },
+  {
+    "path": "fix",
+    "width": 1440,
+    "overflow": false,
+    "title": "Fix your website so AI can read it"
+  },
+  {
+    "path": "login",
+    "width": 1440,
+    "overflow": false,
+    "title": "Sign in to StockedBy"
+  }
+]

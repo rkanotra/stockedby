@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Brand from "@/components/home/Brand";
+import AppHeader from "@/components/site/AppHeader";
 import styles from "../test/test.module.css";
 import AuditResults from "./AuditResults";
 
@@ -45,11 +45,9 @@ export default function AuditFlow({ initialDomain = "" }) {
   return (
     <div className={styles.root}>
       <div className={styles.wrap}>
-        <div className={styles.topNav}>
-          <Brand inverse />
-        </div>
+        <AppHeader />
         <div className={styles.mark}>Free website check</div>
-        <h1 className={styles.title}>Can AI apps read your website?</h1>
+        <h1 className={styles.title} hidden={phase === "done"}>Can AI apps read your website?</h1>
         <p className={styles.sub}>
           If AI can&rsquo;t read your shop, it can&rsquo;t recommend or sell your products. Free
           check, 30 seconds.
@@ -57,8 +55,9 @@ export default function AuditFlow({ initialDomain = "" }) {
 
         {(phase === "setup" || phase === "running") && (
           <form className={styles.card} onSubmit={runAudit}>
-            <span className={styles.label}>Your website</span>
+            <label className={styles.label} htmlFor="audit-domain">Your website</label>
             <input
+              id="audit-domain"
               className={styles.input}
               type="text"
               placeholder="yourbrand.com"

@@ -1,8 +1,6 @@
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
+import PageShell from "@/components/site/PageShell";
 import HowItWorks from "@/components/HowItWorks";
 import FaqSection from "@/components/FaqSection";
-import ScrollReveal from "@/components/ScrollReveal";
 import { buildOpenGraph, buildTwitter } from "@/lib/site";
 
 const TITLE = "How it works — StockedBy";
@@ -23,29 +21,18 @@ export const metadata = {
 // (this is where a curious visitor reads the "why does this matter" case).
 export default function HowPage() {
   return (
-    <>
-      <Nav />
+    <PageShell>
       <div className="wrap page-hero">
-        <h1>How it works</h1>
+        <span className="page-kicker">HOW IT WORKS</span>
+        <h1>From your website<br />to a <em>clearer picture.</em></h1>
+        <p>Know what AI recommends. Decide what to do next.</p>
       </div>
       <div className="wrap story-block">
-        <p>
-          When someone asks ChatGPT, Gemini or Claude what to buy, the AI doesn&rsquo;t hand back
-          ten blue links — it recommends three to five specific brands, ranks them, and tells
-          the shopper exactly where to check out. That answer is the new shelf. Win it, and a
-          stranger becomes a customer without ever visiting your site. Lose it, and you don&rsquo;t
-          get a second chance — the shopper never learns you existed.
-        </p>
-        <p>
-          Most brands have no idea what AI actually says about them. StockedBy runs the same
-          questions your customers are already asking, live, across every major AI app — and
-          shows you exactly where you stand, in about two minutes.
-        </p>
+        <p className="story-lead">A shopper asks a question.<br />AI makes a shortlist.<br /><em>Where is your brand?</em></p>
+        <div><p>StockedBy checks how AI assistants respond to questions about your category. You see the recommendations, the competitors, and the destinations they give shoppers.</p><p>Start with your website, choose a product and market, then review the questions before running the test. Your report brings the answers together in one place.</p></div>
       </div>
       <HowItWorks />
       <FaqSection />
-      <Footer />
-      <ScrollReveal />
-    </>
+    </PageShell>
   );
 }

@@ -11,11 +11,12 @@ export default function BrandStep({ brand, onBrand, onNext, onBack }) {
 
   return (
     <form className={styles.card} onSubmit={handleSubmit}>
-      <span className={styles.label}>Your brand name</span>
+      <label className={styles.label} htmlFor="test-brand">Your brand name</label>
       <p className={styles.hint} style={{ marginTop: 0 }}>
         We guessed this from your website — change it if it&rsquo;s not right.
       </p>
       <input
+        id="test-brand"
         className={styles.input}
         placeholder="Your brand name"
         value={brand}
