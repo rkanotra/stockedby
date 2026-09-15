@@ -1,0 +1,104 @@
+.motion {
+  --demo-accent: #a5442d;
+  --demo-line: #dedfd9;
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  align-self: center;
+  color: #252725;
+  background: #fafaf8;
+  border: 1px solid var(--demo-line);
+  border-radius: 18px;
+  overflow: hidden;
+  isolation: isolate;
+  font-family: 'Plus Jakarta Sans', 'Archivo', sans-serif;
+}
+.header {padding: 14px 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 5px 12px; border-bottom: 1px solid var(--demo-line); font-size: 10px; line-height: 1.5; color: #626660}
+.header > span:first-child {letter-spacing: .09em; color: var(--demo-accent)}
+.stage {position: relative; height: 440px}
+.product {position: absolute; right: -4px; top: 0; width: 66%; height: 100%; overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 8%, #000 94%, transparent)}
+.product img {width: 100%; height: 100%; object-fit: cover; object-position: 80% center; mix-blend-mode: multiply; display: block}
+.scan {position: absolute; left: 9%; right: 9%; height: 66px; top: 15%; background: linear-gradient(transparent, #a5442d24); border-bottom: 1px solid var(--demo-accent); opacity: 0; pointer-events: none}
+.motion[data-phase='1'] .scan {opacity: 1; animation: sweep 2.3s ease-in-out infinite}
+.target {position: absolute; left: 14%; bottom: 12%; width: 62%; height: 24%; border: 1px solid var(--demo-accent); border-radius: 10px; opacity: 0; transform: scale(1.07); transition: opacity .4s, transform .6s; box-shadow: 0 0 0 7px #a5442d0d}
+.motion[data-phase='2'] .target, .motion[data-phase='3'] .target {opacity: 1; transform: scale(1)}
+.found {position: absolute; right: 12%; bottom: 4%; display: flex; align-items: center; gap: 7px; padding: 8px 10px; background: #fff; border: 1px solid var(--demo-line); border-radius: 7px; font-size: 11px; opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s; white-space: nowrap}
+.motion[data-phase='2'] .found, .motion[data-phase='3'] .found {opacity: 1; transform: none}
+.agent {position: absolute; left: 12px; top: 60px; width: 44%; max-width: 282px; z-index: 3; background: #fff; border: 1px solid var(--demo-line); border-radius: 15px; box-shadow: 0 16px 42px #2527250d; overflow: hidden}
+.agentHead {display: grid; grid-template-columns: 23px 1fr; column-gap: 9px; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--demo-line); font-size: 11px; line-height: 1.5; color: #626660}
+.orb {grid-row: 1 / 3; height: 23px; width: 23px; border-radius: 50%; background: conic-gradient(from 30deg, var(--demo-accent), #e2b59b, #e3edf3, var(--demo-accent)); box-shadow: inset 0 0 0 5px #ffffff65}
+.motion[data-running='true'] .orb {animation: orbit 4s linear infinite}
+.agentStatus {grid-column: 2; color: var(--demo-accent); font-size: 10px}
+.body {padding: 16px; min-height: 200px}
+.phaseLabel {font-size: 10px; letter-spacing: .07em; text-transform: uppercase; color: var(--demo-accent); margin-bottom: 10px; line-height: 1.5}
+.motion .message {font-family: inherit; font-size: 19px; line-height: 1.35; letter-spacing: -.6px; min-height: 54px; margin: 0 0 12px; font-weight: 500; white-space: pre-line}
+.motion .detail {font-size: 12px; line-height: 1.7; color: #626660; margin: 0; min-height: 42px; white-space: pre-line}
+.constraint {display: inline-flex; align-items: center; font-size: 10px; line-height: 1.6; padding: 7px 9px; border-radius: 6px; margin-top: 12px; background: #edf3f8; color: #35566c}
+.motion .approve {width: 100%; margin-top: 14px; background: var(--demo-accent); color: #fff; border: 0; border-radius: 8px; min-height: 46px; padding: 10px 9px; font-family: inherit; font-size: 11px; line-height: 1.5; display: flex; align-items: center; justify-content: center; gap: 7px; cursor: pointer}
+.approve svg {flex-shrink: 0}
+.motion .approve:hover {background: #893824}
+.trail {position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; opacity: .8}
+.path {stroke: var(--demo-line); stroke-width: 1; fill: none}
+.packet {stroke: var(--demo-accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 7 93; fill: none; opacity: 0}
+.motion[data-phase='1'] .packet, .motion[data-phase='4'] .packet {opacity: 1; animation: route 2.4s linear infinite}
+.receipt {position: absolute; z-index: 4; right: 14px; top: 61px; width: 206px; border: 1px solid #c8d9cd; background: #fff; border-radius: 12px; box-shadow: 0 20px 50px #25272516; opacity: 0; transform: translateY(20px) rotate(3deg); transition: opacity .6s, transform .8s cubic-bezier(.22,1,.36,1); pointer-events: none; visibility: hidden}
+.motion[data-phase='5'] .receipt {opacity: 1; transform: translateY(0) rotate(-2deg); visibility: visible}
+.receiptHead {padding: 16px 14px; display: flex; align-items: center; gap: 9px; font-size: 12px; border-bottom: 1px dashed var(--demo-line)}
+.confirm {display: grid; place-items: center; border-radius: 50%; background: #e9f2eb; color: #356346; width: 29px; height: 29px}
+.receiptRow {display: flex; justify-content: space-between; gap: 10px; font-size: 11px; padding: 14px 14px 0}
+.total {font-size: 22px; padding-bottom: 16px; letter-spacing: -.7px}
+.receiptFoot {font-size: 10px; line-height: 1.5; color: #356346; background: #f0f5f1; padding: 11px 14px; border-radius: 0 0 12px 12px}
+.bottom {padding: 15px 16px 18px; border-top: 1px solid var(--demo-line)}
+.track {display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; list-style: none; margin: 0; padding: 0}
+.track li {font-size: 11px; line-height: 1.5; color: #626660; padding-top: 10px; position: relative; display: flex; gap: 6px; align-items: center}
+.track li::before {content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--demo-line)}
+.track li.done::before, .track li.active::before {background: var(--demo-accent)}
+.track li.active {color: var(--demo-accent)}
+.track li.active::after {content: ''; position: absolute; top: -2px; right: 0; background: var(--demo-accent); height: 6px; width: 6px; border-radius: 50%}
+.player {display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px}
+.motion .player button {font-family: inherit; background: transparent; color: #252725; border: 1px solid #a4a99f; border-radius: 7px; min-height: 44px; padding: 8px 12px; font-size: 11px; line-height: 1.5; flex-shrink: 0; cursor: pointer}
+.motion .player button:hover {background: #f5e8dd}
+.player > span {font-size: 10px; line-height: 1.6; color: #626660; text-align: right; max-width: 175px}
+.motion[data-running='false'] * {animation-play-state: paused !important}
+.motion button:focus-visible {outline: 3px solid var(--demo-accent); outline-offset: 3px}
+.srOnly {position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap}
+@keyframes sweep {0%{top:12%;opacity:0}15%{opacity:1}85%{opacity:1}100%{top:82%;opacity:0}}
+@keyframes orbit {to{transform:rotate(360deg)}}
+@keyframes route {from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+@media(min-width:761px) and (max-width:1100px) {
+  .stage {height: 570px}
+  .product {width: 100%; height: 310px; top: 0; right: 0}
+  .product img {object-fit: contain; object-position: center}
+  .agent {left: 16px; right: 16px; top: 265px; width: auto; max-width: none}
+  .body {padding: 14px 15px; min-height: 200px}
+  .motion .message {min-height: 0; white-space: normal; font-size: 18px}
+  .motion .detail {min-height: 0; white-space: normal}
+  .constraint {margin-top: 9px}
+  .motion .approve {margin-top: 10px}
+  .trail {display: none}
+  .target {left: 34%; width: 34%; bottom: 13%; height: 24%}
+  .found {right: 15%; bottom: 6%}
+  .receipt {top: 55px; right: 24px; width: 200px}
+  .track li > span {display: none}
+}
+@media(max-width:760px) {
+  .motion {max-width: 640px; margin: 26px auto 0}
+  .stage {height: 615px}
+  .product {width: 100%; height: 330px; top: 0; right: 0; mask-image: linear-gradient(to bottom,#000 80%,transparent)}
+  .product img {object-fit: contain; object-position: center}
+  .agent {left: 16px; right: 16px; top: 283px; width: auto; max-width: none}
+  .agentHead {padding: 10px 15px}
+  .body {padding: 14px 15px; min-height: 206px}
+  .motion .message {font-size: 19px; min-height: 0; margin-bottom: 7px}
+  .motion .detail {min-height: 0; font-size: 12px}
+  .constraint {margin-top: 9px; font-size: 11px}
+  .motion .approve {margin-top: 10px; font-size: 12px}
+  .target {left: 34%; width: 34%; bottom: 13%; height: 24%}
+  .found {right: 15%; bottom: 9%}
+  .trail {display: none}
+  .receipt {top: 65px; right: 24px; width: 210px}
+  .track li > span {display: none}
+}
+@media(prefers-reduced-motion:reduce) {
+  .motion *, .motion *::before, .motion *::after {animation: none !important; transition: none !important}
+}
