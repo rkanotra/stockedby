@@ -9,7 +9,7 @@ export default function Footer() {
         <div><Brand /><p>Know where your brand stands<br />in the next era of shopping.</p></div>
         <div className={styles.footerLinks}>
           <Link href="/how">How it works</Link><Link href="/why">Why StockedBy</Link>
-          <Link href="/blog">Journal</Link><Link href="/privacy">Privacy</Link>
+          <Link href="/purchase-check">Purchase Check</Link><Link href="/blog">Journal</Link><Link href="/privacy">Privacy</Link>
         </div>
       </div>
       <div className={styles.footerBottom}>

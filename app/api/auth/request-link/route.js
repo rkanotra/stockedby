@@ -1,3 +1,4 @@
+import { safeReturnPath } from "@/lib/auth/returnPath";
 import { NextResponse } from "next/server";
 import { isValidEmailFormat, isDisposableEmail } from "@/lib/emailValidation";
 import { createMagicLinkToken } from "@/lib/auth/session";
@@ -42,7 +43,7 @@ export async function POST(request) {
     return NextResponse.json({ error: "Sign-in is temporarily unavailable. Please try again shortly." }, { status: 503 });
   }
 
-  const link = `${SITE_URL}/api/auth/verify?token=${encodeURIComponent(token)}`;
+  const link = `${SITE_URL}/api/auth/verify?token=${encodeURIComponent(token)}&next=${encodeURIComponent(safeReturnPath(body?.next))}`;
   const result = await sendMagicLinkEmail({ email, link });
   if (!result.sent) {
     return NextResponse.json({ error: "Couldn't send the sign-in email. Please try again shortly." }, { status: 502 });

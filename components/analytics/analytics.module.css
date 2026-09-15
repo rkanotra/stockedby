@@ -1,0 +1,76 @@
+.banner {
+  position: fixed;
+  bottom: 18px;
+  left: 18px;
+  right: 18px;
+  max-width: 830px;
+  margin: auto;
+  z-index: 100;
+  background: #fff;
+  border: 1px solid #cbd0c4;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 40px #25272515;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  font:
+    13px/1.6 "Plus Jakarta Sans",
+    sans-serif;
+  color: #252725;
+}
+.banner p {
+  margin: 6px 0 0;
+  color: #626660;
+}
+.banner a {
+  color: #a5442d;
+  text-decoration: underline;
+}
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.actions button,
+.settings {
+  font:
+    12px/1.5 "Plus Jakarta Sans",
+    sans-serif;
+  border: 1px solid #b5b9b0;
+  background: #fafaf8;
+  color: #252725;
+  border-radius: 7px;
+  min-height: 44px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+.actions button:last-child {
+  background: #a5442d;
+  color: white;
+  border-color: #a5442d;
+}
+.settings {
+  position: fixed;
+  bottom: 8px;
+  right: 8px;
+  z-index: 50;
+  font-size: 10px;
+  min-height: 30px;
+  padding: 6px 9px;
+}
+.banner button:focus-visible,
+.settings:focus-visible {
+  outline: 3px solid #a5442d;
+  outline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .banner {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  .actions button {
+    flex: 1;
+  }
+}

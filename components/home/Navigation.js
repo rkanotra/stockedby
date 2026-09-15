@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import Link from 'next/link';
 import Brand from './Brand';
 import styles from './home.module.css';
-const links = [['/how','How it works'],['/why','Why StockedBy'],['/blog','Journal'],['/audit','Agent check']];
+const links = [['/how','How it works'],['/purchase-check','Purchase Check'],['/blog','Journal'],['/audit','Agent check']];
 export default function Navigation() {
   const [open,setOpen] = useState(false);
   const trigger = useRef(null);

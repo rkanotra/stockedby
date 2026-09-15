@@ -1,5 +1,6 @@
 import AppHeader from "@/components/site/AppHeader";
 import styles from "@/components/test/test.module.css";
+import { safeReturnPath } from "@/lib/auth/returnPath";
 import LoginForm from "@/components/auth/LoginForm";
 
 export const metadata = {
@@ -26,7 +27,7 @@ export default async function LoginPage({ searchParams }) {
           Enter your email — we&rsquo;ll send you a one-time link. No password to remember.
         </p>
         {errorMessage && <div className={styles.errBanner}>{errorMessage}</div>}
-        <LoginForm />
+        <LoginForm next={safeReturnPath(params?.next)} />
       </div>
     </div>
   );

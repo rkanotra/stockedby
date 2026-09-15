@@ -3,7 +3,7 @@
 import { useState } from "react";
 import styles from "../test/test.module.css";
 
-export default function LoginForm() {
+export default function LoginForm({ next = "/dashboard" }) {
   const [email, setEmail] = useState("");
   const [phase, setPhase] = useState("form"); // form | sending | sent | error
   const [error, setError] = useState("");
@@ -17,7 +17,7 @@ export default function LoginForm() {
       const res = await fetch("/api/auth/request-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
+        body: JSON.stringify({ email: email.trim(), next }),
       });
       const data = await res.json();
       if (!res.ok) {

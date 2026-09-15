@@ -41,7 +41,7 @@ export default function PrivacyPage() {
       <p>We also log your IP address briefly, to stop one visitor from overusing a free tool.</p>
 
       <h2>Why</h2>
-      <p>To run your test, email you your report, and stop abuse of the free tools. That&rsquo;s it.</p>
+      <p>To run your tests, deliver reports, maintain your storefront, manage paid access and stop abuse. With your permission, we also measure website use.</p>
 
       <h2>Who else sees it</h2>
       <p>
@@ -50,6 +50,14 @@ export default function PrivacyPage() {
         We never sell your data, and we don&rsquo;t use it for advertising.
       </p>
 
+      <h2>Agent Storefront and payments</h2>
+      <p>Your account stores catalog drafts, publication history and domain-verification details. Publishing makes the catalog and store policies public. Unpublished drafts and payment submissions remain private.</p>
+      <p>When UPI payments open, we store the reference you submit, the amount, review status and access expiry. We do not collect your UPI PIN or bank login. Payment references are reviewed against received payments before access is granted.</p>
+      <h2>Purchase Check</h2>
+      <p>We store your verified store address, product and variant links, expected prices, discount code, delivery PIN code and state, check results, credit history and review notes. These reports are private to your account and StockedBy’s authorized operator. We do not ask for a customer’s name, full address or payment credentials to run a check.</p>
+      <p>Checks use an isolated browser to read the store and create a test cart. The runner may operate on GitHub Actions using our configured database connection. It does not submit payment or place an order. Cart screenshots are removed after 30 days when the worker next runs; the report and credit records remain available until deleted through an account deletion request. Saved weekly checks use your credits and can be turned off in your workspace.</p>
+      <h2>Optional analytics</h2>
+      <p>If you allow analytics, Google Analytics receives page visits and feature-use events. We exclude email addresses, entered website addresses, catalog content, purchase rules and payment references from those events. Report, purchase-check and storefront identifiers are removed from tracked page paths. You can change your choice using Analytics preferences.</p>
       <h2>Your rights</h2>
       <p>
         This applies under India&rsquo;s DPDP Act and UAE/Saudi PDPL. You can ask us to show

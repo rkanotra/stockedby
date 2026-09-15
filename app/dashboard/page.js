@@ -1,3 +1,4 @@
+import Link from "next/link";
 import AppHeader from "@/components/site/AppHeader";
 import styles from "@/components/test/test.module.css";
 import { requireMerchant } from "@/lib/auth/requireMerchant";
@@ -25,8 +26,10 @@ export default async function DashboardPage() {
       <div className={styles.wrap}>
         <AppHeader><LogoutButton /></AppHeader>
         <div className={styles.mark}>Merchant dashboard</div>
-        <h1 className={styles.title}>Commerce readiness</h1>
+        <h1 className={styles.title}>Your StockedBy workspace</h1>
         <p className={styles.sub}>Signed in as {merchant.email}</p>
+
+        <div className={styles.card}><div className={styles.h2}>Purchase Check</div><p className={styles.sectionHint}>Save buying journeys, check Shopify product and cart behavior, and retest the same rules after a fix.</p><Link className={styles.btn} href="/dashboard/purchase-check">Open Purchase Check</Link></div>
 
         {!store ? (
           <div className={styles.card}>

@@ -1,3 +1,4 @@
+import { safeReturnPath } from "@/lib/auth/returnPath";
 import { NextResponse } from "next/server";
 import { redeemMagicLinkToken, createSession, SESSION_COOKIE_NAME, SESSION_MAX_AGE_SECONDS } from "@/lib/auth/session";
 
@@ -23,7 +24,7 @@ export async function GET(request) {
     return NextResponse.redirect(new URL("/login?error=unavailable", origin));
   }
 
-  const response = NextResponse.redirect(new URL("/dashboard", origin));
+  const response = NextResponse.redirect(new URL(safeReturnPath(searchParams.get("next")), origin));
   response.cookies.set(SESSION_COOKIE_NAME, sessionToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

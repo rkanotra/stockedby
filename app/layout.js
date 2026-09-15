@@ -1,4 +1,5 @@
 import "./globals.css";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
 
 const TITLE = "StockedBy — Does AI recommend your brand?";
@@ -33,7 +34,7 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         />
       </head>
-      <body>{children}</body>
+      <body>{children}<GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_ID || ""} /></body>
     </html>
   );
 }

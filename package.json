@@ -8,7 +8,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test lib/*.test.js lib/**/*.test.js"
+    "test": "node --test lib/*.test.js lib/**/*.test.js",
+    "purchase-check:worker": "node scripts/purchase-check-worker.mjs",
+    "test:purchase-check:browser": "node scripts/test_purchase_check_runner.mjs",
+    "test:purchase-check:db": "node scripts/test_purchase_check_db.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.117.1",
@@ -19,6 +22,7 @@
     "next": "16.3.1",
     "openai": "^7.5.0",
     "pdfkit": "^0.20.0",
+    "playwright": "1.58.2",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-markdown": "^10.1.0",
