@@ -88,7 +88,7 @@ The website cannot independently authenticate your static QR's bank receipt. Nev
 
 ### 4. Google Analytics
 
-Set a separate StockedBy web-stream ID in `NEXT_PUBLIC_GA_ID`. Consent-gated GA4 wiring is present. Disable enhanced measurement in the GA4 stream so automatic form, click and history capture do not bypass the custom sanitization.
+StockedBy uses its own GA4 property and web stream (`G-9VY22VHR43`) under the same Google Analytics account as Finpeel. The production deployment receives it through `NEXT_PUBLIC_GA_ID`. Consent-gated GA4 wiring is present. Enhanced measurement is disabled in the GA4 stream so automatic form, click and history capture cannot bypass the custom sanitization.
 
 Current Purchase Check client events: `purchase_check_journey_saved`, `purchase_check_queued`, `purchase_check_report_opened`. Entered store/product data, merchant email, PIN code, discount, RRN and private report IDs are excluded. These events require visitor analytics consent and are not the system of record. Use the database payment/credit ledger to measure verified paid customers. A server-to-GA purchase conversion pipeline is not implemented; a submitted UPI reference must not fire a purchase event.
 
@@ -137,4 +137,4 @@ Before taking real payments, use a merchant-authorized **staging Shopify store**
 
 ### Remaining activation inputs
 
-Database connectivity and migrations were completed during the sign-in recovery above. Operator email, worker repository secrets and activation, original UPI details, launch price and the StockedBy GA4 ID are still required. Publishing the website through Vercel does not enable the worker or open payments.
+Database connectivity, migrations and the StockedBy GA4 property were completed during production setup. Operator email, worker repository secrets and activation, original UPI details and launch price are still required. Publishing the website through Vercel does not enable the worker or open payments.
