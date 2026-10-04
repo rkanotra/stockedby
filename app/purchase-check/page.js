@@ -1,13 +1,14 @@
-import Link from "next/link";
 import PageShell from "@/components/site/PageShell";
 import JourneyPreview from "@/components/purchase-check/JourneyPreview";
+import TrackedLink from "@/components/analytics/TrackedLink";
+import JsonLd from "@/components/JsonLd";
 import s from "@/components/purchase-check/purchase.module.css";
 import { buildOpenGraph, buildTwitter } from "@/lib/site";
 import { purchaseConfig } from "@/lib/purchaseCheck/config";
 const title =
-  "Purchase Check — Put your store through a real buying journey | StockedBy";
+  "Shopify Checkout Testing India — Variant, Cart & Delivery QA | StockedBy";
 const description =
-  "Check exact variants, cart prices, offers and Shopify delivery estimates. Get evidence, practical fix guides and repeatable checks for your Indian store.";
+  "Test a real Shopify buying journey in India: product, variant, cart price, discount, delivery and checkout entry. Get evidence, fix steps and a repeatable retest.";
 export const metadata = {
   title,
   description,
@@ -17,37 +18,69 @@ export const metadata = {
 };
 export default function PurchaseCheckPage() {
   const config = purchaseConfig();
+  const faq = [
+    {
+      question: "What does a Shopify Purchase Check test?",
+      answer:
+        "It checks the product page, selected variant, expected price, discount, Indian delivery estimate, cart and checkout entry using the journey you define.",
+    },
+    {
+      question: "Does StockedBy place a real order?",
+      answer:
+        "No. The check stops before payment. It does not submit payment, place an order or change your Shopify theme.",
+    },
+    {
+      question: "Can I verify a fix?",
+      answer:
+        "Yes. Run the same saved journey again after your change and compare the new evidence with the original report.",
+    },
+    {
+      question: "Which stores are supported?",
+      answer:
+        "The India pilot supports standard Shopify storefronts priced in INR. Custom checkouts and some third-party checkout apps may need separate verification.",
+    },
+  ];
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map(({ question, answer }) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: { "@type": "Answer", text: answer },
+    })),
+  };
   return (
     <PageShell>
+      <JsonLd data={faqJsonLd} />
       <div className={s.root}>
         <div className={s.wrap}>
           <section className={s.hero}>
             <div>
               <p className={s.eyebrow}>
-                StockedBy Purchase Check / India pilot
+                Shopify checkout testing / India pilot
               </p>
               <h1>
-                Make the journey
+                Test the buying journey
                 <br />
-                as good as
+                before shoppers
                 <br />
-                <em>the discovery.</em>
+                <em>find the failure.</em>
               </h1>
               <p className={s.intro}>
-                An AI agent found your product. Can it select the right variant,
-                get the right price and reach checkout? Put your store through
-                the steps that matter.
+                Give StockedBy a real product, variant, offer and Indian PIN
+                code. We check the journey from product page to checkout and
+                show you exactly where it breaks.
               </p>
               <div className={s.actions}>
-                <Link className={s.primary} href="/dashboard/purchase-check">
-                  Set up your store ↗
-                </Link>
-                <Link className={s.secondary} href="/purchase-check/demo">
-                  Explore the demo
-                </Link>
+                <TrackedLink className={s.primary} href="/dashboard/purchase-check" event="purchase_check_pilot_started">
+                  Start free pilot setup ↗
+                </TrackedLink>
+                <TrackedLink className={s.secondary} href="/purchase-check/demo" event="purchase_check_demo_opened">
+                  See a sample report
+                </TrackedLink>
               </div>
               <p className={s.muted}>
-                Standard Shopify storefronts · INR · No payment submitted
+                Standard Shopify storefronts · INR · Stops before payment
               </p>
             </div>
             <JourneyPreview />
@@ -106,11 +139,11 @@ export default function PurchaseCheckPage() {
                 <p className={s.muted}>
                   {config.enabled
                     ? `₹${config.amount.toLocaleString('en-IN')} total for 20 check credits. Pay by UPI in your workspace; credits are added after receipt verification.`
-                    : 'Launch price is being finalized. Store setup is free. Payments open only after pricing is published.'}
+                    : 'The founding pilot is open. Store setup is free, and pilot access is reviewed after store verification. No card or automatic renewal.'}
                 </p>
-                <Link className={s.quiet} href="/dashboard/purchase-check">
-                  Prepare your first journey ↗
-                </Link>
+                <TrackedLink className={s.quiet} href="/dashboard/purchase-check" event="purchase_check_pilot_started">
+                  Request founding pilot access ↗
+                </TrackedLink>
               </div>
             </div>
           </section>
@@ -128,6 +161,18 @@ export default function PurchaseCheckPage() {
               report’s instructions. Purchase Check does not change your theme,
               submit payment or place orders.
             </p>
+          </section>
+          <section className={s.faq} aria-labelledby="purchase-check-faq">
+            <p className={s.eyebrow}>Questions founders ask</p>
+            <h2 id="purchase-check-faq">Shopify checkout testing, explained.</h2>
+            <div className={s.faqGrid}>
+              {faq.map(({ question, answer }) => (
+                <details key={question}>
+                  <summary>{question}</summary>
+                  <p>{answer}</p>
+                </details>
+              ))}
+            </div>
           </section>
         </div>
       </div>

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import s from "./purchase.module.css";
+import { trackEvent } from "@/lib/analytics";
 export default function JourneyPreview() {
   const [step, setStep] = useState(0),
     [playing, setPlaying] = useState(false);
@@ -43,11 +44,12 @@ export default function JourneyPreview() {
           onClick={() => {
             setStep(0);
             setPlaying((v) => !v);
+            trackEvent("purchase_check_demo_played");
           }}
         >
           {playing ? "Pause" : "Play journey"} {playing ? "Ⅱ" : "↗"}
         </button>
-        <Link className={s.link} href="/purchase-check/demo">
+        <Link className={s.link} href="/purchase-check/demo" onClick={() => trackEvent("purchase_check_demo_opened")}>
           Explore sample report
         </Link>
       </div>

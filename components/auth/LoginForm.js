@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import styles from "../test/test.module.css";
+import { trackEvent } from "@/lib/analytics";
 
 export default function LoginForm({ next = "/dashboard" }) {
   const [email, setEmail] = useState("");
@@ -25,6 +26,7 @@ export default function LoginForm({ next = "/dashboard" }) {
         setPhase("form");
         return;
       }
+      trackEvent("sign_in_link_requested");
       setPhase("sent");
     } catch {
       setError("Network error — please try again.");

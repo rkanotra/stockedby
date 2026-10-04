@@ -11,6 +11,7 @@ import { staleEnginesFor } from "@/lib/freshness";
 import { ENGINE_ORDER, guessBrandFromDomain, safeDecode } from "@/lib/scoring";
 import { resolveMarketParam, guessMarketFromDomain } from "@/lib/marketProfiles";
 import { runAllQueries } from "@/lib/runQueries";
+import { trackEvent } from "@/lib/analytics";
 import DomainStep from "./DomainStep";
 import BrandStep from "./BrandStep";
 import MarketStep from "./MarketStep";
@@ -208,6 +209,7 @@ export default function TestFlow() {
 
   async function startTest() {
     if (!brand.trim() || queries.length === 0) return;
+    trackEvent("brand_check_run_started");
     setPhase("running");
     setRunError("");
     try {
@@ -234,12 +236,14 @@ export default function TestFlow() {
       const data = await submitLiveRunsWithRetry(liveRuns, queryEdits);
       setResult(data);
       setPhase("done");
+      trackEvent("brand_check_completed");
     } catch {
       // Quiet, no red box (the agreed failure pattern — see VerdictCard.js's
       // own partial-failure handling) — a scoring failure isn't the
       // merchant's fault and shouldn't read as an alarm about their input.
       setRunError("Couldn't complete this check — try again.");
       setPhase("queries");
+      trackEvent("brand_check_failed");
     }
   }
 

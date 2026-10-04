@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../test.module.css";
 import GateModal from "./GateModal";
 import { isValidEmailFormat, isDisposableEmail, isFreeProvider, suggestEmailCorrection } from "@/lib/emailValidation";
+import { trackEvent } from "@/lib/analytics";
 
 // Plain-language DPDP (India) / PDPL (UAE, KSA) consent line — hard rule
 // 8. Required (data-processing) and optional (marketing) are two
@@ -46,6 +47,10 @@ export default function LeadGate({
   const [error, setError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [suggestion, setSuggestion] = useState(null);
+
+  useEffect(() => {
+    trackEvent("full_report_gate_viewed");
+  }, []);
 
   function handleEmailBlur() {
     const trimmed = email.trim();
@@ -125,6 +130,7 @@ export default function LeadGate({
       // emailResult/persistence sub-flags came back.
       setUnlocked(true);
       setModalOpen(false);
+      trackEvent("report_lead_submitted");
       onUnlock?.();
     } catch {
       setError("Network error — please try again.");

@@ -3,6 +3,7 @@
 import { useState, useTransition, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { safeDecode } from "@/lib/scoring";
+import { trackEvent } from "@/lib/analytics";
 
 // The homepage's entire job is this one input — see CLAUDE.md's homepage
 // philosophy note. Carries straight into /test's domain-first wizard
@@ -28,6 +29,7 @@ export default function DomainCheckForm() {
     // before re-encoding so /test's query string never ends up
     // double-encoded (see lib/scoring.js's safeDecode comment).
     const d = safeDecode(domain.trim());
+    trackEvent("brand_check_started");
     startTransition(() => {
       router.push(d ? `/test?domain=${encodeURIComponent(d)}` : "/test");
     });
