@@ -87,6 +87,11 @@ alter table ai_observations
   alter column source_observed_at set not null,
   alter column source_type set not null;
 
+-- `source` was the coarse provenance field from 0008. Every writer now
+-- sends the more precise `source_type` + `collection_method` pair above;
+-- leaving the old NOT NULL column in place would reject every new insert.
+alter table ai_observations drop column if exists source;
+
 alter table ai_observations
   drop constraint if exists ai_observations_source_type_check;
 alter table ai_observations
@@ -97,6 +102,9 @@ alter table ai_observations
 -- settable, never able to drift from it) — dropping the old plain column
 -- also drops its old index; both are recreated below against
 -- source_observed_at directly.
+-- The 0008 trend view depends on the old column, so remove it first and
+-- recreate the hardened definition below.
+drop view if exists brand_visibility_trend;
 alter table ai_observations drop column if exists observed_on;
 alter table ai_observations
   add column observed_on date generated always as (source_observed_at::date) stored;
