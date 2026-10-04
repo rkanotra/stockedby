@@ -107,7 +107,8 @@ alter table ai_observations
 drop view if exists brand_visibility_trend;
 alter table ai_observations drop column if exists observed_on;
 alter table ai_observations
-  add column observed_on date generated always as (source_observed_at::date) stored;
+  add column observed_on date generated always as
+    ((source_observed_at at time zone 'UTC')::date) stored;
 
 -- Indexes for the access patterns this hardening pass actually needs
 -- (point 14): brand/market/category trend lookups, market/category+engine
