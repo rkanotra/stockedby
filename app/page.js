@@ -26,7 +26,7 @@ const ORG_AND_APP_JSON_LD = {
       url: SITE_URL,
       logo: `${SITE_URL}/brand/stockedby-mark.svg`,
       description:
-        "AI visibility scoring and agent-readiness tools for brands across India and the Gulf.",
+        "A free, independent AI visibility project for brands across India and the Gulf.",
     },
     {
       "@type": "WebApplication",
@@ -35,7 +35,7 @@ const ORG_AND_APP_JSON_LD = {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
       description:
-        "Free tool to check whether ChatGPT, Gemini and Claude recommend your brand, and whether AI agents can read and buy from your store.",
+        "Free one-off tool to check whether ChatGPT, Gemini and Claude recommend your brand and what your website could explain more clearly.",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     },
   ],

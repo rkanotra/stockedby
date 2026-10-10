@@ -99,9 +99,13 @@ export default function Operations({ initial, demo = false, setup = [] }) {
             Review the exceptions. Let the saved checks do the repeat work.
           </p>
         </div>
-        <Link href="/dashboard/purchase-check" className={s.secondary}>
-          Merchant workspace ↗
-        </Link>
+        {demo ? (
+          <span className={s.counter}>Sample controls only</span>
+        ) : (
+          <Link href="/dashboard/purchase-check" className={s.secondary}>
+            Merchant workspace ↗
+          </Link>
+        )}
       </div>
       <div className={s.statGrid}>
         <div className={s.stat}>

@@ -23,39 +23,45 @@ export default function PrivacyPage() {
     <article className="wrap legal">
       <span className="page-kicker">YOUR INFORMATION</span>
       <h1>Privacy</h1>
-      <p className="legal-updated">Last updated 2026.</p>
+      <p className="legal-updated">Last updated 10 October 2026.</p>
 
       <h2>What we collect</h2>
       <p>
-        Free shelf test (/test): the brand name, website and market you enter, and the
-        shopper questions you run. We save the report so you can share it.
-      </p>
-      <p>
-        Unlocking a full report: your email, your website, and an optional note about your
-        biggest pain point.
+        Free visibility test (/test): the brand name, website, market and shopper
+        questions you enter. StockedBy processes them for the current test and
+        returns the result to your browser. The report is not saved to a StockedBy
+        database.
       </p>
       <p>
         Free website check (/audit): only the website address you enter. We don&rsquo;t ask
         for your email there.
       </p>
-      <p>We also log your IP address briefly, to stop one visitor from overusing a free tool.</p>
+      <p>
+        We also use your IP address briefly in memory to stop one visitor from
+        overusing a free tool. The counter expires automatically.
+      </p>
 
       <h2>Why</h2>
-      <p>To run your tests, deliver reports, maintain your storefront, manage paid access and stop abuse. With your permission, we also measure website use.</p>
+      <p>
+        To run a one-off test, generate its report and stop abuse. With your
+        permission, we also measure website use.
+      </p>
 
       <h2>Who else sees it</h2>
       <p>
         The shopper questions go to Anthropic, Google and OpenAI to generate real AI answers.
-        Your email and report go through Resend to send you mail, and Supabase to store it.
-        We never sell your data, and we don&rsquo;t use it for advertising.
+        If you ask StockedBy to email a fix, the email and report go through
+        Resend for delivery. StockedBy does not maintain customer accounts or a
+        production report database. We never sell your data, and we don&rsquo;t use
+        it for advertising.
       </p>
 
-      <h2>Agent Storefront and payments</h2>
-      <p>Your account stores catalog drafts, publication history and domain-verification details. Publishing makes the catalog and store policies public. Unpublished drafts and payment submissions remain private.</p>
-      <p>When UPI payments open, we store the reference you submit, the amount, review status and access expiry. We do not collect your UPI PIN or bank login. Payment references are reviewed against received payments before access is granted.</p>
-      <h2>Purchase Check</h2>
-      <p>We store your verified store address, product and variant links, expected prices, discount code, delivery PIN code and state, check results, credit history and review notes. These reports are private to your account and StockedBy’s authorized operator. We do not ask for a customer’s name, full address or payment credentials to run a check.</p>
-      <p>Checks use an isolated browser to read the store and create a test cart. The runner may operate on GitHub Actions using our configured database connection. It does not submit payment or place an order. Cart screenshots are removed after 30 days when the worker next runs; the report and credit records remain available until deleted through an account deletion request. Saved weekly checks use your credits and can be turned off in your workspace.</p>
+      <h2>Product demos</h2>
+      <p>
+        Purchase Check and Agent Storefront demos use sample data. They do not
+        create an account, contact your store, submit payment or save what you
+        click.
+      </p>
       <h2>Optional analytics</h2>
       <p>If you allow analytics, Google Analytics receives page visits and feature-use events. We exclude email addresses, entered website addresses, catalog content, purchase rules and payment references from those events. Report, purchase-check and storefront identifiers are removed from tracked page paths. You can change your choice using Analytics preferences.</p>
       <h2>Your rights</h2>

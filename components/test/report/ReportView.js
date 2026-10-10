@@ -14,7 +14,6 @@ import VisibilityHistoryCard from "./VisibilityHistoryCard";
 import RecommendedActions from "./RecommendedActions";
 import NextMoveCTA from "./NextMoveCTA";
 import VerdictCard from "./VerdictCard";
-import LeadGate from "./LeadGate";
 import ShareButton from "./ShareButton";
 import CheckoutBattleCard from "./CheckoutBattleCard";
 import ShareOfVoiceCard from "./ShareOfVoiceCard";
@@ -27,9 +26,8 @@ import FixPlanCTA from "./FixPlanCTA";
 import DownloadPdfButton from "./DownloadPdfButton";
 
 // Founder-first redesign (CLAUDE.md's redesign phase): conclusion first
-// (AIVisibilityHero + BiggestOpportunityCard + BuyerJourney, all free —
-// this is the report's real substance, not a teaser), then the email
-// gate, then the "how/who/where" detail (EngineTabs, CompetitorThreat,
+// (AIVisibilityHero + BiggestOpportunityCard + BuyerJourney), then the
+// "how/who/where" detail (EngineTabs, CompetitorThreat,
 // DestinationSummary, RecommendedActions), then a single "View full
 // evidence" disclosure wrapping every existing raw-data card
 // (VerdictCard/ShelvesCard/CheckoutBattleCard/ShareOfVoiceCard/
@@ -106,21 +104,7 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
         <TestAnotherCTA categoryName={category.name} brand={brand} brandWebsite={brandWebsite} market={market} />
       )}
 
-      <LeadGate
-        market={market}
-        category={category?.name}
-        brand={brand}
-        brandWebsite={brandWebsite}
-        verdict={report.verdict}
-        slug={slug}
-        onUnlock={scrollToEvidence}
-        report={report}
-        engines={engines}
-        sentiment={sentiment}
-        trustedSources={trustedSources}
-        competitor={competitor}
-        mentionCount={mentionCount}
-      >
+      <section aria-label="Full report">
         <EngineTabs brand={brand} engines={engines} />
         <CompetitorThreat competitorThreat={founder.competitorThreat} />
         <DestinationSummary
@@ -175,7 +159,7 @@ export default function ReportView({ data, onRetry, initialShowFull = false }) {
             />
           </div>
         )}
-      </LeadGate>
+      </section>
     </>
   );
 }

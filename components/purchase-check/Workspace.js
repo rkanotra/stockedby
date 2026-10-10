@@ -140,8 +140,8 @@ export default function Workspace({
             <strong>Interactive sample.</strong> Store, findings and credits are
             illustrative. Nothing is sent to a real store.
           </span>
-          <Link className={s.link} href="/dashboard/purchase-check">
-            Open my workspace ↗
+          <Link className={s.link} href="/purchase-check">
+            About this archived concept ↗
           </Link>
         </div>
       )}
@@ -276,7 +276,7 @@ export default function Workspace({
                   ["reports", "Reports"],
                   ["stores", "Stores"],
                   ["credits", "Credits & UPI"],
-                ].map(([id, label]) => (
+                ].filter(([id]) => !demo || id !== "credits").map(([id, label]) => (
                   <button
                     key={id}
                     className={s.secondary}

@@ -23,9 +23,9 @@ export default function Homepage() {
         <div className={styles.heroText}>
         <div className={styles.eyebrow}>AI VISIBILITY FOR INDEPENDENT BRANDS</div>
         <h1 id="hero-title">Get on AI’s<br/>shopping <span>shortlist.</span></h1>
-        <p className={styles.heroCopy}>Your next customer is asking AI what to buy.<br className={styles.desktopBreak}/> See whether it recommends you—then make sure your store<br className={styles.desktopBreak}/> can carry the right product all the way to checkout.</p>
+        <p className={styles.heroCopy}>Your next customer is asking AI what to buy.<br className={styles.desktopBreak}/> See whether it recommends you, who appears instead,<br className={styles.desktopBreak}/> and what your website could explain more clearly.</p>
         <div className={styles.formWrap}><DomainCheckForm /></div>
-        <p id="domain-help" className={styles.reassurance}>Free test. About 2 minutes. No card required.</p>
+        <p id="domain-help" className={styles.reassurance}>Free one-off test. No account. No card. Results are not saved.</p>
         <div className={styles.assistants}><span>See what shoppers hear from</span><div><span>ChatGPT</span><span>Gemini</span><span>Claude</span></div></div>
         <a className={styles.exampleLink} href="#result-example">Take a look inside <span aria-hidden="true">↓</span></a>
         </div>
@@ -50,7 +50,7 @@ export default function Homepage() {
       <section className={`${styles.marketSection} ${styles.container}`} id="markets">
         <div className={styles.sectionHeading}><div><p className={styles.kicker}>LOCAL QUESTIONS. USEFUL ANSWERS.</p><h2>Built for the way<br/>your customers shop.</h2></div><p>A ₹700 skincare question in India isn’t the same as a QAR 100 question in Qatar. Your market changes the test.</p></div>
         <div className={styles.marketGrid}><div className={styles.india}><span className={styles.kicker}>STARTING CLOSE TO HOME</span><h3>India</h3><p>English and Hinglish. Rupee budgets. Festive and wedding-season shopping.</p><div className={styles.indiaFoot}><strong>100 categories live</strong><span>Competitor context includes<br/>Amazon.in, Flipkart, Meesho & Nykaa.</span></div></div><div className={styles.gulf}><h3>And across the Gulf.</h3><div>{markets.map(([name,description])=><details key={name}><summary>{name}<span aria-hidden="true">+</span></summary><p>{description}</p></details>)}</div></div></div>
-        <div className={styles.technical}><div><span className={styles.kicker}>SHOPIFY PURCHASE CHECK / INDIA PILOT</span><h3>Test the path from product page to checkout.</h3><p>Check the exact variant, discount, delivery estimate and cart. Get evidence, fix steps and a repeatable retest.</p></div><Link href="/purchase-check" className={styles.outlineButton}>See Shopify Purchase Check <span aria-hidden="true">↗</span></Link></div>
+        <div className={styles.technical}><div><span className={styles.kicker}>SIDE PROJECT / PRODUCT ARCHIVE</span><h3>A checkout QA concept, preserved as a demo.</h3><p>Explore how a small team could test variants, discounts, delivery and cart behavior without creating an account.</p></div><Link href="/purchase-check/demo" className={styles.outlineButton}>Explore the interactive demo <span aria-hidden="true">↗</span></Link></div>
       </section>
       <section className={styles.closing}><div className={styles.container}><p className={styles.kicker}>YOUR BRAND BELONGS IN THE CONVERSATION</p><h2>Find out where you stand.</h2><p>Start with your website. See what AI says.</p><Link href="/test" className={styles.primaryButton}>Check my brand — free <span aria-hidden="true">↗</span></Link><span className={styles.closingFine}>Free test. No card required.</span></div></section>
     </main>

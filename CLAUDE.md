@@ -1,8 +1,8 @@
 # CLAUDE.md — StockedBy
 
 ## What this is
-StockedBy (stockedby.com) is a B2B SaaS platform for the AI & agentic commerce
-economy, built on three pillars:
+StockedBy (stockedby.com) is an independent side project exploring AI visibility
+and agent-ready commerce, built around three ideas:
 - **MEASURE** — AI visibility scoring across ChatGPT, Gemini and Claude,
   competitive intelligence, checkout routing (brand-direct vs marketplace).
 - **IMPROVE** — GEO tooling: fix plans, fix generation (JSON-LD, llms.txt,
@@ -13,8 +13,9 @@ economy, built on three pillars:
   with by AI agents (robots.txt, /llms.txt, UCP/ACP manifests, Product
   JSON-LD). Recommendation fraud detection is still roadmap too.
 
-The free shelf test is the acquisition wedge; monitoring subscriptions are the
-revenue; commerce trust infrastructure is the long-term moat. Markets (see
+The original product thesis used the free shelf test as the acquisition wedge,
+monitoring subscriptions as revenue, and commerce trust infrastructure as the
+long-term moat. Markets (see
 lib/marketProfiles.js — the single source of truth, "Market expansion"
 section below): India, UAE, Saudi Arabia (full, original three) + Qatar,
 Kuwait (full, new) + Oman, Bahrain (inherit Saudi Arabia's query bank) —
@@ -24,6 +25,27 @@ accepted via an explicit `?market=Pakistan`/`?market=PK` link, never
 rendered in the market picker, never mentioned in any copy, meta tag,
 sitemap or marketing surface. SEA remains an unannounced future expansion
 market — do not mention it in user-facing copy until launched.
+
+## Current operating mode — database-free side project
+
+As of 10 October 2026, this section overrides older product/phase notes below.
+The public site is intentionally maintained without Supabase or another
+production database:
+
+- `lib/supabaseClient.js` always returns `null`, even if stale Supabase
+  environment variables still exist. No production request can open a
+  Supabase connection.
+- The free `/test`, `/audit` and `/fix` tools keep their supported no-
+  persistence behavior. Test reports render in the current browser and are
+  not saved or shareable.
+- The full visibility report has no email gate. It opens directly.
+- Login, dashboards, checkout, saved reports and public stored catalogs
+  redirect to a public page before their database-backed components render.
+- Purchase Check is an archived, sample-data-only interactive demo. Accounts,
+  payments, credits, schedules and the production worker are offline.
+- The scheduled Purchase Check GitHub workflow and Supabase package dependency
+  are removed. Git history and `supabase/migrations/` preserve the old product
+  implementation if the project is revived later.
 
 **Site philosophy — homepage narrative (restraint pass, narrows the
 "visual/creative revamp" phase's fuller narrative back down): hero, a real

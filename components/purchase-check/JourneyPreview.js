@@ -54,8 +54,7 @@ export default function JourneyPreview() {
         </Link>
       </div>
       <p className={s.footnote}>
-        An illustration of the workflow. Live checks use the purchase rules you
-        confirm.
+        An illustration of the archived workflow using sample data only.
       </p>
     </div>
   );
