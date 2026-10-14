@@ -1,16 +1,20 @@
-import Homepage from "@/components/home/Homepage";
+import Marketing from "@/components/studio/Marketing";
 import JsonLd from "@/components/JsonLd";
 import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
 
-const TITLE = "StockedBy — Check if AI recommends your brand | India & the Gulf";
+const TITLE = "StockedBy — Your product thinking, connected.";
 const DESCRIPTION =
-  "Free test: see if ChatGPT, Gemini and Claude recommend your brand — or your competitor's. Built for brands across India and the Gulf.";
+  "An AI workspace for product managers and business analysts. Bring company standards, build your workflow, and connect briefs, requirements, stories and tests.";
 
 export const metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/" },
-  openGraph: buildOpenGraph({ title: TITLE, description: DESCRIPTION, path: "/" }),
+  openGraph: buildOpenGraph({
+    title: TITLE,
+    description: DESCRIPTION,
+    path: "/",
+  }),
   twitter: buildTwitter({ title: TITLE, description: DESCRIPTION }),
 };
 
@@ -24,9 +28,9 @@ const ORG_AND_APP_JSON_LD = {
       "@type": "Organization",
       name: "StockedBy",
       url: SITE_URL,
-      logo: `${SITE_URL}/brand/stockedby-mark.svg`,
+      logo: `${SITE_URL}/icon.svg`,
       description:
-        "A free, independent AI visibility project for brands across India and the Gulf.",
+        "An independent product delivery workspace for product managers and business analysts.",
     },
     {
       "@type": "WebApplication",
@@ -35,12 +39,17 @@ const ORG_AND_APP_JSON_LD = {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
       description:
-        "Free one-off tool to check whether ChatGPT, Gemini and Claude recommend your brand and what your website could explain more clearly.",
+        "A configurable AI product workflow with company standards, connected documents, local project storage and portable exports.",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     },
   ],
 };
 
 export default function Home() {
-  return <><JsonLd data={ORG_AND_APP_JSON_LD} /><Homepage /></>;
+  return (
+    <>
+      <JsonLd data={ORG_AND_APP_JSON_LD} />
+      <Marketing />
+    </>
+  );
 }

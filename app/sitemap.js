@@ -7,12 +7,14 @@ export default function sitemap() {
   const now = new Date();
   const pages = [
     { path: "/", changeFrequency: "weekly", priority: 1.0 },
-    { path: "/test", changeFrequency: "weekly", priority: 0.9 },
+    { path: "/guide", changeFrequency: "monthly", priority: 0.9 },
+    { path: "/archive", changeFrequency: "yearly", priority: 0.3 },
+    { path: "/test", changeFrequency: "monthly", priority: 0.3 },
     { path: "/purchase-check", changeFrequency: "yearly", priority: 0.5 },
     { path: "/audit", changeFrequency: "monthly", priority: 0.7 },
     { path: "/fix", changeFrequency: "monthly", priority: 0.7 },
     { path: "/why", changeFrequency: "monthly", priority: 0.8 },
-    { path: "/how", changeFrequency: "monthly", priority: 0.8 },
+
     { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
     { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
   ];

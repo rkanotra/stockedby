@@ -43,6 +43,15 @@ export default function GoogleAnalytics({ measurementId }) {
     }
   }
   useEffect(() => {
+    if (!valid) return;
+    const allowed = consent === "granted" && !!analyticsPath(pathname);
+    window["ga-disable-" + measurementId] = !allowed;
+    if (!allowed) {
+      window.gtag?.("consent", "update", { analytics_storage: "denied" });
+      lastPath.current = null;
+    }
+  }, [pathname, consent, measurementId, valid]);
+  useEffect(() => {
     if (!ready || consent !== "granted") return;
     const path = analyticsPath(pathname);
     if (!path || path === lastPath.current) return;
@@ -63,7 +72,8 @@ export default function GoogleAnalytics({ measurementId }) {
     });
     lastPath.current = path;
   }, [pathname, ready, consent]);
-  if (!valid) return null;
+  if (!valid || pathname === "/studio" || pathname.startsWith("/studio/"))
+    return null;
   return (
     <>
       {consent === "granted" && (
@@ -85,7 +95,7 @@ export default function GoogleAnalytics({ measurementId }) {
             <strong>Help us understand what’s useful.</strong>
             <p>
               Allow Google Analytics to measure visits and feature use? Your
-              catalog entries, email and payment references are excluded.{" "}
+              project contents, prompts and personal details are excluded.{" "}
               <a href="/privacy">Privacy details</a>
             </p>
           </div>

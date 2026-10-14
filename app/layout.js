@@ -2,9 +2,9 @@ import "./globals.css";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
 
-const TITLE = "StockedBy — Does AI recommend your brand?";
+const TITLE = "StockedBy — Your product thinking, connected.";
 const DESCRIPTION =
-  "Check if ChatGPT, Gemini and Claude recommend your brand. Free AI visibility test for brands across India and the Gulf.";
+  "An AI product workspace. Turn ideas and company standards into connected requirements, stories and test plans.";
 
 // Root-level defaults — every page below sets its own full metadata export
 // (title/description/canonical/openGraph/twitter, via lib/site.js's
@@ -21,23 +21,34 @@ export const metadata = {
   verification: {
     google: "QrlvSaircmJ-ykYIGD_JBBv1i-O-iSboVCZhTe1vbB8",
   },
-  openGraph: buildOpenGraph({ title: TITLE, description: DESCRIPTION, path: "/" }),
+  openGraph: buildOpenGraph({
+    title: TITLE,
+    description: DESCRIPTION,
+    path: "/",
+  }),
   twitter: buildTwitter({ title: TITLE, description: DESCRIPTION }),
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         {/* eslint-disable-next-line @next/next/no-page-custom-font -- App Router root layout is the correct place for global fonts */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         />
       </head>
-      <body>{children}<GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_ID || ""} /></body>
+      <body>
+        {children}
+        <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_ID || ""} />
+      </body>
     </html>
   );
 }

@@ -1,5 +1,19 @@
 # CLAUDE.md — StockedBy
 
+## Product direction — 14 October 2026 (overrides earlier product notes)
+
+StockedBy is now an AI product delivery workspace for PMs and BAs. The user explicitly requested this pivot. Home, why, guide and privacy describe the studio; earlier commerce tools are linked from /archive.
+
+- /studio uses browser localStorage for projects, sources, standards, artifacts and local reviews. No Supabase.
+- /api/studio/generate uses the existing server-only OpenAI key and structured outputs. Project data is passed only on explicit AI runs; store:false; no request-content logging.
+- Company rules must quote an exact source passage and be confirmed by the user. No embedded employer policy or private FH reference data.
+- Steps can be added, reordered, omitted, regenerated and reviewed. Any context or upstream edit invalidates dependent drafts and approvals.
+- Reviews are local records, not authenticated team signatures. Test cases are specifications, never claimed as executed tests.
+- JSON backups, DOCX, Markdown and CSV exports are supported; project imports clear review confirmations.
+- AI rate limits are in-memory pilot protection only; distributed durable limits and shared projects need a later backend.
+- Studio content and routes are excluded from application analytics.
+
+
 ## What this is
 StockedBy (stockedby.com) is an independent side project exploring AI visibility
 and agent-ready commerce, built around three ideas:

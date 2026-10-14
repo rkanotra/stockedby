@@ -7,6 +7,7 @@ import { SITE_URL } from "@/lib/site";
 export default function robots() {
   const retiredSurfaces = [
     "/api/",
+    "/studio",
     "/checkout/",
     "/dashboard/",
     "/login",
