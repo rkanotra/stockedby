@@ -2,9 +2,9 @@ import Marketing from "@/components/studio/Marketing";
 import JsonLd from "@/components/JsonLd";
 import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
 
-const TITLE = "StockedBy — Your product thinking, connected.";
+const TITLE = "StockedBy — Requirements, prototypes and product review.";
 const DESCRIPTION =
-  "An AI workspace for product managers and business analysts. Bring company standards, build your workflow, and connect briefs, requirements, stories and tests.";
+  "An AI workspace for product managers and business analysts. Connect company standards, requirements, working prototypes, review decisions and engineering handoff.";
 
 export const metadata = {
   title: TITLE,

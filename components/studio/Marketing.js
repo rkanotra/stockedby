@@ -102,28 +102,29 @@ export default function Marketing() {
       <main>
         <section className={s.hero}>
           <div className={s.heroEyebrow}>
-            <span /> THE PRODUCT WORKSPACE THAT CONNECTS THE DOTS{" "}
+            <span /> FROM COMPANY CONTEXT TO REVIEWED DELIVERY{" "}
             <b>01 / STUDIO</b>
           </div>
           <div className={s.heroContent}>
             <div>
               <h1>
-                Big thinking.
+                From the brief.
                 <br />
-                <span>Beautifully</span> connected.
+                <span>To the build.</span>
               </h1>
               <p>
-                Bring your idea. Bring your standards.
+                Requirements. Working prototypes. Clear decisions.
                 <br />
-                Build the workflow that turns both into work
-                <br className={s.desktopBreak} /> your team can actually ship.
+                Turn your company context into a delivery package
+                <br className={s.desktopBreak} /> your team can inspect,
+                challenge and build.
               </p>
               <div className={s.heroActions}>
                 <Link className={s.primary} href="/studio">
                   Build your workflow <Icon name="arrow" size={18} />
                 </Link>
                 <Link className={s.demoLink} href="/studio?demo=1">
-                  <Icon name="play" size={13} /> Explore a sample
+                  <Icon name="play" size={13} /> Try the working sample
                 </Link>
               </div>
               <span className={s.heroFine}>
@@ -133,7 +134,7 @@ export default function Marketing() {
             </div>
             <div className={s.heroAside}>
               <span className={s.orbitNumber}>↳</span>
-              <div>IDEA → CONTEXT → DELIVERY</div>
+              <div>EVIDENCE → EXPERIENCE → DELIVERY</div>
               <p>
                 You bring the judgment.
                 <br />
@@ -438,6 +439,62 @@ export default function Marketing() {
             </p>
           </div>
         </section>
+        <section className={s.productDepth}>
+          <div>
+            <span className={s.kicker}>
+              04 — PUT THE SPECIFICATION TO WORK.
+            </span>
+            <h2>
+              Less handoff.
+              <br />
+              <span>More shared understanding.</span>
+            </h2>
+            <p>
+              For PMs and BAs working through company rules, design questions
+              and engineering reviews.
+            </p>
+          </div>
+          <div className={s.depthGrid}>
+            <Link href="/studio?demo=1&view=prototype">
+              <span>01 / EXPERIENCE LAB</span>
+              <Icon name="screen" size={28} />
+              <h3>Try the product before the build.</h3>
+              <p>
+                Working forms, connected screens and simulated data. Exercise
+                failure states and record scenario observations against the
+                requirements.
+              </p>
+              <b>Open the interactive prototype ↗</b>
+            </Link>
+            <Link href="/studio">
+              <span>02 / REVIEW DESK</span>
+              <Icon name="check" size={28} />
+              <h3>Every unresolved question has a place.</h3>
+              <p>
+                Inspect policy findings, test coverage gaps and screen feedback.
+                Record an owner and rationale, then compare the next draft with
+                its baseline.
+              </p>
+              <b>Open review & decisions ↗</b>
+            </Link>
+            <Link href="/studio">
+              <span>03 / CONNECTED DELIVERY</span>
+              <Icon name="link" size={28} />
+              <h3>Take the context into the tools.</h3>
+              <p>
+                Jira import and controlled publishing. Figma frame context and
+                requirement links. OAuth account setup is required; portable
+                exports work now.
+              </p>
+              <b>Explore connection options ↗</b>
+            </Link>
+          </div>
+          <p className={s.pilotNote}>
+            Available as a browser-based pilot. Projects are stored on your
+            device. Shared workspaces, authenticated approvals and enterprise
+            administration are not included yet.
+          </p>
+        </section>
         <section className={s.closing}>
           <span className={s.kicker}>
             FROM THE FIRST NOTE TO THE NEXT HANDOFF.
@@ -531,7 +588,8 @@ export function InformationPage({ kind }) {
                     Drag steps from the library or click to add them. Reorder
                     cards by dragging, or use Move up / Move down in the
                     inspector. Choose from briefs, requirements, flows, screen
-                    specifications, stories, test plans and handoffs. No step is
+                    specifications, working prototypes, business cases, stories,
+                    test plans, readiness reviews and handoffs. No step is
                     compulsory.
                   </p>
                   <p>
@@ -548,9 +606,10 @@ export function InformationPage({ kind }) {
                   <p>
                     Run one step or the whole workflow. Results are drafts. Open
                     Documents to edit the narrative and structured items. Add
-                    missing decisions to project context, then regenerate. A
-                    context or upstream edit marks dependent documents as
-                    needing an update.
+                    missing decisions in Review → Decision log, then regenerate.
+                    Use Prototype to exercise forms, simulate failures and
+                    record manual observations. A context or upstream edit marks
+                    dependent documents as needing an update.
                   </p>
                   <p>
                     Mark a document reviewed after resolving blockers and
@@ -567,9 +626,13 @@ export function InformationPage({ kind }) {
                   <p>
                     Export Word for stakeholder conversations, Markdown for
                     documentation, or CSV for spreadsheets and a manually mapped
-                    Jira import. Export a JSON project backup to move or protect
-                    the entire project. Imported backups require reconfirming
-                    standards and reviews.
+                    Jira import. Download a working prototype as HTML or a
+                    screen as editable SVG. Jira and Figma connections use OAuth
+                    and require site-owner setup followed by your account
+                    authorization. Jira writes always require a preview and
+                    confirmation. Export a JSON project backup to move or
+                    protect the entire project. Imported backups require
+                    reconfirming standards and reviews.
                   </p>
                   <p>
                     Projects autosave in this browser only. Clearing browser
@@ -593,7 +656,8 @@ export function InformationPage({ kind }) {
             <p>
               When you run a step or extract rules, your project brief, source
               text, confirmed rules, step instructions and relevant preceding
-              documents are sent through StockedBy’s server to OpenAI. We
+              documents, previous versions used for refinement and accepted
+              decisions are sent through StockedBy’s server to OpenAI. We
               request that the API response is not stored for later retrieval.
               This does not guarantee zero provider retention; provider
               processing and retention policies still apply. Only submit
@@ -606,6 +670,18 @@ export function InformationPage({ kind }) {
               application does not intentionally persist uploaded files or
               request contents to a database. Hosting and service providers may
               maintain operational logs under their own policies.
+            </p>
+            <h2>Connected accounts and prototypes</h2>
+            <p>
+              Jira and Figma authorization tokens are stored in encrypted,
+              HttpOnly session cookies, with a maximum session of one hour.
+              StockedBy uses them server-side only for the operations you
+              request. Imported issue and frame snapshots become project context
+              and are sent to OpenAI when you run AI. Disconnect removes the
+              local session; revoke the app in your provider account to remove
+              authorization. Prototype previews run in isolated frames with
+              network access disabled. Downloaded prototypes contain their
+              sample data and run locally.
             </p>
             <h2>Analytics and usage limits</h2>
             <p>

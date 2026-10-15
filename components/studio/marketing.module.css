@@ -124,7 +124,7 @@
 }
 .hero h1 {
   font:
-    500 clamp(49px, 6.8vw, 92px)/1.08 "Plus Jakarta Sans",
+    500 clamp(49px, 6.8vw, 92px) / 1.08 "Plus Jakarta Sans",
     sans-serif;
   letter-spacing: -5px;
   max-width: 1000px;
@@ -715,7 +715,7 @@
 .standardsCopy h2,
 .reviewSection h2 {
   font:
-    500 clamp(33px, 3.8vw, 52px)/1.2 "Plus Jakarta Sans",
+    500 clamp(33px, 3.8vw, 52px) / 1.2 "Plus Jakarta Sans",
     sans-serif;
   letter-spacing: -2px;
   color: #e8f0dd;
@@ -1043,7 +1043,7 @@
 }
 .closing h2 {
   font:
-    500 clamp(35px, 5vw, 64px)/1.16 "Plus Jakarta Sans",
+    500 clamp(35px, 5vw, 64px) / 1.16 "Plus Jakarta Sans",
     sans-serif;
   letter-spacing: -2.5px;
   color: #dceac8;
@@ -1126,7 +1126,7 @@
 }
 .info h1 {
   font:
-    500 clamp(35px, 5vw, 65px)/1.17 "Plus Jakarta Sans",
+    500 clamp(35px, 5vw, 65px) / 1.17 "Plus Jakarta Sans",
     sans-serif;
   letter-spacing: -2.5px;
   max-width: 800px;
@@ -1790,5 +1790,93 @@
     transition: none !important;
     animation: none !important;
     scroll-behavior: auto !important;
+  }
+}
+.productDepth {
+  padding: 110px max(6vw, 24px);
+  background: #f1f3f8;
+  color: #283249;
+}
+.productDepth h2 {
+  font-size: clamp(32px, 4vw, 58px);
+  line-height: 1.05;
+  letter-spacing: -2.5px;
+  margin: 22px 0;
+}
+.productDepth h2 span {
+  color: #6c7da4;
+}
+.productDepth > div > p {
+  color: #7b879c;
+  font-size: 14px;
+}
+.depthGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin: 45px 0 24px;
+}
+.depthGrid > a {
+  background: white;
+  border: 1px solid #dce2ed;
+  border-radius: 13px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: inherit;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.depthGrid > a:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px #29365a0d;
+}
+.depthGrid > a > span {
+  font: 10px monospace;
+  letter-spacing: 1.3px;
+  color: #8997af;
+  margin-bottom: 35px;
+}
+.depthGrid svg {
+  color: #6279b6;
+}
+.depthGrid h3 {
+  font-size: 24px;
+  letter-spacing: -0.8px;
+  line-height: 1.2;
+  margin: 22px 0 12px;
+  max-width: 280px;
+}
+.depthGrid p {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #7b879c;
+  flex: 1;
+  margin-bottom: 30px;
+}
+.depthGrid b {
+  font-size: 11px;
+  color: #536ba4;
+}
+.pilotNote {
+  font-size: 11px;
+  color: #8390a5;
+  max-width: 800px;
+  line-height: 1.8;
+}
+@media (max-width: 800px) {
+  .productDepth {
+    padding: 65px 24px;
+  }
+  .depthGrid {
+    grid-template-columns: 1fr;
+  }
+  .depthGrid > a {
+    padding: 25px;
+  }
+  .depthGrid > a > span {
+    margin-bottom: 20px;
   }
 }

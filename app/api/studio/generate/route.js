@@ -1,3 +1,9 @@
+import {
+  PROTOTYPE_SCHEMA,
+  PROTOTYPE_PROMPT,
+  validatePrototype,
+  prototypeArtifact,
+} from "@/lib/studio/prototype";
 import OpenAI from "openai";
 import { sameOriginRequest } from "@/lib/auth/requestOrigin";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
@@ -62,15 +68,19 @@ export async function POST(request) {
       {
         model,
         store: false,
-        max_output_tokens: 6500,
-        instructions: systemPrompt(input.type),
+        max_output_tokens: input.type === "prototype" ? 10000 : 6500,
+        instructions:
+          input.type === "prototype"
+            ? PROTOTYPE_PROMPT
+            : systemPrompt(input.type),
         input: JSON.stringify(input),
         text: {
           format: {
             type: "json_schema",
             name: "delivery_artifact",
             strict: true,
-            schema: OUTPUT_SCHEMA,
+            schema:
+              input.type === "prototype" ? PROTOTYPE_SCHEMA : OUTPUT_SCHEMA,
           },
         },
       },
@@ -84,7 +94,21 @@ export async function POST(request) {
         },
         502,
       );
-    const artifact = groundOutput(JSON.parse(result.output_text), input);
+    const parsed = JSON.parse(result.output_text);
+    const artifact =
+      input.type === "prototype"
+        ? prototypeArtifact(
+            validatePrototype(
+              parsed,
+              new Set(
+                input.upstream
+                  .filter((n) => n.type === "requirements")
+                  .flatMap((n) => (n.items || []).map((i) => i.id)),
+              ),
+            ),
+            input,
+          )
+        : groundOutput(parsed, input);
     return response({
       artifact: { ...artifact, model: result.model },
       usage: {

@@ -1941,3 +1941,71 @@
     scroll-behavior: auto !important;
   }
 }
+/* Delivery workbench navigation: all views remain accessible on smaller screens. */
+.tabBar {
+  gap: 12px;
+}
+.tabBar > div {
+  overflow-x: auto;
+  min-width: 0;
+}
+.tabBar button {
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-left: 13px;
+  padding-right: 13px;
+}
+.reviewCount {
+  white-space: nowrap;
+}
+@media (max-width: 1200px) {
+  .reviewCount {
+    display: none;
+  }
+  .tabBar {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .tabBar button {
+    font-size: 11px;
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+}
+.deliveryNav > button {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: transparent;
+  color: #798294;
+  font-size: 12px;
+  margin: 3px 0;
+}
+.deliveryNav > button[aria-current="page"] {
+  background: #e4e9f4;
+  color: #425c95;
+  font-weight: 600;
+}
+.deliveryNav > button > span:last-child {
+  margin-left: auto;
+}
+.deliveryNav > button small {
+  margin-left: auto;
+  font-size: 9px;
+  color: #9aa2af;
+}
+.deliveryNav > button > .deliveryDot {
+  height: 5px;
+  width: 5px;
+  background: #a6b9ab;
+  border-radius: 50%;
+}
+.deliveryNav > button > .needsUpdate {
+  background: #c59a58;
+}
+@media (max-width: 700px) {
+  .deliveryNav {
+    display: none;
+  }
+}

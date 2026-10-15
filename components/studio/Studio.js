@@ -20,11 +20,19 @@ import {
   approvalProblems,
   parseProjectFile,
 } from "@/lib/studio/model";
+import PrototypeWorkbench from "./PrototypeWorkbench";
+import ReviewDesk from "./ReviewDesk";
+import Connections from "./Connections";
+import { WORKFLOW_PRESETS, checkpoint } from "@/lib/studio/review";
+import w from "./workbench.module.css";
 import { demoProject } from "@/lib/studio/demo";
 import { exportProject } from "@/lib/studio/downloads";
 const tabs = [
   ["canvas", "Workflow", "flow"],
   ["documents", "Documents", "brief"],
+  ["prototype", "Prototype", "screen"],
+  ["review", "Review", "check"],
+  ["connections", "Connections", "link"],
   ["standards", "Standards", "shield"],
   ["trace", "Traceability", "link"],
 ];
@@ -86,11 +94,20 @@ export default function Studio() {
     const snapshot = state.current;
     apply(snapshot.projects.map((p) => (p.id === snapshot.active ? fn(p) : p)));
   }
+  function changeProject(projectId, fn) {
+    const snapshot = state.current;
+    apply(
+      snapshot.projects.map((project) =>
+        project.id === projectId ? fn(project) : project,
+      ),
+    );
+  }
   function current() {
     return state.current.projects.find((p) => p.id === state.current.active);
   }
   useEffect(() => {
     try {
+      const query = new URLSearchParams(window.location.search);
       const raw = localStorage.getItem(STORAGE_KEY);
       let data = raw ? JSON.parse(raw) : null;
       if (
@@ -115,7 +132,9 @@ export default function Studio() {
         ? data.active
         : data.projects[0].id;
       if (new URLSearchParams(window.location.search).get("demo") === "1") {
-        const existing = data.projects.find((p) => p.demo);
+        const existing = data.projects.find(
+          (p) => p.demo && p.nodes.some((n) => n.artifact?.prototype),
+        );
         const project = existing || demoProject();
         data = {
           projects: existing ? data.projects : [...data.projects, project],
@@ -124,9 +143,16 @@ export default function Studio() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         window.history.replaceState(null, "", "/studio");
       }
+      if (query.has("connected") || query.has("connectorError")) {
+        // Hydrate the initial workspace view from the browser URL.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setTab("connections");
+        if (query.has("connectorError")) setError(query.get("connectorError"));
+        window.history.replaceState(null, "", "/studio");
+      }
+      if (query.get("view") === "prototype") setTab("prototype");
       state.current = data;
       // This one-time hydration synchronizes state from browser-only storage.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setProjects(data.projects);
       setActive(
         data.projects.some((p) => p.id === data.active)
@@ -303,6 +329,8 @@ export default function Studio() {
         rules: project.rules,
         upstream,
         instruction: n?.instruction || "",
+        decisions: project.decisions || [],
+        previous: n?.artifact || null,
       }),
     });
     const data = await res.json();
@@ -325,6 +353,13 @@ export default function Studio() {
         setSelected(id);
         const artifact = await generate(project, n);
         if (stop.current) break;
+        if (
+          current()?.id !== project.id ||
+          current()?.updatedAt !== project.updatedAt
+        )
+          throw new Error(
+            "Project context changed while AI was running. Your previous version is intact. Run this step again with the updated context.",
+          );
         change((p) => updateArtifact(p, id, artifact));
       }
       if (!stop.current) setToast("Drafts are ready for your review.");
@@ -542,37 +577,73 @@ export default function Studio() {
             ))}
           </select>
           <div className={s.sideDivider} />
-          <div className={s.sideLabel}>
-            BUILD YOUR WORKFLOW <span>↓</span>
-          </div>
-          <p className={s.sideHint}>
-            Drag a step onto the canvas.
-            <br />
-            Or click to add it.
-          </p>
-          <div className={s.nodeLibrary}>
-            {NODE_TYPES.map((t) => (
-              <button
-                key={t.id}
-                disabled={!!busy}
-                draggable={!busy}
-                onDragStart={(e) =>
-                  e.dataTransfer.setData(
-                    "application/stockedby-node",
-                    JSON.stringify({ type: t.id }),
-                  )
-                }
-                onClick={() => add(t.id)}
-                title={t.description}
-              >
-                <span className={`${s.iconTile} ${s[t.color]}`}>
-                  <Icon name={t.icon} size={17} />
-                </span>
-                <span>{t.label}</span>
-                <Icon name="grip" size={13} />
-              </button>
-            ))}
-          </div>
+          {tab === "canvas" ? (
+            <>
+              <div className={s.sideLabel}>
+                BUILD YOUR WORKFLOW <span>↓</span>
+              </div>
+              <p className={s.sideHint}>
+                Drag a step onto the canvas.
+                <br />
+                Or click to add it.
+              </p>
+              <div className={s.nodeLibrary}>
+                {NODE_TYPES.map((t) => (
+                  <button
+                    key={t.id}
+                    disabled={!!busy}
+                    draggable={!busy}
+                    onDragStart={(e) =>
+                      e.dataTransfer.setData(
+                        "application/stockedby-node",
+                        JSON.stringify({ type: t.id }),
+                      )
+                    }
+                    onClick={() => add(t.id)}
+                    title={t.description}
+                  >
+                    <span className={`${s.iconTile} ${s[t.color]}`}>
+                      <Icon name={t.icon} size={17} />
+                    </span>
+                    <span>{t.label}</span>
+                    <Icon name="grip" size={13} />
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className={s.deliveryNav}>
+              <div className={s.sideLabel}>INITIATIVE</div>
+              {tabs.map(([key, label, icon]) => (
+                <button
+                  key={key}
+                  aria-current={tab === key ? "page" : undefined}
+                  onClick={() => setTab(key)}
+                >
+                  <Icon name={icon} size={17} />
+                  {label}
+                  {key === "documents" && <span>{generated}</span>}
+                </button>
+              ))}
+              <div className={s.sideDivider} />
+              <div className={s.sideLabel}>DELIVERY PACKAGE</div>
+              {p.nodes.map((n) => (
+                <button
+                  key={n.id}
+                  onClick={() => {
+                    setSelected(n.id);
+                    setTab(n.type === "prototype" ? "prototype" : "documents");
+                  }}
+                >
+                  <span
+                    className={`${s.deliveryDot} ${n.artifact?.status === "stale" ? s.needsUpdate : ""}`}
+                  />
+                  <span>{TYPE[n.type].short}</span>
+                  <small>{statusLabel(n.artifact)}</small>
+                </button>
+              ))}
+            </div>
+          )}
           <div className={s.sideDivider} />
           <button
             className={s.sideAction}
@@ -703,6 +774,37 @@ export default function Studio() {
             </div>
           )}
           <div className={`${s.body} ${tab === "canvas" ? s.canvasBody : ""}`}>
+            {tab === "prototype" && (
+              <PrototypeWorkbench
+                key={p.id}
+                project={p}
+                change={(fn) => changeProject(p.id, fn)}
+                run={run}
+                add={add}
+                busy={!!busy}
+                configured={configured}
+              />
+            )}
+            {tab === "review" && (
+              <ReviewDesk
+                key={p.id}
+                project={p}
+                change={(fn) => changeProject(p.id, fn)}
+                busy={!!busy}
+                openDocument={(id) => {
+                  setSelected(id);
+                  setTab("documents");
+                }}
+              />
+            )}
+            {tab === "connections" && (
+              <Connections
+                key={p.id}
+                project={p}
+                change={(fn) => changeProject(p.id, fn)}
+                busy={!!busy}
+              />
+            )}
             {tab === "canvas" && (
               <>
                 <section
@@ -711,6 +813,31 @@ export default function Studio() {
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => drop(e, null)}
                 >
+                  <div
+                    className={w.templateRow}
+                    aria-label="Start from a workflow template"
+                  >
+                    {WORKFLOW_PRESETS.map((template) => (
+                      <button
+                        key={template.id}
+                        disabled={!!busy}
+                        title={template.description}
+                        onClick={() => {
+                          const next = newProject(template.name);
+                          next.nodes = template.types.map((type) => ({
+                            id: uid(),
+                            type,
+                            instruction: "",
+                            artifact: null,
+                          }));
+                          apply([...state.current.projects, next], next.id);
+                          setSelected(null);
+                        }}
+                      >
+                        ＋ {template.name}
+                      </button>
+                    ))}
+                  </div>
                   <div className={s.canvasMeta}>
                     <span>
                       <i /> WORKFLOW BUILDER
@@ -903,9 +1030,15 @@ export default function Studio() {
                       {artifact && (
                         <button
                           className={s.secondary}
-                          onClick={() => setTab("documents")}
+                          onClick={() =>
+                            setTab(
+                              node.type === "prototype"
+                                ? "prototype"
+                                : "documents",
+                            )
+                          }
                         >
-                          Open document <Icon name="arrow" size={16} />
+                          Open output <Icon name="arrow" size={16} />
                         </button>
                       )}
                       <div className={s.sideDivider} />
@@ -1092,7 +1225,13 @@ export default function Studio() {
                         <div>
                           <button
                             disabled={!!busy}
-                            onClick={() => setEditing(!editing)}
+                            onClick={() => {
+                              if (!editing)
+                                change((p) =>
+                                  checkpoint(p, selected, "Before manual edit"),
+                                );
+                              setEditing(!editing);
+                            }}
                           >
                             <Icon name={editing ? "check" : "edit"} size={15} />
                             {editing ? "Finish editing" : "Edit"}
