@@ -22,7 +22,7 @@ export function SiteNav() {
         <Link href="/why">Why StockedBy</Link>
         <Link href="/guide">Field guide</Link>
       </div>
-      <Link href="/studio" className={s.navCta}>
+      <Link href="/workspace" className={s.navCta}>
         Open workspace <Icon name="arrow" size={15} />
       </Link>
     </nav>
@@ -40,7 +40,8 @@ export function SiteFooter() {
       </div>
       <div>
         <span>EXPLORE</span>
-        <Link href="/studio">Workspace</Link>
+        <Link href="/workspace">Team workspace</Link>
+        <Link href="/studio">Local studio</Link>
         <Link href="/studio?demo=1">Sample project</Link>
         <Link href="/guide">Field guide</Link>
       </div>
@@ -490,9 +491,9 @@ export default function Marketing() {
             </Link>
           </div>
           <p className={s.pilotNote}>
-            Available as a browser-based pilot. Projects are stored on your
-            device. Shared workspaces, authenticated approvals and enterprise
-            administration are not included yet.
+            Team workspaces add shared initiatives, role-based access and AI change reviews.
+            A second teammate reviews proposed edits before they are applied.
+            The local studio remains available without an account.
           </p>
         </section>
         <section className={s.closing}>
@@ -635,9 +636,10 @@ export function InformationPage({ kind }) {
                     reconfirming standards and reviews.
                   </p>
                   <p>
-                    Projects autosave in this browser only. Clearing browser
-                    data can erase them. There is no cloud sync or shared team
-                    workspace yet. AI runs send the project context to OpenAI;
+                    Local studio projects autosave in this browser only. Clearing
+                    browser data can erase them. Team workspaces save shared
+                    initiatives when you choose Save to team, with version checks
+                    to prevent overwriting a teammate’s work. AI runs send project context to OpenAI;
                     only use information your organisation permits you to send.
                   </p>
                 </div>
@@ -647,14 +649,17 @@ export function InformationPage({ kind }) {
         ) : privacy ? (
           <div className={s.prose}>
             <p>
-              StockedBy Studio saves project briefs, extracted source text,
-              standards, AI drafts and local review records in your browser.
-              There is no StockedBy project database or cloud backup in this
-              version. Download project backups regularly.
+              The local Studio saves project briefs, extracted source text, standards,
+              AI drafts and local review records in your browser. The Team Workspace
+              saves initiatives, source text, comments, proposals, membership details
+              and decision history in a dedicated Supabase database. Workspace members
+              can read shared content; their role determines editing and review access.
+              Sign-in uses Supabase Auth and session cookies. Local work is uploaded
+              only when you explicitly import it into a team workspace.
             </p>
             <h2>When you use AI</h2>
             <p>
-              When you run a step or extract rules, your project brief, source
+              When you run a step, extract rules or prepare a team change review, your project brief, source
               text, confirmed rules, step instructions and relevant preceding
               documents, previous versions used for refinement and accepted
               decisions are sent through StockedBy’s server to OpenAI. We
@@ -666,9 +671,9 @@ export function InformationPage({ kind }) {
             <h2>When you import a document</h2>
             <p>
               Uploaded PDF and Word files are processed on the server to extract
-              text. The extracted text is returned to your browser. The
-              application does not intentionally persist uploaded files or
-              request contents to a database. Hosting and service providers may
+              text. The extracted text is returned to your browser. Original uploaded files are not retained by the application. Extracted
+              text is stored in Supabase when you save the containing initiative
+              to your team. Hosting and service providers may
               maintain operational logs under their own policies.
             </p>
             <h2>Connected accounts and prototypes</h2>
@@ -685,12 +690,12 @@ export function InformationPage({ kind }) {
             </p>
             <h2>Analytics and usage limits</h2>
             <p>
-              Optional Google Analytics measures public page visits. Studio page
-              tracking is excluded by the application, and project names,
+              Optional Google Analytics measures public page visits. Studio and team workspace
+              tracking are excluded by the application, and project names,
               documents, prompts and draft contents are not included in
               analytics events. In-memory request limits use your network
               address to limit AI and upload requests; these counters reset when
-              the server restarts.
+              the server restarts. Team AI review quotas are stored per workspace and day in Supabase.
             </p>
             <h2>Your controls</h2>
             <p>
@@ -698,7 +703,10 @@ export function InformationPage({ kind }) {
               source removes it from that local project and marks existing
               outputs for review. Previously generated text may still contain
               information from that source, so remove or edit those outputs too.
-              Downloaded backups remain on your device until you delete them.
+              Downloaded backups remain on your device until you delete them. Workspace owners
+              can revoke invitations and remove members. Shared proposals and audit
+              records retain earlier text and decisions; contact us to request deletion
+              of workspace data. Exported or already-downloaded copies cannot be recalled.
             </p>
             <h2>Earlier tools</h2>
             <p>
@@ -785,15 +793,16 @@ export function InformationPage({ kind }) {
               <h2>A focused pilot.</h2>
               <p>
                 This version covers product definition through delivery handoff.
-                It is a local browser workspace with OpenAI-backed drafting and
-                portable exports. Shared projects, authenticated approvals and
-                external tool synchronisation are not available yet.
+                Use the local studio for individual drafting, or a team workspace for
+                shared initiatives and authenticated change decisions. AI prepares
+                text edits; a different owner or reviewer decides whether to apply them.
+                Real-time co-editing and automatic external-tool synchronisation are not included.
               </p>
             </div>
           </>
         )}
         <div className={s.infoCta}>
-          <Link className={s.primary} href="/studio">
+          <Link className={s.primary} href="/workspace">
             Open workspace <Icon name="arrow" size={18} />
           </Link>
           <Link href="/studio?demo=1">Try a fictional sample ↗</Link>

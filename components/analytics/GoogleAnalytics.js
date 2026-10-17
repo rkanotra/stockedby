@@ -72,7 +72,7 @@ export default function GoogleAnalytics({ measurementId }) {
     });
     lastPath.current = path;
   }, [pathname, ready, consent]);
-  if (!valid || pathname === "/studio" || pathname.startsWith("/studio/"))
+  if (!valid || pathname === "/studio" || pathname.startsWith("/studio/") || pathname === "/workspace" || pathname.startsWith("/workspace/"))
     return null;
   return (
     <>

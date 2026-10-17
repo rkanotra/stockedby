@@ -52,7 +52,7 @@ function Brand() {
     </Link>
   );
 }
-export default function Studio() {
+export default function Studio({ shared = null }) {
   const [projects, setProjects] = useState([]),
     [active, setActive] = useState(""),
     [loaded, setLoaded] = useState(false),
@@ -85,10 +85,18 @@ export default function Studio() {
     node = p?.nodes.find((n) => n.id === selected),
     artifact = node?.artifact;
   function apply(nextProjects, nextActive = state.current.active) {
+    if (shared && nextActive !== shared.project.id) {
+      setError("Create or import initiatives from your team workspace.");
+      return;
+    }
+    if (shared) {
+      const next = nextProjects.find(p => p.id === nextActive);
+      if (next) shared.onChange(next);
+    }
     state.current = { projects: nextProjects, active: nextActive };
     setProjects(nextProjects);
     setActive(nextActive);
-    setSaved("Saving…");
+    setSaved(shared ? "Team draft · save above" : "Saving…");
   }
   function change(fn) {
     const snapshot = state.current;
@@ -107,6 +115,15 @@ export default function Studio() {
   }
   useEffect(() => {
     try {
+      if (shared) {
+        const data = { projects: [structuredClone(shared.project)], active: shared.project.id };
+        state.current = data;
+        // Hydrate the isolated editor from its mount-time shared snapshot.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setProjects(data.projects); setActive(data.active); setLoaded(true); setSaved("Team draft · save above");
+        fetch("/api/studio/generate").then(r => r.json()).then(d => setConfigured(d.configured)).catch(() => setConfigured(false));
+        return;
+      }
       const query = new URLSearchParams(window.location.search);
       const raw = localStorage.getItem(STORAGE_KEY);
       let data = raw ? JSON.parse(raw) : null;
@@ -145,7 +162,6 @@ export default function Studio() {
       }
       if (query.has("connected") || query.has("connectorError")) {
         // Hydrate the initial workspace view from the browser URL.
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setTab("connections");
         if (query.has("connectorError")) setError(query.get("connectorError"));
         window.history.replaceState(null, "", "/studio");
@@ -174,9 +190,11 @@ export default function Studio() {
     return () => {
       abort.current?.abort();
     };
+  // The editor is mounted with a fixed initiative snapshot.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    if (!loaded) return;
+    if (!loaded || shared) return;
     clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
       try {
@@ -199,7 +217,7 @@ export default function Studio() {
       clearTimeout(saveTimer.current);
       window.removeEventListener("pagehide", flush);
     };
-  }, [projects, active, loaded]);
+  }, [projects, active, loaded, shared]);
   useEffect(() => {
     if (!toast) return;
     const t = setTimeout(() => setToast(""), 4000);
@@ -428,6 +446,7 @@ export default function Studio() {
     }
   }
   function create(demo = false) {
+    if (shared) { setError("Create initiatives from your team workspace."); return; }
     const project = demo ? demoProject() : newProject();
     apply([...projects, project], project.id);
     setSelected(null);
@@ -534,6 +553,7 @@ export default function Studio() {
           >
             <Icon name="export" size={16} /> Export
           </button>
+          {!shared && <Link className={s.headerButton} href="/workspace">Team workspace ↗</Link>}
           <span className={s.avatar}>ME</span>
         </div>
       </header>
@@ -544,7 +564,7 @@ export default function Studio() {
               <Icon name="layers" />
             </span>
             <div>
-              My workspace<small>Local pilot · OpenAI powered</small>
+              {shared ? shared.name : "My workspace"}<small>{shared ? "Shared initiative · draft editor" : "Local pilot · OpenAI powered"}</small>
             </div>
           </div>
           <div className={s.sideLabel}>
@@ -674,10 +694,9 @@ export default function Studio() {
             <div className={s.storageNote}>
               <Icon name="shield" size={16} />
               <p>
-                Your browser. Your workspace.
+                {shared ? "A draft for your team." : "Your browser. Your workspace."}
                 <small>
-                  Export a backup to move or protect your work. AI runs send
-                  context to OpenAI.
+                  {shared ? "Use Save to team above when your edits are ready. AI runs send context to OpenAI." : "Export a backup to move or protect your work. AI runs send context to OpenAI."}
                 </small>
               </p>
             </div>
@@ -820,8 +839,8 @@ export default function Studio() {
                     {WORKFLOW_PRESETS.map((template) => (
                       <button
                         key={template.id}
-                        disabled={!!busy}
-                        title={template.description}
+                        disabled={!!busy || !!shared}
+                        title={shared ? "Create a new initiative from the team workspace." : template.description}
                         onClick={() => {
                           const next = newProject(template.name);
                           next.nodes = template.types.map((type) => ({
