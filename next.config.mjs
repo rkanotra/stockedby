@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  serverExternalPackages: ["ffmpeg-static"],
+  outputFileTracingIncludes: {
+    "/api/ascent/reviews": ["./node_modules/ffmpeg-static/ffmpeg"],
+    "/api/ascent/process": ["./node_modules/ffmpeg-static/ffmpeg"],
+  },
   // Account, checkout and saved-report surfaces are offline while StockedBy
   // is maintained as a database-free side project. Redirecting at the edge
   // keeps old bookmarks useful without ever rendering a database-backed page.

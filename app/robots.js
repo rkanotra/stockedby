@@ -8,6 +8,8 @@ export default function robots() {
   const retiredSurfaces = [
     "/api/",
     "/studio",
+    "/workspace",
+    "/ascent",
     "/checkout/",
     "/dashboard/",
     "/login",
