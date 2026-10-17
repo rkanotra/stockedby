@@ -1,0 +1,75 @@
+# ASCENT — deployment and owner guide
+
+Updated 18 October 2026. Production: https://stockedby.com/ascent.
+
+## What is live
+
+ASCENT is a private section of the existing StockedBy Next.js 16.4 / React 19 app on Vercel. It includes executive scenarios, storytelling, CDO interviews, a recording studio, daily check-ins, an editable roadmap to March 2027, and a searchable private library. Answers are free-form. The server generates evidence-backed coaching, a stronger draft, and a follow-up. Revisions preserve the original attempt. Progress counts only completed sessions.
+
+The interface uses the installed apple-design skill's principles: restrained hierarchy, direct feedback, visible save states, keyboard focus, responsive navigation and reduced-motion support. This is an implementation and testing record, not an Apple certification or a claim of exhaustive usability testing.
+
+## Services and configuration
+
+Reuses the existing StockedBy Supabase project and email-link sign-in, server-side OpenAI key, Vercel deployment and CSS modules. No separate app, hosting subscription or service-role key is required. All private API requests verify the authenticated user and enabled ASCENT membership server-side; database and storage policies isolate each user's data.
+
+Required environment variables are already configured in production:
+
+- `OPENAI_API_KEY`
+- `STUDIO_SUPABASE_URL`
+- `STUDIO_SUPABASE_PUBLISHABLE_KEY`
+
+Optional overrides: `ASCENT_OPENAI_MODEL` (default `gpt-5.4-mini`) and `ASCENT_TRANSCRIPTION_MODEL` (default `gpt-transcribe`). Keys stay server-side. ASCENT is excluded from analytics and indexing. The public page shell contains no saved practice or account information.
+
+Sign-in currently uses StockedBy's existing callback into `/workspace`. After opening the email link, return to `/ascent`. The existing production login destination was not changed. Session renewal runs through authenticated route handlers so refreshed cookies can be saved correctly.
+
+## Main source files
+
+- `app/ascent/page.js` — public loading shell, then private authenticated entry.
+- `components/ascent/Ascent.js` and `ascent.module.css` — studio interfaces.
+- `app/api/ascent/` — authenticated library, review, upload, processing and session endpoints.
+- `lib/ascent/catalog.js`, `schema.js`, `ai.js` — training content, validation and coaching contract.
+- `lib/ascent/media.js`, `processing.js`, `database.js`, `server.js` — media processing, job leases and access checks.
+- `supabase/migrations/202610170002_ascent.sql` — new ASCENT-only tables, row-level policies, bounded commands and private storage bucket. Applied successfully; existing team projects remain intact.
+- `lib/ascent/*.test.js` — AI contract, validation, database isolation, quotas, retries and media tests.
+- `scripts/test_ascent_media.mjs` — explicit opt-in real-AI synthetic media test; never run routinely against paid APIs.
+
+## First 90-second recording
+
+1. Sign in, open `/ascent`, choose **Recording studio**, a topic, audience and 90-second target.
+2. Use the talking points: hook, business problem, trade-off, recommendation, measure, takeaway.
+3. For the first test, use iPhone Voice Memos and save the M4A to Files. This avoids large video sizes. For video, export or trim a MOV/MP4 to under 50 MB; a full-resolution iPhone video may exceed the limit.
+4. Read the privacy notice, confirm the recording contains no confidential information, then choose the file and upload.
+5. Wait for Processing → Transcribing → Reviewing → Ready. The session remains in the private library if you leave. Failed jobs have a retry action.
+6. Play the recording, inspect the transcript and coaching, add notes at specific seconds, and export the report. Upload a second take from the review to compare attempts.
+
+## Limits and honest assessment boundaries
+
+- Maximum 50 MB and three minutes per recording; MOV, MP4, M4A, WAV, MP3 and WebM accepted subject to real file validation and decodable audio.
+- 500 MB per user, 1,000 sessions, 30 review attempts and 10 media processing attempts per UTC day. Up to three processing attempts per session; retries count toward daily limits.
+- Direct uploads go to a private bucket, avoiding Vercel's request-body limit. Playback links expire after five minutes.
+- Vercel `after()` continues processing after the request, with a five-minute function/job lease. This is not a separate durable worker service: stalled jobs require a user retry after the lease expires.
+- FFmpeg extracts audio; OpenAI transcribes it; the coaching model reviews the transcript. Duration and approximate words/minute are measured from extracted audio duration and transcript length. Fillers may be omitted by transcription.
+- No acoustic delivery, emotion, eye-contact, body-language or video-frame analysis is claimed. Default transcription does not provide automatic segment timestamps; manual timestamped notes work.
+- Reports are AI judgements about an attempt, not objective career-readiness or employment predictions. Model, rubric, prompt and audience can affect scores.
+- Nothing is published publicly. Titles and captions are export drafts only.
+
+## Retention and recovery
+
+Saved sessions and recordings remain until the owner deletes them. Deleting a session removes its media, transcript, report and notes. A failed storage deletion keeps a tombstone so deletion can be retried. Abandoned upload entries should be removed from the library to release reserved quota. Previously downloaded files remain on the user's own device.
+
+Export important reports and retain original recordings separately. This release does not add scheduled backups or guarantee point-in-time recovery. Existing Supabase plan availability and retention apply. `store: false` is sent for coaching responses; this does not promise zero retention across all provider systems. Do not upload employer/customer secrets or personal identifiers.
+
+## Verification record
+
+- Full automated suite: 198 passing tests; ESLint and production build pass.
+- Database tests use a local PostgreSQL-compatible test instance: unauthorised access, cross-user isolation, forbidden direct writes, private storage paths, duplicate claims, stale leases, quotas, settings conflicts and deletion.
+- Real production CBO review: completed, with five scored dimensions, a rewrite and a relevant follow-up; saved response survived reload; exported report downloaded successfully. The first attempt failed validation/processing; after tightening the response schema, retry completed. The initial error did not record enough detail to establish its precise cause, so safe diagnostic categories were added.
+- Real audio smoke test: synthetic 16.72-second M4A, real FFmpeg extraction, `gpt-transcribe` transcription and `gpt-5.4-mini` coaching completed. Storage/database were mocked for this particular test; it is not proof of production upload or iPhone playback.
+- Synthetic MOV/M4A extraction, oversized-duration rejection and renamed-text rejection pass locally.
+- Responsive 390×844 layout verified using the actual component with a temporary local fixture: no horizontal overflow, usable input/review action and navigation. The temporary route was removed before deployment.
+- Signed-out Ascent APIs return 401; page source contains no private test answer. Home, Studio and Workspace return 200.
+- Real AI test spend is estimated below US$0.10 including the written retry, within the approved US$1 budget. This is a conservative estimate based on capped outputs and the published model prices, not a retrieved invoice. [Coaching model pricing](https://developers.openai.com/api/docs/models/gpt-5.4-mini), [transcription pricing](https://developers.openai.com/api/docs/pricing).
+
+### Still requires device acceptance
+
+Actual iPhone Safari MOV/M4A selection, direct production upload, production FFmpeg execution, playback on a second device, and reconnect during upload have **not** been verified end to end. Chrome's automation file upload was blocked by its extension file-access setting; no recording was represented as uploaded when it was not. Use the first-recording guide above for this final acceptance check. Story/interview modes share the tested review engine and have automated prompt-contract coverage, but were not each given an additional paid live review.

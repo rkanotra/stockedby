@@ -546,6 +546,7 @@ export default function Ascent({ email, initialData = null }) {
   const uploadCancelled = useRef(false),
     requestId = useRef(null),
     picker = useRef(null),
+    main = useRef(null),
     xhr = useRef(null),
     dialog = useRef(null),
     initialised = useRef(false);
@@ -620,6 +621,10 @@ export default function Ascent({ email, initialData = null }) {
     }
   }, [deleteTarget, leaveTo, comparison]);
   useEffect(() => () => xhr.current?.abort(), []);
+  useEffect(() => {
+    main.current?.focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [view]);
   const done = data?.progress.filter((x) => x.status === "ready") || [],
     todayDate = new Date().toLocaleDateString(undefined, {
       weekday: "long",
@@ -955,7 +960,7 @@ export default function Ascent({ email, initialData = null }) {
           onClick={() => setMobileNav(false)}
         />
       )}
-      <main className={s.main}>
+      <main className={s.main} ref={main} tabIndex={-1}>
         <header className={s.topbar}>
           <div>
             <button

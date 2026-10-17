@@ -1717,11 +1717,13 @@
 @media (max-width: 900px) {
   .sidebar {
     width: 235px;
+    visibility: hidden;
     transform: translateX(-100%);
     transition: transform 180ms ease;
     z-index: 80;
   }
   .sidebarOpen {
+    visibility: visible;
     transform: translateX(0);
   }
   .main {
