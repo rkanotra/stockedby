@@ -50,7 +50,7 @@ async function api(path = "", body, method) {
     );
   }
   if (!response.ok)
-    throw Error(data.error || "Could not complete this request.");
+    throw Object.assign(Error(data.error || "Could not complete this request."), { status: response.status });
   return data;
 }
 function download(name, text, type = "text/plain") {
@@ -78,6 +78,18 @@ function Logo() {
       </span>
     </div>
   );
+}
+export function AscentEntry() {
+  const [state, setState] = useState(null);
+  useEffect(() => {
+    let active = true;
+    api().then(data => { if (active) setState({ data }); })
+      .catch(error => { if (active) setState({ error }); });
+    return () => { active = false; };
+  }, []);
+  if (!state) return <main className={s.gate}><div><Logo /><p role="status">Opening your private studio…</p></div></main>;
+  if (state.error) return <AscentGate denied={state.error.status === 403} unavailable={![401, 403].includes(state.error.status)} />;
+  return <Ascent email={state.data.email || ""} initialData={state.data} />;
 }
 export function AscentGate({ denied = false, unavailable = false }) {
   const [email, setEmail] = useState(""),
@@ -108,7 +120,7 @@ export function AscentGate({ denied = false, unavailable = false }) {
         </h2>
         <p>
           {unavailable
-            ? "Private storage is being connected. Your existing StockedBy workspace is available."
+            ? "Your studio could not be reached. Please reload to try again. Your saved work is unchanged."
             : denied
               ? "This signed-in account does not have access. Return to StockedBy to sign in with your authorised account."
               : "Use your authorised email to receive a secure sign-in link."}
@@ -117,7 +129,7 @@ export function AscentGate({ denied = false, unavailable = false }) {
           !unavailable &&
           (sent ? (
             <div role="status" className={s.notice}>
-              Check your inbox. Open the newest link in this browser.{" "}
+              Check your inbox. Open the newest link in this browser, then return to stockedby.com/ascent.{" "}
               <button className={s.textButton} onClick={() => setSent(false)}>
                 Use another email
               </button>
@@ -135,7 +147,6 @@ export function AscentGate({ denied = false, unavailable = false }) {
                     body: JSON.stringify({
                       action: "signin",
                       email,
-                      returnTo: "/ascent",
                     }),
                   });
                   const d = await r.json();
@@ -495,9 +506,9 @@ function MediaPlayer({ item, url, onRefresh, onNote, notesBusy }) {
     </section>
   );
 }
-export default function Ascent({ email }) {
+export default function Ascent({ email, initialData = null }) {
   const [view, setView] = useState("home"),
-    [data, setData] = useState(null),
+    [data, setData] = useState(initialData),
     [error, setError] = useState(""),
     [notice, setNotice] = useState(""),
     [busy, setBusy] = useState(false),
@@ -545,7 +556,7 @@ export default function Ascent({ email }) {
   }, []);
   useEffect(() => {
     let active = true;
-    api()
+    (initialData ? Promise.resolve(initialData) : api())
       .then((d) => {
         if (active) setData(d);
         if (active && !initialised.current) {
@@ -566,7 +577,7 @@ export default function Ascent({ email }) {
     return () => {
       active = false;
     };
-  }, [load]);
+  }, [load, initialData]);
   const selectedId = selected?.id,
     selectedStatus = selected?.status;
   useEffect(() => {
@@ -590,15 +601,17 @@ export default function Ascent({ email }) {
       clearInterval(timer);
     };
   }, [selectedId, selectedStatus, load]);
+  const savedCheckin = data?.checkins.find(c => c.day === day());
+  const reflectionDirty = !!data && (reflection !== (savedCheckin?.reflection || "") || JSON.stringify([...habits].sort()) !== JSON.stringify([...(savedCheckin?.habits || [])].sort()));
   useEffect(() => {
-    if (!answer && !roadmapDirty && uploadProgress === null) return;
+    if (!answer && !roadmapDirty && !reflectionDirty && uploadProgress === null) return;
     const prevent = (e) => {
       e.preventDefault();
       e.returnValue = "";
     };
     window.addEventListener("beforeunload", prevent);
     return () => window.removeEventListener("beforeunload", prevent);
-  }, [answer, roadmapDirty, uploadProgress]);
+  }, [answer, roadmapDirty, reflectionDirty, uploadProgress]);
   useEffect(() => {
     if (deleteTarget || leaveTo || comparison) {
       const prev = document.activeElement;
@@ -623,7 +636,7 @@ export default function Ascent({ email }) {
       setError("Cancel or finish the upload before switching views.");
       return;
     }
-    if (answer || roadmapDirty) {
+    if (answer || roadmapDirty || reflectionDirty) {
       setLeaveTo(target);
       return;
     }
@@ -640,6 +653,10 @@ export default function Ascent({ email }) {
     setNotice("");
     setMobileNav(false);
     setComparison(null);
+    if (reflectionDirty) {
+      setReflection(savedCheckin?.reflection || "");
+      setHabits(savedCheckin?.habits || []);
+    }
     if (roadmapDirty) {
       setRoadmap(
         data?.settings?.roadmap?.length ? data.settings.roadmap : MILESTONES,
@@ -666,6 +683,7 @@ export default function Ascent({ email }) {
     }
   }
   async function submit(kind = view, text = answer) {
+    setMediaUrl(null);
     setBusy(true);
     setError("");
     requestId.current ||= crypto.randomUUID();
@@ -741,6 +759,7 @@ export default function Ascent({ email }) {
   }
   async function upload(file) {
     if (!file) return;
+    setMediaUrl(null);
     if (!consent) {
       setError("Confirm the privacy note before uploading.");
       return;
@@ -818,9 +837,10 @@ export default function Ascent({ email }) {
             );
           request.send(file);
         });
+        if (uploadCancelled.current) throw Error("Upload cancelled before processing. The file remains private in your library.");
         const processed = await api("/process", { id: result.session.id });
         setSelected(processed.session);
-      } else setSelected(result.session);
+      } else { const existing=await api(`/sessions/${result.session.id}`);setSelected(existing.session);setMediaUrl(existing.mediaUrl); }
       setView("session");
       setUploadFile(null);
       setUploadRow(null);
@@ -2284,9 +2304,12 @@ export default function Ascent({ email }) {
               <h2>What changed?</h2>
               <p>
                 {comparison.rubric_version === selected.rubric_version &&
+                comparison.prompt === selected.prompt &&
+                comparison.audience === selected.audience &&
+                comparison.usage?.model === selected.usage?.model &&
                 selected.relation !== "followup"
                   ? "Same exercise and rubric. Read the evidence behind the scores."
-                  : "The prompt or rubric differs. Scores are not a direct measure of improvement."}
+                  : "The prompt, audience, model or rubric differs. Scores are not a direct measure of improvement."}
               </p>
               <div className={s.compare}>
                 <section>

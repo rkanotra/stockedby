@@ -9,7 +9,7 @@ import {
 export const dynamic = "force-dynamic";
 export async function GET(request) {
   try {
-    const { db } = await requireAscentUser();
+    const { db, user } = await requireAscentUser();
     const url = new URL(request.url);
     const offset = Math.max(
       0,
@@ -41,6 +41,7 @@ export async function GET(request) {
         status: 503,
       });
     return json({
+      email: user.email,
       sessions: results[0].data,
       settings: results[1].data,
       checkins: results[2].data,

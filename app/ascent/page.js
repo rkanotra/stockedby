@@ -1,5 +1,4 @@
-import Ascent, { AscentGate } from "@/components/ascent/Ascent";
-import { requireAscentUser } from "@/lib/ascent/server";
+import { AscentEntry } from "@/components/ascent/Ascent";
 export const dynamic = "force-dynamic";
 export const metadata = {
   title: "ASCENT — Executive Studio",
@@ -10,17 +9,8 @@ export const metadata = {
     description: "Private executive practice.",
   },
 };
-export default async function AscentPage() {
-  let account;
-  try {
-    account = await requireAscentUser();
-  } catch (e) {
-    return (
-      <AscentGate
-        denied={e.status === 403}
-        unavailable={e.status !== 401 && e.status !== 403}
-      />
-    );
-  }
-  return <Ascent email={account.user.email} />;
+export default function AscentPage() {
+  // The authenticated API can renew cookies; a Server Component cannot.
+  // No account information or saved content is included in this public shell.
+  return <AscentEntry />;
 }
