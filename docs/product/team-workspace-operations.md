@@ -38,7 +38,7 @@ Editors can directly save their own manual edits without an approval step. This 
 - API lists return up to 150 rows per table. Pagination and large-workspace reporting are not implemented; keep the initial pilot small.
 - Each workspace can start 50 AI change reviews per UTC database day. Failed model calls consume an attempt. This limit is persisted in the database; ordinary local-studio generation has its existing limits.
 - Save a JSON backup from the editor regularly. The activity log and proposal before/after text are not a complete versioned backup of every initiative. Review the Supabase plan's backup and availability provisions before accepting production-critical work.
-- No SSO, enterprise retention controls, billing or compliance certification is claimed by this pilot. Team sign-in and an end-to-end real-account review must be verified after SMTP is saved.
+- No SSO, enterprise retention controls, billing or compliance certification is claimed by this pilot. A second teammate's live invitation acceptance and approval still need pilot verification.
 - Private studio/workspace routes and invitation tokens are excluded from Google Analytics.
 
 ## Checks
@@ -46,3 +46,11 @@ Editors can directly save their own manual edits without an approval step. This 
 `npm test` includes PostgreSQL-compatible PGlite tests for outsider isolation, role permissions, bound/expired/used invitations, token-hash restrictions, author separation, stale saves/reviews, prohibited patch paths, revocation and the persisted AI quota.
 
 Run `npm run lint` and `npm run build` before deploying. An optional live smoke check is `node --env-file=.env.local scripts/test_team_ai.mjs`; it sends only the fictional Orbit sample to OpenAI and prints counts, not credentials or company content.
+
+### Production verification — 17 October 2026
+
+- Resend delivered the confirmation email; Supabase recorded successful verification and login. The owner reached the authenticated workspace in Chrome.
+- Created `StockedBy product team` with the owner as its sole member and a clearly labelled fictional Orbit pilot sample.
+- Edited the sample, saved version 2 to the team database, reloaded the page and verified that the name, document set and version persisted.
+- The first live AI request was safely rejected for an unsupported edit or evidence reference. Generation now constrains target and evidence IDs to the supplied revision using Structured Outputs enums, while retaining server-side validation. This follows [OpenAI's supported JSON Schema constraints](https://developers.openai.com/api/docs/guides/structured-outputs).
+- Automated tests cover independent approval and atomic application. This is not a claim of a completed two-person production review.
