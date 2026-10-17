@@ -121,7 +121,7 @@ export default function Marketing() {
                 challenge and build.
               </p>
               <div className={s.heroActions}>
-                <Link className={s.primary} href="/studio">
+                <Link className={s.primary} href="/workspace">
                   Build your workflow <Icon name="arrow" size={18} />
                 </Link>
                 <Link className={s.demoLink} href="/studio?demo=1">
@@ -129,8 +129,7 @@ export default function Marketing() {
                 </Link>
               </div>
               <span className={s.heroFine}>
-                OpenAI powered <i /> No account to get started <i /> Saved on
-                your browser
+                OpenAI powered <i /> Shared team workspace <i /> Saved online
               </span>
             </div>
             <div className={s.heroAside}>
@@ -189,7 +188,7 @@ export default function Marketing() {
                   </div>
                 ))}
                 <span className={s.previewSideBottom}>
-                  <i /> Saved on this browser
+                  <i /> Shared with your team
                 </span>
               </aside>
               <div className={s.previewCanvas}>
@@ -325,7 +324,7 @@ export default function Marketing() {
               </div>
               <p>More context for a more involved conversation.</p>
             </div>
-            <Link href="/studio">
+            <Link href="/workspace">
               Create your own sequence <Icon name="arrow" size={18} />
             </Link>
           </div>
@@ -467,7 +466,7 @@ export default function Marketing() {
               </p>
               <b>Open the interactive prototype ↗</b>
             </Link>
-            <Link href="/studio">
+            <Link href="/workspace">
               <span>02 / REVIEW DESK</span>
               <Icon name="check" size={28} />
               <h3>Every unresolved question has a place.</h3>
@@ -478,7 +477,7 @@ export default function Marketing() {
               </p>
               <b>Open review & decisions ↗</b>
             </Link>
-            <Link href="/studio">
+            <Link href="/workspace">
               <span>03 / CONNECTED DELIVERY</span>
               <Icon name="link" size={28} />
               <h3>Take the context into the tools.</h3>
@@ -505,11 +504,11 @@ export default function Marketing() {
             <br />
             <span>the actual thinking.</span>
           </h2>
-          <Link href="/studio" className={s.primary}>
+          <Link href="/workspace" className={s.primary}>
             Open your workspace <Icon name="arrow" size={19} />
           </Link>
           <p>
-            No account. No fixed process. Just a place to move work forward.
+            Your team, your workflow. Shared context and changes saved online.
           </p>
           <div className={s.closingGlyph}>↗</div>
         </section>
@@ -555,11 +554,14 @@ export function InformationPage({ kind }) {
                 <div>
                   <h2>Start with a real problem.</h2>
                   <p>
-                    Open the workspace, name your initiative and add a brief:
-                    audience, problem, outcomes, constraints and open questions.
-                    Add supporting documents as PDF, DOCX, TXT, Markdown, CSV or
-                    JSON. Files must be under 3 MB and extracted text under
-                    40,000 characters.
+                    Open Project inputs and bring your existing BRD, discovery notes,
+                    research or designs. Add PDF, DOCX, TXT, Markdown, CSV, JSON,
+                    PNG, JPEG or WebP files, one at a time. Images are read by AI;
+                    check the extracted text and visual interpretation before adding
+                    them. A written project goal is optional if your documents provide
+                    the context. Files must be under 3 MB and extracted content under
+                    40,000 characters. Text PDFs support up to 60 pages; for scans,
+                    upload the relevant pages as images.
                   </p>
                 </div>
               </section>
@@ -637,8 +639,8 @@ export function InformationPage({ kind }) {
                   </p>
                   <p>
                     Local studio projects autosave in this browser only. Clearing
-                    browser data can erase them. Team workspaces save shared
-                    initiatives when you choose Save to team, with version checks
+                    browser data can erase them. Team workspaces automatically save shared
+                    initiatives online, with version checks
                     to prevent overwriting a teammate’s work. AI runs send project context to OpenAI;
                     only use information your organisation permits you to send.
                   </p>
@@ -671,7 +673,11 @@ export function InformationPage({ kind }) {
             <h2>When you import a document</h2>
             <p>
               Uploaded PDF and Word files are processed on the server to extract
-              text. The extracted text is returned to your browser. Original uploaded files are not retained by the application. Extracted
+              text. PNG, JPEG and WebP images are sent to OpenAI for text and visual
+              interpretation with response storage disabled. Review the returned
+              content before adding it to your project. Provider retention policies
+              still apply. Extracted content is returned to your browser; original
+              uploaded files are not retained by the application. Extracted
               text is stored in Supabase when you save the containing initiative
               to your team. Hosting and service providers may
               maintain operational logs under their own policies.

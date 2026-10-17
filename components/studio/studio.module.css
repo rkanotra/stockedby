@@ -2009,3 +2009,22 @@
     display: none;
   }
 }
+
+/* Keep the primary path visible; integrations and policy tools are secondary. */
+.moreViews{position:relative;flex-shrink:0;color:#72806a;font-size:12px}
+.moreViews summary{cursor:pointer;list-style:none;padding:13px 8px;white-space:nowrap}
+.moreViews summary::-webkit-details-marker{display:none}
+.moreViews[open]>div{position:absolute;right:0;top:100%;z-index:30;background:#fff;border:1px solid #dde4d6;border-radius:8px;box-shadow:0 10px 25px #23331c17;padding:6px;min-width:170px}
+.moreViews button{display:flex;width:100%;justify-content:flex-start;background:transparent;padding:12px;color:#66745e}
+.moreViews button:hover{background:#f1f5e9}
+.briefInputBox{padding:16px;margin:18px 0;border:1px solid #dce5cd;border-radius:8px;background:#f3f7eb}
+.briefInputBox strong{font-size:12px;color:#536a39}.briefInputBox p{font-size:11px;line-height:1.7;color:#869371;margin:8px 0 14px}.briefInputBox .secondary{font-size:11px;padding:10px;width:100%}.textLink{background:none;color:#788a5f;font-size:11px;padding:10px 0 0}
+.inputCount{display:inline-block;font-size:10px;font-weight:400;color:#8c9b79;margin-left:8px}
+.documentInputBar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 24px;background:#f0f5e7;border-bottom:1px solid #dfe7d4}.documentInputBar strong{font-size:12px;font-weight:500;color:#61784a}.documentInputBar p{font-size:11px;color:#8b997b;margin:4px 0 0}.documentInputBar button{font-size:11px;padding:10px;white-space:nowrap}
+@media(max-width:700px){.documentInputBar{align-items:flex-start;flex-direction:column;padding:16px}.moreViews{font-size:11px}}
+
+.app button{touch-action:manipulation}
+.primary:active:not(:disabled),.secondary:active:not(:disabled),.run:active:not(:disabled){transform:scale(.98);transition:transform 100ms ease-out}
+.briefInputBox p,.documentInputBar p{color:#576b47;font-size:12px}
+.deliveryNav>button{color:#59677c}
+@media(prefers-reduced-motion:reduce){.primary:active:not(:disabled),.secondary:active:not(:disabled),.run:active:not(:disabled){transform:none;transition:none}}

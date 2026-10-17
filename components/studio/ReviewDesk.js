@@ -294,7 +294,7 @@ export default function ReviewDesk({ project, change, openDocument, busy }) {
       {view === "versions" && (
         <>
           <p className={w.small}>
-            The last 12 snapshots are stored in this browser. Regeneration saves
+            The last 12 snapshots are kept with this project. Regeneration saves
             the preceding version. Restore marks it for reconciliation with
             current context.
           </p>

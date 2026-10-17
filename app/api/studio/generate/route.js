@@ -7,6 +7,7 @@ import {
 import OpenAI from "openai";
 import { sameOriginRequest } from "@/lib/auth/requestOrigin";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
+import { generationFailure } from "@/lib/studio/generation-errors";
 import {
   OUTPUT_SCHEMA,
   validateInput,
@@ -30,7 +31,7 @@ export async function POST(request) {
     return response(
       {
         error:
-          "AI is not configured on this deployment. Your local work is saved; please try again later.",
+          "AI is not configured on this deployment. Your existing content is unchanged; please try again later.",
       },
       503,
     );
@@ -52,15 +53,16 @@ export async function POST(request) {
     return response(
       {
         error:
-          "The pilot AI limit has been reached. Keep editing locally and try again tomorrow.",
+          "The pilot AI limit has been reached. You can keep editing and try AI again tomorrow.",
       },
       429,
     );
+  let stage = "provider";
   try {
     const client = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
       timeout: 55000,
-      maxRetries: 0,
+      maxRetries: 1,
     });
     const model =
       process.env.STUDIO_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-4.1";
@@ -84,7 +86,7 @@ export async function POST(request) {
           },
         },
       },
-      { signal: request.signal },
+      { signal: AbortSignal.any([request.signal, AbortSignal.timeout(58000)]) },
     );
     if (result.status !== "completed" || !result.output_text)
       return response(
@@ -94,6 +96,7 @@ export async function POST(request) {
         },
         502,
       );
+    stage = "validation";
     const parsed = JSON.parse(result.output_text);
     const artifact =
       input.type === "prototype"
@@ -117,12 +120,9 @@ export async function POST(request) {
       },
     });
   } catch (e) {
-    const error =
-      e.status === 429
-        ? "The AI provider is at its usage limit. Try again later."
-        : e.name === "APIConnectionTimeoutError"
-          ? "This step took too long. Shorten the context and retry."
-          : "AI could not complete this step. Your work is saved locally; please retry.";
-    return response({ error }, 502);
+    const failure = generationFailure(e, stage), reference = crypto.randomUUID();
+    // Operational diagnostics only; never log source text, prompts or keys.
+    console.error(JSON.stringify({ event: "studio_generation_failed", reference, type: input.type, stage, code: failure.code, providerStatus: Number(e?.status) || null }));
+    return response({ error: failure.message, code: failure.code, reference }, failure.status);
   }
 }

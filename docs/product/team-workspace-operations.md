@@ -33,7 +33,7 @@ Editors can directly save their own manual edits without an approval step. This 
 
 ## Collaboration and operating limits
 
-- Shared editing uses an isolated draft with explicit **Save to team**. Version checks reject a stale save; the draft remains available to download before loading the latest revision. There is no simultaneous text merge or live cursor presence.
+- Shared editing autosaves online 1.5 seconds after editing stops, with **Save now** available. Only one save is in flight; edits made during a save stay dirty and are saved next. Failed saves pause autosave until **Retry save**; the editor keeps the draft open and warns before leaving. Version checks reject a stale save; the draft remains available to download before loading the latest revision. There is no simultaneous text merge or live cursor presence.
 - The overview refreshes every 15 seconds and on focus, except while editing.
 - API lists return up to 150 rows per table. Pagination and large-workspace reporting are not implemented; keep the initial pilot small.
 - Each workspace can start 50 AI change reviews per UTC database day. Failed model calls consume an attempt. This limit is persisted in the database; ordinary local-studio generation has its existing limits.
@@ -56,3 +56,12 @@ Run `npm run lint` and `npm run build` before deploying. An optional live smoke 
 - After deployment of `9e9fdc9`, the same production request succeeded: six proposed edits across a requirement, acceptance criterion, user story and test, with source evidence and three risks. The saved proposal survived a page reload, remained pending and the author's approval control was disabled. No original text was applied automatically.
 - Validation for the reference fix: 172 tests passed, lint and production build passed, and both the fictional-content model smoke check and authenticated production review succeeded.
 - Automated tests cover independent approval and atomic application. This is not a claim of a completed two-person production review.
+
+### Project inputs and generation follow-up
+
+- Project inputs is the editor’s starting view. Existing BRDs, discovery notes and research can supply context without typing a fresh brief. The Product brief output has a direct input action.
+- Files: PDF, DOCX, TXT, MD, CSV, JSON, PNG, JPEG, WebP; one file at a time, 3 MB maximum and 40,000 extracted characters. Text PDFs support up to 60 pages. Scans should be supplied as page images.
+- Images are interpreted by OpenAI and returned for user correction before adding. Original files are not retained. Added text is saved with the project and sent with subsequent AI requests.
+- Image extraction uses the existing in-memory pilot quota pattern (20 per IP and 100 globally per instance/day); it is not a durable billing control.
+- Generation no longer claims a failed request was saved locally. Provider failures produce a safe diagnostic reference, without logging project text or secrets. One provider retry is bounded by a 58-second request deadline.
+- A reported first Product brief failure could not be reproduced: the production Orbit sample returned HTTP 200. Fictional DOCX, PDF, TXT and image extraction, and source-only brief and prototype generation, passed locally.

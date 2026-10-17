@@ -21,6 +21,7 @@ import {
   parseProjectFile,
 } from "@/lib/studio/model";
 import PrototypeWorkbench from "./PrototypeWorkbench";
+import ProjectInputs, { INPUT_ACCEPT } from "./ProjectInputs";
 import ReviewDesk from "./ReviewDesk";
 import Connections from "./Connections";
 import { WORKFLOW_PRESETS, checkpoint } from "@/lib/studio/review";
@@ -28,6 +29,7 @@ import w from "./workbench.module.css";
 import { demoProject } from "@/lib/studio/demo";
 import { exportProject } from "@/lib/studio/downloads";
 const tabs = [
+  ["inputs", "Project inputs", "folder"],
   ["canvas", "Workflow", "flow"],
   ["documents", "Documents", "brief"],
   ["prototype", "Prototype", "screen"],
@@ -57,7 +59,7 @@ export default function Studio({ shared = null }) {
     [active, setActive] = useState(""),
     [loaded, setLoaded] = useState(false),
     [saved, setSaved] = useState("Loading…"),
-    [tab, setTab] = useState("canvas"),
+    [tab, setTab] = useState("inputs"),
     [selected, setSelected] = useState(null),
     [busy, setBusy] = useState(null),
     [error, setError] = useState(""),
@@ -67,6 +69,7 @@ export default function Studio({ shared = null }) {
     [sourceName, setSourceName] = useState(""),
     [sourceText, setSourceText] = useState(""),
     [sourceEdit, setSourceEdit] = useState(null),
+    [sourceImage, setSourceImage] = useState(false),
     [reviewer, setReviewer] = useState(""),
     [editing, setEditing] = useState(false),
     [configured, setConfigured] = useState(null),
@@ -96,7 +99,7 @@ export default function Studio({ shared = null }) {
     state.current = { projects: nextProjects, active: nextActive };
     setProjects(nextProjects);
     setActive(nextActive);
-    setSaved(shared ? "Team draft · save above" : "Saving…");
+    setSaved(shared ? "Team draft · autosaves online" : "Saving…");
   }
   function change(fn) {
     const snapshot = state.current;
@@ -120,9 +123,9 @@ export default function Studio({ shared = null }) {
         state.current = data;
         // Hydrate the isolated editor from its mount-time shared snapshot.
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setProjects(data.projects); setActive(data.active); setLoaded(true); setSaved("Team draft · save above");
+        setProjects(data.projects); setActive(data.active); setLoaded(true); setSaved("Team draft · autosaves online");
         fetch("/api/studio/generate").then(r => r.json()).then(d => setConfigured(d.configured)).catch(() => setConfigured(false));
-        return;
+        return () => abort.current?.abort();
       }
       const query = new URLSearchParams(window.location.search);
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -234,6 +237,12 @@ export default function Studio({ shared = null }) {
   }, [modal]);
   function add(type, beforeId) {
     if (busy || !TYPE[type]) return;
+    const existing = p.nodes.find(n => n.type === type);
+    if (existing) {
+      setSelected(existing.id);
+      setTab("canvas");
+      return;
+    }
     if (p.nodes.length >= 12) {
       setError("Use up to 12 steps in one workflow.");
       return;
@@ -269,6 +278,7 @@ export default function Studio({ shared = null }) {
     setSourceName(source?.name || "");
     setSourceText(source?.text || "");
     setSourceEdit(source?.id || null);
+    setSourceImage(source?.text?.startsWith("[AI-read image") || false);
     setModal("source");
     setError("");
   }
@@ -301,6 +311,13 @@ export default function Studio({ shared = null }) {
     });
     setModal(null);
     setError("");
+    setToast(shared?.demo ? "Input added to this demo tab." : shared ? "Input added. Your team draft will autosave online." : "Input added. Your workflow will use it as context.");
+  }
+  function uploadProjectFiles(files) {
+    if (!files?.length || busy) return;
+    startSource("context");
+    if (files.length > 1) { setError("Add one file at a time so you can review each input."); return; }
+    upload(files[0]);
   }
   async function upload(file) {
     if (!file) return;
@@ -321,6 +338,7 @@ export default function Studio({ shared = null }) {
       if (!res.ok) throw new Error(data.error);
       setSourceName(data.name);
       setSourceText(data.text);
+      setSourceImage(!!data.image);
     } catch (e) {
       setError(e.message);
     } finally {
@@ -351,8 +369,8 @@ export default function Studio({ shared = null }) {
         previous: n?.artifact || null,
       }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "AI request failed.");
+    const data = await res.json().catch(() => ({ error: "The generation service did not return a response. Retry this step; your existing content is unchanged." }));
+    if (!res.ok || !data.artifact) throw new Error((data.error || "AI request failed.") + (data.reference ? ` Reference: ${data.reference}` : ""));
     return data.artifact;
   }
   async function run(ids) {
@@ -414,7 +432,7 @@ export default function Studio({ shared = null }) {
   function cancel() {
     stop.current = true;
     abort.current?.abort();
-    setToast("Stopped. Completed drafts are saved.");
+    setToast("Stopped. Completed drafts remain in your project. Check the save status before closing.");
   }
   async function exportAs(format) {
     setExporting(true);
@@ -450,7 +468,7 @@ export default function Studio({ shared = null }) {
     const project = demo ? demoProject() : newProject();
     apply([...projects, project], project.id);
     setSelected(null);
-    setTab("canvas");
+    setTab(demo ? "canvas" : "inputs");
     setModal(null);
     setError("");
   }
@@ -502,6 +520,7 @@ export default function Studio({ shared = null }) {
   const reviewed =
     p?.nodes.filter((n) => n.artifact?.status === "approved").length || 0;
   const generated = p?.nodes.filter((n) => n.artifact).length || 0;
+  const nextDraft = p?.nodes.find(n => !n.artifact || n.artifact.status === "stale");
   if (!p)
     return (
       <div className={s.app}>
@@ -535,7 +554,7 @@ export default function Studio({ shared = null }) {
     );
   return (
     <div className={s.app}>
-      <header className={s.header}>
+      {!shared && <header className={s.header}>
         <Brand />
         <span className={s.breadcrumb}>
           Workspace <Icon name="chevron" size={13} />
@@ -556,7 +575,7 @@ export default function Studio({ shared = null }) {
           {!shared && <Link className={s.headerButton} href="/workspace">Team workspace ↗</Link>}
           <span className={s.avatar}>ME</span>
         </div>
-      </header>
+      </header>}
       <div className={s.workspace}>
         <aside className={s.sidebar}>
           <div className={s.workspaceTitle}>
@@ -572,7 +591,7 @@ export default function Studio({ shared = null }) {
             <button
               title="New project"
               aria-label="New project"
-              disabled={!!busy}
+              disabled={!!busy || !!shared}
               onClick={() => create()}
             >
               <Icon name="plus" size={15} />
@@ -605,14 +624,14 @@ export default function Studio({ shared = null }) {
               <p className={s.sideHint}>
                 Drag a step onto the canvas.
                 <br />
-                Or click to add it.
+                Or click to add. A check means it’s already included.
               </p>
               <div className={s.nodeLibrary}>
                 {NODE_TYPES.map((t) => (
                   <button
                     key={t.id}
                     disabled={!!busy}
-                    draggable={!busy}
+                    draggable={!busy && !p.nodes.some(n => n.type === t.id)}
                     onDragStart={(e) =>
                       e.dataTransfer.setData(
                         "application/stockedby-node",
@@ -620,32 +639,19 @@ export default function Studio({ shared = null }) {
                       )
                     }
                     onClick={() => add(t.id)}
-                    title={t.description}
+                    title={p.nodes.some(n => n.type === t.id) ? `Open ${t.label} in your workflow` : t.description}
                   >
                     <span className={`${s.iconTile} ${s[t.color]}`}>
                       <Icon name={t.icon} size={17} />
                     </span>
                     <span>{t.label}</span>
-                    <Icon name="grip" size={13} />
+                    <Icon name={p.nodes.some(n => n.type === t.id) ? "check" : "plus"} size={13} />
                   </button>
                 ))}
               </div>
             </>
           ) : (
             <div className={s.deliveryNav}>
-              <div className={s.sideLabel}>INITIATIVE</div>
-              {tabs.map(([key, label, icon]) => (
-                <button
-                  key={key}
-                  aria-current={tab === key ? "page" : undefined}
-                  onClick={() => setTab(key)}
-                >
-                  <Icon name={icon} size={17} />
-                  {label}
-                  {key === "documents" && <span>{generated}</span>}
-                </button>
-              ))}
-              <div className={s.sideDivider} />
               <div className={s.sideLabel}>DELIVERY PACKAGE</div>
               {p.nodes.map((n) => (
                 <button
@@ -668,9 +674,9 @@ export default function Studio({ shared = null }) {
           <button
             className={s.sideAction}
             disabled={!!busy}
-            onClick={() => startSource("context")}
+            onClick={() => setTab("inputs")}
           >
-            <Icon name="folder" /> Project context{" "}
+            <Icon name="folder" /> Project inputs{" "}
             <span>{p.sources.filter((s) => s.kind === "context").length}</span>
           </button>
           <button
@@ -686,7 +692,7 @@ export default function Studio({ shared = null }) {
               className={s.mobileNew}
               aria-label="New project"
               title="New project"
-              disabled={!!busy}
+              disabled={!!busy || !!shared}
               onClick={() => create()}
             >
               <Icon name="plus" size={18} />
@@ -694,22 +700,22 @@ export default function Studio({ shared = null }) {
             <div className={s.storageNote}>
               <Icon name="shield" size={16} />
               <p>
-                {shared ? "A draft for your team." : "Your browser. Your workspace."}
+                {shared?.demo ? "Fictional team demo." : shared ? "Saved with your team." : "Your browser. Your workspace."}
                 <small>
-                  {shared ? "Use Save to team above when your edits are ready. AI runs send context to OpenAI." : "Export a backup to move or protect your work. AI runs send context to OpenAI."}
+                  {shared?.demo ? "Demo changes stay in this tab and reset on reload." : shared ? "Changes autosave online. Check the save status above before closing. AI runs send context to OpenAI." : "Export a backup to move or protect your work. AI runs send context to OpenAI."}
                 </small>
               </p>
             </div>
-            <button onClick={() => create(true)} disabled={!!busy}>
+            <button onClick={() => create(true)} disabled={!!busy || !!shared}>
               <Icon name="play" size={14} /> Explore sample project
             </button>
             <button
               onClick={() => backupInput.current?.click()}
-              disabled={!!busy}
+              disabled={!!busy || !!shared}
             >
               <Icon name="upload" size={14} /> Open project backup
             </button>
-            <Link href="/guide">
+            <Link href="/guide" target={shared ? "_blank" : undefined} rel={shared ? "noopener noreferrer" : undefined}>
               Workspace guide <Icon name="arrow" size={14} />
             </Link>
           </div>
@@ -733,21 +739,23 @@ export default function Studio({ shared = null }) {
                   }))
                 }
               />
-              <p>Your context. Your standards. A clear path to delivery.</p>
+              <p>Bring your inputs. Choose your outputs. Review what matters.</p>
             </div>
+            {shared && <button className={s.secondary} onClick={() => setModal("export")} disabled={!!busy}><Icon name="export" size={16} /> Export</button>}
             <button
               className={s.run}
-              disabled={!busy && (p.nodes.length === 0 || configured === false)}
-              onClick={() => (busy ? cancel() : run(p.nodes.map((n) => n.id)))}
+              disabled={busy === "upload" || (!busy && tab !== "inputs" && (p.nodes.length === 0 || (nextDraft && configured === false)))}
+              title={nextDraft ? `Next: ${TYPE[nextDraft.type].label}` : "Open your outputs for review"}
+              onClick={() => (busy ? cancel() : tab === "inputs" ? setTab("canvas") : nextDraft ? run([nextDraft.id]) : setTab("documents"))}
             >
               <Icon name={busy ? "close" : "play"} size={16} />
-              {busy ? "Stop generation" : "Run workflow"}
+              {busy ? "Stop generation" : tab === "inputs" ? "Choose outputs" : nextDraft ? "Generate next draft" : "Review outputs"}
               {!busy && <span>↗</span>}
             </button>
           </div>
           <div className={s.tabBar}>
             <div role="tablist" aria-label="Workspace views">
-              {tabs.map(([key, label, icon]) => (
+              {tabs.filter(([key]) => !["connections", "standards", "trace"].includes(key)).map(([key, label, icon]) => (
                 <button
                   role="tab"
                   aria-selected={tab === key}
@@ -761,6 +769,7 @@ export default function Studio({ shared = null }) {
                 </button>
               ))}
             </div>
+            <details className={s.moreViews}><summary>{["connections", "standards", "trace"].includes(tab) ? tabs.find(t => t[0] === tab)[1] : "More"} ▾</summary><div>{tabs.filter(([key]) => ["connections", "standards", "trace"].includes(key)).map(([key, label, icon]) => <button key={key} onClick={e => { setTab(key); e.currentTarget.closest("details").open = false; }}><Icon name={icon} size={16} />{label}</button>)}</div></details>
             <span className={s.reviewCount}>
               {reviewed}/{p.nodes.length} reviewed
             </span>
@@ -793,6 +802,10 @@ export default function Studio({ shared = null }) {
             </div>
           )}
           <div className={`${s.body} ${tab === "canvas" ? s.canvasBody : ""}`}>
+            {tab === "inputs" && <ProjectInputs project={p} busy={!!busy} shared={!!shared} demo={!!shared?.demo}
+              upload={uploadProjectFiles} paste={() => startSource("context")} edit={source => startSource("context", source)}
+              updateBrief={brief => change(p => updateContext(p, { brief }))} next={() => { setSelected(null); setTab("canvas"); }} standards={() => setTab("standards")} />}
+
             {tab === "prototype" && (
               <PrototypeWorkbench
                 key={p.id}
@@ -832,7 +845,7 @@ export default function Studio({ shared = null }) {
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => drop(e, null)}
                 >
-                  <div
+                  {!shared && <div
                     className={w.templateRow}
                     aria-label="Start from a workflow template"
                   >
@@ -856,7 +869,7 @@ export default function Studio({ shared = null }) {
                         ＋ {template.name}
                       </button>
                     ))}
-                  </div>
+                  </div>}
                   <div className={s.canvasMeta}>
                     <span>
                       <i /> WORKFLOW BUILDER
@@ -868,20 +881,20 @@ export default function Studio({ shared = null }) {
                       <Icon name="folder" />
                     </span>
                     <div>
-                      <strong>Start with context</strong>
+                      <strong>Project inputs <span className={s.inputCount}>{p.sources.filter(source => source.kind === "context").length} files / notes</span></strong>
                       <small>
                         {p.brief
                           ? p.brief.slice(0, 100) +
                             (p.brief.length > 100 ? "…" : "")
-                          : "Add your idea, goals and supporting documents."}
+                          : "Use a BRD, discovery notes, documents or images."}
                       </small>
                     </div>
                     <button
-                      aria-label="Edit project context"
+                      aria-label="Open project inputs"
                       disabled={!!busy}
                       onClick={() => {
                         setSelected(null);
-                        setModal("context");
+                        setTab("inputs");
                       }}
                     >
                       <Icon name="edit" size={16} />
@@ -1031,10 +1044,11 @@ export default function Studio({ shared = null }) {
                           rows={5}
                         />
                       </label>
+                      {node.type === "brief" && <div className={s.briefInputBox}><strong>Already have a brief or BRD?</strong><p>Add it here, along with discovery notes or images. This step creates a new draft from your inputs. Remove the step if you don’t need another brief.</p><button className={s.secondary} disabled={!!busy} onClick={() => startSource("context")}><Icon name="upload" size={16} /> Add document or image</button><button className={s.textLink} onClick={() => setTab("inputs")}>View project inputs →</button></div>}
                       <div className={s.contextSummary}>
                         <Icon name="link" size={16} />
                         <span>
-                          Uses the brief, sources, confirmed rules and preceding
+                          Uses your project inputs, confirmed rules and preceding
                           current documents.
                         </span>
                       </div>
@@ -1123,9 +1137,9 @@ export default function Studio({ shared = null }) {
                         actually needs.
                       </p>
                       <label className={s.field}>
-                        Project brief
+                        Project goal (optional)
                         <textarea
-                          aria-label="Project brief"
+                          aria-label="Project goal"
                           rows={8}
                           maxLength={16000}
                           disabled={!!busy}
@@ -1143,7 +1157,7 @@ export default function Studio({ shared = null }) {
                         disabled={!!busy}
                         onClick={() => startSource("context")}
                       >
-                        <Icon name="plus" size={16} /> Add supporting material
+                        <Icon name="plus" size={16} /> Add document or image
                       </button>
                       <div className={s.sideDivider} />
                       <div className={s.inspectorStats}>
@@ -1213,6 +1227,7 @@ export default function Studio({ shared = null }) {
                   ))}
                 </aside>
                 <section className={s.documentContent}>
+                  {node?.type === "brief" && <div className={s.documentInputBar}><div><strong>Start from an existing document</strong><p>Add a BRD, discovery notes or images as inputs for this brief.</p></div><button className={s.secondary} disabled={!!busy} onClick={() => startSource("context")}><Icon name="upload" size={16} /> Add document or image</button></div>}
                   {!node ? (
                     <Empty
                       icon="brief"
@@ -1672,8 +1687,7 @@ export default function Studio({ shared = null }) {
                 )}
                 <p className={s.fine}>
                   A linked test is a specification, not proof that a test ran or
-                  passed. Review records belong to this browser and are not
-                  authenticated signatures.
+                  passed. Document review labels are self-reported. Use team change reviews for an authenticated second-person decision.
                 </p>
                 <div className={s.activity}>
                   <h3>Project activity</h3>
@@ -1704,7 +1718,7 @@ export default function Studio({ shared = null }) {
                 ? "AI working"
                 : configured
                   ? "AI ready"
-                  : "Local workspace"}{" "}
+                  : "AI unavailable"}{" "}
               <span>·</span> OpenAI
             </span>
             <span>
@@ -1811,24 +1825,25 @@ export default function Studio({ shared = null }) {
                 <span className={s.eyebrow}>
                   {sourceKind === "standard"
                     ? "COMPANY STANDARDS"
-                    : "PROJECT CONTEXT"}
+                    : "PROJECT INPUT"}
                 </span>
                 <h2 id="modal-title">
                   {sourceEdit
                     ? "Edit your source."
-                    : "Give AI the right context."}
+                    : "Bring in your existing work."}
                 </h2>
                 <p className={s.subtle}>
-                  Files are processed by StockedBy to extract text. Text is
-                  saved on this browser and sent to OpenAI when you run AI. Only
-                  add material you are permitted to use here.
+                  Add a BRD, discovery notes, research, screenshots or diagrams. Documents are read for text;
+                  images are sent to OpenAI to interpret. Review the extracted content below.
+                  {shared?.demo ? " Demo changes stay in this tab." : shared ? " Added content autosaves to your team workspace." : " Added content is saved in this browser."}
+                  {" "}Original files are not retained. Added content is sent to OpenAI when you generate outputs.
                 </p>
                 <label
                   className={s.uploadZone}
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => {
                     e.preventDefault();
-                    if (!busy) upload(e.dataTransfer.files[0]);
+                    if (!busy) { if (e.dataTransfer.files.length > 1) setError("Add one file at a time so you can review each input."); else upload(e.dataTransfer.files[0]); }
                   }}
                 >
                   <Icon name="upload" size={22} />
@@ -1837,28 +1852,28 @@ export default function Studio({ shared = null }) {
                       ? "Reading your file…"
                       : "Drop a file or choose from your computer"}
                   </strong>
-                  <span>PDF, DOCX, TXT, MD, CSV or JSON · up to 3 MB</span>
+                  <span>PDF, DOCX, TXT, MD, CSV, JSON, PNG, JPG or WebP · up to 3 MB</span>
                   <input
                     ref={fileInput}
                     disabled={!!busy}
                     type="file"
-                    accept=".pdf,.docx,.txt,.md,.csv,.json"
+                    accept={INPUT_ACCEPT}
                     onChange={(e) => upload(e.target.files[0])}
                   />
                 </label>
                 <label className={s.field}>
-                  Source name
+                  Input name
                   <input
                     autoFocus
                     maxLength={150}
                     value={sourceName}
                     disabled={!!busy}
                     onChange={(e) => setSourceName(e.target.value)}
-                    placeholder="E.g. Accessibility standard v2.1"
+                    placeholder={sourceKind === "standard" ? "E.g. Accessibility standard v2.1" : "E.g. Onboarding BRD or customer discovery"}
                   />
                 </label>
                 <label className={s.field}>
-                  Source text
+                  {sourceImage ? "Check the AI-read image notes" : "Review or paste content"}
                   <textarea
                     rows={7}
                     maxLength={40000}
@@ -1872,7 +1887,7 @@ export default function Studio({ shared = null }) {
                   {sourceText.length.toLocaleString()} / 40,000 characters ·{" "}
                   {sourceKind === "standard"
                     ? "Extract and confirm rules after saving."
-                    : "Used with your project brief."}
+                    : "Used by your workflow. You do not need to rewrite it as a brief."}
                 </span>
                 {error && (
                   <p className={s.inlineError} role="alert">
@@ -1894,7 +1909,7 @@ export default function Studio({ shared = null }) {
                     disabled={!!busy}
                     onClick={saveSource}
                   >
-                    Save source <Icon name="arrow" size={16} />
+                    {sourceEdit ? "Save changes" : "Add to project"} <Icon name="arrow" size={16} />
                   </button>
                 </div>
               </>
@@ -1929,9 +1944,8 @@ export default function Studio({ shared = null }) {
                 <span className={s.eyebrow}>TAKE YOUR WORK WITH YOU</span>
                 <h2 id="modal-title">Ready for the next conversation.</h2>
                 <p className={s.subtle}>
-                  Exports include draft status and open decisions. Save a
-                  project backup regularly—browser storage is not a cloud
-                  backup.
+                  Exports include draft status and open decisions.
+                  {shared ? " Your initiative autosaves online. Download a backup for an independent copy." : " This local studio saves only in this browser. Export regularly, or use Team workspace for online saving."}
                 </p>
                 <div className={s.exportOptions}>
                   {[

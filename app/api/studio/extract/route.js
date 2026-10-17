@@ -1,7 +1,9 @@
 import { sameOriginRequest } from "@/lib/auth/requestOrigin";
 import { getClientIp, checkAndConsume } from "@/lib/rateLimit";
+import OpenAI from "openai";
+import { imageMime, imageExtractionRequest, imageExtractionText } from "@/lib/studio/image-input";
 export const runtime = "nodejs";
-export const maxDuration = 30;
+export const maxDuration = 65;
 export async function POST(request) {
   const json = (data, status = 200) =>
     Response.json(data, { status, headers: { "Cache-Control": "no-store" } });
@@ -50,9 +52,26 @@ export async function POST(request) {
       } finally {
         await pdf.loadingTask.destroy();
       }
+    } else if (["png", "jpg", "jpeg", "webp"].includes(ext)) {
+      try { imageMime(buffer, ext); } catch (error) {
+        return json({ error: error.message }, 422);
+      }
+      if (!process.env.OPENAI_API_KEY)
+        return json({ error: "Image reading is unavailable. Paste a description or upload a text document instead." }, 503);
+      if (!checkAndConsume(getClientIp(request), { namespace: "studio-image", limit: 20 }).allowed ||
+          !checkAndConsume("all", { namespace: "studio-image-global", limit: 100 }).allowed)
+        return json({ error: "The image-reading limit has been reached. Paste notes or use a text document instead." }, 429);
+      try {
+        const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, timeout: 55000, maxRetries: 0 });
+        const result = await client.responses.create(imageExtractionRequest(buffer, ext,
+          process.env.STUDIO_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-4.1"), { signal: request.signal });
+        text = imageExtractionText(result);
+      } catch {
+        return json({ error: "Could not finish reading this image. Try a clearer image or paste its contents. No project content was changed." }, 502);
+      }
     } else
       return json(
-        { error: "Choose PDF, DOCX, TXT, Markdown, CSV or JSON." },
+        { error: "Choose PDF, DOCX, TXT, Markdown, CSV, JSON, PNG, JPEG or WebP." },
         400,
       );
     if (text.trim().length < 20)
@@ -71,7 +90,7 @@ export async function POST(request) {
         },
         413,
       );
-    return json({ text: text.trim(), name: file.name.slice(0, 150) });
+    return json({ text: text.trim(), name: file.name.slice(0, 150), image: ["png", "jpg", "jpeg", "webp"].includes(ext) });
   } catch {
     return json(
       {
