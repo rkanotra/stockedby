@@ -53,4 +53,6 @@ Run `npm run lint` and `npm run build` before deploying. An optional live smoke 
 - Created `StockedBy product team` with the owner as its sole member and a clearly labelled fictional Orbit pilot sample.
 - Edited the sample, saved version 2 to the team database, reloaded the page and verified that the name, document set and version persisted.
 - The first live AI request was safely rejected for an unsupported edit or evidence reference. Generation now constrains target and evidence IDs to the supplied revision using Structured Outputs enums, while retaining server-side validation. This follows [OpenAI's supported JSON Schema constraints](https://developers.openai.com/api/docs/guides/structured-outputs).
+- After deployment of `9e9fdc9`, the same production request succeeded: six proposed edits across a requirement, acceptance criterion, user story and test, with source evidence and three risks. The saved proposal survived a page reload, remained pending and the author's approval control was disabled. No original text was applied automatically.
+- Validation for the reference fix: 172 tests passed, lint and production build passed, and both the fictional-content model smoke check and authenticated production review succeeded.
 - Automated tests cover independent approval and atomic application. This is not a claim of a completed two-person production review.
