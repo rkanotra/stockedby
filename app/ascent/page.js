@@ -9,8 +9,8 @@ export const metadata = {
     description: "Private executive practice.",
   },
 };
-export default function AscentPage() {
+export default async function AscentPage({ searchParams }) {
   // The authenticated API can renew cookies; a Server Component cannot.
   // No account information or saved content is included in this public shell.
-  return <AscentEntry />;
+  return <AscentEntry authError={(await searchParams).authError === "1"} />;
 }

@@ -2,8 +2,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Icon from "../studio/Icon";
+import Programme from "./Programme";
 import {
   SCENARIOS,
+  STORY_ASSIGNMENTS,
+  RECORDING_ASSIGNMENTS,
+  nextExercise,
+  completedExerciseKeys,
   INTERVIEWS,
   TOPICS,
   STORY_FORMATS,
@@ -17,6 +22,7 @@ import {
 import s from "./ascent.module.css";
 const NAV = [
   ["home", "Your studio", "layers"],
+  ["programme", "Practice programme", "flow"],
   ["scenario", "Executive scenarios", "brief"],
   ["story", "Storytelling", "stories"],
   ["recording", "Recording studio", "play"],
@@ -79,7 +85,7 @@ function Logo() {
     </div>
   );
 }
-export function AscentEntry() {
+export function AscentEntry({ authError = false }) {
   const [state, setState] = useState(null);
   useEffect(() => {
     let active = true;
@@ -88,14 +94,14 @@ export function AscentEntry() {
     return () => { active = false; };
   }, []);
   if (!state) return <main className={s.gate}><div><Logo /><p role="status">Opening your private studio…</p></div></main>;
-  if (state.error) return <AscentGate denied={state.error.status === 403} unavailable={![401, 403].includes(state.error.status)} />;
+  if (state.error) return <AscentGate authError={authError} denied={state.error.status === 403} unavailable={![401, 403].includes(state.error.status)} />;
   return <Ascent email={state.data.email || ""} initialData={state.data} />;
 }
-export function AscentGate({ denied = false, unavailable = false }) {
+export function AscentGate({ denied = false, unavailable = false, authError = false }) {
   const [email, setEmail] = useState(""),
     [busy, setBusy] = useState(false),
     [sent, setSent] = useState(false),
-    [error, setError] = useState("");
+    [error, setError] = useState(authError ? "This sign-in link could not be verified. Request a new link and open it in this browser." : "");
   return (
     <main className={s.gate}>
       <div>
@@ -122,14 +128,13 @@ export function AscentGate({ denied = false, unavailable = false }) {
           {unavailable
             ? "Your studio could not be reached. Please reload to try again. Your saved work is unchanged."
             : denied
-              ? "This signed-in account does not have access. Return to StockedBy to sign in with your authorised account."
+              ? "This signed-in account does not have access. Use your authorised email below to continue."
               : "Use your authorised email to receive a secure sign-in link."}
         </p>
-        {!denied &&
-          !unavailable &&
+        {!unavailable &&
           (sent ? (
             <div role="status" className={s.notice}>
-              Check your inbox. Open the newest link in this browser, then return to stockedby.com/ascent.{" "}
+              Check your inbox. Open the newest link in this browser to return to Ascent.{" "}
               <button className={s.textButton} onClick={() => setSent(false)}>
                 Use another email
               </button>
@@ -147,6 +152,7 @@ export function AscentGate({ denied = false, unavailable = false }) {
                     body: JSON.stringify({
                       action: "signin",
                       email,
+                      returnTo: "/ascent",
                     }),
                   });
                   const d = await r.json();
@@ -520,6 +526,8 @@ export default function Ascent({ email, initialData = null }) {
     [audience, setAudience] = useState("MD / board"),
     [topic, setTopic] = useState(TOPICS[0]),
     [formatId, setFormatId] = useState("recommendation"),
+    [storyAssignmentId, setStoryAssignmentId] = useState(STORY_ASSIGNMENTS[0].id),
+    [recordingAssignmentId, setRecordingAssignmentId] = useState(RECORDING_ASSIGNMENTS[0].id),
     [duration, setDuration] = useState(90),
     [answer, setAnswer] = useState(""),
     [parent, setParent] = useState(null),
@@ -631,6 +639,10 @@ export default function Ascent({ email, initialData = null }) {
       month: "long",
       day: "numeric",
     });
+  const recommended = nextExercise(data?.progress || []);
+  const coverage = completedExerciseKeys(data?.progress || []);
+  const storyAssignment = STORY_ASSIGNMENTS.find(x => x.id === storyAssignmentId);
+  const recordingAssignment = RECORDING_ASSIGNMENTS.find(x => x.id === recordingAssignmentId);
   const latest = done[0],
     chosen =
       view === "interview"
@@ -669,6 +681,14 @@ export default function Ascent({ email, initialData = null }) {
       setRoadmapDirty(false);
     }
   };
+  const startExercise = (exercise) => {
+    go(exercise.kind);
+    setAudience(exercise.audience || (exercise.role && ["CBO","COO","CFO","CIO","Head of Risk"].includes(exercise.role) ? exercise.role : "MD / board"));
+    if (exercise.kind === "scenario") setScenarioId(exercise.id);
+    if (exercise.kind === "interview") setInterviewId(exercise.id);
+    if (exercise.kind === "story") { setStoryAssignmentId(exercise.id); setFormatId(exercise.formatId); setTopic(exercise.title); }
+    if (exercise.kind === "recording") { setRecordingAssignmentId(exercise.id); setDuration(exercise.seconds); setTopic(exercise.title); setTalkingPoints(exercise.cue); }
+  };
   const changeAnswer = (value) => {
     setAnswer(value);
     requestId.current = null;
@@ -702,6 +722,7 @@ export default function Ascent({ email, initialData = null }) {
         audience,
         topic,
         formatId,
+        assignmentId: kind === "story" ? storyAssignmentId : null,
         targetSeconds: duration,
         parentId: parent?.id,
         relation,
@@ -727,6 +748,8 @@ export default function Ascent({ email, initialData = null }) {
     setView(item.kind);
     setAudience(item.audience);
     setTopic(item.context?.topic || TOPICS[0]);
+    setStoryAssignmentId(item.kind === "story" ? item.context?.assignmentId || "" : storyAssignmentId);
+    setRecordingAssignmentId(item.kind === "recording" ? item.context?.assignmentId || "" : recordingAssignmentId);
     setDuration(item.target_seconds);
     setReplyMode(item.context?.replyMode || "email");
     if (item.kind === "scenario")
@@ -793,6 +816,7 @@ export default function Ascent({ email, initialData = null }) {
         bytes: file.size,
         sha256,
         title: topic,
+        assignmentId: recordingAssignmentId,
         topic,
         audience,
         targetSeconds: duration,
@@ -1035,32 +1059,12 @@ export default function Ascent({ email, initialData = null }) {
                   </div>
                   <section className={s.hero}>
                     <div>
-                      <span className={s.kicker}>
-                        YOUR NEXT PRACTICE · 5 MINUTES
-                      </span>
-                      <h2>
-                        A date before
-                        <br />
-                        the facts.
-                      </h2>
-                      <p>
-                        “Give me the release date now.”
-                        <br />
-                        How do you give the CBO certainty without making a
-                        promise you can’t keep?
-                      </p>
-                      <button
-                        className={s.primary}
-                        onClick={() => {
-                          setScenarioId("deadline");
-                          navigate("scenario");
-                        }}
-                      >
-                        Step into the conversation{" "}
-                        <Icon name="arrow" size={17} />
-                      </button>
+                      <span className={s.kicker}>YOUR NEXT PRACTICE · {recommended.minutes} MINUTES</span>
+                      <h2>{recommended.title}</h2>
+                      <p>{MODES[recommended.kind]} · {recommended.level}<br />{recommended.cue}</p>
+                      <button className={s.primary} onClick={() => startExercise(recommended)}>Start next practice <Icon name="arrow" size={17} /></button>
                       <small>
-                        Write your real response. Get specific AI coaching.
+                        {recommended.kind === "recording" ? "Record your response. Get specific AI coaching." : "Write your real response. Get specific AI coaching."}
                       </small>
                     </div>
                     <div className={s.heroArt}>
@@ -1079,6 +1083,7 @@ export default function Ascent({ email, initialData = null }) {
                       </div>
                     </div>
                   </section>
+                  <div className={s.programmeBanner}><div><strong>200 exercises. A programme you can grow into.</strong><p>50 scenarios · 50 stories · 50 recording assignments · 50 interview questions. {coverage.size} {coverage.size === 1 ? "exercise" : "exercises"} reviewed.</p></div><button className={s.secondary} onClick={() => navigate("programme")}>Explore the programme <Icon name="arrow" size={16} /></button></div>
                   <div className={s.stats}>
                     <article>
                       <span>Completed practices</span>
@@ -1215,6 +1220,7 @@ export default function Ascent({ email, initialData = null }) {
                   </div>
                 </>
               )}
+              {view === "programme" && <Programme progress={data.progress} onStart={startExercise} />}
               {["scenario", "story", "interview"].includes(view) && (
                 <>
                   <div className={s.pageHeading}>
@@ -1240,6 +1246,7 @@ export default function Ascent({ email, initialData = null }) {
                       </p>
                     </div>
                   </div>
+                  <div className={s.programmeToolbar}><span>50 exercises · Foundation to boardroom</span><button className={s.textButton} onClick={() => navigate("programme")}>Browse all exercises →</button></div>
                   <div className={s.practiceGrid}>
                     <section className={s.exercise}>
                       <span className={s.kicker}>
@@ -1254,6 +1261,7 @@ export default function Ascent({ email, initialData = null }) {
                       {!parent &&
                         (view === "story" ? (
                           <>
+                            <label>Story assignment<select value={storyAssignmentId} onChange={e => { const x = STORY_ASSIGNMENTS.find(x => x.id === e.target.value); setStoryAssignmentId(e.target.value); if (x) {setFormatId(x.formatId);setTopic(x.title);setAudience(x.audience);} }}><option value="">My own topic</option>{STORY_ASSIGNMENTS.map(x => <option key={x.id} value={x.id}>{x.title} · {x.level}</option>)}</select></label>
                             <label>
                               Format
                               <select
@@ -1267,7 +1275,7 @@ export default function Ascent({ email, initialData = null }) {
                                 ))}
                               </select>
                             </label>
-                            <label>
+                            {!storyAssignment && <label>
                               Topic
                               <input
                                 list="ascent-topics"
@@ -1275,7 +1283,7 @@ export default function Ascent({ email, initialData = null }) {
                                 onChange={(e) => setTopic(e.target.value)}
                                 maxLength={120}
                               />
-                            </label>
+                            </label>}
                             <datalist id="ascent-topics">
                               {TOPICS.map((t) => (
                                 <option key={t} value={t} />
@@ -1314,7 +1322,7 @@ export default function Ascent({ email, initialData = null }) {
                           {parent
                             ? parent.title
                             : view === "story"
-                              ? topic
+                              ? storyAssignment?.title || topic
                               : chosen?.title}
                         </h2>
                         <p>
@@ -1323,7 +1331,7 @@ export default function Ascent({ email, initialData = null }) {
                               ? parent.review.followUpChallenge
                               : parent.prompt
                             : view === "story"
-                              ? "Move from the business problem to the decision that matters. Use only real outcomes. If the result is unknown, name the measurement plan."
+                              ? storyAssignment?.prompt || "Move from the business problem to the decision that matters. Use only real outcomes. If the result is unknown, name the measurement plan."
                               : chosen?.prompt}
                         </p>
                       </div>
@@ -1460,9 +1468,12 @@ export default function Ascent({ email, initialData = null }) {
                     </div>
                     <span className={s.pill}>iPhone Camera & Voice Memos</span>
                   </div>
+                  <div className={s.programmeToolbar}><span>50 recording assignments · Practise one clear idea</span><button className={s.textButton} onClick={() => navigate("programme")}>Browse all exercises →</button></div>
                   <div className={s.recordGrid}>
                     <section className={s.exercise}>
-                      <label>
+                      {!parent && <label>Recording assignment<select value={recordingAssignmentId} onChange={e => { const x = RECORDING_ASSIGNMENTS.find(x => x.id === e.target.value); setRecordingAssignmentId(e.target.value); if(x){setTopic(x.title);setAudience(x.audience);setDuration(x.seconds);setTalkingPoints(x.cue);} }}><option value="">My own topic</option>{RECORDING_ASSIGNMENTS.map(x => <option key={x.id} value={x.id}>{x.title} · {x.level}</option>)}</select></label>}
+                      {(parent || recordingAssignment) && <div className={s.scenarioPrompt}><span>{recordingAssignment?.domain || "YOUR ASSIGNMENT"}</span><h2>{parent?.title || recordingAssignment?.title}</h2><p>{parent?.prompt || recordingAssignment?.prompt}</p></div>}
+                      {!parent && !recordingAssignment && <label>
                         Assignment / topic
                         <input
                           list="ascent-record-topics"
@@ -1470,7 +1481,7 @@ export default function Ascent({ email, initialData = null }) {
                           onChange={(e) => setTopic(e.target.value)}
                           maxLength={120}
                         />
-                      </label>
+                      </label>}
                       <datalist id="ascent-record-topics">
                         {TOPICS.map((t) => (
                           <option key={t} value={t} />

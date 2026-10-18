@@ -2181,3 +2181,29 @@
     color: #dbe7f9;
   }
 }
+
+.programmeBanner, .programmeIntro { display:flex; gap:20px; align-items:center; padding:24px; margin:24px 0; border:1px solid var(--line); border-radius:14px; background:#fff; }
+.programmeBanner { justify-content:space-between; }
+.programmeBanner strong, .programmeIntro strong { font-size:16px; color:#24334b; }
+.programmeBanner p, .programmeIntro p { font-size:14px; line-height:1.7; color:#596b83; margin:8px 0 0; }
+.programmeIntro svg { flex-shrink:0; color:#496cb5; }
+.programmeModes { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:24px 0; }
+.programmeModes button { text-align:left; padding:22px; border:1px solid var(--line); border-radius:12px; background:#fff; color:#26364d; cursor:pointer; }
+.programmeModes button[aria-pressed="true"] { border-color:#456bc6; background:#edf3ff; box-shadow:inset 0 0 0 1px #456bc6; }
+.programmeModes span { display:block; font-size:13px; }
+.programmeModes strong { display:block; font-size:30px; letter-spacing:-.03em; margin:10px 0; }
+.programmeModes small { font-size:16px; color:#6d7d93; font-weight:400; }
+.programmeFilters { display:grid; grid-template-columns:2fr 1.4fr 1fr 1.2fr; gap:12px; }
+.programmeFilters label { display:flex; flex-direction:column; gap:8px; font-size:13px; color:#4e6079; }
+.programmeFilters input, .programmeFilters select { width:100%; min-width:0; min-height:44px; background:#fff; border:1px solid var(--line); border-radius:8px; color:#24334b; padding:10px 12px; font:inherit; }
+.programmeCards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:16px 0 26px; }
+.programmeCards article { padding:26px; background:#fff; border:1px solid var(--line); border-radius:14px; display:flex; flex-direction:column; min-width:0; }
+.programmeMeta { display:flex; justify-content:space-between; gap:10px; font-size:12px; color:#607490; }
+.programmeMeta span:last-child { color:#3e61a2; }
+.programmeCards h2 { font-size:22px; line-height:1.25; margin:18px 0 14px; letter-spacing:-.025em; }
+.programmeCards article > p { font-size:14px; color:#52647d; line-height:1.8; margin:15px 0 22px; }
+.programmeCards footer { margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.programmeCards footer small { font-size:12px; color:#657995; }
+.programmeToolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:0 0 20px; color:#61748e; font-size:13px; }
+@media (max-width:1100px) { .programmeFilters { grid-template-columns:repeat(2,minmax(0,1fr)); } .programmeModes { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:600px) { .programmeCards { grid-template-columns:1fr; } .programmeBanner { align-items:flex-start; flex-direction:column; } .programmeFilters { grid-template-columns:1fr; } .programmeModes button { padding:16px; } .programmeCards article { padding:21px; } .programmeCards footer { align-items:flex-start; flex-direction:column; } .programmeToolbar { align-items:flex-start; flex-direction:column; } }

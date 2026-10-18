@@ -30,7 +30,7 @@ export async function GET(request) {
       db
         .from("ascent_sessions")
         .select(
-          "id,kind,status,created_at,overall_score:review->overallScore,parent_id,relation,rubric_version",
+          "id,kind,status,created_at,overall_score:review->overallScore,parent_id,relation,rubric_version,context",
         )
         .order("created_at", { ascending: false })
         .limit(1000),

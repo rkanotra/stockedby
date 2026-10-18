@@ -8,9 +8,11 @@ ASCENT is a private section of the existing StockedBy Next.js 16.4 / React 19 ap
 
 The interface uses the installed apple-design skill's principles: restrained hierarchy, direct feedback, visible save states, keyboard focus, responsive navigation and reduced-motion support. This is an implementation and testing record, not an Apple certification or a claim of exhaustive usability testing.
 
+The practice programme contains 50 executive scenarios, 50 storytelling assignments, 50 recording assignments and 50 CDO interview questions: 200 exercises across ten capabilities and four levels. Filters cover module, capability, level and review status. Recommended practice advances through unreviewed exercises. Original scenario/interview IDs remain valid, and coverage counts unique ready exercises rather than repeat attempts or custom topics. Writing and recording assignments share business contexts with distinct tasks.
+
 ## Services and configuration
 
-Reuses the existing StockedBy Supabase project and email-link sign-in, server-side OpenAI key, Vercel deployment and CSS modules. No separate app, hosting subscription or service-role key is required. All private API requests verify the authenticated user and enabled ASCENT membership server-side; database and storage policies isolate each user's data.
+Reuses the existing StockedBy Supabase project and email-link sign-in, server-side OpenAI key, Vercel deployment and CSS modules. No separate app, hosting subscription or service-role key is required. All private API requests require the verified email `rahulkanotra1101@gmail.com` and enabled ASCENT membership server-side. Database and private storage policies enforce the same owner-only condition through `ascent_allowed()`. Other StockedBy accounts retain team access but cannot access ASCENT. The Ascent sign-in form rejects other addresses before sending a link; existing verified owner sessions can continue without signing in again.
 
 Required environment variables are already configured in production:
 
@@ -20,13 +22,16 @@ Required environment variables are already configured in production:
 
 Optional overrides: `ASCENT_OPENAI_MODEL` (default `gpt-5.4-mini`) and `ASCENT_TRANSCRIPTION_MODEL` (default `gpt-transcribe`). Keys stay server-side. ASCENT is excluded from analytics and indexing. The public page shell contains no saved practice or account information.
 
-Sign-in currently uses StockedBy's existing callback into `/workspace`. After opening the email link, return to `/ascent`. The existing production login destination was not changed. Session renewal runs through authenticated route handlers so refreshed cookies can be saved correctly.
+Ascent email sign-in returns to `/ascent`; team sign-in continues to `/workspace`. Both reuse the existing Supabase callback URL. A one-hour, HttpOnly, SameSite=Lax navigation cookie records the fixed Ascent destination and is consumed on callback; a subsequent successful team sign-in request or sign-out clears it. Only the exact `/ascent` value is accepted, never arbitrary redirect URLs. Open the newest email link in the same browser used to request it (the existing PKCE flow). Invalid links return to the originating section with a retry message. Session renewal runs through authenticated route handlers so refreshed cookies can be saved correctly.
 
 ## Main source files
 
 - `app/ascent/page.js` — public loading shell, then private authenticated entry.
 - `components/ascent/Ascent.js` and `ascent.module.css` — studio interfaces.
 - `app/api/ascent/` — authenticated library, review, upload, processing and session endpoints.
+- `components/ascent/Programme.js`, `lib/ascent/curriculum.js` — searchable extended practice programme.
+- `supabase/migrations/202610180001_ascent_owner_only.sql` — verified owner-only database/storage restriction; applied successfully.
+- `lib/ascent/access.js`, `lib/auth/teamReturn.js` — exact account restriction and fixed login destination.
 - `lib/ascent/catalog.js`, `schema.js`, `ai.js` — training content, validation and coaching contract.
 - `lib/ascent/media.js`, `processing.js`, `database.js`, `server.js` — media processing, job leases and access checks.
 - `supabase/migrations/202610170002_ascent.sql` — new ASCENT-only tables, row-level policies, bounded commands and private storage bucket. Applied successfully; existing team projects remain intact.
@@ -61,7 +66,9 @@ Export important reports and retain original recordings separately. This release
 
 ## Verification record
 
-- Full automated suite: 198 passing tests; ESLint and production build pass.
+- Full automated suite: 207 passing tests; ESLint and production build pass.
+- Programme checks cover all 200 exercise IDs, legacy progress, unique coverage, canonical server-side assignment prompts and revision context. Browser checks verify module/level filters, assignment launch and a 390px layout with no horizontal overflow.
+- Redirect checks cover Ascent, default team and malicious destination hints; invalid callbacks clear the hint. A fresh successful email-link callback has not been manually clicked for this release.
 - Database tests use a local PostgreSQL-compatible test instance: unauthorised access, cross-user isolation, forbidden direct writes, private storage paths, duplicate claims, stale leases, quotas, settings conflicts and deletion.
 - Real production CBO review: completed, with five scored dimensions, a rewrite and a relevant follow-up; saved response survived reload; exported report downloaded successfully. The first attempt failed validation/processing; after tightening the response schema, retry completed. The initial error did not record enough detail to establish its precise cause, so safe diagnostic categories were added.
 - Real audio smoke test: synthetic 16.72-second M4A, real FFmpeg extraction, `gpt-transcribe` transcription and `gpt-5.4-mini` coaching completed. Storage/database were mocked for this particular test; it is not proof of production upload or iPhone playback.

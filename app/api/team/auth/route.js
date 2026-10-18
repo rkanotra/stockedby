@@ -1,5 +1,8 @@
 import { teamClient, teamConfigured, json, failure, readBody } from "@/lib/team/server";
 import { checkAndConsume, getClientIp } from "@/lib/rateLimit";
+import { cookies } from "next/headers";
+import { TEAM_RETURN_COOKIE, TEAM_RETURN_COOKIE_OPTIONS } from "@/lib/auth/teamReturn";
+import { isAscentOwnerEmail } from "@/lib/ascent/access";
 export async function GET() {
   if (!teamConfigured()) return json({ configured: false, user: null });
   try {
@@ -11,12 +14,19 @@ export async function GET() {
 export async function POST(request) {
   try {
     const body = await readBody(request, 5000), db = await teamClient();
-    if (body.action === "signout") { const { error } = await db.auth.signOut(); if (error) throw error; return json({ ok: true }); }
+    if (body.action === "signout") { const { error } = await db.auth.signOut(); if (error) throw error; (await cookies()).delete(TEAM_RETURN_COOKIE); return json({ ok: true }); }
     if (!checkAndConsume(getClientIp(request), { namespace: "team-login", limit: 10 }).allowed) return json({ error: "Too many sign-in requests. Please try again later." }, 429);
     if (body.action !== "signin" || typeof body.email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email) || body.email.length > 254) throw Error("Enter a valid work email.");
+    if (body.returnTo === "/ascent" && !isAscentOwnerEmail(body.email))
+      return json({ error: "Ascent is private. Sign-in is available only to its authorised owner." }, 403);
     const origin = new URL(request.headers.get("origin")).origin;
     const { error } = await db.auth.signInWithOtp({ email: body.email.trim().toLowerCase(), options: { emailRedirectTo: `${origin}/api/team/auth/callback` } });
     if (error) throw Error("Could not send the sign-in link. Please try again shortly; your workspace owner may need to configure email delivery.");
+    const jar = await cookies();
+    // Keep the existing Supabase callback URL. Only the latest successful
+    // sign-in request controls the destination in this browser's PKCE flow.
+    if (body.returnTo === "/ascent") jar.set(TEAM_RETURN_COOKIE, "/ascent", TEAM_RETURN_COOKIE_OPTIONS);
+    else jar.delete(TEAM_RETURN_COOKIE);
     return json({ ok: true });
   } catch (error) { return failure(error); }
 }
