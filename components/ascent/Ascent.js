@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Icon from "../studio/Icon";
 import Programme from "./Programme";
+import { studioLocation, studioHash } from "@/lib/ascent/navigation";
 import {
   SCENARIOS,
   STORY_ASSIGNMENTS,
@@ -515,6 +516,7 @@ function MediaPlayer({ item, url, onRefresh, onNote, notesBusy }) {
 export default function Ascent({ email, initialData = null }) {
   const [view, setView] = useState("home"),
     [data, setData] = useState(initialData),
+    [restored, setRestored] = useState(false),
     [error, setError] = useState(""),
     [notice, setNotice] = useState(""),
     [busy, setBusy] = useState(false),
@@ -566,7 +568,7 @@ export default function Ascent({ email, initialData = null }) {
   useEffect(() => {
     let active = true;
     (initialData ? Promise.resolve(initialData) : api())
-      .then((d) => {
+      .then(async (d) => {
         if (active) setData(d);
         if (active && !initialised.current) {
           initialised.current = true;
@@ -579,9 +581,23 @@ export default function Ascent({ email, initialData = null }) {
             setReflection(today.reflection);
           }
         }
+        const location = studioLocation(window.location.hash);
+        if (location.id) {
+          try {
+            const saved = await api(`/sessions/${location.id}`);
+            if (active) {
+              setSelected(saved.session);
+              setMediaUrl(saved.mediaUrl);
+              setView("session");
+            }
+          } catch (e) {
+            if (active) { setView("history"); setError(e.message); }
+          }
+        } else if (active) setView(location.view);
+        if (active) setRestored(true);
       })
       .catch((e) => {
-        if (active) setError(e.message);
+        if (active) { setError(e.message); setRestored(true); }
       });
     return () => {
       active = false;
@@ -589,6 +605,11 @@ export default function Ascent({ email, initialData = null }) {
   }, [load, initialData]);
   const selectedId = selected?.id,
     selectedStatus = selected?.status;
+  useEffect(() => {
+    if (!restored) return;
+    const hash = studioHash(view, selectedId);
+    window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}${hash}`);
+  }, [restored, view, selectedId]);
   useEffect(() => {
     if (!selectedId || !ACTIVE.includes(selectedStatus)) return;
     let active = true;
@@ -661,6 +682,7 @@ export default function Ascent({ email, initialData = null }) {
   };
   const go = (target) => {
     setView(target);
+    if (["home", "history", "programme"].includes(target)) load().catch(e => setError(e.message));
     setSelected(null);
     setParent(null);
     setRelation(null);
@@ -729,6 +751,7 @@ export default function Ascent({ email, initialData = null }) {
       });
       setSelected(result.session);
       setView("session");
+      setNotice("");
       setAnswer("");
       requestId.current = null;
       setParent(null);
@@ -1021,7 +1044,7 @@ export default function Ascent({ email, initialData = null }) {
               {notice}
             </div>
           )}
-          {!data ? (
+          {!data || !restored ? (
             <div className={s.loading}>
               <span className={s.spinner} />
               <h2>Opening your private studio…</h2>
@@ -1677,6 +1700,9 @@ export default function Ascent({ email, initialData = null }) {
                       </p>
                     </div>
                     <div className={s.actions}>
+                      <button className={s.secondary} disabled={busy} onClick={() => openSession(selected)}>
+                        {busy ? "Refreshing…" : "Refresh status"}
+                      </button>
                       <button
                         className={s.secondary}
                         onClick={() => exportReport(selected)}
@@ -1704,7 +1730,7 @@ export default function Ascent({ email, initialData = null }) {
                           {isStalled
                             ? "Processing was interrupted."
                             : selected.status === "failed"
-                              ? "This take needs another try."
+                              ? "Your answer is saved. The review needs another try."
                               : selected.status === "uploading"
                                 ? "Waiting for your upload."
                                 : selected.status === "deleting"
@@ -1716,7 +1742,9 @@ export default function Ascent({ email, initialData = null }) {
                                       : "Preparing your session."}
                         </h2>
                         <p>
-                          {selected.error ||
+                          {selected.error?.startsWith("Processing did not finish.")
+                            ? "The AI review did not finish. Your answer is saved online; you do not need to retype or shorten it."
+                            : selected.error ||
                             (isStalled
                               ? "The processing window ended. Retry to resume the saved session."
                               : "Your previous work is safe. Status updates appear here automatically.")}
@@ -1741,7 +1769,7 @@ export default function Ascent({ email, initialData = null }) {
                         {(selected.status === "failed" ||
                           selected.status === "queued" ||
                           isStalled ||
-                          selected.status === "uploading") && (
+                          selected.status === "uploading") && selected.attempts < 3 && (
                           <button
                             className={s.primary}
                             disabled={busy}
@@ -1751,9 +1779,10 @@ export default function Ascent({ email, initialData = null }) {
                               ? "Starting…"
                               : selected.status === "uploading"
                                 ? "Check completed upload"
-                                : "Retry processing"}
+                                : "Retry AI review"}
                           </button>
                         )}
+                        {selected.status === "failed" && selected.attempts >= 3 && <p>Three attempts did not finish. Your answer is still saved. Export it for safekeeping, or use “Edit saved answer” below to start a new review.</p>}
                         {selected.status === "deleting" && (
                           <button
                             className={s.secondary}
@@ -1809,10 +1838,10 @@ export default function Ascent({ email, initialData = null }) {
                         )}
                         <button
                           className={s.textButton}
-                          disabled={selected.status !== "ready"}
+                          disabled={!['ready', 'failed'].includes(selected.status)}
                           onClick={() => revise(selected)}
                         >
-                          Rewrite my original answer{" "}
+                          {selected.status === "failed" ? "Edit saved answer" : "Rewrite my original answer"}{" "}
                           <Icon name="edit" size={15} />
                         </button>
                       </section>

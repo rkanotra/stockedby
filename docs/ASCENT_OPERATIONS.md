@@ -50,7 +50,7 @@ Ascent email sign-in returns to `/ascent`; team sign-in continues to `/workspace
 ## Limits and honest assessment boundaries
 
 - Maximum 50 MB and three minutes per recording; MOV, MP4, M4A, WAV, MP3 and WebM accepted subject to real file validation and decodable audio.
-- 500 MB per user, 1,000 sessions, 30 review attempts and 10 media processing attempts per UTC day. Up to three processing attempts per session; retries count toward daily limits.
+- 500 MB per user, 1,000 sessions, 30 review attempts and 10 media processing attempts per UTC day. Up to three processing attempts per session; retries count toward daily limits. Each attempt permits at most one automatic format repair (two model calls total), with cumulative token usage saved on success. Provider errors and incomplete responses are not automatically retried.
 - Direct uploads go to a private bucket, avoiding Vercel's request-body limit. Playback links expire after five minutes.
 - Vercel `after()` continues processing after the request, with a five-minute function/job lease. This is not a separate durable worker service: stalled jobs require a user retry after the lease expires.
 - FFmpeg extracts audio; OpenAI transcribes it; the coaching model reviews the transcript. Duration and approximate words/minute are measured from extracted audio duration and transcript length. Fillers may be omitted by transcription.
@@ -66,7 +66,7 @@ Export important reports and retain original recordings separately. This release
 
 ## Verification record
 
-- Full automated suite: 207 passing tests; ESLint and production build pass.
+- Full automated suite: 213 passing tests; ESLint and production build pass.
 - Programme checks cover all 200 exercise IDs, legacy progress, unique coverage, canonical server-side assignment prompts and revision context. Browser checks verify module/level filters, assignment launch and a 390px layout with no horizontal overflow.
 - Redirect checks cover Ascent, default team and malicious destination hints; invalid callbacks clear the hint. A fresh successful email-link callback has not been manually clicked for this release.
 - Database tests use a local PostgreSQL-compatible test instance: unauthorised access, cross-user isolation, forbidden direct writes, private storage paths, duplicate claims, stale leases, quotas, settings conflicts and deletion.
@@ -80,3 +80,13 @@ Export important reports and retain original recordings separately. This release
 ### Still requires device acceptance
 
 Actual iPhone Safari MOV/M4A selection, direct production upload, production FFmpeg execution, playback on a second device, and reconnect during upload have **not** been verified end to end. Chrome's automation file upload was blocked by its extension file-access setting; no recording was represented as uploaded when it was not. Use the first-recording guide above for this final acceptance check. Story/interview modes share the tested review engine and have automated prompt-contract coverage, but were not each given an additional paid live review.
+
+## 18 October — saved review recovery
+
+Production logs showed repeated `Review response could not be validated` failures for scenario reviews, including a follow-up and its retry. This confirms review validation failed after the response was saved; the old diagnostics did not identify the specific field. The AI schema previously allowed empty essential strings and unlimited strings/arrays, while local validation rejected them; an empty supplementary coaching note also incorrectly failed the entire report.
+
+The schema now matches the validator's length/count bounds, requires essential text, accepts an empty optional coaching note and allows one bounded format repair. Safe diagnostics identify the failed response field without logging private content. Failure copy no longer advises shortening an already short answer. Failed written responses can be edited into a new review while preserving the original question and recovery reference. No database migration is required.
+
+Saved sessions now have an opaque URL fragment and are loaded from the authenticated API on refresh. Library views also survive refresh. Refresh status explicitly reloads the current saved session; entering the library/programme/dashboard refreshes their data. Unsaved text remains a draft with the existing leave-page warning; this release does not claim draft autosave.
+
+Regression coverage includes empty optional notes through the processing pipeline, missing essential fields with bounded repair and cumulative usage, failed follow-up recovery, and valid/invalid session navigation.
