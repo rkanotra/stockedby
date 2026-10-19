@@ -104,7 +104,9 @@ export function AscentGate({ denied = false, unavailable = false, authError = fa
   const [email, setEmail] = useState(""),
     [busy, setBusy] = useState(false),
     [password, setPassword] = useState(""),
-    [error, setError] = useState(authError ? "This sign-in link could not be verified. Sign in with your email and password below." : "");
+    [recover, setRecover] = useState(false),
+    [sent, setSent] = useState(false),
+    [error, setError] = useState(authError ? "This link could not be verified. Sign in with your password, or request a new setup link and open it in this same browser." : "");
   return (
     <main className={s.gate}>
       <div>
@@ -125,10 +127,12 @@ export function AscentGate({ denied = false, unavailable = false, authError = fa
       <section>
         <Icon name="shield" size={30} />
         <h2>
-          {denied ? "This studio is private." : "Welcome to your studio."}
+          {recover ? "Set or reset your password." : denied ? "This studio is private." : "Welcome to your studio."}
         </h2>
         <p>
-          {unavailable
+          {recover
+            ? "Verify your authorised email once to choose a password. Your existing sessions and saved work stay with your account."
+            : unavailable
             ? "Your studio could not be reached. Please reload to try again. Your saved work is unchanged."
             : denied
               ? "This signed-in account does not have access. Use your authorised email below to continue."
@@ -141,17 +145,15 @@ export function AscentGate({ denied = false, unavailable = false, authError = fa
                 setBusy(true);
                 setError("");
                 try {
-                  const r = await fetch("/api/ascent/auth", {
+                  const r = await fetch(recover ? "/api/team/auth" : "/api/ascent/auth", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      email,
-                      password,
-                    }),
+                    body: JSON.stringify(recover ? { action: "signin", email, returnTo: "/ascent#view=account" } : { email, password }),
                   });
                   const d = await r.json();
                   if (!r.ok) throw Error(d.error);
-                  window.location.reload();
+                  if (recover) { setSent(true); setPassword(""); }
+                  else window.location.reload();
                 } catch (e) {
                   setError(e.message);
                 } finally {
@@ -170,15 +172,17 @@ export function AscentGate({ denied = false, unavailable = false, authError = fa
                   placeholder="you@example.com"
                 />
               </label>
-              <label>
+              {!recover && <label>
                 Password
                 <input type="password" autoComplete="current-password" required maxLength={128} value={password} onChange={e => setPassword(e.target.value)} />
-              </label>
+              </label>}
               <button className={s.primary} disabled={busy}>
-                {busy ? "Signing in…" : "Sign in"}{" "}
+                {busy ? (recover ? "Sending…" : "Signing in…") : recover ? (sent ? "Send another setup link" : "Email me a setup link") : "Sign in"}{" "}
                 <Icon name="arrow" size={17} />
               </button>
-              <p className={s.fine}>First time using a password? Open Account &amp; sign-in in a browser where you are already signed in to set it once.</p>
+              {recover && <p className={s.fine}>Open the newest email link in this same browser, then choose your password. Future sign-ins use your password.</p>}
+              {sent && recover && <p role="status" className={s.notice}>Setup link requested. Check your authorised inbox and spam folder. Open the newest link in this browser to reach Account &amp; sign-in.</p>}
+              <button type="button" className={s.textButton} disabled={busy} onClick={()=>{setRecover(!recover);setError("");setSent(false);setPassword("");}}>{recover ? "Back to password sign-in" : "Set or reset password"}</button>
             </form>
           )}
         {error && (

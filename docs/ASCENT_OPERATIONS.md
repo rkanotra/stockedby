@@ -100,3 +100,9 @@ Ascent now uses email/password sign-in through `/api/ascent/auth`, retaining the
 The signed-in **Account & sign-in** view lets the owner set a password with matching confirmation, then use it from another browser without an email link. Supabase enforces its configured policy; the form requires at least six characters, so the requested five-character password cannot be used. Setting a credential requires the user to enter and submit it personally in the browser. Successful real password sign-in remains pending that one-time setup. No database migration or new environment variable is needed.
 
 Password requests require same-origin checks and bounded request bodies. App-level throttling is per-process (resets on cold starts), supplemented by Supabase Auth's provider limits. Neither passwords nor auth tokens are returned in endpoint JSON or logged. Regression tests cover verified-owner sign-in, rejected alternate emails, invalid credentials, disabled/unverified accounts, provider throttling, and password confirmation.
+
+### Password setup recovery
+
+The signed-out gate now offers **Set or reset password**, using the existing email verification flow with account creation disabled for Ascent. Successful verification returns to the fixed `/ascent#view=account` destination; failed callbacks return to the sign-in gate with recovery instructions. Owner and enabled membership checks remain in force for password updates and private data. The emailed link must open in the same browser that requested it (PKCE).
+
+All 219 tests, ESLint and production build pass. Chrome's existing owner session was verified to reach the actual account form; Codex's separate browser was signed out. Actual password saving and subsequent password login still require user completion and have not been verified. No recovery email was sent during this change.
