@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Icon from "../studio/Icon";
 import Programme from "./Programme";
+import Account from "./Account";
 import { studioLocation, studioHash } from "@/lib/ascent/navigation";
 import {
   SCENARIOS,
@@ -31,6 +32,7 @@ const NAV = [
   ["reflection", "Daily discipline", "check"],
   ["roadmap", "Your roadmap", "flow"],
   ["history", "Private library", "folder"],
+  ["account", "Account & sign-in", "shield"],
 ];
 const ACTIVE = ["queued", "processing", "transcribing", "reviewing"];
 const stamp = (n) =>
@@ -101,8 +103,8 @@ export function AscentEntry({ authError = false }) {
 export function AscentGate({ denied = false, unavailable = false, authError = false }) {
   const [email, setEmail] = useState(""),
     [busy, setBusy] = useState(false),
-    [sent, setSent] = useState(false),
-    [error, setError] = useState(authError ? "This sign-in link could not be verified. Request a new link and open it in this browser." : "");
+    [password, setPassword] = useState(""),
+    [error, setError] = useState(authError ? "This sign-in link could not be verified. Sign in with your email and password below." : "");
   return (
     <main className={s.gate}>
       <div>
@@ -130,35 +132,26 @@ export function AscentGate({ denied = false, unavailable = false, authError = fa
             ? "Your studio could not be reached. Please reload to try again. Your saved work is unchanged."
             : denied
               ? "This signed-in account does not have access. Use your authorised email below to continue."
-              : "Use your authorised email to receive a secure sign-in link."}
+              : "Sign in with your authorised email and password. No email link needed."}
         </p>
-        {!unavailable &&
-          (sent ? (
-            <div role="status" className={s.notice}>
-              Check your inbox. Open the newest link in this browser to return to Ascent.{" "}
-              <button className={s.textButton} onClick={() => setSent(false)}>
-                Use another email
-              </button>
-            </div>
-          ) : (
+        {!unavailable && (
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
                 setBusy(true);
                 setError("");
                 try {
-                  const r = await fetch("/api/team/auth", {
+                  const r = await fetch("/api/ascent/auth", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                      action: "signin",
                       email,
-                      returnTo: "/ascent",
+                      password,
                     }),
                   });
                   const d = await r.json();
                   if (!r.ok) throw Error(d.error);
-                  setSent(true);
+                  window.location.reload();
                 } catch (e) {
                   setError(e.message);
                 } finally {
@@ -177,12 +170,17 @@ export function AscentGate({ denied = false, unavailable = false, authError = fa
                   placeholder="you@example.com"
                 />
               </label>
+              <label>
+                Password
+                <input type="password" autoComplete="current-password" required maxLength={128} value={password} onChange={e => setPassword(e.target.value)} />
+              </label>
               <button className={s.primary} disabled={busy}>
-                {busy ? "Sending link…" : "Continue with email"}{" "}
+                {busy ? "Signing in…" : "Sign in"}{" "}
                 <Icon name="arrow" size={17} />
               </button>
+              <p className={s.fine}>First time using a password? Open Account &amp; sign-in in a browser where you are already signed in to set it once.</p>
             </form>
-          ))}
+          )}
         {error && (
           <p role="alert" className={s.error}>
             {error}
@@ -1059,6 +1057,7 @@ export default function Ascent({ email, initialData = null }) {
             </div>
           ) : (
             <>
+              {view === "account" && <Account email={email} />}
               {view === "home" && (
                 <>
                   <div className={s.pageHeading}>

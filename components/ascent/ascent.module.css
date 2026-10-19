@@ -2207,3 +2207,14 @@
 .programmeToolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:0 0 20px; color:#61748e; font-size:13px; }
 @media (max-width:1100px) { .programmeFilters { grid-template-columns:repeat(2,minmax(0,1fr)); } .programmeModes { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (max-width:600px) { .programmeCards { grid-template-columns:1fr; } .programmeBanner { align-items:flex-start; flex-direction:column; } .programmeFilters { grid-template-columns:1fr; } .programmeModes button { padding:16px; } .programmeCards article { padding:21px; } .programmeCards footer { align-items:flex-start; flex-direction:column; } .programmeToolbar { align-items:flex-start; flex-direction:column; } }
+
+.accountPanel { max-width: 620px; padding: 32px; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
+.accountPanel h2 { margin-top: 0; }
+.accountPanel form { display: grid; gap: 18px; margin-top: 28px; }
+.accountPanel label { display: grid; gap: 8px; font-size: 14px; font-weight: 600; }
+.accountPanel label small { font-weight: 400; color: #64748b; }
+.accountPanel input { width: 100%; min-width: 0; padding: 13px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font: inherit; }
+.accountPanel input:focus { outline: 2px solid #315fca; outline-offset: 2px; }
+.accountPanel .fine { margin: 0; }
+.accountFooter { border-top: 1px solid var(--line); margin-top: 32px; padding-top: 20px; font-size: 13px; color: #64748b; }
+@media(max-width:600px) { .accountPanel { padding: 22px; } }

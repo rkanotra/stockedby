@@ -66,7 +66,7 @@ Export important reports and retain original recordings separately. This release
 
 ## Verification record
 
-- Full automated suite: 213 passing tests; ESLint and production build pass.
+- Full automated suite: 218 passing tests; ESLint and production build pass.
 - Programme checks cover all 200 exercise IDs, legacy progress, unique coverage, canonical server-side assignment prompts and revision context. Browser checks verify module/level filters, assignment launch and a 390px layout with no horizontal overflow.
 - Redirect checks cover Ascent, default team and malicious destination hints; invalid callbacks clear the hint. A fresh successful email-link callback has not been manually clicked for this release.
 - Database tests use a local PostgreSQL-compatible test instance: unauthorised access, cross-user isolation, forbidden direct writes, private storage paths, duplicate claims, stale leases, quotas, settings conflicts and deletion.
@@ -92,3 +92,11 @@ Saved sessions now have an opaque URL fragment and are loaded from the authentic
 Regression coverage includes empty optional notes through the processing pipeline, missing essential fields with bounded repair and cumulative usage, failed follow-up recovery, and valid/invalid session navigation.
 
 Production acceptance for the recovery release (`ad54365`): the owner approved one retry of the saved failed follow-up, capped at US$0.10. The same session completed with a real AI report and the original answer intact. Its returned coaching note was empty and the substantive review remained valid. Refresh status, full page reload and opening the saved session link were checked in authenticated Chrome; no second AI submission was needed for those reads. All four existing sessions remained in the online library. Signed-out Ascent API returned 401; Ascent, Workspace and home returned 200. The paid test is estimated below US$0.05 from the bounded output allowance and model pricing, not an invoice measurement. No additional audio test was run.
+
+## 19 October — password sign-in
+
+Ascent now uses email/password sign-in through `/api/ascent/auth`, retaining the existing verified owner restriction, Supabase identity, secure session cookies and database policies. It does not create new users or bypass membership. Passwords are verified/stored by Supabase, never hardcoded into client code or stored in application tables. Team email-link sign-in remains available through the team workspace.
+
+The signed-in **Account & sign-in** view lets the owner set a password with matching confirmation, then use it from another browser without an email link. Supabase enforces its configured policy; the form requires at least six characters, so the requested five-character password cannot be used. Setting a credential requires the user to enter and submit it personally in the browser. Successful real password sign-in remains pending that one-time setup. No database migration or new environment variable is needed.
+
+Password requests require same-origin checks and bounded request bodies. App-level throttling is per-process (resets on cold starts), supplemented by Supabase Auth's provider limits. Neither passwords nor auth tokens are returned in endpoint JSON or logged. Regression tests cover verified-owner sign-in, rejected alternate emails, invalid credentials, disabled/unverified accounts, provider throttling, and password confirmation.
