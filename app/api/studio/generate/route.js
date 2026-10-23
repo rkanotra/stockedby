@@ -17,7 +17,7 @@ import {
   groundOutput,
 } from "@/lib/studio/generation";
 export const runtime = "nodejs";
-export const maxDuration = 65;
+export const maxDuration = 180;
 const response = (data, status = 200) =>
   Response.json(data, { status, headers: { "Cache-Control": "no-store" } });
 export async function GET() {
@@ -60,11 +60,13 @@ export async function POST(request) {
       429,
     );
   let stage = "provider";
+  const timeoutMs = input.type === "prototype" ? 150000 : 58000;
+  const deadline = AbortSignal.timeout(timeoutMs);
   try {
     const client = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
-      timeout: 55000,
-      maxRetries: 1,
+      timeout: timeoutMs,
+      maxRetries: 0,
     });
     const model =
       process.env.STUDIO_OPENAI_MODEL || process.env.OPENAI_MODEL || "gpt-4.1";
@@ -88,7 +90,7 @@ export async function POST(request) {
           },
         },
       },
-      { signal: AbortSignal.any([request.signal, AbortSignal.timeout(58000)]) },
+      { signal: AbortSignal.any([request.signal, deadline]) },
     );
     if (result.status !== "completed" || !result.output_text)
       return response(
@@ -122,9 +124,9 @@ export async function POST(request) {
       },
     });
   } catch (e) {
-    const failure = generationFailure(e, stage), reference = crypto.randomUUID();
+    const failure = generationFailure(deadline.aborted ? { name: "TimeoutError" } : e, stage), reference = crypto.randomUUID();
     // Operational diagnostics only; never log source text, prompts or keys.
-    console.error(JSON.stringify({ event: "studio_generation_failed", reference, type: input.type, stage, code: failure.code, providerStatus: Number(e?.status) || null }));
+    console.error(JSON.stringify({ event: "studio_generation_failed", reference, type: input.type, stage, code: failure.code, providerStatus: Number(e?.status) || null, errorClass: e?.constructor?.name || "Unknown", deadlineReached: deadline.aborted }));
     return response({ error: failure.message, code: failure.code, reference }, failure.status);
   }
 }
