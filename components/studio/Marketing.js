@@ -555,7 +555,7 @@ export function InformationPage({ kind }) {
                   <h2>Start with a real problem.</h2>
                   <p>
                     Open Project inputs and bring your existing BRD, discovery notes,
-                    research or designs. Add PDF, DOCX, TXT, Markdown, CSV, JSON,
+                    research or designs. Add PDF, DOCX, XLSX, TXT, Markdown, CSV, JSON,
                     PNG, JPEG or WebP files, one at a time. Images are read by AI;
                     check the extracted text and visual interpretation before adding
                     them. A written project goal is optional if your documents provide

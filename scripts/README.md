@@ -143,3 +143,9 @@ SHELF" as a floor in that case, not a precise claim; scripts/retest.py (a
 real re-test) is the source of truth for that finer distinction.
 
 Requires `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`.
+
+## Studio PRD browser regression
+
+With a production build running on port 3002, run `node scripts/test_studio_prd_browser.mjs`.
+Override `STUDIO_TEST_URL` to point at a test deployment and `PLAYWRIGHT_CHANNEL` to select an installed browser (defaults to Chrome).
+The check uses fictional content, real XLSX extraction and intercepted AI responses. It covers direct PRD creation, failure/retry, output visibility, editing/reload, Word download, mobile layout and the shared editor demo. It makes no paid AI calls and writes no team database records.

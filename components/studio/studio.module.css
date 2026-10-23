@@ -902,6 +902,14 @@
   display: flex;
   min-height: 100%;
 }
+.outputHeading { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 30px; background: #fff; border-bottom: 1px solid #e1e6ee; }
+.outputHeading h2 { font-size: 18px; font-weight: 600; letter-spacing: -.4px; margin: 6px 0 0; color: #182b43; }
+.outputHeading p { color: #5d6d80; font-size: 13px; line-height: 1.6; }
+.outputHeading label { display: grid; gap: 7px; color: #5d6d80; font-size: 11px; min-width: 0; }
+.outputHeading select { border: 1px solid #d9e1ec; border-radius: 8px; padding: 10px; background: #f9fbff; color: #263b56; max-width: 280px; width: 100%; }
+.outputHint { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 16px 36px; background: #eef4ff; color: #344e74; font-size: 13px; line-height: 1.6; }
+.outputHint button { flex-shrink: 0; }
+@media(max-width:700px) { .outputHeading { padding: 22px 18px; flex-direction: column; align-items: stretch; gap: 12px; } .outputHeading select { max-width: none; } .outputHint { padding: 16px 18px; flex-direction: column; align-items: stretch; } }
 .documentList {
   width: 200px;
   flex-shrink: 0;
@@ -2042,3 +2050,16 @@
 @media (prefers-reduced-motion: reduce) { .app * { animation: none !important; transition: none !important; } }
 
 .projectSelect { background:#eef2f9; border-color:#dce3ef; color:#354762; }
+
+/* Readable, touch-sized actions for the document itself. */
+.documentContent .docToolbar { padding: 8px 24px; }
+.documentContent .docToolbar > div { gap: 8px; flex-wrap: wrap; }
+.documentContent .docToolbar button { font-size: 12px !important; min-height: 40px; padding: 8px 10px; color: #30465f; border-radius: 7px; }
+.documentContent .docToolbar button:hover { background: #eef3fb; }
+.documentContent .docToolbar button:first-child { background: #edf3ff; color: #245ac6; }
+@media(max-width:700px) {
+  .documentContent .docToolbar { padding: 8px 12px; align-items: flex-start; }
+  .documentContent .docToolbar > div { justify-content: flex-end; gap: 4px; }
+  .documentContent .docToolbar button { font-size: 12px !important; min-height: 42px; padding: 8px; }
+  .documentContent .docToolbar svg { display: block; width: 14px; }
+}

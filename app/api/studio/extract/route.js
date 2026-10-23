@@ -31,9 +31,17 @@ export async function POST(request) {
     let text = "";
     if (["txt", "md", "csv", "json"].includes(ext))
       text = buffer.toString("utf8");
-    else if (ext === "docx") {
-      const mammoth = await import("mammoth");
-      text = (await mammoth.extractRawText({ buffer })).value;
+    else if (ext === "xlsx") {
+      try {
+        const { extractSpreadsheet } = await import("@/lib/studio/spreadsheet-input");
+        text = await extractSpreadsheet(buffer);
+      } catch (error) {
+        const message = /^(This workbook|Use a workbook|Choose a valid)/.test(error.message) ? error.message : "Could not read this workbook. Open it in Excel and save an unencrypted .xlsx copy, or export the relevant sheet as CSV.";
+        return json({ error: message }, 422);
+      }
+    } else if (ext === "docx") {
+      const { extractWordDocument } = await import("@/lib/studio/document-input");
+      text = await extractWordDocument(buffer);
     } else if (ext === "pdf") {
       const { extractText, getDocumentProxy } = await import("unpdf");
       const pdf = await getDocumentProxy(new Uint8Array(buffer), {
@@ -71,7 +79,7 @@ export async function POST(request) {
       }
     } else
       return json(
-        { error: "Choose PDF, DOCX, TXT, Markdown, CSV, JSON, PNG, JPEG or WebP." },
+        { error: "Choose PDF, DOCX, XLSX, TXT, Markdown, CSV, JSON, PNG, JPEG or WebP." },
         400,
       );
     if (text.trim().length < 20)

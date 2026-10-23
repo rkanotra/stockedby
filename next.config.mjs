@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  serverExternalPackages: ["ffmpeg-static"],
+  serverExternalPackages: ["ffmpeg-static", "exceljs", "unzipper"],
   outputFileTracingIncludes: {
     "/api/ascent/reviews": ["./node_modules/ffmpeg-static/ffmpeg"],
     "/api/ascent/process": ["./node_modules/ffmpeg-static/ffmpeg"],

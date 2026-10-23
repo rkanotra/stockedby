@@ -30,17 +30,19 @@ import { WORKFLOW_PRESETS, checkpoint } from "@/lib/studio/review";
 import w from "./workbench.module.css";
 import { demoProject } from "@/lib/studio/demo";
 import { exportProject } from "@/lib/studio/downloads";
+import { initialDocument, documentView } from "@/lib/studio/navigation";
 const tabs = [
-  ["plan", "Product plan", "brief"],
-  ["inputs", "Project inputs", "folder"],
-  ["canvas", "Workflow", "flow"],
-  ["documents", "Documents", "brief"],
+  ["inputs", "1. Inputs", "folder"],
+  ["documents", "2. Your documents", "brief"],
   ["prototype", "Prototype", "screen"],
+  ["plan", "Product plan", "brief"],
+  ["canvas", "Workflow", "flow"],
   ["review", "Review", "check"],
   ["connections", "Connections", "link"],
   ["standards", "Standards", "shield"],
   ["trace", "Traceability", "link"],
 ];
+const advancedTabs = ["plan", "canvas", "review", "connections", "standards", "trace"];
 const statusLabel = (a) =>
   a
     ? { draft: "Draft", approved: "Reviewed", stale: "Needs update" }[
@@ -62,7 +64,7 @@ export default function Studio({ shared = null }) {
     [active, setActive] = useState(""),
     [loaded, setLoaded] = useState(false),
     [saved, setSaved] = useState("Loading…"),
-    [tab, setTab] = useState("plan"),
+    [tab, setTab] = useState("inputs"),
     [selected, setSelected] = useState(null),
     [busy, setBusy] = useState(null),
     [error, setError] = useState(""),
@@ -90,6 +92,22 @@ export default function Studio({ shared = null }) {
   const p = projects.find((p) => p.id === active),
     node = p?.nodes.find((n) => n.id === selected),
     artifact = node?.artifact;
+  function resumeProject(project) {
+    const output = initialDocument(project);
+    setSelected(output?.id || null);
+    setTab(output ? documentView(output) : "inputs");
+    setEditing(false);
+  }
+  function openDocuments() {
+    const project = current();
+    const output = project.nodes.find(n => n.id === selected && n.artifact && n.type !== "prototype")
+      || project.nodes.find(n => n.type === "requirements" && n.artifact)
+      || project.nodes.find(n => n.artifact && n.type !== "prototype")
+      || project.nodes.find(n => n.type === "requirements");
+    setSelected(output?.id || null);
+    setEditing(false);
+    setTab("documents");
+  }
   function apply(nextProjects, nextActive = state.current.active) {
     if (shared && nextActive !== shared.project.id) {
       setError("Create or import initiatives from your team workspace.");
@@ -127,6 +145,7 @@ export default function Studio({ shared = null }) {
         // Hydrate the isolated editor from its mount-time shared snapshot.
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setProjects(data.projects); setActive(data.active); setLoaded(true); setSaved("Team draft · autosaves online");
+        resumeProject(data.projects[0]);
         fetch("/api/studio/generate").then(r => r.json()).then(d => setConfigured(d.configured)).catch(() => setConfigured(false));
         return () => abort.current?.abort();
       }
@@ -166,6 +185,7 @@ export default function Studio({ shared = null }) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         window.history.replaceState(null, "", "/studio");
       }
+      resumeProject(data.projects.find(project => project.id === data.active));
       if (query.has("connected") || query.has("connectorError")) {
         // Hydrate the initial workspace view from the browser URL.
         setTab("connections");
@@ -314,7 +334,8 @@ export default function Studio({ shared = null }) {
     });
     setModal(null);
     setError("");
-    setToast(shared?.demo ? "Input added to this demo tab." : shared ? "Input added. Your team draft will autosave online." : "Input added. Your workflow will use it as context.");
+    if (sourceKind === "context") setTab("inputs");
+    setToast(sourceKind === "context" ? "Input added. Select Create PRD when your inputs are ready." : "Standard added. Review and confirm the rules that apply.");
   }
   function uploadProjectFiles(files) {
     if (!files?.length || busy) return;
@@ -396,6 +417,17 @@ export default function Studio({ shared = null }) {
     if(existing) {setSelected(existing.id);setTab("documents");}
     else {add(type);setTab("documents");}
   }
+  function createPrd() {
+    if (busy || startLock.current) return;
+    const project = current();
+    let target = project.nodes.find(n => n.type === "requirements");
+    if (target?.artifact) { setSelected(target.id); setTab("documents"); return; }
+    if (!target) {
+      target = { id: uid(), type: "requirements", instruction: "", artifact: null };
+      change(p => record({ ...p, nodes: [...p.nodes, target] }, "PRD added."));
+    }
+    run([target.id]);
+  }
   async function run(ids) {
     if (startLock.current) return;
     startLock.current = true;
@@ -410,6 +442,8 @@ export default function Studio({ shared = null }) {
         if (!n) continue;
         setBusy(id);
         setSelected(id);
+        setTab(documentView(n));
+        window.scrollTo({ top: 0, behavior: "instant" });
         const artifact = await generate(project, n);
         if (stop.current) break;
         if (
@@ -420,8 +454,11 @@ export default function Studio({ shared = null }) {
             "Project context changed while AI was running. Your previous version is intact. Run this step again with the updated context.",
           );
         change((p) => updateArtifact(p, id, artifact));
+        setSelected(id);
+        setTab(documentView(n));
+        window.scrollTo({ top: 0, behavior: "instant" });
       }
-      if (!stop.current) setToast("Drafts are ready for your review.");
+      if (!stop.current) setToast(current()?.nodes.find(n => n.id === ids.at(-1))?.type === "prototype" ? "Your prototype is ready. Try the screens and review scenarios below." : "Your document is ready. Read it below, edit it or download Word.");
     } catch (e) {
       if (e.name !== "AbortError") setError(e.message);
     } finally {
@@ -457,11 +494,11 @@ export default function Studio({ shared = null }) {
     abort.current?.abort();
     setToast("Stopped. Completed drafts remain in your project. Check the save status before closing.");
   }
-  async function exportAs(format) {
+  async function exportAs(format, nodeId) {
     setExporting(true);
     setError("");
     try {
-      await exportProject(p, format);
+      await exportProject(p, format, nodeId);
       setToast("Your export is ready.");
       setModal(null);
     } catch {
@@ -476,7 +513,7 @@ export default function Studio({ shared = null }) {
       if (file.size > 2500000) throw new Error("Backup exceeds 2.5 MB.");
       const project = parseProjectFile(await file.text());
       apply([...projects, project], project.id);
-      setSelected(null);
+      resumeProject(project);
       setToast(
         "Project imported. Review records and standards need reconfirmation.",
       );
@@ -490,8 +527,7 @@ export default function Studio({ shared = null }) {
     if (shared) { setError("Create initiatives from your team workspace."); return; }
     const project = demo ? demoProject() : newProject();
     apply([...projects, project], project.id);
-    setSelected(null);
-    setTab("plan");
+    resumeProject(project);
     setModal(null);
     setError("");
   }
@@ -543,6 +579,8 @@ export default function Studio({ shared = null }) {
   const reviewed =
     p?.nodes.filter((n) => n.artifact?.status === "approved").length || 0;
   const generated = p?.nodes.filter((n) => n.artifact).length || 0;
+  const prd = p?.nodes.find(n => n.type === "requirements");
+  const hasInputs = !!p && (p.brief.trim().length >= 20 || p.sources.some(source => source.kind === "context" && source.text.trim().length >= 20) || Object.values(planContext(p)).flatMap(section => Object.values(section.fields)).join(" ").trim().length >= 20);
   const nextDraft = p?.nodes.find(n => !n.artifact || n.artifact.status === "stale");
   if (!p)
     return (
@@ -627,8 +665,7 @@ export default function Studio({ shared = null }) {
             disabled={!!busy}
             onChange={(e) => {
               apply(projects, e.target.value);
-              setSelected(null);
-              setEditing(false);
+              resumeProject(projects.find(project => project.id === e.target.value));
               setError("");
             }}
           >
@@ -639,7 +676,6 @@ export default function Studio({ shared = null }) {
             ))}
           </select>
           <div className={s.sideDivider} />
-          <button className={s.sideAction} aria-current={tab === "plan" ? "page" : undefined} onClick={()=>setTab("plan")}><Icon name="brief"/>Product plan<Icon name="arrow" size={13}/></button>
           {tab === "canvas" ? (
             <>
               <div className={s.sideLabel}>
@@ -676,8 +712,8 @@ export default function Studio({ shared = null }) {
             </>
           ) : (
             <div className={s.deliveryNav}>
-              <div className={s.sideLabel}>DELIVERY PACKAGE</div>
-              {p.nodes.map((n) => (
+              <div className={s.sideLabel}>YOUR DOCUMENTS</div>
+              {p.nodes.filter(n => n.artifact || n.type === "requirements").map((n) => (
                 <button
                   key={n.id}
                   onClick={() => {
@@ -763,10 +799,10 @@ export default function Studio({ shared = null }) {
                   }))
                 }
               />
-              <p>One initiative. Shared intent. A clear path to delivery.</p>
+              <p>Add your inputs. Create a PRD. Read, edit and share it.</p>
             </div>
             {shared && <button className={s.secondary} onClick={() => setModal("export")} disabled={!!busy}><Icon name="export" size={16} /> Export</button>}
-            {!["plan", "documents", "prototype"].includes(tab) && <button
+            {tab === "canvas" && <button
               className={s.run}
               disabled={busy === "upload" || (!busy && tab !== "inputs" && (p.nodes.length === 0 || (nextDraft && configured === false)))}
               title={nextDraft ? `Next: ${TYPE[nextDraft.type].label}` : "Open your outputs for review"}
@@ -779,13 +815,13 @@ export default function Studio({ shared = null }) {
           </div>
           <div className={s.tabBar}>
             <div role="tablist" aria-label="Workspace views">
-              {tabs.filter(([key]) => !["connections", "standards", "trace"].includes(key)).map(([key, label, icon]) => (
+              {tabs.filter(([key]) => !advancedTabs.includes(key)).map(([key, label, icon]) => (
                 <button
                   role="tab"
                   aria-selected={tab === key}
                   className={tab === key ? s.activeTab : ""}
                   key={key}
-                  onClick={() => setTab(key)}
+                  onClick={() => key === "documents" ? openDocuments() : setTab(key)}
                 >
                   <Icon name={icon} size={16} />
                   {label}
@@ -793,7 +829,7 @@ export default function Studio({ shared = null }) {
                 </button>
               ))}
             </div>
-            <details className={s.moreViews}><summary>{["connections", "standards", "trace"].includes(tab) ? tabs.find(t => t[0] === tab)[1] : "More"} ▾</summary><div>{tabs.filter(([key]) => ["connections", "standards", "trace"].includes(key)).map(([key, label, icon]) => <button key={key} onClick={e => { setTab(key); e.currentTarget.closest("details").open = false; }}><Icon name={icon} size={16} />{label}</button>)}</div></details>
+            <details className={s.moreViews}><summary>{advancedTabs.includes(tab) ? tabs.find(t => t[0] === tab)[1] : "More"} ▾</summary><div>{tabs.filter(([key]) => advancedTabs.includes(key)).map(([key, label, icon]) => <button key={key} onClick={e => { setTab(key); e.currentTarget.closest("details").open = false; }}><Icon name={icon} size={16} />{label}</button>)}</div></details>
             <span className={s.reviewCount}>
               {reviewed}/{p.nodes.length} reviewed
             </span>
@@ -822,15 +858,15 @@ export default function Studio({ shared = null }) {
                     ? "Reading your document"
                     : `Drafting ${TYPE[p.nodes.find((n) => n.id === busy)?.type]?.label || "your document"}`}
               </strong>
-              <span>Using your project context · You stay in control</span>
-              {busy === "plan" && <button onClick={cancel} className={s.textLink}>Stop drafting</button>}
+              <span>{busy === "upload" ? "Extracting content for you to check. This does not create a PRD." : "Your result will appear here when it is ready."}</span>
+              {busy !== "upload" && <button onClick={cancel} className={s.textLink}>Stop drafting</button>}
             </div>
           )}
           <div className={`${s.body} ${tab === "canvas" ? s.canvasBody : ""}`}>
             {tab === "plan" && <ProductPlan key={p.id} project={p} change={change} busy={!!busy} configured={configured} draft={draftPlan} open={setTab} build={openBuilder}/>}
             {tab === "inputs" && <ProjectInputs project={p} busy={!!busy} shared={!!shared} demo={!!shared?.demo}
               upload={uploadProjectFiles} paste={() => startSource("context")} edit={source => startSource("context", source)}
-              updateBrief={brief => change(p => updateContext(p, { brief }))} next={() => { setSelected(null); setTab("canvas"); }} standards={() => setTab("standards")} />}
+              updateBrief={brief => change(p => updateContext(p, { brief }))} next={createPrd} hasPrd={!!prd?.artifact} canCreate={hasInputs && configured !== false} workflow={() => setTab("canvas")} standards={() => setTab("standards")} />}
 
             {tab === "prototype" && (
               <PrototypeWorkbench
@@ -956,12 +992,14 @@ export default function Studio({ shared = null }) {
                               ) {
                                 e.preventDefault();
                                 setSelected(n.id);
+                                if (n.artifact) setTab(documentView(n));
                               }
                             }}
                             className={`${s.node} ${selected === n.id ? s.selectedNode : ""} ${dragOver === n.id ? s.dropTarget : ""} ${busy === n.id ? s.runningNode : ""}`}
                             onClick={() => {
                               setSelected(n.id);
                               setEditing(false);
+                              if (n.artifact) setTab(documentView(n));
                             }}
                             draggable={!busy}
                             onDragStart={(e) =>
@@ -998,7 +1036,7 @@ export default function Studio({ shared = null }) {
                               </span>
                               <span>
                                 {n.artifact
-                                  ? `${n.artifact.items.length} items`
+                                  ? n.type === "prototype" ? "Open prototype" : "Read document"
                                   : "Configure step"}{" "}
                                 <Icon name="chevron" size={12} />
                               </span>
@@ -1233,45 +1271,30 @@ export default function Studio({ shared = null }) {
             )}
             {tab === "documents" && (
               <div className={s.documents}>
-                <aside className={s.documentList}>
-                  <span className={s.eyebrow}>YOUR DELIVERY PACKAGE</span>
-                  {p.nodes.map((n) => (
-                    <button
-                      key={n.id}
-                      className={selected === n.id ? s.selectedDoc : ""}
-                      onClick={() => {
-                        setSelected(n.id);
-                        setEditing(false);
-                      }}
-                    >
-                      <Icon name={TYPE[n.type].icon} />
-                      <span>
-                        {TYPE[n.type].label}
-                        <small>{statusLabel(n.artifact)}</small>
-                      </span>
-                    </button>
-                  ))}
-                </aside>
                 <section className={s.documentContent}>
-                  {node?.type === "brief" && <div className={s.documentInputBar}><div><strong>Start from an existing document</strong><p>Add a BRD, discovery notes or images as inputs for this brief.</p></div><button className={s.secondary} disabled={!!busy} onClick={() => startSource("context")}><Icon name="upload" size={16} /> Add document or image</button></div>}
+                  <div className={s.outputHeading}>
+                    <div><span className={s.eyebrow}>{busy === node?.id ? "CREATING YOUR DOCUMENT" : artifact ? "YOUR CREATED DOCUMENT" : "YOUR DOCUMENT"}</span><h2>{node ? TYPE[node.type].label : "Product requirements (PRD)"}</h2></div>
+                    <label>Open document<select aria-label="Open document" value={selected || ""} onChange={e => { const target = p.nodes.find(n => n.id === e.target.value); setSelected(target.id); setTab(documentView(target)); setEditing(false); }}><option value="" disabled>Select a document</option>{p.nodes.filter(n => n.artifact || n.id === selected || n.type === "requirements").map(n => <option key={n.id} value={n.id}>{TYPE[n.type].label} · {statusLabel(n.artifact)}</option>)}</select></label>
+                  </div>
+                  {artifact && node.type === "brief" && !prd?.artifact && <div className={s.outputHint}><span>This is a short product brief. Create a PRD for detailed requirements and acceptance criteria.</span><button className={s.primary} disabled={!!busy || !hasInputs || configured === false} onClick={createPrd}>Create PRD <Icon name="arrow" size={15}/></button></div>}
                   {!node ? (
                     <Empty
                       icon="brief"
-                      title="A place for every decision."
-                      text="Select a document on the left to draft, edit or review it."
-                    />
+                      title="Create your first PRD."
+                      text="Bring your existing documents or describe your idea. Your draft will appear here."
+                    ><button className={s.primary} onClick={() => setTab("inputs")}>Add project inputs</button></Empty>
                   ) : !artifact ? (
                     <Empty
                       icon={TYPE[node.type].icon}
-                      title={`${TYPE[node.type].label}, ready when you are.`}
-                      text="AI will use your product plan, project inputs, confirmed standards and preceding documents to create this draft."
+                      title={busy === node.id ? `Creating your ${node.type === "requirements" ? "PRD" : TYPE[node.type].label.toLowerCase()}…` : `${TYPE[node.type].label}, ready to create.`}
+                      text={busy === node.id ? "We’re turning your inputs into a readable draft. It will open here automatically; you can keep this page open." : "Uses your uploaded files, project goal and confirmed standards. Missing information is flagged for your review."}
                     >
                       <button
                         className={s.primary}
                         disabled={!!busy || configured === false}
-                        onClick={() => run([node.id])}
+                        onClick={() => hasInputs ? run([node.id]) : setTab("inputs")}
                       >
-                        <Icon name="spark" size={16} /> Generate draft
+                        <Icon name="spark" size={16} /> {busy === node.id ? "Creating…" : !hasInputs ? "Add project inputs" : node.type === "requirements" ? "Create PRD" : "Create document"}
                       </button>
                     </Empty>
                   ) : (
@@ -1283,6 +1306,7 @@ export default function Studio({ shared = null }) {
                           {statusLabel(artifact)}
                         </span>
                         <div>
+                          <button disabled={!!busy || exporting} onClick={() => exportAs("docx", selected)}><Icon name="export" size={15}/>{exporting ? "Preparing…" : "Download Word"}</button>
                           <button
                             disabled={!!busy}
                             onClick={() => {
@@ -1878,7 +1902,7 @@ export default function Studio({ shared = null }) {
                       ? "Reading your file…"
                       : "Drop a file or choose from your computer"}
                   </strong>
-                  <span>PDF, DOCX, TXT, MD, CSV, JSON, PNG, JPG or WebP · up to 3 MB</span>
+                  <span>PDF, DOCX, XLSX, TXT, MD, CSV, JSON, PNG, JPG or WebP · up to 3 MB</span>
                   <input
                     ref={fileInput}
                     disabled={!!busy}
