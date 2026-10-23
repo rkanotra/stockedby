@@ -2063,3 +2063,20 @@
   .documentContent .docToolbar button { font-size: 12px !important; min-height: 42px; padding: 8px; }
   .documentContent .docToolbar svg { display: block; width: 14px; }
 }
+
+.continueBar { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:24px 28px; background:#f1f5ff; border:1px solid #dae4fa; border-radius:14px; margin:20px 28px; color:#263d63; }
+.paper .continueBar { margin:32px 0 0; }
+.continueBar strong { font-size:17px; }
+.continueBar p { font-size:14px; line-height:1.5; margin:6px 0 0; color:#586b88; }
+.continueBar button { flex-shrink:0; }
+.nextIntro, .nextNote { font-size:14px; line-height:1.6; color:#617086; }
+.nextChoices { display:grid; gap:12px; margin:24px 0; }
+.nextChoices button { display:flex; justify-content:flex-start; text-align:left; gap:16px; padding:20px; border:1px solid #dce3ee; border-radius:12px; background:white; color:#253a57; cursor:pointer; }
+.nextChoices button:hover { background:#f4f7fd; border-color:#9cb7ef; }
+.nextChoices button:disabled { opacity:.5; cursor:not-allowed; }
+.nextChoices span { display:grid; gap:7px; }
+.nextChoices strong { font-size:17px; }
+.nextChoices small { color:#617086; font-size:14px; line-height:1.5; }
+.nextChoices b { font-size:14px; color:#2b59c3; font-weight:500; }
+.nextChoices button:focus-visible { outline:3px solid #82a9f5; outline-offset:3px; }
+@media(max-width:700px) { .continueBar { align-items:stretch; flex-direction:column; margin:16px; padding:20px; } .continueBar button { justify-content:center; } }

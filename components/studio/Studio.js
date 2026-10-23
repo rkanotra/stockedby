@@ -19,8 +19,11 @@ import {
   traceRows,
   approvalProblems,
   parseProjectFile,
+  resolveDocumentQuery,
 } from "@/lib/studio/model";
 import ProductPlan from "./ProductPlan";
+import QueryReview from "./QueryReview";
+import { documentQueries, queryResolutionInput } from "@/lib/studio/queries";
 import { makePlanProposal, contextFingerprint, planContext, fingerprint } from "@/lib/studio/product-plan";
 import PrototypeWorkbench from "./PrototypeWorkbench";
 import ProjectInputs, { INPUT_ACCEPT } from "./ProjectInputs";
@@ -30,7 +33,7 @@ import { WORKFLOW_PRESETS, checkpoint } from "@/lib/studio/review";
 import w from "./workbench.module.css";
 import { demoProject } from "@/lib/studio/demo";
 import { exportProject } from "@/lib/studio/downloads";
-import { initialDocument, documentView } from "@/lib/studio/navigation";
+import { initialDocument, documentView, generationUpstream } from "@/lib/studio/navigation";
 const tabs = [
   ["inputs", "1. Inputs", "folder"],
   ["documents", "2. Your documents", "brief"],
@@ -79,8 +82,7 @@ export default function Studio({ shared = null }) {
     [editing, setEditing] = useState(false),
     [configured, setConfigured] = useState(null),
     [exporting, setExporting] = useState(false),
-    [dragOver, setDragOver] = useState(null),
-    [revision, setRevision] = useState("");
+    [dragOver, setDragOver] = useState(null);
   const state = useRef({ projects: [], active: "" }),
     abort = useRef(null),
     stop = useRef(false),
@@ -370,12 +372,8 @@ export default function Studio({ shared = null }) {
       if (fileInput.current) fileInput.current.value = "";
     }
   }
-  async function generate(project, n, type = n?.type) {
-    const index = project.nodes.findIndex((x) => x.id === n?.id);
-    const upstream = project.nodes
-      .slice(0, index < 0 ? 0 : index)
-      .filter((x) => x.artifact && x.artifact.status !== "stale")
-      .map((x) => ({ type: x.type, ...x.artifact }));
+  async function generate(project, n, type = n?.type, sourceNodeId = null) {
+    const upstream = generationUpstream(project, n?.id, sourceNodeId);
     abort.current = new AbortController();
     const res = await fetch("/api/studio/generate", {
       method: "POST",
@@ -391,6 +389,7 @@ export default function Studio({ shared = null }) {
         upstream: type === "plan" ? project.nodes.filter(x => x.artifact && x.artifact.status !== "stale").map(x => ({type:x.type,...x.artifact})) : upstream,
         instruction: n?.instruction || "",
         decisions: project.decisions || [],
+        queryResolutions: queryResolutionInput(project),
         previous: n?.artifact || null,
       }),
     });
@@ -428,7 +427,31 @@ export default function Studio({ shared = null }) {
     }
     run([target.id]);
   }
-  async function run(ids) {
+  function continueWithPrd(type) {
+    if (busy || startLock.current) return;
+    const sourceId = selected;
+    let target = current().nodes.find(n => n.type === type);
+    setModal(null);
+    setEditing(false);
+    if (target?.artifact) {
+      setSelected(target.id); setTab(documentView(target));
+      window.scrollTo({ top: 0, behavior: "instant" });
+      return;
+    }
+    if (!target) {
+      target = { id: uid(), type, instruction: "", artifact: null };
+      change(p => record({ ...p, nodes: [...p.nodes, target] }, `${TYPE[type].label} added after the PRD.`));
+    }
+    change(p => record({ ...p, nodes: p.nodes.map(n => n.id === target.id ? { ...n, sourceNodeId: sourceId } : n) }, "Continuing from the PRD. Open queries remain open."));
+    run([target.id], sourceId);
+  }
+  function resolveQuery(query, status, answer = "") {
+    try {
+      change(p => resolveDocumentQuery(p, selected, query, status, answer));
+      setToast(status === "answered" ? "Answer saved. Update the PRD to apply it, or continue with this draft." : status === "ignored" ? "Query ignored. You can reopen it anytime." : "Query reopened.");
+    } catch (e) { setError(e.message); }
+  }
+  async function run(ids, sourceNodeId = null) {
     if (startLock.current) return;
     startLock.current = true;
     stop.current = false;
@@ -444,7 +467,7 @@ export default function Studio({ shared = null }) {
         setSelected(id);
         setTab(documentView(n));
         window.scrollTo({ top: 0, behavior: "instant" });
-        const artifact = await generate(project, n);
+        const artifact = await generate(project, n, n.type, sourceNodeId);
         if (stop.current) break;
         if (
           current()?.id !== project.id ||
@@ -1334,6 +1357,7 @@ export default function Studio({ shared = null }) {
                           </button>
                         </div>
                       </div>
+                      {node.type === "requirements" && <div className={s.continueBar}><div><strong>Ready for the next step?</strong><p>Use this PRD to create a prototype, user stories or a test plan.</p></div><button className={s.primary} disabled={!!busy} onClick={() => setModal("next")}>Continue with this PRD <Icon name="arrow" size={16}/></button></div>}
                       {artifact.status === "stale" && (
                         <div className={s.notice}>
                           The context or workflow changed. Regenerate this
@@ -1456,63 +1480,9 @@ export default function Studio({ shared = null }) {
                             </article>
                           ))}
                         </div>
-                        {(artifact.questions.length > 0 ||
-                          artifact.findings.length > 0) && (
-                          <div className={s.reviewBox}>
-                            <h3>
-                              <Icon name="shield" /> Needs a human decision
-                            </h3>
-                            {artifact.questions.map((q, i) => (
-                              <p key={i}>
-                                <b>?</b>
-                                {q}
-                              </p>
-                            ))}
-                            {artifact.findings.map((f, i) => (
-                              <p key={"f" + i}>
-                                <b>{f.severity}</b>
-                                {f.issue}
-                              </p>
-                            ))}
-                            <span>
-                              Add decisions to project context, then regenerate
-                              to reassess.
-                            </span>
-                          </div>
-                        )}
-                        <div className={s.docRevision}>
-                          <label className={s.field}>
-                            Add a decision or clarification
-                            <textarea
-                              value={revision}
-                              onChange={(e) => setRevision(e.target.value)}
-                              placeholder="E.g. Operations owns failed invitations. Use a 30-day pilot with 20 administrators."
-                              rows={3}
-                            />
-                          </label>
-                          <button
-                            className={s.secondary}
-                            disabled={!!busy || !revision.trim()}
-                            onClick={() => {
-                              change((p) =>
-                                updateContext(p, {
-                                  brief: (
-                                    p.brief +
-                                    "\n\nDecision: " +
-                                    revision.trim()
-                                  ).slice(0, 16000),
-                                }),
-                              );
-                              setRevision("");
-                              setToast(
-                                "Decision added. Regenerate to update the delivery package.",
-                              );
-                            }}
-                          >
-                            Save to project context{" "}
-                            <Icon name="arrow" size={15} />
-                          </button>
-                        </div>
+                        <QueryReview key={node.id} project={p} node={node} busy={!!busy} configured={configured} onResolve={resolveQuery} onUpdate={() => run([node.id])} />
+                        {node.type === "requirements" && <div className={s.continueBar}><div><strong>Happy with this draft?</strong><p>You can move on with questions still open.</p></div><button className={s.primary} disabled={!!busy} onClick={() => setModal("next")}>Continue with this PRD <Icon name="arrow" size={16}/></button></div>}
+
                       </div>
                     </>
                   )}
@@ -1844,6 +1814,21 @@ export default function Studio({ shared = null }) {
             >
               <Icon name="close" />
             </button>
+            {modal === "next" && (
+              <>
+                <span className={s.eyebrow}>FROM PRD TO PRODUCT</span>
+                <h2 id="modal-title">What would you like to create?</h2>
+                <p className={s.nextIntro}>Your PRD stays as it is. Each new output uses it together with your sources and saved answers.</p>
+                <div className={s.nextChoices}>
+                  {[["prototype", "Working prototype", "Try interactive screens, forms and key journeys."], ["stories", "User stories", "Turn requirements into stories with acceptance criteria."], ["tests", "Test plan", "Check expected behaviour, exceptions and edge cases."]].map(([type, label, description]) => {
+                    const existing = p.nodes.find(n => n.type === type)?.artifact;
+                    return <button key={type} disabled={!!busy || (!existing && configured === false)} onClick={() => continueWithPrd(type)}><Icon name={TYPE[type].icon}/><span><strong>{label}</strong><small>{description}</small><b>{existing ? "Open existing output" : `Create ${type === "prototype" ? "prototype" : type === "stories" ? "user stories" : "test plan"}`} →</b></span></button>;
+                  })}
+                </div>
+                <p className={s.nextNote}>{documentQueries(p, node).filter(q => q.status === "open").length} open queries carry forward. Continuing does not approve the PRD or close these queries.</p>
+                {configured === false && <p>AI is temporarily unavailable. You can still open existing outputs.</p>}
+              </>
+            )}
             {modal === "steps" && (
               <>
                 <span className={s.eyebrow}>YOUR WORKFLOW, YOUR WAY</span>

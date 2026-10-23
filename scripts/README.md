@@ -149,3 +149,7 @@ Requires `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`.
 With a production build running on port 3002, run `node scripts/test_studio_prd_browser.mjs`.
 Override `STUDIO_TEST_URL` to point at a test deployment and `PLAYWRIGHT_CHANNEL` to select an installed browser (defaults to Chrome).
 The check uses fictional content, real XLSX extraction and intercepted AI responses. It covers direct PRD creation, failure/retry, output visibility, editing/reload, Word download, mobile layout and the shared editor demo. It makes no paid AI calls and writes no team database records.
+
+### PRD decisions and continuation regression
+
+`node scripts/test_studio_decisions_browser.mjs` (or set `STUDIO_TEST_URL`) uses fictional data and intercepts AI requests. Covers per-query answer/ignore/reopen, refresh, failed regeneration, request context, Word export, PRD-to-prototype/stories/tests, mobile, and shared-editor autosave/reload against a fake server. Requires installed Chrome. No paid model calls or real team writes.

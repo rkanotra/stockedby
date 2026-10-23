@@ -19,7 +19,7 @@ export default function PrototypeWorkbench({
     return (
       <div className={w.empty}>
         <span className={w.kicker}>EXPERIENCE LAB</span>
-        <h2>Make the requirements tangible.</h2>
+        <h2>{busy === node?.id ? "Creating your prototype…" : "Make the requirements tangible."}</h2>
         <p>
           Generate a working journey with navigation, form validation and
           simulated data. Review the happy path and failure states before
@@ -36,7 +36,7 @@ export default function PrototypeWorkbench({
           disabled={busy || configured === false}
           onClick={() => (node ? run([node.id]) : add("prototype"))}
         >
-          {node ? "Generate prototype" : "Add prototype to workflow"} ↗
+          {busy === node?.id ? "Creating…" : node ? "Generate prototype" : "Add prototype to workflow"} ↗
         </button>
         <small>
           External services are simulated. Your prototype is a review tool, not
