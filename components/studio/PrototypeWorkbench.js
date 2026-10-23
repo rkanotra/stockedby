@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo, useRef, useEffect } from "react";
+import { prototypeLimitations } from "@/lib/studio/prototype";
 import { prototypeHtml, screenSvg } from "@/lib/studio/prototypeRuntime";
 import { download } from "@/lib/studio/downloads";
 import { record, uid, invalidate } from "@/lib/studio/model";
@@ -222,6 +223,7 @@ function Prototype({
           </div>
         </section>
         <aside className={w.inspector}>
+          {prototypeLimitations(spec).length > 0 && <section className={w.prototypeScope} aria-label="Prototype implementation gaps"><strong>Some interactions need implementation</strong><p>This preview is incomplete. Do not treat these controls as working behaviour.</p><details><summary>Review {prototypeLimitations(spec).length} interaction gaps</summary><ul>{prototypeLimitations(spec).map(gap => <li key={gap}>{gap}</li>)}</ul></details></section>}
           <details className={w.prototypeScope}><summary>What this prototype covers</summary><p>{spec.description}</p><p>All data and permissions are simulated. Complex business rules need implementation and testing before release.</p></details>
           {nodes.length > 1 && (
             <label>

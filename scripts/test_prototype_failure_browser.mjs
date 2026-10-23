@@ -26,5 +26,11 @@ try {
  await page.getByRole('main').getByRole('button',{name:submit.label,exact:true}).click();
  assert.equal(await page.getByRole('alert').count(),0);
  if(submit.targetScreenId) assert.equal(await page.locator('nav button[aria-current="page"]').innerText(),spec.screens.find(s=>s.id===submit.targetScreenId).name);
- console.log('PASS: failure simulation preserves form values and supports successful retry without resetting the preview.');
+ const invalid = structuredClone(spec);
+ invalid.screens[0].actions.push({ ...submit, id:'unbound', kind:'update', label:'Unbound update', recordId:'', field:'status', value:'Approved', targetScreenId:'', message:'Falsely approved' });
+ await page.setContent(prototypeHtml(invalid));
+ await page.getByRole('main').getByRole('button',{name:'Unbound update',exact:true}).click();
+ await page.getByRole('status').filter({hasText:'No changes were made'}).waitFor();
+ assert.equal(await page.getByText('Falsely approved',{exact:true}).count(),0);
+ console.log('PASS: unbound update cannot report success; failure simulation preserves form values and supports successful retry without resetting the preview.');
 } finally {await browser.close();}
