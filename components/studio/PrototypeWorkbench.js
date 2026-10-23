@@ -73,8 +73,8 @@ function Prototype({
     [instruction, setInstruction] = useState(node.instruction || ""),
     [reviewer, setReviewer] = useState("");
   const html = useMemo(
-    () => prototypeHtml(spec, { screenId: start, failure }),
-    [spec, start, failure],
+    () => prototypeHtml(spec, { screenId: start }),
+    [spec, start],
   );
   useEffect(() => {
     const receive = (e) => {
@@ -190,6 +190,7 @@ function Prototype({
               title={spec.name + " interactive prototype"}
               sandbox="allow-scripts"
               srcDoc={html}
+              onLoad={() => iframe.current?.contentWindow?.postMessage({ type: "stockedby-prototype-failure", enabled: failure }, "*")}
               style={{ maxWidth: device === "mobile" ? 390 : "100%" }}
             />
           </div>
@@ -214,13 +215,14 @@ function Prototype({
               <input
                 type="checkbox"
                 checked={failure}
-                onChange={(e) => setFailure(e.target.checked)}
+                onChange={(e) => { setFailure(e.target.checked); iframe.current?.contentWindow?.postMessage({ type: "stockedby-prototype-failure", enabled: e.target.checked }, "*"); }}
               />{" "}
               Simulate submission failure
             </label>
           </div>
         </section>
         <aside className={w.inspector}>
+          <details className={w.prototypeScope}><summary>What this prototype covers</summary><p>{spec.description}</p><p>All data and permissions are simulated. Complex business rules need implementation and testing before release.</p></details>
           {nodes.length > 1 && (
             <label>
               Prototype

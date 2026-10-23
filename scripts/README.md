@@ -153,3 +153,5 @@ The check uses fictional content, real XLSX extraction and intercepted AI respon
 ### PRD decisions and continuation regression
 
 `node scripts/test_studio_decisions_browser.mjs` (or set `STUDIO_TEST_URL`) uses fictional data and intercepts AI requests. Covers per-query answer/ignore/reopen, refresh, failed regeneration, request context, Word export, PRD-to-prototype/stories/tests, mobile, and shared-editor autosave/reload against a fake server. Requires installed Chrome. No paid model calls or real team writes.
+
+`node scripts/test_prototype_failure_browser.mjs` runs the trusted prototype renderer with a fictional fixture in Chrome. It checks that toggling simulated service failure preserves typed values and a subsequent submission succeeds. No network or model call is required.

@@ -136,3 +136,11 @@ Verification: unit/integration suite, production build and browser regression co
 - “Continue with this PRD” appears above and below the document. It offers a prototype, user stories or a test plan. Open questions do not block continuation. The chosen PRD, its status, questions and findings reach the next generation, including retry after failure.
 - Validation: 241 unit/database tests; lint and production build; fictional browser coverage for answer/ignore/reopen, reload, failed generation, exports, all three next steps, mobile and shared-editor save/reload requests. Shared save regression uses a fake server and does not modify a customer's initiative.
 - Follow-up requested: Figma design-system import for company components, typography and colours, with provenance and an explicit choice of which library/version governs generated prototypes. Existing design-reference connections are not equivalent to applying a complete brand system.
+
+### Real-AI quality check follow-up
+
+The user requested an end-to-end quality review after the UI fix. A fictional “Relay Desk” maintenance pilot was uploaded as XLSX to production, then generated a PRD, BRD and prototype using the configured real model. The first PRD/BRD contained excessive speculative questions, an invented default, weak boundary criteria and a manual/automatic pause inconsistency. Prompt instructions now require source-first rule fidelity, fewer material questions, observable criteria and a distinct business-oriented BRD.
+
+The first prototype rendered and submitted a request, but a supposed edit added a second record and accepted a negative estimate. Its claims of role filtering, threshold enforcement and a global pause exceeded the renderer's capabilities. Generation now explicitly constrains itself to supported interactions and must disclose missing capabilities. The prototype inspector exposes scope/limitations. Conditional business rules and real role enforcement remain future runtime work, not verified capabilities.
+
+Failure simulation previously restarted the iframe and lost entered data. It now updates the existing preview through a parent-validated message, preserving inputs and records for retry. A real-browser regression verifies failure → retained input → successful retry. Names are clipped safely in the preview navigation.

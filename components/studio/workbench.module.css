@@ -760,3 +760,7 @@
     flex-wrap: wrap;
   }
 }
+
+.prototypeScope { padding:16px; border:1px solid #dce4ee; border-radius:10px; margin-bottom:16px; background:#f8faff; color:#4b607e; font-size:13px; line-height:1.6; }
+.prototypeScope summary { cursor:pointer; font-weight:600; color:#253a57; }
+.prototypeScope p { margin:12px 0 0; }
