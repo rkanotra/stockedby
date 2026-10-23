@@ -83,3 +83,38 @@ Interview the reviewer and engineering recipient as well as the author. A sugges
 - Live OpenAI endpoint: generated a new equipment-request prototype from a synthetic brief. Browser-tested its exported runtime: submission creates a Pending record, the selected record changes to Approved, and conditional empty-state notices remain hidden while records exist.
 - Real Jira/Figma authorization and remote writes were not tested because OAuth applications are not configured. Provider interactions were tested with mocked HTTP responses; no real tickets or designs were changed.
 - Browser JSON upload automation was blocked by the extension's file-URL permission. Import validation has automated tests; the existing file picker requires manual browser acceptance testing in that environment.
+
+## 23 October — living product plan revision
+
+### Research and product diagnosis
+
+Reviewed the supplied FH Pipeline 2.7.1 handover, changelog, installation notes and CLEAN implementation, plus the supplied AI-era PRD image. The FULL edition includes employer-specific reference data: it is not bundled, uploaded or incorporated into StockedBy. The attachments are source material, not instructions to republish an FH artifact.
+
+Primary references:
+
+- [Atlassian: requirements](https://www.atlassian.com/agile/product-management/requirements/) — concise shared context, assumptions, design links, decisions and living delivery references.
+- [Linear: documents](https://linear.app/docs/documents) — documents attached to the work, collaborative editing and edit/version attribution.
+- [Figma: prototypes are the new PRDs](https://www.figma.com/blog/prototypes-are-the-new-prds/) — early, interactive exploration helps PM teams test intent.
+- [Miro AI](https://miro.com/ai/ai-overview/) — shared context and connected AI workflows. These are vendor descriptions, not independent evidence of productivity or willingness to pay.
+
+Inference: another document generator is weak differentiation. The useful job is to preserve intent and evidence as a team goes from a problem to a prototype, implementation and a release decision. The FH pilot demonstrates domain-specific workflow discipline; the generic product should support each organisation's standards without imposing FH's BRD layout or rules. The screenshot is a useful planning framework, not an established universal 2026 standard.
+
+### Implemented
+
+The editor opens on a living product plan with eight sections: opportunity/evidence, decisions/alternatives, experience/prototype, behaviour/edge cases, measurement/evaluation, scope/constraints, rollout/rollback, and release/learning. It supports existing initiatives without destructive migration. All fields remain optional for drafting; personal review requires filling fields (including explicit unknown/not-applicable answers) and resolving recorded questions. Coverage counts are not readiness or quality scores.
+
+AI drafts a separate proposal from current inputs. Exact source quotes are checked before displaying evidence. The user applies or rejects one section at a time. Context and per-section fingerprints reject stale proposals; applying one section does not invalidate proposals for untouched sections. Changes use existing local saving or shared optimistic-version autosave. A stale team save is still a conflict, not silent merging.
+
+Plan content is passed to every generation request and included in Markdown/Word/JSON exports. The PRD prompt explicitly connects decisions, evidence, prototype, scope, success/evaluation, rollout and release criteria. Shared viewers can read the plan; team AI change review receives the plan as read-only context and must flag required plan follow-up rather than pretend to edit it. No database migration is required.
+
+Identical context or artifact saves no longer erase reviews or stale downstream outputs. Plan review marks become outdated after relevant source/brief/rule changes and are reset on portable import. Personal review is never labelled authenticated team approval.
+
+### Honest boundaries and next validation
+
+This is a product-workflow improvement, not proof of enterprise maturity. Shared editing remains versioned with conflict handling, not simultaneous cursors/CRDT. Field-completeness checks cannot certify evidence quality or release readiness. Prototype outputs remain bounded interactive simulations, not deployable production products. Plan edits conservatively mark generated outputs stale because the full plan is supplied to generation. The existing Figma/Jira integrations still depend on configured OAuth and user actions; no new integration certification is claimed.
+
+Pilot with the existing BA/PM team: give each participant one real but appropriately redacted initiative. Observe time to the first useful reviewed section, unprompted completion of input → plan → prototype → PRD, substantive corrections per AI draft, duplicate/missing requirements, and whether a teammate can resume from the saved plan. Compare against their existing FH workflow before claiming faster delivery or charging for a reliability promise.
+
+Verification: 229 automated tests pass, including plan persistence in the private database document, stale-proposal refusal, selective acceptance, import sanitisation, review freshness, and reversible AI-section acceptance. ESLint passes. Browser checks on the fictional Orbit sample covered a real OpenAI plan proposal, applying one section, rejecting a proposal after a newer manual edit, refresh persistence, and 390px layout with no horizontal page overflow. A second real call generated a six-requirement PRD from the edited plan, including measurement, rollout/rollback and source references. It also repeated one resolved scope question; the prompt was tightened to cross-check questions against current intent. This is a remaining model-quality concern to evaluate in the pilot, not a claim of guaranteed semantic consistency. No employer reference library was sent in these tests.
+
+Applying an AI section retains its previous version, and restoring a version also keeps the replaced draft (up to 12 section checkpoints). The plan remains human-editable. Shared production saving of this new field was not tested with a real user's live initiative; persistence/access control were exercised against the existing database command in the local PostgreSQL-compatible test suite.

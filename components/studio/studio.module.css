@@ -2028,3 +2028,17 @@
 .briefInputBox p,.documentInputBar p{color:#576b47;font-size:12px}
 .deliveryNav>button{color:#59677c}
 @media(prefers-reduced-motion:reduce){.primary:active:not(:disabled),.secondary:active:not(:disabled),.run:active:not(:disabled){transform:none;transition:none}}
+
+/* Product builder: a quiet shell keeps attention on the working document. */
+.app { background: #f5f7fb; --stroke: #e0e5ed; --muted: #778397; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.sidebar { background: #f9fafc; border-color: #e0e5ed; }
+.header { background: #1c293d; border-color: #304058; }
+.projectHeader { background: #fff; }
+.projectHeader input { letter-spacing: -.03em; }
+.tabBar { background: #fff; border-color: #e4e9f1; }
+.tabBar button.activeTab { color: #2856b6; border-bottom-color: #3967ca; }
+.sideAction[aria-current="page"] { background: #e8eefb; color: #315db8; border-radius: 8px; }
+.app :is(button,a,input,textarea,select):focus-visible { outline-color: #426cc8; }
+@media (prefers-reduced-motion: reduce) { .app * { animation: none !important; transition: none !important; } }
+
+.projectSelect { background:#eef2f9; border-color:#dce3ef; color:#354762; }

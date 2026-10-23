@@ -1,3 +1,4 @@
+import { PLAN_SCHEMA, PLAN_PROMPT, groundPlan } from "@/lib/studio/product-plan";
 import {
   PROTOTYPE_SCHEMA,
   PROTOTYPE_PROMPT,
@@ -70,11 +71,11 @@ export async function POST(request) {
       {
         model,
         store: false,
-        max_output_tokens: input.type === "prototype" ? 10000 : 6500,
+        max_output_tokens: input.type === "prototype" ? 10000 : input.type === "plan" ? 8000 : 6500,
         instructions:
           input.type === "prototype"
             ? PROTOTYPE_PROMPT
-            : systemPrompt(input.type),
+            : input.type === "plan" ? PLAN_PROMPT : systemPrompt(input.type),
         input: JSON.stringify(input),
         text: {
           format: {
@@ -82,7 +83,7 @@ export async function POST(request) {
             name: "delivery_artifact",
             strict: true,
             schema:
-              input.type === "prototype" ? PROTOTYPE_SCHEMA : OUTPUT_SCHEMA,
+              input.type === "prototype" ? PROTOTYPE_SCHEMA : input.type === "plan" ? PLAN_SCHEMA : OUTPUT_SCHEMA,
           },
         },
       },
@@ -111,7 +112,7 @@ export async function POST(request) {
             ),
             input,
           )
-        : groundOutput(parsed, input);
+        : input.type === "plan" ? groundPlan(parsed, input.sources) : groundOutput(parsed, input);
     return response({
       artifact: { ...artifact, model: result.model },
       usage: {

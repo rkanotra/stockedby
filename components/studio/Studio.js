@@ -20,6 +20,8 @@ import {
   approvalProblems,
   parseProjectFile,
 } from "@/lib/studio/model";
+import ProductPlan from "./ProductPlan";
+import { makePlanProposal, contextFingerprint, planContext, fingerprint } from "@/lib/studio/product-plan";
 import PrototypeWorkbench from "./PrototypeWorkbench";
 import ProjectInputs, { INPUT_ACCEPT } from "./ProjectInputs";
 import ReviewDesk from "./ReviewDesk";
@@ -29,6 +31,7 @@ import w from "./workbench.module.css";
 import { demoProject } from "@/lib/studio/demo";
 import { exportProject } from "@/lib/studio/downloads";
 const tabs = [
+  ["plan", "Product plan", "brief"],
   ["inputs", "Project inputs", "folder"],
   ["canvas", "Workflow", "flow"],
   ["documents", "Documents", "brief"],
@@ -59,7 +62,7 @@ export default function Studio({ shared = null }) {
     [active, setActive] = useState(""),
     [loaded, setLoaded] = useState(false),
     [saved, setSaved] = useState("Loading…"),
-    [tab, setTab] = useState("inputs"),
+    [tab, setTab] = useState("plan"),
     [selected, setSelected] = useState(null),
     [busy, setBusy] = useState(null),
     [error, setError] = useState(""),
@@ -153,7 +156,7 @@ export default function Studio({ shared = null }) {
         : data.projects[0].id;
       if (new URLSearchParams(window.location.search).get("demo") === "1") {
         const existing = data.projects.find(
-          (p) => p.demo && p.nodes.some((n) => n.artifact?.prototype),
+          (p) => p.demo && p.productPlan && p.nodes.some((n) => n.artifact?.prototype),
         );
         const project = existing || demoProject();
         data = {
@@ -363,7 +366,8 @@ export default function Studio({ shared = null }) {
         brief: project.brief,
         sources: project.sources,
         rules: project.rules,
-        upstream,
+        productPlan: project.productPlan,
+        upstream: type === "plan" ? project.nodes.filter(x => x.artifact && x.artifact.status !== "stale").map(x => ({type:x.type,...x.artifact})) : upstream,
         instruction: n?.instruction || "",
         decisions: project.decisions || [],
         previous: n?.artifact || null,
@@ -372,6 +376,25 @@ export default function Studio({ shared = null }) {
     const data = await res.json().catch(() => ({ error: "The generation service did not return a response. Retry this step; your existing content is unchanged." }));
     if (!res.ok || !data.artifact) throw new Error((data.error || "AI request failed.") + (data.reference ? ` Reference: ${data.reference}` : ""));
     return data.artifact;
+  }
+  async function draftPlan() {
+    if (startLock.current) return;
+    startLock.current = true; stop.current = false;
+    setBusy("plan"); setError("");
+    const snapshot = current();
+    try {
+      const plan = await generate(snapshot, null, "plan");
+      if (stop.current) return;
+      if (current()?.id !== snapshot.id || contextFingerprint(current()) !== contextFingerprint(snapshot) || fingerprint(planContext(current())) !== fingerprint(planContext(snapshot))) throw Error("Your project changed during drafting. Your edits are safe; request a fresh proposal.");
+      change(p => record({...p,planProposal:makePlanProposal(p,plan)},"AI product plan proposed for review. No existing decisions replaced."));
+      setToast("AI proposal ready. Review and apply one section at a time.");
+    } catch(e) { if(e.name !== "AbortError") setError(e.message); }
+    finally {setBusy(null);startLock.current=false;}
+  }
+  function openBuilder(type) {
+    const project=current(),existing=project.nodes.find(n=>n.type===type);
+    if(existing) {setSelected(existing.id);setTab("documents");}
+    else {add(type);setTab("documents");}
   }
   async function run(ids) {
     if (startLock.current) return;
@@ -468,7 +491,7 @@ export default function Studio({ shared = null }) {
     const project = demo ? demoProject() : newProject();
     apply([...projects, project], project.id);
     setSelected(null);
-    setTab(demo ? "canvas" : "inputs");
+    setTab("plan");
     setModal(null);
     setError("");
   }
@@ -583,7 +606,7 @@ export default function Studio({ shared = null }) {
               <Icon name="layers" />
             </span>
             <div>
-              {shared ? shared.name : "My workspace"}<small>{shared ? "Shared initiative · draft editor" : "Local pilot · OpenAI powered"}</small>
+              {shared ? shared.name : "My workspace"}<small>{shared ? "Shared initiative · draft editor" : "Personal draft · this browser"}</small>
             </div>
           </div>
           <div className={s.sideLabel}>
@@ -616,6 +639,7 @@ export default function Studio({ shared = null }) {
             ))}
           </select>
           <div className={s.sideDivider} />
+          <button className={s.sideAction} aria-current={tab === "plan" ? "page" : undefined} onClick={()=>setTab("plan")}><Icon name="brief"/>Product plan<Icon name="arrow" size={13}/></button>
           {tab === "canvas" ? (
             <>
               <div className={s.sideLabel}>
@@ -739,10 +763,10 @@ export default function Studio({ shared = null }) {
                   }))
                 }
               />
-              <p>Bring your inputs. Choose your outputs. Review what matters.</p>
+              <p>One initiative. Shared intent. A clear path to delivery.</p>
             </div>
             {shared && <button className={s.secondary} onClick={() => setModal("export")} disabled={!!busy}><Icon name="export" size={16} /> Export</button>}
-            <button
+            {!["plan", "documents", "prototype"].includes(tab) && <button
               className={s.run}
               disabled={busy === "upload" || (!busy && tab !== "inputs" && (p.nodes.length === 0 || (nextDraft && configured === false)))}
               title={nextDraft ? `Next: ${TYPE[nextDraft.type].label}` : "Open your outputs for review"}
@@ -751,7 +775,7 @@ export default function Studio({ shared = null }) {
               <Icon name={busy ? "close" : "play"} size={16} />
               {busy ? "Stop generation" : tab === "inputs" ? "Choose outputs" : nextDraft ? "Generate next draft" : "Review outputs"}
               {!busy && <span>↗</span>}
-            </button>
+            </button>}
           </div>
           <div className={s.tabBar}>
             <div role="tablist" aria-label="Workspace views">
@@ -792,16 +816,18 @@ export default function Studio({ shared = null }) {
             <div className={s.aiProgress} role="status">
               <span className={s.spinner} />
               <strong>
-                {busy === "standards"
+                {busy === "plan" ? "Drafting a product plan from your evidence" : busy === "standards"
                   ? "Reading company standards"
                   : busy === "upload"
                     ? "Reading your document"
                     : `Drafting ${TYPE[p.nodes.find((n) => n.id === busy)?.type]?.label || "your document"}`}
               </strong>
               <span>Using your project context · You stay in control</span>
+              {busy === "plan" && <button onClick={cancel} className={s.textLink}>Stop drafting</button>}
             </div>
           )}
           <div className={`${s.body} ${tab === "canvas" ? s.canvasBody : ""}`}>
+            {tab === "plan" && <ProductPlan key={p.id} project={p} change={change} busy={!!busy} configured={configured} draft={draftPlan} open={setTab} build={openBuilder}/>}
             {tab === "inputs" && <ProjectInputs project={p} busy={!!busy} shared={!!shared} demo={!!shared?.demo}
               upload={uploadProjectFiles} paste={() => startSource("context")} edit={source => startSource("context", source)}
               updateBrief={brief => change(p => updateContext(p, { brief }))} next={() => { setSelected(null); setTab("canvas"); }} standards={() => setTab("standards")} />}
@@ -1238,7 +1264,7 @@ export default function Studio({ shared = null }) {
                     <Empty
                       icon={TYPE[node.type].icon}
                       title={`${TYPE[node.type].label}, ready when you are.`}
-                      text="AI will use your brief, sources and the preceding documents to create this draft."
+                      text="AI will use your product plan, project inputs, confirmed standards and preceding documents to create this draft."
                     >
                       <button
                         className={s.primary}

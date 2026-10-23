@@ -1,3 +1,4 @@
+import { planContext } from "@/lib/studio/product-plan";
 import OpenAI from "openai";
 import { requireTeamUser, json, failure, readBody, command } from "@/lib/team/server";
 import { changeSchema, CHANGE_PROMPT, changeTargets, validateProposal } from "@/lib/team/changes";
@@ -12,7 +13,7 @@ export async function POST(request) {
     if (!process.env.OPENAI_API_KEY) return json({ error: "AI review is not configured yet." }, 503);
     const { data: project, error } = await db.from("team_projects").select("*").eq("id", body.projectId).eq("workspace_id", body.workspaceId).single();
     if (error || !project) return json({ error: "Initiative not found or access removed." }, 404);
-    const input = { changeRequest: body.request, targets: changeTargets(project.document), sources: project.document.sources, confirmedRules: (project.document.rules || []).filter(r => r.approved && groundedRule(r, project.document.sources || [])), decisions: project.document.decisions || [] };
+    const input = { changeRequest: body.request, productPlan: planContext(project.document), targets: changeTargets(project.document), sources: project.document.sources, confirmedRules: (project.document.rules || []).filter(r => r.approved && groundedRule(r, project.document.sources || [])), decisions: project.document.decisions || [] };
     if (JSON.stringify(input).length > 180000) throw Error("This initiative is too large for one review. Shorten its source material before retrying.");
     const schema = changeSchema(input);
     await command(db, "reserve_ai", { workspaceId: body.workspaceId });
