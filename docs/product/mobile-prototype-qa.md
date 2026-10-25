@@ -32,3 +32,17 @@ These checks establish a functioning sample journey. They do not prove that ever
 Applied `supabase/migrations/202610250001_delete_team_project.sql` to the dedicated `stockedby-team` project (`ggffhcxkywngqijpyeqe`) on 25 October 2026 after the owner signed in. Supabase confirmed successful execution. Read-only checks confirmed function existence and availability, authenticated execution of the guarded function, no anonymous execution and no direct authenticated table deletion. No existing project was deleted. The API capability check enables the deployed owner controls without another application deployment.
 
 Verified the authenticated production workspace: Delete appeared on each of the owner's four project cards, and all four projects remained present. The existing database and browser tests cover the destructive path using isolated fixtures; no production deletion was invoked.
+
+## Personal application correction
+
+The legacy loan prototype loaded sample applicants into its application collection and appended another record at each submitted form. A customer journey now defaults to a personal simulation. Application collections start empty, each form updates the same current record, and review/confirmation display the entered fields together. Read-only product catalogues remain available. The prototype setup offers an explicit **Staff workspace** choice for a fictional multi-record queue. Older saved prototypes without this setting use the personal default immediately; regeneration is not required.
+
+Personal collection examples are omitted from the embedded preview specification and HTML/SVG downloads, without rewriting the saved project. A new preview or Reset clears entered values. This is a local simulation model, not production authentication or database row-level authorization.
+
+Verification:
+
+- `test_personal_prototype_browser.mjs`: a fictional legacy-shaped application containing 20 other sample applicants. Verified single-record review and confirmation, multi-step merging, correction, repeated submission, required-input validation when jumping directly to review, service failure/retry, reset, independent visitor, retained catalogue, and explicit staff queue. The same test runs inside the actual workspace with mocked team APIs and checks its HTML download. No real project writes or AI calls.
+- A local regression using the existing downloaded loan prototype also completed both forms, review and confirmation with fictional inputs. Its example applicant identities were absent from the generated HTML. The private source file is not committed.
+- Existing generated-mobile, handwritten-mobile and workspace-journey browser checks passed.
+- The delete dialog now explicitly centers itself in the viewport, overriding the global margin reset. Its existing browser test checks desktop, phone and short landscape layouts, reachable actions and initial focus on **Keep project**, alongside the permission and deletion checks using mocked projects.
+- The updated suite passed 252 unit/database tests, lint and the production build.

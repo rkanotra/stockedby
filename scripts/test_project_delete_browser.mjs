@@ -25,6 +25,20 @@ try {
   const remove=page.getByRole('button',{name:'Delete Same project name',exact:true}).last();
   await remove.click();const modal=page.getByRole('dialog');await modal.waitFor();
   assert.ok(await modal.getByText(/Version 7/).isVisible());assert.equal(requests.length,0);
+  assert.ok(await modal.getByRole('button',{name:'Keep project'}).evaluate(button=>button===document.activeElement));
+  for(const [width,height] of [[1440,1000],[390,844],[320,568],[844,390]]) {
+   await page.setViewportSize({width,height});
+   const box=await modal.boundingBox();
+   assert.ok(Math.abs(box.x+box.width/2-width/2)<2,'Dialog centered horizontally');
+   assert.ok(Math.abs(box.y+box.height/2-height/2)<2,'Dialog centered vertically');
+   assert.ok(box.x>=15 && box.y>=15 && box.x+box.width<=width-15 && box.y+box.height<=height-15,'Dialog stays inside viewport');
+   await modal.getByRole('button',{name:'Keep project'}).scrollIntoViewIfNeeded();
+   const buttons=await modal.getByRole('button',{name:'Keep project'}).boundingBox();
+   assert.ok(buttons.y>=0 && buttons.y+buttons.height<=height,'Cancel remains reachable on short screens');
+   if(width===390) await page.screenshot({path:'/tmp/stockedby-delete-mobile.png'});
+  }
+  await page.setViewportSize({width:1440,height:1000});
+  await page.screenshot({path:'/tmp/stockedby-delete-centered.png'});
   await modal.getByRole('button',{name:'Keep project'}).click();assert.equal(requests.length,0);
   await remove.click();
   const download=page.waitForEvent('download');await modal.getByRole('button',{name:'Download project backup'}).click();assert.ok((await download).suggestedFilename().endsWith('-backup.json'));
@@ -37,5 +51,5 @@ try {
   await page.screenshot({path:'/tmp/stockedby-project-delete-card.png'});
   await context.close();
  }
- console.log('PASS: owner-only controls; explicit confirmation; cancel sends no request; backup; failure keeps card; duplicate-name ID/version targeting; success removes only chosen project; refresh stays deleted. Mocked data only.');
+ console.log('PASS: centered desktop/mobile/short-screen dialog; initial focus on Keep project; owner-only controls; explicit confirmation; cancel sends no request; backup; failure keeps card; duplicate-name ID/version targeting; success removes only chosen project; refresh stays deleted. Mocked data only.');
 } finally {await browser.close();}

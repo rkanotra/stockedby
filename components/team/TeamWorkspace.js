@@ -133,6 +133,7 @@ export default function TeamWorkspace() {
     if (!modal) return;
     const previous = document.activeElement;
     dialog.current?.showModal();
+    dialog.current?.querySelector("[data-dialog-cancel]")?.focus();
     return () => { previous?.focus(); };
   }, [modal]);
   async function perform(label, fn) {
@@ -287,7 +288,7 @@ export default function TeamWorkspace() {
       <p>This can’t be undone. You can save a project backup first.</p>
       {error && <div className={s.error} role="alert">{error}</div>}
       <button className={s.textButton} disabled={!!busy} onClick={() => { const link = document.createElement("a"), url = URL.createObjectURL(new Blob([JSON.stringify({ format: "stockedby-studio", version: 1, project: deleting.document }, null, 2)], { type: "application/json" })); link.href=url; link.download=deleting.document.name+"-backup.json"; link.click(); setTimeout(()=>URL.revokeObjectURL(url),1000); }}>Download project backup</button>
-      <div className={s.deleteActions}><button autoFocus className={s.secondary} disabled={!!busy} onClick={() => setModal(null)}>Keep project</button><button className={s.danger} disabled={!!busy} onClick={() => perform("Deleting project", async () => {
+      <div className={s.deleteActions}><button data-dialog-cancel className={s.secondary} disabled={!!busy} onClick={() => setModal(null)}>Keep project</button><button className={s.danger} disabled={!!busy} onClick={() => perform("Deleting project", async () => {
         if (!demo) await api("", { action: "delete_project", workspaceId, projectId: deleting.id, version: deleting.version });
         setData(d => ({ ...d, projects: d.projects.filter(p => p.id !== deleting.id), changes: d.changes.filter(c => c.project_id !== deleting.id), comments: d.comments.filter(c => c.project_id !== deleting.id), events: d.events.filter(e => e.project_id !== deleting.id) }));
         if (projectId === deleting.id) { setProjectId(null); setChangeId(null); window.history.replaceState(null,"",window.location.pathname+window.location.search); }

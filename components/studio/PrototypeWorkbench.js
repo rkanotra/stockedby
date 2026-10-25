@@ -218,6 +218,7 @@ function Prototype({
             ))}
           </div>
           <div className={w.previewFoot}>
+            <p>{spec.dataScope === "workspace" ? "Staff workspace · fictional shared records" : "Personal journey · only the application entered in this preview"}</p>
             <span>Isolated simulation · changes reset with the preview</span>
             <label>
               <input
