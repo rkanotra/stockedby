@@ -77,6 +77,8 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+/* Editing and embedded forms must not move between pointer-down and click. */
+html:has([data-product-workspace]) { scroll-behavior: auto; }
 body {
   background: var(--cream);
   color: var(--ink);

@@ -22,6 +22,7 @@ try {
  await page.screenshot({path:'/tmp/stockedby-workbench-initial.png'});
  const frame=page.frameLocator('iframe[title="Forma interactive prototype"]');await frame.getByRole('heading',{name:'Book a meeting room'}).waitFor();
  assert.equal(await page.getByRole('combobox',{name:'Preview size'}).inputValue(),'mobile');
+ assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).scrollBehavior),'auto');
  await page.getByText('Journey map',{exact:false}).first().click();
  assert.ok(await page.getByText('Starting screen',{exact:true}).isVisible());
  await page.getByText('Journey map',{exact:false}).first().click();
@@ -37,7 +38,7 @@ try {
  await page.setViewportSize({width:390,height:844});
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await frame.getByRole('button',{name:'Continue',exact:true}).click();await frame.getByLabel('Name',{exact:true}).fill('Sam Example');await frame.getByLabel('Email',{exact:true}).fill('sam@example.com');await frame.getByRole('button',{name:'Review booking',exact:true}).click();
- try { await frame.getByRole('heading',{name:'Review your booking',exact:true}).waitFor(); } catch(error) { console.log(await frame.locator('body').innerText()); await page.screenshot({path:'/tmp/stockedby-workbench-failure.png'}); throw error; }
+ try { await frame.getByRole('heading',{name:'Review your booking',exact:true}).waitFor(); } catch(error) { console.log(JSON.stringify({errors,fields:await frame.locator('input').evaluateAll(inputs=>inputs.map(i=>({name:i.name,value:i.value,invalid:i.getAttribute('aria-invalid')}))),body:await frame.locator('body').innerText()})); await page.screenshot({path:'/tmp/stockedby-workbench-failure.png',timeout:5000}); throw error; }
  assert.ok((await frame.locator('dd').allTextContents()).includes('Sam Example'));
  assert.deepEqual(errors,[]);
  console.log('PASS workspace integration: mobile device frame; actual journey graph; HTML download; narrow host viewport; iframe forms and bound summary.');

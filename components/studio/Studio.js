@@ -626,7 +626,7 @@ export default function Studio({ shared = null }) {
   const nextDraft = p?.nodes.find(n => !n.artifact || n.artifact.status === "stale");
   if (!p)
     return (
-      <div className={s.app}>
+      <div className={s.app} data-product-workspace>
         <div className={s.loading}>
           <Brand />
           <p>{error || "Opening your workspace…"}</p>
@@ -656,7 +656,7 @@ export default function Studio({ shared = null }) {
       </div>
     );
   return (
-    <div className={s.app}>
+    <div className={s.app} data-product-workspace>
       {!shared && <header className={s.header}>
         <Brand />
         <span className={s.breadcrumb}>
