@@ -29,4 +29,6 @@ These checks establish a functioning sample journey. They do not prove that ever
 
 ## Database rollout
 
-Project deletion requires `supabase/migrations/202610250001_delete_team_project.sql` on the dedicated `stockedby-team` project (`ggffhcxkywngqijpyeqe`). At preparation time the dashboard session was expired, so application was pending owner sign-in. The API capability check keeps deletion hidden until the migration exists. Mobile improvements have no database migration dependency.
+Applied `supabase/migrations/202610250001_delete_team_project.sql` to the dedicated `stockedby-team` project (`ggffhcxkywngqijpyeqe`) on 25 October 2026 after the owner signed in. Supabase confirmed successful execution. Read-only checks confirmed function existence and availability, authenticated execution of the guarded function, no anonymous execution and no direct authenticated table deletion. No existing project was deleted. The API capability check enables the deployed owner controls without another application deployment.
+
+Verified the authenticated production workspace: Delete appeared on each of the owner's four project cards, and all four projects remained present. The existing database and browser tests cover the destructive path using isolated fixtures; no production deletion was invoked.

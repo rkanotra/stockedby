@@ -49,7 +49,7 @@ Apply `supabase/migrations/202610250001_delete_team_project.sql` to the dedicate
 
 Deletion requires a verified owner, the exact workspace/project ID and the version shown in the confirmation. It removes the project and its related proposals, comments and project events atomically, retaining a workspace-level deletion event. Direct table deletion remains denied. The confirmation offers a project JSON backup; this backup does not include discussions or proposal history. Never use a real customer project as a deletion smoke test.
 
-At the 25 October mobile-prototype release, migration application was pending dashboard sign-in. See `mobile-prototype-qa.md` for test scope and status.
+Applied to `stockedby-team` on 25 October 2026 after dashboard sign-in. The read-only production check confirmed availability and function existence, authenticated access to the guarded function, no anonymous execution and no direct authenticated table deletion. See `mobile-prototype-qa.md` for test scope and status.
 
 `npm test` includes PostgreSQL-compatible PGlite tests for outsider isolation, role permissions, bound/expired/used invitations, token-hash restrictions, author separation, stale saves/reviews, prohibited patch paths, revocation and the persisted AI quota.
 
