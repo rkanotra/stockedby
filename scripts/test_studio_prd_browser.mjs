@@ -76,7 +76,6 @@ try {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`${base}/workspace?demo=1`);
   await page.getByRole("button").filter({ has: page.getByRole("heading", { name: demoProject().name, exact: true }) }).click();
-  await page.getByRole("button", { name: "Open editor", exact: true }).click();
   await page.getByRole("heading", { name: "Product requirements (PRD)", exact: true }).waitFor();
   assert.ok(await page.getByRole("button", { name: "Download Word", exact: true }).isVisible());
   await page.screenshot({ path: "/tmp/stockedby-prd-team.png", fullPage: false });

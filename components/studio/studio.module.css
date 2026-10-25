@@ -2080,3 +2080,38 @@
 .nextChoices b { font-size:14px; color:#2b59c3; font-weight:500; }
 .nextChoices button:focus-visible { outline:3px solid #82a9f5; outline-offset:3px; }
 @media(max-width:700px) { .continueBar { align-items:stretch; flex-direction:column; margin:16px; padding:20px; } .continueBar button { justify-content:center; } }
+
+/* The document is the workspace. Its actions stay with it while reading. */
+.documentContent .docToolbar { position:sticky; top:var(--workspace-toolbar-offset, 0px); z-index:25; min-height:64px; box-shadow:0 3px 8px #23345008; }
+.documentContent .docToolbar > div { align-items:center; }
+.documentContent .docToolbar .continueAction { background:#285ac6; color:white; padding:10px 14px; }
+.documentContent .docToolbar .continueAction:hover { background:#204da9; }
+.questionCount { border-radius:5px; background:#eaf0fa; padding:1px 6px; font-size:11px; }
+.documentActions { position:relative; color:#3b506d; font-size:12px; }
+.documentActions summary { cursor:pointer; padding:12px 8px; min-height:40px; list-style:none; }
+.documentActions summary::-webkit-details-marker { display:none; }
+.documentActions > div { position:absolute; right:0; top:100%; background:white; border:1px solid #dce3ee; box-shadow:0 6px 20px #1c34501f; border-radius:10px; padding:6px; min-width:180px; }
+.documentContent .docToolbar .documentActions button { background:white; color:#344b69; width:100%; justify-content:flex-start; }
+.questionAnchor { scroll-margin-top:calc(var(--workspace-toolbar-offset, 0px) + 145px); }
+.questionAnchor:focus { outline:none; }
+.modal { background:white; border-color:#dbe3ef; }
+.modal h2 { color:#233750; }
+.paper { color:#273a50; border-color:#e0e6ef; border-radius:12px; }
+.paper h1 { font-family:inherit; font-weight:650; }
+.documentContent { background:#f5f7fb; }
+.projectHeader { padding-top:22px; padding-bottom:22px; }
+.eyebrow { color:#5b6c83; }
+@media(max-width:1000px) { .documentContent .docToolbar { padding:10px 16px; } .documentContent .docToolbar > .status { display:none; } .documentContent .docToolbar > div { width:100%; gap:5px; } .documentContent .docToolbar .continueAction { margin-left:auto; } }
+@media(max-width:700px) { .documentContent .docToolbar > div { justify-content:flex-start; } .documentContent .docToolbar .continueAction { margin-left:0; } .documentContent .docToolbar { gap:0; } .questionAnchor { scroll-margin-top:calc(var(--workspace-toolbar-offset, 0px) + 190px); } }
+
+/* Reading comes first: less chrome, larger text, consistent contrast. */
+.projectHeader { padding:16px 28px; }
+.projectHeader input { font-size:26px; }
+.tabBar button { font-size:13px; }
+.deliveryNav > button { font-size:14px; min-height:44px; }
+.deliveryNav > button small { font-size:11px; }
+.docSummary,.prose,.artifactItem > p,.artifactItem li { font-size:15px; color:#4b5e76; line-height:1.8; }
+.prose h1,.prose h2,.prose h3 { color:#243a56; font-family:inherit; font-size:21px; }
+.paperMeta { font-size:12px; color:#65738a; }
+.documentContent .docToolbar button { font-size:13px!important; }
+@media(max-width:700px) { .projectHeader { padding:16px 18px; } .tabBar button { font-size:12px; } .documentContent .docToolbar button { font-size:12px!important; } }

@@ -148,3 +148,40 @@ Failure simulation previously restarted the iframe and lost entered data. It now
 The repeat prototype request hit the application's 58-second deadline (production reference `dc3f2cff-8071-44aa-a8c1-187ca2e952a7`). SDK error classes use inherited Error names, so the previous name-only classifier mislabeled the abort as a generic rejection. The handler now recognizes actual SDK constructors and distinguishes deadline expiry from cancellation. Prototypes receive a 150-second request budget inside a 180-second route limit; documents keep 58 seconds. Automatic SDK retries are disabled so one click does not silently begin a second model request. Diagnostics record only class, status, stage and deadline state. See [OpenAI error guidance](https://developers.openai.com/api/docs/guides/error-codes).
 
 Final real-run assessment: revised PRD/BRD each asked three material questions, but still sometimes treated undecided dependencies as exclusions and deferred pilot access controls without source authority. These outputs need human correction before engineering handoff. The retried prototype completed in 34 seconds with five screens; actual browser interactions passed required-field validation, simulated failure preserving input, and successful retry/list creation. Conditional approvals and record-bound editing did not pass. Deterministic capability checks now expose unbound updates, row navigation without detail binding, unsupported form updates and empty card actions; unbound actions no longer report success. Verdict: supervised internal pilot, not autonomous release-ready generation. Raw fictional evidence and downloads are in `.local-backups/relay-desk-qa-2026-10-23/` (not committed).
+
+## 25 October: project navigation and prototype intent
+
+The usability issue was structural: the team page presented a read-only document
+in a scrolling modal, while the editing and continuation actions lived in another
+surface. “Review” also referred to document acceptance, document reading, and AI
+change proposals. A viewport toggle after generation did not capture design intent.
+
+Changes:
+- Opening a shared project takes owners and editors directly to its working
+  document. Existing projects prefer the PRD; empty projects open Inputs.
+- Project, document and view are retained in the URL for refresh. Team discussion
+  is a named secondary action; opening a document from it opens that exact output.
+- Edit, Resolve questions and Continue with this PRD remain visible while reading.
+  Mark reviewed is a separate, explicitly named action. Continuing remains possible
+  with open questions and never implies approval.
+- Reviewers and viewers receive full-page read-only documents with a pinned return
+  action, rather than a document modal. Server permissions remain authoritative.
+- Every prototype generation/rebuild asks for Web, Mobile or Tablet/iPad, plus
+  optional audience and journey. The selection is saved with the project and
+  validated before calling AI. The prompt receives that context; the server enforces
+  the selected layout and exports the selected device in the prototype spec.
+- Preview size is explicitly separate from changing the prototype setup. Existing
+  prototypes remain readable. A failed rebuild retains the previous artifact and
+  saves the chosen setup for retry.
+
+Validation: 246 unit/database tests, lint, production build and browser journeys
+using fictional data. Browser checks cover XLSX intake, PRD output/edit/export,
+inline query decisions, continuation, all four team roles, mobile, saved setup and
+failure/retry. AI responses and team API writes are mocked in these browser tests;
+they validate interaction and persistence wiring, not new model-output quality.
+
+Remaining product limits: the generated prototype is a constrained simulation;
+conditional permissions, rich record editing and complex calculations remain outside
+its runtime. This update does not add Figma brand-token import or claim those gaps
+are solved. Observe the next real team session before declaring the experience
+intuitive for first-time users.

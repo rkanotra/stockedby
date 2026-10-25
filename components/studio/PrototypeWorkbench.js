@@ -1,30 +1,35 @@
 "use client";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { prototypeLimitations } from "@/lib/studio/prototype";
+import { PROTOTYPE_PLATFORMS } from "@/lib/studio/prototype-settings";
 import { prototypeHtml, screenSvg } from "@/lib/studio/prototypeRuntime";
 import { download } from "@/lib/studio/downloads";
 import { record, uid, invalidate } from "@/lib/studio/model";
 import w from "./workbench.module.css";
 export default function PrototypeWorkbench({
   project,
+  selectedNodeId,
+  onSelect,
   change,
   run,
   add,
+  hasInputs,
+  onInputs,
   busy,
   configured,
 }) {
   const nodes = project.nodes.filter((n) => n.type === "prototype"),
-    [chosen, setChosen] = useState("");
+    [chosen, setChosen] = useState(selectedNodeId || "");
   const node = nodes.find((n) => n.id === chosen) || nodes[0];
+  useEffect(() => { if (node?.id) onSelect?.(node.id); }, [node?.id, onSelect]);
   if (!node?.artifact?.prototype)
     return (
       <div className={w.empty}>
-        <span className={w.kicker}>EXPERIENCE LAB</span>
-        <h2>{busy === node?.id ? "Creating your prototype…" : "Make the requirements tangible."}</h2>
+        <span className={w.kicker}>YOUR PROTOTYPE</span>
+        <h2>{busy && busy === node?.id ? "Creating your prototype…" : "Turn your PRD into something you can try."}</h2>
         <p>
-          Generate a working journey with navigation, form validation and
-          simulated data. Review the happy path and failure states before
-          engineering starts.
+          Choose Web, Mobile or Tablet, then pick the journey to explore.
+          We’ll use your requirements to create interactive screens.
         </p>
         <div className={w.journey}>
           <span>Requirements</span>
@@ -34,10 +39,10 @@ export default function PrototypeWorkbench({
           <span>Review evidence</span>
         </div>
         <button
-          disabled={busy || configured === false}
-          onClick={() => (node ? run([node.id]) : add("prototype"))}
+          disabled={!!busy || (hasInputs && configured === false)}
+          onClick={() => !hasInputs ? onInputs() : node ? run([node.id]) : add("prototype")}
         >
-          {busy === node?.id ? "Creating…" : node ? "Generate prototype" : "Add prototype to workflow"} ↗
+          {busy && busy === node?.id ? "Creating…" : !hasInputs ? "Add project inputs" : "Set up prototype"} →
         </button>
         <small>
           External services are simulated. Your prototype is a review tool, not
@@ -66,7 +71,7 @@ function Prototype({
     iframe = useRef(null),
     [screen, setScreen] = useState(spec.startScreenId),
     [start, setStart] = useState(spec.startScreenId),
-    [device, setDevice] = useState("desktop"),
+    [device, setDevice] = useState(spec.targetPlatform || (spec.layout === "mobile" ? "mobile" : "web")),
     [failure, setFailure] = useState(false),
     [reset, setReset] = useState(0),
     [panel, setPanel] = useState("scenarios"),
@@ -116,7 +121,7 @@ function Prototype({
     <div className={w.lab}>
       <div className={w.heading}>
         <div>
-          <span className={w.kicker}>EXPERIENCE LAB</span>
+          <span className={w.kicker}>YOUR PROTOTYPE · {PROTOTYPE_PLATFORMS.find(p => p.id === spec.targetPlatform)?.label.toUpperCase() || "DEVICE NOT SET"}</span>
           <h2>
             {spec.name}{" "}
             <span className={w.tag}>
@@ -126,10 +131,11 @@ function Prototype({
             </span>
           </h2>
           <p>
-            Use the product. Challenge the specification. Capture the decisions.
+            Try the journey below. Change the setup to build for a different device or audience.
           </p>
         </div>
         <div className={w.actions}>
+          <button disabled={!!busy} onClick={() => run([node.id])}>Change prototype setup</button>
           <button
             onClick={() =>
               download(
@@ -162,21 +168,8 @@ function Prototype({
         <section className={w.preview}>
           <div className={w.toolbar}>
             <span className={w.dots}>● ● ●</span>
-            <span className={w.address}>prototype / {current.id}</span>
-            <div className={w.segment}>
-              <button
-                aria-pressed={device === "desktop"}
-                onClick={() => setDevice("desktop")}
-              >
-                Desktop
-              </button>
-              <button
-                aria-pressed={device === "mobile"}
-                onClick={() => setDevice("mobile")}
-              >
-                Mobile
-              </button>
-            </div>
+            <span className={w.address}>{current.name}</span>
+            <label className={w.previewSize}>Preview size<select aria-label="Preview size" value={device} onChange={e => setDevice(e.target.value)}>{PROTOTYPE_PLATFORMS.map(p => <option value={p.id} key={p.id}>{p.label}</option>)}</select></label>
             <button
               title="Reset simulated data"
               onClick={() => setReset((r) => r + 1)}
@@ -192,7 +185,7 @@ function Prototype({
               sandbox="allow-scripts"
               srcDoc={html}
               onLoad={() => iframe.current?.contentWindow?.postMessage({ type: "stockedby-prototype-failure", enabled: failure }, "*")}
-              style={{ maxWidth: device === "mobile" ? 390 : "100%" }}
+              style={{ maxWidth: PROTOTYPE_PLATFORMS.find(p => p.id === device)?.width || "100%" }}
             />
           </div>
           <div className={w.screenStrip}>

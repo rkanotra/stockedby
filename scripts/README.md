@@ -155,3 +155,19 @@ The check uses fictional content, real XLSX extraction and intercepted AI respon
 `node scripts/test_studio_decisions_browser.mjs` (or set `STUDIO_TEST_URL`) uses fictional data and intercepts AI requests. Covers per-query answer/ignore/reopen, refresh, failed regeneration, request context, Word export, PRD-to-prototype/stories/tests, mobile, and shared-editor autosave/reload against a fake server. Requires installed Chrome. No paid model calls or real team writes.
 
 `node scripts/test_prototype_failure_browser.mjs` runs the trusted prototype renderer with a fictional fixture in Chrome. It checks that toggling simulated service failure preserves typed values and a subsequent submission succeeds. No network or model call is required.
+
+## test_workspace_journey_browser.mjs
+
+Tests the shared product journey with fictional owner, editor, reviewer and
+viewer accounts. Covers direct document opening, pinned actions, editing and
+online save payloads, restoring the same document on refresh, team discussion,
+prototype device/audience/journey setup, failed rebuild recovery, tablet preview,
+mobile layout and read-only access. Team endpoints and AI responses are mocked;
+no customer projects are changed and no paid AI calls are made.
+
+```
+STUDIO_TEST_URL=http://localhost:3003 node scripts/test_workspace_journey_browser.mjs
+```
+
+Uses installed Chrome via Playwright. The older PRD and decision browser checks
+also cover the direct project entry and the prototype setup step.

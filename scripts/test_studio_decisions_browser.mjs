@@ -76,6 +76,8 @@ try {
   assert.ok(word.includes("[ignored] Retention is undecided."));
   await page.getByRole("button", { name: "Continue with this PRD" }).first().click();
   await page.getByRole("dialog").getByRole("button", { name: /Working prototype/ }).click();
+  await page.getByRole("radio", { name: /Mobile/ }).check();
+  await page.getByRole("button", { name: "Build prototype", exact: false }).click();
   await page.locator('iframe[title$="interactive prototype"]').waitFor();
   assert.ok(requests.at(-1).upstream.some(n => n.type === "requirements"));
   await page.getByRole("tab", { name: "2. Your documents" }).click();
@@ -112,8 +114,7 @@ try {
   await page.goto(`${base}/workspace`);
   const openTeam = async () => {
     await page.getByRole("button").filter({ has: page.getByRole("heading", { name: project.name, exact: true }) }).click();
-    await page.getByRole("button", { name: "Open editor", exact: true }).click();
-    await page.getByRole("heading", { name: prd.artifact.title, exact: true }).waitFor();
+      await page.getByRole("heading", { name: prd.artifact.title, exact: true }).waitFor();
   };
   await openTeam();
   await card("Who owns invitations?").getByRole("button", { name: "Answer", exact: true }).click();
@@ -125,7 +126,7 @@ try {
   assert.ok(teamWrites > 0);
   assert.equal(team.projects[0].document.queryResolutions[0].answer, "The shared operations team.");
   await page.reload();
-  await openTeam();
+  await page.getByRole("heading", { name: prd.artifact.title, exact: true }).waitFor();
   await page.getByText("1 saved answers & ignored queries", { exact: true }).click();
   await card("Who owns invitations?").getByText("The shared operations team.", { exact: true }).waitFor();
   await page.getByRole("button", { name: "Continue with this PRD" }).first().click();

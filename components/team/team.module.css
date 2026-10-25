@@ -7,3 +7,33 @@
 @media(prefers-reduced-motion:reduce){.app *,.auth *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 .documentDialog{width:min(960px,calc(100vw - 32px))}.documentBody{font-size:13px;line-height:1.9;color:#5c6e50}.documentBody>p{margin:16px 0;white-space:pre-wrap}.documentBody section{border-top:1px solid #dce4d2;margin-top:22px;padding-top:22px}.documentBody h3{font-size:18px;margin:10px 0}.documentBody h2{font-size:23px}.documentBody ul{padding-left:22px}.documentBody li{margin:7px 0}.documentBody iframe{width:100%;height:600px;border:1px solid #dce4d2;border-radius:8px;background:white}.documentBody>.secondary{margin-top:25px}
+
+/* One project opens into one working surface; team context is a secondary view. */
+.app,.editorWrap { --ink:#22344b; --muted:#617087; --line:#e0e6ef; --paper:#f6f8fb; font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+.app h1,.app h2,.app h3 { font-family:inherit; letter-spacing:-.035em; }
+.app .pageHeading h1 { font-size:36px; }
+.app .pageHeading p { color:#63718a; }
+.app .content { padding-top:32px; }
+.pendingChanges { display:flex; align-items:center; gap:16px; padding:16px 20px; margin-bottom:28px; width:100%; background:#eef3ff; color:#304f8b; border:1px solid #dce5f5; border-radius:12px; text-align:left; }
+.pendingChanges span { display:grid; gap:4px; flex:1; }
+.pendingChanges small { font-size:12px; color:#647694; }
+.app .projectCard { border-radius:14px; }
+.editorBar { background:#fff; color:#4b5f7a; border-color:#dfe6ef; padding:12px 24px; min-height:64px; flex-wrap:wrap; }
+.editorBar .editorNavigation { display:flex; align-items:center; gap:14px; margin:0; min-width:0; }
+.editorNavigation strong { color:#263a56; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
+.editorBar .textButton { color:#344f78; min-height:40px; }
+.editorBar > span { font-size:12px; }
+.editorBar .primary { background:#285ac6; color:white; box-shadow:none; }
+.editorBar .secondary { color:#3b5477; border-color:#d9e2ef; background:white; }
+.readerToolbar { display:flex; align-items:center; justify-content:space-between; gap:16px; position:sticky; top:0; z-index:20; padding:16px; margin:-32px -16px 24px; background:#fff; border-bottom:1px solid #dce4ef; flex-wrap:wrap; }
+.readerToolbar span { color:#687a92; font-size:12px; }
+.readerToolbar label { margin:0; }
+.readerPaper { background:white; border:1px solid #e0e6ef; border-radius:14px; padding:40px; max-width:880px; margin:0 auto; }
+.readerPaper h1 { font-size:32px; margin:12px 0 25px; }
+.readerPaper .documentBody { color:#445974; font-size:15px; }
+.readerPaper .documentBody p { margin:16px 0; }
+.readerPaper .documentBody h2 { margin:16px 0; font-size:23px; }
+.readerPaper > button { margin-top:30px; }
+@media(max-width:1000px) { .editorBar { gap:8px; } .editorBar > span { margin-left:auto; } .editorBar > div:last-child { margin-left:auto; } }
+@media(max-width:600px) { .editorBar { padding:8px 12px; gap:4px 10px; } .editorBar > span { font-size:10px; } .editorNavigation strong { max-width:130px; font-size:12px; } .editorBar .editorNavigation { gap:8px; } .editorBar > div:last-child { width:100%; justify-content:flex-end; } .editorBar .primary,.editorBar .secondary { min-height:40px; font-size:12px!important; } .readerPaper { padding:24px 20px; } .readerPaper h1 { font-size:26px; } .readerToolbar { padding:12px; } }
+@media(prefers-reduced-motion:reduce) { .app *,.editorWrap * { transition:none!important; scroll-behavior:auto!important; } }

@@ -26,6 +26,7 @@ import QueryReview from "./QueryReview";
 import { documentQueries, queryResolutionInput } from "@/lib/studio/queries";
 import { makePlanProposal, contextFingerprint, planContext, fingerprint } from "@/lib/studio/product-plan";
 import PrototypeWorkbench from "./PrototypeWorkbench";
+import PrototypeSetup from "./PrototypeSetup";
 import ProjectInputs, { INPUT_ACCEPT } from "./ProjectInputs";
 import ReviewDesk from "./ReviewDesk";
 import Connections from "./Connections";
@@ -40,7 +41,7 @@ const tabs = [
   ["prototype", "Prototype", "screen"],
   ["plan", "Product plan", "brief"],
   ["canvas", "Workflow", "flow"],
-  ["review", "Review", "check"],
+  ["review", "Review history", "check"],
   ["connections", "Connections", "link"],
   ["standards", "Standards", "shield"],
   ["trace", "Traceability", "link"],
@@ -73,6 +74,7 @@ export default function Studio({ shared = null }) {
     [error, setError] = useState(""),
     [toast, setToast] = useState(""),
     [modal, setModal] = useState(null),
+    [prototypeRequest, setPrototypeRequest] = useState(null),
     [sourceKind, setSourceKind] = useState("context"),
     [sourceName, setSourceName] = useState(""),
     [sourceText, setSourceText] = useState(""),
@@ -95,9 +97,9 @@ export default function Studio({ shared = null }) {
     node = p?.nodes.find((n) => n.id === selected),
     artifact = node?.artifact;
   function resumeProject(project) {
-    const output = initialDocument(project);
+    const output = project.nodes.find(n => n.id === shared?.initialNodeId) || initialDocument(project);
     setSelected(output?.id || null);
-    setTab(output ? documentView(output) : "inputs");
+    setTab(shared?.initialView || (output ? documentView(output) : "inputs"));
     setEditing(false);
   }
   function openDocuments() {
@@ -138,6 +140,18 @@ export default function Studio({ shared = null }) {
   }
   function current() {
     return state.current.projects.find((p) => p.id === state.current.active);
+  }
+  useEffect(() => {
+    if (shared && loaded) shared.onNavigate?.({ tab, nodeId: selected });
+  }, [tab, selected, loaded, shared]);
+  const notifyBusy = shared?.onBusyChange;
+  useEffect(() => {
+    notifyBusy?.(busy);
+  }, [busy, notifyBusy]);
+  function showQuestions() {
+    const section = document.getElementById("document-questions");
+    section?.scrollIntoView({ block: "start", behavior: "instant" });
+    section?.focus({ preventScroll: true });
   }
   useEffect(() => {
     try {
@@ -388,6 +402,7 @@ export default function Studio({ shared = null }) {
         productPlan: project.productPlan,
         upstream: type === "plan" ? project.nodes.filter(x => x.artifact && x.artifact.status !== "stale").map(x => ({type:x.type,...x.artifact})) : upstream,
         instruction: n?.instruction || "",
+        prototypeSettings: n?.prototypeSettings,
         decisions: project.decisions || [],
         queryResolutions: queryResolutionInput(project),
         previous: n?.artifact || null,
@@ -451,8 +466,14 @@ export default function Studio({ shared = null }) {
       setToast(status === "answered" ? "Answer saved. Update the PRD to apply it, or continue with this draft." : status === "ignored" ? "Query ignored. You can reopen it anytime." : "Query reopened.");
     } catch (e) { setError(e.message); }
   }
-  async function run(ids, sourceNodeId = null) {
+  async function run(ids, sourceNodeId = null, prototypeConfirmed = false) {
     if (startLock.current) return;
+    const prototype = current().nodes.find(n => ids.includes(n.id) && n.type === "prototype");
+    if (prototype && !prototypeConfirmed) {
+      setPrototypeRequest({ ids, sourceNodeId, nodeId: prototype.id });
+      setModal("prototype-setup");
+      return;
+    }
     startLock.current = true;
     stop.current = false;
     setError("");
@@ -599,8 +620,6 @@ export default function Studio({ shared = null }) {
       items: artifact.items.map((i) => (i.id === id ? { ...i, ...patch } : i)),
     });
   }
-  const reviewed =
-    p?.nodes.filter((n) => n.artifact?.status === "approved").length || 0;
   const generated = p?.nodes.filter((n) => n.artifact).length || 0;
   const prd = p?.nodes.find(n => n.type === "requirements");
   const hasInputs = !!p && (p.brief.trim().length >= 20 || p.sources.some(source => source.kind === "context" && source.text.trim().length >= 20) || Object.values(planContext(p)).flatMap(section => Object.values(section.fields)).join(" ").trim().length >= 20);
@@ -667,10 +686,10 @@ export default function Studio({ shared = null }) {
               <Icon name="layers" />
             </span>
             <div>
-              {shared ? shared.name : "My workspace"}<small>{shared ? "Shared initiative · draft editor" : "Personal draft · this browser"}</small>
+                {shared ? shared.name : "My workspace"}<small>{shared ? "Shared project" : "Personal draft · this browser"}</small>
             </div>
           </div>
-          <div className={s.sideLabel}>
+          {!shared && <><div className={s.sideLabel}>
             PROJECTS{" "}
             <button
               title="New project"
@@ -697,7 +716,7 @@ export default function Studio({ shared = null }) {
                 {p.name}
               </option>
             ))}
-          </select>
+          </select></>}
           <div className={s.sideDivider} />
           {tab === "canvas" ? (
             <>
@@ -739,15 +758,18 @@ export default function Studio({ shared = null }) {
               {p.nodes.filter(n => n.artifact || n.type === "requirements").map((n) => (
                 <button
                   key={n.id}
+                  aria-current={selected === n.id && ["documents", "prototype"].includes(tab) ? "page" : undefined}
                   onClick={() => {
                     setSelected(n.id);
                     setTab(n.type === "prototype" ? "prototype" : "documents");
+                    setEditing(false);
+                    window.scrollTo({ top: 0, behavior: "instant" });
                   }}
                 >
                   <span
                     className={`${s.deliveryDot} ${n.artifact?.status === "stale" ? s.needsUpdate : ""}`}
                   />
-                  <span>{TYPE[n.type].short}</span>
+                  <span>{n.type === "review" ? "Readiness" : TYPE[n.type].short}</span>
                   <small>{statusLabel(n.artifact)}</small>
                 </button>
               ))}
@@ -789,7 +811,7 @@ export default function Studio({ shared = null }) {
                 </small>
               </p>
             </div>
-            <button onClick={() => create(true)} disabled={!!busy || !!shared}>
+            {!shared && <><button onClick={() => create(true)} disabled={!!busy}>
               <Icon name="play" size={14} /> Explore sample project
             </button>
             <button
@@ -797,7 +819,7 @@ export default function Studio({ shared = null }) {
               disabled={!!busy || !!shared}
             >
               <Icon name="upload" size={14} /> Open project backup
-            </button>
+            </button></>}
             <Link href="/guide" target={shared ? "_blank" : undefined} rel={shared ? "noopener noreferrer" : undefined}>
               Workspace guide <Icon name="arrow" size={14} />
             </Link>
@@ -853,9 +875,6 @@ export default function Studio({ shared = null }) {
               ))}
             </div>
             <details className={s.moreViews}><summary>{advancedTabs.includes(tab) ? tabs.find(t => t[0] === tab)[1] : "More"} ▾</summary><div>{tabs.filter(([key]) => advancedTabs.includes(key)).map(([key, label, icon]) => <button key={key} onClick={e => { setTab(key); e.currentTarget.closest("details").open = false; }}><Icon name={icon} size={16} />{label}</button>)}</div></details>
-            <span className={s.reviewCount}>
-              {reviewed}/{p.nodes.length} reviewed
-            </span>
           </div>
           {configured === false && (
             <div className={s.notice}>
@@ -895,10 +914,18 @@ export default function Studio({ shared = null }) {
               <PrototypeWorkbench
                 key={p.id}
                 project={p}
+                selectedNodeId={selected}
+                onSelect={setSelected}
                 change={(fn) => changeProject(p.id, fn)}
                 run={run}
-                add={add}
-                busy={!!busy}
+                add={() => {
+                  add("prototype");
+                  const target = current().nodes.find(n => n.type === "prototype");
+                  if (target) { setTab("prototype"); run([target.id]); }
+                }}
+                hasInputs={hasInputs}
+                onInputs={() => setTab("inputs")}
+                busy={busy}
                 configured={configured}
               />
             )}
@@ -1343,21 +1370,14 @@ export default function Studio({ shared = null }) {
                             <Icon name={editing ? "check" : "edit"} size={15} />
                             {editing ? "Finish editing" : "Edit"}
                           </button>
-                          <button
-                            disabled={!!busy || configured === false}
-                            onClick={() => run([node.id])}
-                          >
-                            <Icon name="spark" size={15} /> Regenerate
-                          </button>
-                          <button
-                            disabled={!!busy}
-                            onClick={() => setModal("approve")}
-                          >
-                            <Icon name="check" size={15} /> Review
-                          </button>
+                          {documentQueries(p, node).length > 0 && <button disabled={!!busy} onClick={showQuestions}>Resolve questions <span className={s.questionCount}>{documentQueries(p, node).filter(q => q.status === "open").length}</span></button>}
+                          <details className={s.documentActions}><summary>More actions <span aria-hidden="true">▾</span></summary><div>
+                            <button disabled={!!busy || configured === false} onClick={e => { e.currentTarget.closest("details").open = false; run([node.id]); }}><Icon name="spark" size={15} />Regenerate</button>
+                            <button disabled={!!busy} onClick={e => { e.currentTarget.closest("details").open = false; setModal("approve"); }}><Icon name="check" size={15} />Mark reviewed</button>
+                          </div></details>
+                          {node.type === "requirements" && <button className={s.continueAction} disabled={!!busy} onClick={() => setModal("next")}>Continue with this PRD <Icon name="arrow" size={15}/></button>}
                         </div>
                       </div>
-                      {node.type === "requirements" && <div className={s.continueBar}><div><strong>Ready for the next step?</strong><p>Use this PRD to create a prototype, user stories or a test plan.</p></div><button className={s.primary} disabled={!!busy} onClick={() => setModal("next")}>Continue with this PRD <Icon name="arrow" size={16}/></button></div>}
                       {artifact.status === "stale" && (
                         <div className={s.notice}>
                           The context or workflow changed. Regenerate this
@@ -1480,7 +1500,7 @@ export default function Studio({ shared = null }) {
                             </article>
                           ))}
                         </div>
-                        <QueryReview key={node.id} project={p} node={node} busy={!!busy} configured={configured} onResolve={resolveQuery} onUpdate={() => run([node.id])} />
+                        <div id="document-questions" tabIndex={-1} className={s.questionAnchor}><QueryReview key={node.id} project={p} node={node} busy={!!busy} configured={configured} onResolve={resolveQuery} onUpdate={() => run([node.id])} /></div>
                         {node.type === "requirements" && <div className={s.continueBar}><div><strong>Happy with this draft?</strong><p>You can move on with questions still open.</p></div><button className={s.primary} disabled={!!busy} onClick={() => setModal("next")}>Continue with this PRD <Icon name="arrow" size={16}/></button></div>}
 
                       </div>
@@ -1829,6 +1849,17 @@ export default function Studio({ shared = null }) {
                 {configured === false && <p>AI is temporarily unavailable. You can still open existing outputs.</p>}
               </>
             )}
+            {modal === "prototype-setup" && prototypeRequest && <PrototypeSetup
+              settings={p.nodes.find(n => n.id === prototypeRequest.nodeId)?.prototypeSettings}
+              existing={!!p.nodes.find(n => n.id === prototypeRequest.nodeId)?.artifact}
+              onCancel={() => setModal(null)}
+              onSubmit={settings => {
+                const request = prototypeRequest;
+                change(p => record({ ...p, nodes: p.nodes.map(n => request.ids.includes(n.id) && n.type === "prototype" ? { ...n, prototypeSettings: settings } : n) }, "Prototype device and journey selected."));
+                setModal(null);
+                run(request.ids, request.sourceNodeId, true);
+              }}
+            />}
             {modal === "steps" && (
               <>
                 <span className={s.eyebrow}>YOUR WORKFLOW, YOUR WAY</span>
@@ -2025,7 +2056,7 @@ export default function Studio({ shared = null }) {
               <>
                 <span className={s.eyebrow}>HUMAN REVIEW</span>
                 <h2 id="modal-title">
-                  Review the {TYPE[node.type].short.toLowerCase()}.
+                  Mark this {TYPE[node.type].short.toLowerCase()} reviewed?
                 </h2>
                 {approvalProblems(p, node).length ? (
                   <>

@@ -764,3 +764,10 @@
 .prototypeScope { padding:16px; border:1px solid #dce4ee; border-radius:10px; margin-bottom:16px; background:#f8faff; color:#4b607e; font-size:13px; line-height:1.6; }
 .prototypeScope summary { cursor:pointer; font-weight:600; color:#253a57; }
 .prototypeScope p { margin:12px 0 0; }
+
+.previewSize { display:flex; align-items:center; gap:8px; margin-left:auto; font-size:11px; color:#64748b; white-space:nowrap; }
+.previewSize select { border:1px solid #d9e1ef; background:#f8faff; border-radius:7px; padding:8px; font:inherit; color:#344967; }
+.toolbar { height:auto; min-height:56px; flex-wrap:wrap; padding:10px 14px; }
+.lab .heading p { font-size:14px; }
+.lab .actions button { min-height:42px; font-size:12px; }
+@media(max-width:700px) { .toolbar { gap:8px; } .previewSize { margin-left:0; } .address { width:100%; } }
