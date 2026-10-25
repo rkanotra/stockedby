@@ -771,3 +771,24 @@
 .lab .heading p { font-size:14px; }
 .lab .actions button { min-height:42px; font-size:12px; }
 @media(max-width:700px) { .toolbar { gap:8px; } .previewSize { margin-left:0; } .address { width:100%; } }
+
+.deviceFrame { margin:auto; width:100%; }
+.stage { background:#e9edf2; background-image:none; padding:28px 20px; }
+.phoneFrame { border:9px solid #20262c; border-radius:42px; box-shadow:0 28px 55px -20px #182c4550,0 0 0 1px #49515a; overflow:hidden; background:#fff; }
+.phoneFrame iframe { border-radius:32px; height:780px; transition:none; }
+.journeyMap { background:#fff; border:1px solid #dce3ed; border-radius:12px; margin:0 0 22px; padding:17px 20px; }
+.journeyMap summary { cursor:pointer; font-size:14px; font-weight:650; color:#263c55; }
+.journeyMap summary span { font-weight:400; color:#6c7a8d; margin-left:12px; font-size:12px; }
+.journeyMap > p { font-size:12px; color:#6c7a8d; }
+.flowCards { display:flex; overflow-x:auto; gap:12px; padding:12px 0; }
+.flowCards article { flex:0 0 220px; border:1px solid #dfe5ee; border-radius:12px; padding:14px; }
+.flowCards .currentStep { border-color:#6d89b5; background:#f5f8ff; }
+.flowCards article>button { display:flex; gap:12px; border:0; background:transparent; padding:0; text-align:left; width:100%; min-height:40px; }
+.flowCards article>button span { color:#788aa0; font:12px monospace; }
+.flowCards small { display:block; color:#687c93; margin:9px 0; font-size:11px; }
+.flowCards ul { list-style:none; margin:0; padding:0; }
+.flowCards li { font-size:12px; color:#344a65; padding:10px 0; border-top:1px solid #e5eaf0; }
+.flowCards li span { display:block; color:#75849a; font-size:11px; margin-top:3px; }
+.flowCards article>p { font-size:12px; color:#6c7a8d; }
+@media(max-width:700px) { .phoneStage{padding:12px 8px}.phoneFrame{border-width:5px;border-radius:29px}.phoneFrame iframe{border-radius:24px;height:740px}.journeyMap summary span{display:block;margin:5px 0 0}.journeyMap{padding:14px}.flowCards article{flex-basis:200px} }
+@media(prefers-reduced-motion:reduce) { .stage iframe{transition:none} }

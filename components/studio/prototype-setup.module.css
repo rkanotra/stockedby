@@ -22,3 +22,5 @@
 .actions button[type=submit] { background:#275bc8; border-color:#275bc8; color:#fff; }
 .actions button:disabled { opacity:.45; cursor:not-allowed; }
 @media(max-width:450px) { .platforms { gap:8px; } .platforms label { padding:14px 9px; } .platforms small { font-size:11px; } }
+
+.processFlow{padding:14px;background:#f5f8fb;border:1px solid #dce3ed;border-radius:10px;margin:18px 0}.processFlow summary{cursor:pointer;font-size:13px;font-weight:600}.processFlow ol{padding-left:20px;max-height:180px;overflow:auto}.processFlow li{font-size:12px;margin-bottom:12px}.processFlow li p{font-size:12px}

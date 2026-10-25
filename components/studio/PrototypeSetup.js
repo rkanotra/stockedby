@@ -3,7 +3,7 @@ import { useState } from "react";
 import { PROTOTYPE_PLATFORMS } from "@/lib/studio/prototype-settings";
 import s from "./prototype-setup.module.css";
 
-export default function PrototypeSetup({ settings, existing, onSubmit, onCancel }) {
+export default function PrototypeSetup({ settings, existing, processFlow, onSubmit, onCancel }) {
   const [value, setValue] = useState({ platform: "", audience: "", journey: "", ...settings });
   return <form className={s.form} onSubmit={e => { e.preventDefault(); if (value.platform) onSubmit(value); }}>
     <span className={s.eyebrow}>BEFORE WE BUILD</span>
@@ -17,6 +17,7 @@ export default function PrototypeSetup({ settings, existing, onSubmit, onCancel 
         <strong>{platform.label}</strong><small>{platform.description}</small>
       </label>)}
     </fieldset>
+    {processFlow?.items?.length > 0 && <details className={s.processFlow}><summary>Use your process flow · {processFlow.items.length} steps</summary><p>These steps will guide the screens and their decision paths. Use the journey field below to narrow the scope.</p><ol>{processFlow.items.map(item => <li key={item.id}><strong>{item.title}</strong><p>{item.detail}</p></li>)}</ol></details>}
     <label className={s.field}>Who is this for? <span>Optional</span><input value={value.audience} maxLength={160} onChange={e => setValue(v => ({ ...v, audience: e.target.value }))} placeholder="For example, customers applying for a loan" /></label>
     <label className={s.field}>Which journey should we build first? <span>Optional</span><textarea rows={3} value={value.journey} maxLength={800} onChange={e => setValue(v => ({ ...v, journey: e.target.value }))} placeholder="For example, check eligibility, apply and track the application" /></label>
     <p className={s.note}>{existing ? "This creates a new version. Your current prototype stays available if generation fails." : "You’ll get interactive screens with simulated data. You can refine them afterward."}</p>

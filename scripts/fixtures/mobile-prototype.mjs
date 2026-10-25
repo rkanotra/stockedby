@@ -1,0 +1,16 @@
+const action = (id,label,kind,targetScreenId='') => ({id,label,kind,targetScreenId,collection:'',recordId:'',field:'',value:'',message:''});
+const section = (id,type,title,extra={}) => ({id,type,title,description:'',collection:'',visibility:'always',fields:[],records:[],actions:[],...extra});
+const field = (id,label,type,extra={}) => ({id,label,type,required:true,placeholder:'',initialValue:'',options:[],hint:'',min:'',max:'',readOnly:false,...extra});
+const row = (id,title,fieldRef) => ({id,title,fieldRef,subtitle:'',status:'',value:''});
+const summary = () => section('details','summary','Your booking',{records:[row('room','Space','booking.booking-form.room'),row('day','Date','booking.booking-form.date'),row('guests','Guests','booking.booking-form.guests'),row('name','Booked by','contact.contact-form.name')]});
+export const mobilePrototype = {
+  name:'Forma',theme:'emerald',layout:'mobile',targetPlatform:'mobile',description:'Fictional workspace booking. Availability and confirmation are simulated; no booking is made.',startScreenId:'booking',
+  screens:[
+    {id:'booking',name:'Choose a space',eyebrow:'MAKE ROOM FOR GOOD WORK',title:'Your next great meeting.',description:'A quiet space. Your people. Pick a day.',requirementIds:['REQ-001'],actions:[],sections:[
+      section('space','hero','The Garden Room',{description:'Natural light. A little greenery. Room for up to 8 people.'}),
+      section('booking-form','form','Make it yours',{fields:[field('room','Space','select',{options:['Garden Room','Studio One'],initialValue:'Garden Room'}),field('date','Day','date'),field('guests','How many people?','number',{min:'1',max:'8',initialValue:'2',hint:'Bring between 1 and 8 people.'})],actions:[action('next','Continue','continue','contact')]})]},
+    {id:'contact',name:'Your details',eyebrow:'ONE LAST DETAIL',title:'Who’s joining us?',description:'Add the contact details for this sample booking.',requirementIds:['REQ-002'],actions:[],sections:[section('contact-form','form','Contact details',{fields:[field('name','Full name','text',{placeholder:'Alex Morgan'}),field('email','Email address','email',{placeholder:'alex@example.com'})],actions:[action('review','Review booking','continue','review')]})]},
+    {id:'review',name:'Review booking',eyebrow:'LOOKING GOOD',title:'A little room to focus.',description:'Check the details before you confirm.',requirementIds:['REQ-001','REQ-002'],actions:[],sections:[summary(),section('confirm-form','form','Ready when you are',{fields:[field('agree','I understand this is a simulated booking.','checkbox')],actions:[action('confirm','Confirm booking','submit','done')]})]},
+    {id:'done',name:'Booking confirmed',eyebrow:'ALL SET',title:'See you there.',description:'Your sample booking is confirmed. No real reservation was made.',requirementIds:['REQ-001'],actions:[action('again','Start again','reset')],sections:[summary()]}
+  ],scenarios:[{id:'SCN-1',name:'Book a workspace',startScreenId:'booking',steps:['Choose a space, day and guest count.','Continue, enter a name and email.','Review booking, check the simulation acknowledgement and Confirm booking.'],expectedResult:'Entered values are shown on the confirmation screen. No real reservation is made.',requirementIds:['REQ-001','REQ-002']}]
+};

@@ -37,3 +37,12 @@
 @media(max-width:1000px) { .editorBar { gap:8px; } .editorBar > span { margin-left:auto; } .editorBar > div:last-child { margin-left:auto; } }
 @media(max-width:600px) { .editorBar { padding:8px 12px; gap:4px 10px; } .editorBar > span { font-size:10px; } .editorNavigation strong { max-width:130px; font-size:12px; } .editorBar .editorNavigation { gap:8px; } .editorBar > div:last-child { width:100%; justify-content:flex-end; } .editorBar .primary,.editorBar .secondary { min-height:40px; font-size:12px!important; } .readerPaper { padding:24px 20px; } .readerPaper h1 { font-size:26px; } .readerToolbar { padding:12px; } }
 @media(prefers-reduced-motion:reduce) { .app *,.editorWrap * { transition:none!important; scroll-behavior:auto!important; } }
+
+.projectCardShell { position:relative; min-width:0; display:flex; flex-direction:column; border:1px solid #dce4ef; border-radius:18px; background:#fff; overflow:hidden; }
+.projectCardShell .projectCard { border:0; border-radius:0; flex:1; width:100%; }
+.deleteProject { align-self:flex-end; display:flex; align-items:center; gap:6px; margin:0 24px 16px; padding:8px 10px; border:0; background:transparent; border-radius:7px; color:#9d3940; font:inherit; font-size:12px; cursor:pointer; min-height:40px; }
+.deleteProject:hover { background:#fff0f0; }
+.deleteActions { display:flex; gap:10px; justify-content:flex-end; margin-top:25px; flex-wrap:wrap; }
+.danger { padding:12px 18px; background:#b52f38; border:1px solid #b52f38; color:#fff; border-radius:8px; font:inherit; cursor:pointer; }
+.danger:disabled { opacity:.6; cursor:wait; }
+.deleteSummary { padding:12px 14px; background:#f5f7fa; border-radius:8px; font-size:13px; }

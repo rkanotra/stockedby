@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo, useRef, useEffect } from "react";
+import { prototypeJourney } from "@/lib/studio/prototype-journey";
 import { prototypeLimitations } from "@/lib/studio/prototype";
 import { PROTOTYPE_PLATFORMS } from "@/lib/studio/prototype-settings";
 import { prototypeHtml, screenSvg } from "@/lib/studio/prototypeRuntime";
@@ -94,7 +95,11 @@ function Prototype({
     window.addEventListener("message", receive);
     return () => window.removeEventListener("message", receive);
   }, [spec]);
+  const journey = useMemo(() => prototypeJourney(spec), [spec]);
   const current = spec.screens.find((s) => s.id === screen) || spec.screens[0];
+  function jumpToScreen(id) {
+    iframe.current?.contentWindow?.postMessage({ type: "stockedby-prototype-navigate", screenId: id }, "*");
+  }
   function result(scenario, status) {
     change((p) =>
       record(
@@ -154,7 +159,7 @@ function Prototype({
               )
             }
           >
-            Screen SVG
+            Screen outline (SVG)
           </button>
         </div>
       </div>
@@ -164,6 +169,16 @@ function Prototype({
           another review.
         </div>
       )}
+      <details className={w.journeyMap}>
+        <summary>Journey map <span>{spec.screens.length} screens · See the paths and decisions</span></summary>
+        <p>These connections come from the prototype’s buttons. Open any screen to try that part of the journey.</p>
+        <div className={w.flowCards}>{journey.map((step, i) => <article key={step.id} className={step.id === screen ? w.currentStep : ""}>
+          <button onClick={() => jumpToScreen(step.id)}><span>{String(i+1).padStart(2,"0")}</span><strong>{step.name}</strong></button>
+          <small>{step.id === spec.startScreenId ? "Starting screen" : !step.reachable ? "Only reachable from the screen menu" : step.form ? "Enter and validate" : "Connected screen"}</small>
+          <ul>{step.edges.map((edge,j) => <li key={j}>{edge.label}<span>→ {edge.targetName}</span></li>)}</ul>
+          {!step.edges.length && <p>End of this path</p>}
+        </article>)}</div>
+      </details>
       <div className={w.labGrid}>
         <section className={w.preview}>
           <div className={w.toolbar}>
@@ -172,12 +187,13 @@ function Prototype({
             <label className={w.previewSize}>Preview size<select aria-label="Preview size" value={device} onChange={e => setDevice(e.target.value)}>{PROTOTYPE_PLATFORMS.map(p => <option value={p.id} key={p.id}>{p.label}</option>)}</select></label>
             <button
               title="Reset simulated data"
-              onClick={() => setReset((r) => r + 1)}
+              onClick={() => { setStart(spec.startScreenId); setReset((r) => r + 1); }}
             >
               ↻ Reset
             </button>
           </div>
-          <div className={w.stage}>
+          <div className={`${w.stage} ${device === "mobile" ? w.phoneStage : ""}`}>
+            <div className={`${w.deviceFrame} ${device === "mobile" ? w.phoneFrame : ""}`} style={{ maxWidth: device === "mobile" ? 410 : PROTOTYPE_PLATFORMS.find(p => p.id === device)?.width || "100%" }}>
             <iframe
               ref={iframe}
               key={reset}
@@ -185,18 +201,16 @@ function Prototype({
               sandbox="allow-scripts"
               srcDoc={html}
               onLoad={() => iframe.current?.contentWindow?.postMessage({ type: "stockedby-prototype-failure", enabled: failure }, "*")}
-              style={{ maxWidth: PROTOTYPE_PLATFORMS.find(p => p.id === device)?.width || "100%" }}
+
             />
+            </div>
           </div>
           <div className={w.screenStrip}>
             {spec.screens.map((s, i) => (
               <button
                 key={s.id}
                 aria-pressed={screen === s.id}
-                onClick={() => {
-                  setStart(s.id);
-                  setReset((r) => r + 1);
-                }}
+                onClick={() => jumpToScreen(s.id)}
               >
                 <span>{String(i + 1).padStart(2, "0")}</span>
                 {s.name}
@@ -418,8 +432,8 @@ function Prototype({
                 Regenerate prototype ↗
               </button>
               <p className={w.small}>
-                SVG export contains editable screen elements for importing into
-                Figma. It does not publish to a Figma file.
+                SVG export is an editable screen outline for Figma. The HTML download
+                contains the full design and interactions.
               </p>
             </>
           )}

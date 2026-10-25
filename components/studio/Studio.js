@@ -1850,6 +1850,7 @@ export default function Studio({ shared = null }) {
               </>
             )}
             {modal === "prototype-setup" && prototypeRequest && <PrototypeSetup
+              processFlow={generationUpstream(p, prototypeRequest.nodeId, prototypeRequest.sourceNodeId).find(n => n.type === "flow")}
               settings={p.nodes.find(n => n.id === prototypeRequest.nodeId)?.prototypeSettings}
               existing={!!p.nodes.find(n => n.id === prototypeRequest.nodeId)?.artifact}
               onCancel={() => setModal(null)}

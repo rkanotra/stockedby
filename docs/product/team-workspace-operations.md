@@ -43,6 +43,14 @@ Editors can directly save their own manual edits without an approval step. This 
 
 ## Checks
 
+### Project deletion rollout
+
+Apply `supabase/migrations/202610250001_delete_team_project.sql` to the dedicated team project after the base migration. The application checks `team_delete_project_available()` before showing the Delete action to owners. A missing migration leaves the rest of the workspace operational.
+
+Deletion requires a verified owner, the exact workspace/project ID and the version shown in the confirmation. It removes the project and its related proposals, comments and project events atomically, retaining a workspace-level deletion event. Direct table deletion remains denied. The confirmation offers a project JSON backup; this backup does not include discussions or proposal history. Never use a real customer project as a deletion smoke test.
+
+At the 25 October mobile-prototype release, migration application was pending dashboard sign-in. See `mobile-prototype-qa.md` for test scope and status.
+
 `npm test` includes PostgreSQL-compatible PGlite tests for outsider isolation, role permissions, bound/expired/used invitations, token-hash restrictions, author separation, stale saves/reviews, prohibited patch paths, revocation and the persisted AI quota.
 
 Run `npm run lint` and `npm run build` before deploying. An optional live smoke check is `node --env-file=.env.local scripts/test_team_ai.mjs`; it sends only the fictional Orbit sample to OpenAI and prints counts, not credentials or company content.

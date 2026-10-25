@@ -1,5 +1,5 @@
 import { QUERY_PROMPT } from "@/lib/studio/queries";
-import { PROTOTYPE_SETTINGS_PROMPT } from "@/lib/studio/prototype-settings";
+import { PROTOTYPE_SETTINGS_PROMPT, PROTOTYPE_JOURNEY_PROMPT } from "@/lib/studio/prototype-settings";
 import { PLAN_SCHEMA, PLAN_PROMPT, groundPlan } from "@/lib/studio/product-plan";
 import {
   PROTOTYPE_SCHEMA,
@@ -78,7 +78,7 @@ export async function POST(request) {
         max_output_tokens: input.type === "prototype" ? 10000 : input.type === "plan" ? 8000 : 6500,
         instructions:
           (input.type === "prototype"
-            ? PROTOTYPE_PROMPT + "\n" + PROTOTYPE_SETTINGS_PROMPT
+            ? PROTOTYPE_PROMPT + "\n" + PROTOTYPE_SETTINGS_PROMPT + "\n" + PROTOTYPE_JOURNEY_PROMPT
             : input.type === "plan" ? PLAN_PROMPT : systemPrompt(input.type)) + "\n" + QUERY_PROMPT,
         input: JSON.stringify(input),
         text: {

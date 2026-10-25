@@ -1,0 +1,346 @@
+{
+  "name": "Forma",
+  "description": "Mobile prototype for booking a meeting room (Garden Room or Studio One). Journey: select room, date, guests, enter name and email, review submission, and confirm. No live data, payment, or email is supported. Values persist when navigating back. Unsubmitted bookings are not stored. Limits: No actual room availability lookup, policy display, or admin features. Only one booking per session.",
+  "theme": "emerald",
+  "layout": "mobile",
+  "startScreenId": "chooseRoomScreen",
+  "screens": [
+    {
+      "id": "chooseRoomScreen",
+      "name": "Choose Room",
+      "eyebrow": "",
+      "title": "Book a meeting room",
+      "description": "Select a room, date, and number of guests.",
+      "requirementIds": [],
+      "sections": [
+        {
+          "id": "roomDateGuestsForm",
+          "type": "form",
+          "title": "",
+          "description": "",
+          "collection": "",
+          "visibility": "always",
+          "fields": [
+            {
+              "id": "room",
+              "label": "Room",
+              "type": "select",
+              "required": true,
+              "placeholder": "Select a room",
+              "options": [
+                "Garden Room",
+                "Studio One"
+              ],
+              "initialValue": "",
+              "hint": "Choose from available rooms.",
+              "min": "",
+              "max": "",
+              "readOnly": false
+            },
+            {
+              "id": "date",
+              "label": "Date",
+              "type": "date",
+              "required": true,
+              "placeholder": "Choose date",
+              "options": [],
+              "initialValue": "",
+              "hint": "Pick your meeting date.",
+              "min": "",
+              "max": "",
+              "readOnly": false
+            },
+            {
+              "id": "guests",
+              "label": "Guests",
+              "type": "number",
+              "required": true,
+              "placeholder": "Number of guests (1–8)",
+              "options": [],
+              "initialValue": "",
+              "hint": "Enter the number of attendees (1-8).",
+              "min": "1",
+              "max": "8",
+              "readOnly": false
+            }
+          ],
+          "records": [],
+          "actions": [
+            {
+              "id": "continueToContact",
+              "label": "Continue",
+              "kind": "continue",
+              "targetScreenId": "contactDetailsScreen",
+              "collection": "",
+              "recordId": "",
+              "field": "",
+              "value": "",
+              "message": ""
+            }
+          ]
+        }
+      ],
+      "actions": []
+    },
+    {
+      "id": "contactDetailsScreen",
+      "name": "Contact Details",
+      "eyebrow": "",
+      "title": "Enter your details",
+      "description": "Provide your name and email for the booking.",
+      "requirementIds": [],
+      "sections": [
+        {
+          "id": "contactForm",
+          "type": "form",
+          "title": "",
+          "description": "",
+          "collection": "",
+          "visibility": "always",
+          "fields": [
+            {
+              "id": "name",
+              "label": "Name",
+              "type": "text",
+              "required": true,
+              "placeholder": "Your name",
+              "options": [],
+              "initialValue": "",
+              "hint": "Enter your full name.",
+              "min": "",
+              "max": "",
+              "readOnly": false
+            },
+            {
+              "id": "email",
+              "label": "Email",
+              "type": "email",
+              "required": true,
+              "placeholder": "you@email.com",
+              "options": [],
+              "initialValue": "",
+              "hint": "We'll send booking details to this address.",
+              "min": "",
+              "max": "",
+              "readOnly": false
+            }
+          ],
+          "records": [],
+          "actions": [
+            {
+              "id": "continueToReview",
+              "label": "Review booking",
+              "kind": "continue",
+              "targetScreenId": "reviewBookingScreen",
+              "collection": "",
+              "recordId": "",
+              "field": "",
+              "value": "",
+              "message": ""
+            }
+          ]
+        }
+      ],
+      "actions": []
+    },
+    {
+      "id": "reviewBookingScreen",
+      "name": "Review Booking",
+      "eyebrow": "",
+      "title": "Review your booking",
+      "description": "Check your booking details before confirming.",
+      "requirementIds": [],
+      "sections": [
+        {
+          "id": "reviewSummary",
+          "type": "summary",
+          "title": "",
+          "description": "",
+          "collection": "",
+          "visibility": "always",
+          "fields": [],
+          "records": [
+            {
+              "id": "roomReview",
+              "title": "Room",
+              "subtitle": "",
+              "status": "",
+              "value": "",
+              "fieldRef": "chooseRoomScreen.roomDateGuestsForm.room"
+            },
+            {
+              "id": "dateReview",
+              "title": "Date",
+              "subtitle": "",
+              "status": "",
+              "value": "",
+              "fieldRef": "chooseRoomScreen.roomDateGuestsForm.date"
+            },
+            {
+              "id": "guestsReview",
+              "title": "Guests",
+              "subtitle": "",
+              "status": "",
+              "value": "",
+              "fieldRef": "chooseRoomScreen.roomDateGuestsForm.guests"
+            },
+            {
+              "id": "nameReview",
+              "title": "Name",
+              "subtitle": "",
+              "status": "",
+              "value": "",
+              "fieldRef": "contactDetailsScreen.contactForm.name"
+            },
+            {
+              "id": "emailReview",
+              "title": "Email",
+              "subtitle": "",
+              "status": "",
+              "value": "",
+              "fieldRef": "contactDetailsScreen.contactForm.email"
+            }
+          ],
+          "actions": [
+            {
+              "id": "backToContact",
+              "label": "Back",
+              "kind": "navigate",
+              "targetScreenId": "contactDetailsScreen",
+              "collection": "",
+              "recordId": "",
+              "field": "",
+              "value": "",
+              "message": ""
+            },
+            {
+              "id": "submitBooking",
+              "label": "Confirm booking",
+              "kind": "submit",
+              "targetScreenId": "confirmationScreen",
+              "collection": "",
+              "recordId": "",
+              "field": "",
+              "value": "",
+              "message": ""
+            }
+          ]
+        }
+      ],
+      "actions": []
+    },
+    {
+      "id": "confirmationScreen",
+      "name": "Confirmation",
+      "eyebrow": "",
+      "title": "Booking confirmed",
+      "description": "Your meeting room is booked. Details are shown below.",
+      "requirementIds": [],
+      "sections": [
+        {
+          "id": "confirmationSummary",
+          "type": "summary",
+          "title": "",
+          "description": "",
+          "collection": "",
+          "visibility": "always",
+          "fields": [],
+          "records": [
+            {
+              "id": "roomConfirm",
+              "title": "Room",
+              "subtitle": "",
+              "status": "",
+              "value": "",
+              "fieldRef": "chooseRoomScreen.roomDateGuestsForm.room"
+            },
+            {
+              "id": "dateConfirm",
+              "title": "Date",
+              "subtitle": "",
+              "status": "",
+              "value": "",
+              "fieldRef": "chooseRoomScreen.roomDateGuestsForm.date"
+            },
+            {
+              "id": "guestsConfirm",
+              "title": "Guests",
+              "subtitle": "",
+              "status": "",
+              "value": "",
+              "fieldRef": "chooseRoomScreen.roomDateGuestsForm.guests"
+            },
+            {
+              "id": "nameConfirm",
+              "title": "Name",
+              "subtitle": "",
+              "status": "",
+              "value": "",
+              "fieldRef": "contactDetailsScreen.contactForm.name"
+            },
+            {
+              "id": "emailConfirm",
+              "title": "Email",
+              "subtitle": "",
+              "status": "",
+              "value": "",
+              "fieldRef": "contactDetailsScreen.contactForm.email"
+            }
+          ],
+          "actions": [
+            {
+              "id": "startAgain",
+              "label": "Start again",
+              "kind": "reset",
+              "targetScreenId": "chooseRoomScreen",
+              "collection": "",
+              "recordId": "",
+              "field": "",
+              "value": "",
+              "message": ""
+            }
+          ]
+        }
+      ],
+      "actions": []
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "basicBooking",
+      "name": "End-to-end successful booking",
+      "startScreenId": "chooseRoomScreen",
+      "steps": [
+        "On the booking screen, select 'Garden Room', pick a date, set guests to '5', then tap 'Continue'.",
+        "On the contact screen, enter 'Jordan Taylor' and 'jordan@example.com', then tap 'Review booking'.",
+        "Confirm all values on the review screen, then tap 'Confirm booking'.",
+        "Booking confirmation screen displays all details. Tap 'Start again' to return to the start."
+      ],
+      "expectedResult": "All entered values are shown accurately in the review and confirmation screens.",
+      "requirementIds": []
+    },
+    {
+      "id": "validationScenario",
+      "name": "Validation: too many guests",
+      "startScreenId": "chooseRoomScreen",
+      "steps": [
+        "Select a room, pick a date, enter '10' as guests, then tap 'Continue'."
+      ],
+      "expectedResult": "An error is shown; guests field must be between 1 and 8.",
+      "requirementIds": []
+    },
+    {
+      "id": "backCorrection",
+      "name": "Correct name after review",
+      "startScreenId": "chooseRoomScreen",
+      "steps": [
+        "Fill in the booking form and contact form, tap 'Review booking'.",
+        "Notice a typo in your name. Tap 'Back' on the review screen.",
+        "Correct the name and tap 'Review booking' again.",
+        "Confirm booking with updated details."
+      ],
+      "expectedResult": "The corrected name is displayed on the review and confirmation screens.",
+      "requirementIds": []
+    }
+  ]
+}
