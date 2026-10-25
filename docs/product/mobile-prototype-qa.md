@@ -46,3 +46,4 @@ Verification:
 - Existing generated-mobile, handwritten-mobile and workspace-journey browser checks passed.
 - The delete dialog now explicitly centers itself in the viewport, overriding the global margin reset. Its existing browser test checks desktop, phone and short landscape layouts, reachable actions and initial focus on **Keep project**, alongside the permission and deletion checks using mocked projects.
 - The updated suite passed 252 unit/database tests, lint and the production build.
+- Released as `6f88ed5`; Vercel deployment `dpl_EXQnb98snKQyPRW9u9frti8SPSGy` reached Ready and was aliased to stockedby.com. The personal-application and dialog browser checks passed against the deployed assets with intercepted team APIs. The browser harness waits for the host to paint after cross-frame scrolling before clicking navigation controls; diagnostics showed missed automated pointer clicks rather than a recorded runtime action.

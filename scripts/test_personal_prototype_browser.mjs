@@ -9,8 +9,10 @@ import { prototypeArtifact } from '../lib/studio/prototype.js';
 const browser=await chromium.launch({headless:true,channel:'chrome'});
 const base=process.env.STUDIO_TEST_URL;
 const html=prototypeHtml(personalPrototype);
+let debugPage,debugApp;
 try {
   const context=await browser.newContext({viewport:{width:base?1440:390,height:base?1100:844}}),page=await context.newPage(),errors=[];
+  debugPage=page;
   page.on('pageerror',e=>errors.push(e.message));
   let app=page;
   if(base) {
@@ -26,8 +28,20 @@ try {
     await page.goto(`${base}/workspace#workspace=${row.workspace_id}&project=${row.id}&view=prototype&document=${node.id}`);
     app=page.frameLocator('iframe[title="Sample application interactive prototype"]');
   } else await page.setContent(html);
+  debugApp=app;
   const button=name=>app.getByRole('button',{name,exact:true});
-  const jump=async name=>{await button('All screens').click();await app.getByRole('navigation').getByRole('button',{name,exact:true}).click();};
+  // Cross-frame auto-scroll can finish after Playwright measures the inner
+  // button. Let the host paint its scrolled position before the pointer click.
+  const clickVisible=async name=>{
+    await button(name).scrollIntoViewIfNeeded();
+    await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+    await button(name).click();
+  };
+  const jump=async name=>{
+    await clickVisible('All screens');
+    try {await app.getByRole('navigation').getByRole('button',{name,exact:true}).click({timeout:10000});}
+    catch(error) {await page.screenshot({path:'/tmp/stockedby-personal-test-failure.png'});console.log(JSON.stringify({stage:'screen-menu',expanded:await button('All screens').getAttribute('aria-expanded'),body:await app.locator('body').innerText(),errors}));throw error;}
+  };
   const current=app.locator('.currentRecord');
   const assertOwn=async(name,amount)=>{
     assert.equal(await current.count(),1,'Only one current application');
@@ -36,6 +50,7 @@ try {
     assert.doesNotMatch(await app.locator('body').innerText(),/Other applicant|other\d+@example/);
   };
   await app.getByRole('heading',{name:'Your details',exact:true}).waitFor();
+  await app.locator('body').evaluate(()=>{window.testClicks=[];addEventListener('click',event=>{window.testClicks.push({target:event.target.closest('button')?.textContent,screen:document.querySelector('h1')?.textContent});},true);});
   assert.ok(await app.getByRole('heading',{name:'Sample personal loan',exact:true}).isVisible(),'Read-only catalogue preserved');
   await jump('Review your application');
   assert.equal(await current.count(),0);
@@ -86,7 +101,7 @@ try {
     assert.equal(await exported.locator('.currentRecord').count(),0);assert.doesNotMatch(await exported.locator('body').innerText(),/Alex Example|Other applicant/);await exported.close();
     await page.screenshot({path:'/tmp/stockedby-personal-workbench.png'});
   } else await page.screenshot({path:'/tmp/stockedby-personal-application.png',fullPage:true});
-  await button('Start again').click();
+  await clickVisible('Start again');
   assert.equal(await app.getByLabel('Full name',{exact:true}).inputValue(),'');
   await jump('Review your application');assert.equal(await current.count(),0);
   assert.doesNotMatch(await app.locator('body').innerText(),/Alex Example|Other applicant/);
@@ -104,4 +119,10 @@ try {
   await writeFile('/tmp/stockedby-personal-prototype.html',html);
   assert.deepEqual(errors,[]);
   console.log(`PASS ${base?'workspace':'offline'}: legacy personal default; 20 other sample applicants excluded; catalogue preserved; direct-jump validation; all steps update one application; edits; failure/retry; repeated confirmation; reset; fresh visitor; explicit staff queue.`);
+} catch(error) {
+  if(debugPage && debugApp) {
+    await debugPage.screenshot({path:'/tmp/stockedby-personal-test-failure.png',timeout:5000}).catch(()=>{});
+    console.log(JSON.stringify({body:await debugApp.locator('body').innerText({timeout:5000}),clicks:await debugApp.locator('body').evaluate(()=>window.testClicks),scroll:await debugPage.evaluate(()=>({top:scrollY,behaviour:getComputedStyle(document.documentElement).scrollBehavior}))}));
+  }
+  throw error;
 } finally {await browser.close();}
