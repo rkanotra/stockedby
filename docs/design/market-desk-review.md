@@ -1,5 +1,7 @@
 # Investment desk design review — 3 November 2026
 
+Historical review of the earlier apricot/light-default release. Superseded by the [Raycast direction](market-desk-raycast-review.md), selected by the owner later on 3 November.
+
 This is a comparison of public product pages and available product previews, not an independent user study or a claim of global-best quality.
 
 | Reference | Observed strength | Applied to StockedBy |

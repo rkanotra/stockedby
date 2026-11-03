@@ -13,7 +13,7 @@ export async function GET(request) {
     const owners = await call('owners');
     // Pilot is deliberately bounded. Each portfolio receives one market batch per window.
     if (owners.length > 3) return json({ error: 'Pilot scheduler capacity exceeded. A durable queue is required before adding more scheduled accounts.' }, 503);
-    const outcomes = await Promise.all(owners.map(async owner => { const store = (action, args = {}) => call(action, { ...args, ownerId: owner.id }); return scan(store, { kind: 'scheduled', market: window === 'asia' ? 'Asia' : 'Global', key, personalFeed: owner.personalFeed === true }); }));
+    const outcomes = await Promise.all(owners.map(async owner => { const store = (action, args = {}) => call(action, { ...args, ownerId: owner.id }); return scan(store, { kind: 'scheduled', market: window === 'asia' ? 'India' : 'US', key, personalFeed: owner.personalFeed === true }); }));
     return json({ completed: outcomes.length, outcomes: outcomes.map(o => o.status) });
   } catch { return json({ error: 'Scheduled scan could not complete. Check the run history and job configuration.' }, 503); }
 }

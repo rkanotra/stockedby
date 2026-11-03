@@ -1,5 +1,5 @@
 export function BrandMark() {
-  return <svg viewBox="0 0 32 32" width="32" height="32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="10" fill="var(--market-accent, #f65400)"/><path d="M9 23 23 9M13 9h10v10M9 15v8h8" stroke="#20130c" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+  return <svg viewBox="0 0 32 32" width="32" height="32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="10" fill="var(--market-accent, #a998ff)"/><path d="M9 23 23 9M13 9h10v10M9 15v8h8" stroke="#11101a" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 }
 
 export default function DeskIcon({type='Overview',size=20}) {

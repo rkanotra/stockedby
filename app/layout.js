@@ -6,7 +6,7 @@ import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
 
 const TITLE = "StockedBy — Your investments. In context.";
 const DESCRIPTION =
-  "Source-linked market news, private portfolio tracking and AI investment research across India, UAE and US markets.";
+  "Source-linked market news, private portfolio tracking and AI investment research across India and US markets.";
 
 // Root-level defaults — every page below sets its own full metadata export
 // (title/description/canonical/openGraph/twitter, via lib/site.js's
@@ -33,7 +33,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" data-stockedby-theme="dark" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <Script id="stockedby-appearance" strategy="beforeInteractive">{themeBootstrap}</Script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />

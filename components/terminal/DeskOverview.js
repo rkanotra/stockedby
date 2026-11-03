@@ -14,10 +14,10 @@ export default function DeskOverview({portfolio,currency,state,onImport,onAdd,on
     <div>
       {empty?<section className={d.welcome}>
         <div className={d.welcomeTag}><DeskIcon type="Lock" size={15}/> YOUR PRIVATE PORTFOLIO</div>
-        <h2>Make room for<br/>the bigger picture.</h2>
-        <p>Bring your investments together. See your exposure, follow the news and keep your research close.</p>
+        <h2>Your investments.<br/>One clear view.</h2>
+        <p>Drop in a screenshot from Wio or ICICI Direct. Let AI read your holdings, then make them yours.</p>
         <div className={d.actions}><button className={d.orangeButton} onClick={onImport}><DeskIcon type="Upload" size={17}/> Import portfolio</button><button className={d.textButton} onClick={onAdd}>Add a position <DeskIcon type="Arrow" size={16}/></button></div>
-        <div className={d.welcomeMarkets}><span>IN</span><span>AE</span><span>US</span><small>Across markets. All yours.</small></div>
+        <div className={d.welcomeMarkets}><span>IN</span><span>US</span><small>Across markets. All yours.</small></div>
       </section>:<section className={d.balanceCard}>
         <div className={d.cardEyebrow}>YOUR PRICED HOLDINGS <span>{currency}</span></div>
         <strong className={d.balance}>{money(portfolio.total,currency)}</strong>
@@ -28,7 +28,7 @@ export default function DeskOverview({portfolio,currency,state,onImport,onAdd,on
         <small>Unpriced holdings are excluded from this total. Available FX rates are used for translation.</small>
       </section>}
       {empty?<section className={d.startSteps}><h2>A simple place to start.</h2>{[
-        ['01','Bring what you own','Import a CSV, review the rows, then confirm.','Import holdings',onImport],
+        ['01','Bring what you own','Upload a screenshot or CSV. Review, then confirm.','Import holdings',onImport],
         ['02','Set your perspective','Add your investment horizon and risk preferences.','Research preferences',()=>onGo('Settings')],
         ['03','Follow what changes','Read your AI brief and check the evidence.','Open AI research',()=>onGo('Research')],
       ].map(([n,h,p,label,action])=><button key={n} onClick={action} aria-label={label}><span>{n}</span><div><strong>{h}</strong><p>{p}</p></div><DeskIcon type="Arrow" size={18}/></button>)}</section>:<section className={d.allocationCard}>
