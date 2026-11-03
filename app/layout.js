@@ -1,4 +1,6 @@
 import "./globals.css";
+import Script from "next/script";
+import { themeBootstrap } from "@/lib/terminal/appearance";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
 
@@ -31,8 +33,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
+        <Script id="stockedby-appearance" strategy="beforeInteractive">{themeBootstrap}</Script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

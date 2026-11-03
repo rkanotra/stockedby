@@ -3,9 +3,11 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import NewsBoard from './NewsBoard';
 import MarketDashboard from './MarketDashboard';
+import { BrandMark } from './DeskIcon';
+import ThemeToggle from './ThemeToggle';
 import s from './terminal.module.css';
 import m from './marketSite.module.css';
-export function SiteNav(){return <header className={m.nav}><Link className={m.brand} href="/" aria-label="StockedBy home"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="10" fill="#c5f46b"/><path d="M9 23 23 9M13 9h10v10M9 15v8h8" stroke="#183823" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/></svg>stockedby<span className={m.brandDot}>.</span></Link><nav aria-label="Main navigation"><Link href="/">Markets</Link><Link href="/brief">News</Link><Link href="/#screener">Screener</Link><Link href="/terminal#Research" className={m.aiLink}>AI research <span>✧</span></Link></nav><Link className={m.navButton} href="/terminal">My portfolio <span>↗</span></Link></header>;}
+export function SiteNav(){return <header className={m.nav}><Link className={m.brand} href="/" aria-label="StockedBy home"><BrandMark/>stockedby<span className={m.brandDot}>.</span></Link><nav aria-label="Main navigation"><Link href="/">Markets</Link><Link href="/brief">News</Link><Link href="/#screener">Screener</Link><Link href="/terminal#Research" className={m.aiLink}>AI research <span>✧</span></Link></nav><ThemeToggle/><Link className={m.navButton} href="/terminal">My portfolio <span>↗</span></Link></header>;}
 export function SiteFooter(){return <footer className={m.footer}><div><Link className={m.brand} href="/">stockedby<span className={m.brandDot}>.</span></Link><p>Make your next move an informed one.</p></div><div><Link href="/guide">How it works</Link><Link href="/privacy">Privacy & data</Link><a href="mailto:rahulkanotra1101@gmail.com">Contact</a></div><p>Independent research tools.<br/>No brokerage. No automatic trades.</p></footer>;}
 export default function MarketSite({view='home'}){
   const [wire,setWire]=useState(null),[failed,setFailed]=useState(false);

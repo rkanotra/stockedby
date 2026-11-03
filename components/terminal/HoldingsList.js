@@ -1,0 +1,15 @@
+'use client';
+import d from './desk.module.css';
+
+const money=(n,c)=>n==null?'—':new Intl.NumberFormat(c==='INR'?'en-IN':'en-GB',{style:'currency',currency:c,maximumFractionDigits:2}).format(n);
+export default function HoldingsList({rows,currency,archived,busy,onSelect,onEdit,onArchive}) {
+  if(!rows.length)return <div className={d.noHoldings}><h3>{archived?'No archived positions':'No matching positions'}</h3><p>{archived?'Positions you archive will appear here.':'Try another search or market, or add your first holding.'}</p></div>;
+  const actions=p=><div className={d.rowActions}><button onClick={()=>onEdit(p)}>Edit</button><button disabled={busy} onClick={()=>onArchive(p)}>{archived?'Restore':'Archive'}</button></div>;
+  const name=p=><button className={d.holdingName} onClick={()=>onSelect(p)}><span className={d.assetAvatar}>{p.symbol.slice(0,2)}</span><span><strong>{p.symbol}</strong><small>{p.name}</small><small>{p.exchange} · {p.account}{p.lot?` / ${p.lot}`:''}</small></span></button>;
+  const pnlClass=p=>p.pnl==null?d.neutral:p.pnl<0?d.negative:d.positive;
+  const coverage=p=><><span className={d.coverageBadge}>{archived?'Archived':p.status==='unresolved'?'Confirm listing':p.status==='missing'?'Price unavailable':p.status||'Not priced'}</span><small>{p.quote?.asOf?new Date(p.quote.asOf).toLocaleDateString('en-GB',{timeZone:'Asia/Dubai',day:'numeric',month:'short'}):'No quote yet'}</small></>;
+  return <>
+    <div className={d.holdingsDesktop}><table><caption>Your private holdings. Missing values are unavailable, not zero.</caption><thead><tr><th>Investment</th><th>Quantity / cost</th><th>Value</th><th>Unrealized P&L</th><th>Price coverage</th><th><span className={d.visuallyHidden}>Actions</span></th></tr></thead><tbody>{rows.map(p=><tr key={p.id}><td>{name(p)}</td><td><strong>{p.quantity}</strong><small>{p.unit}</small><small>Cost: {p.costBasis==null?'Unknown':money(Number(p.costBasis),p.currency)}</small></td><td><strong>{money(p.value,currency)}</strong><small>{p.weight==null?'—':`${(p.weight*100).toFixed(1)}% of priced value`}</small></td><td className={pnlClass(p)}><strong>{money(p.pnl,currency)}</strong><small>Realized: {p.realizedPnl==null?'—':money(Number(p.realizedPnl),p.currency)}</small><small>Broker: {p.brokerPnl==null?'—':money(Number(p.brokerPnl),p.currency)}</small></td><td>{coverage(p)}</td><td>{actions(p)}</td></tr>)}</tbody></table></div>
+    <div className={d.holdingsMobile}>{rows.map(p=><article key={p.id}><div className={d.mobileHoldingHead}>{name(p)}<strong>{money(p.value,currency)}</strong></div><dl><div><dt>Quantity</dt><dd>{p.quantity} {p.unit}</dd></div><div><dt>Unrealized P&L</dt><dd className={pnlClass(p)}>{money(p.pnl,currency)}</dd></div><div><dt>Cost basis</dt><dd>{p.costBasis==null?'Unknown':money(Number(p.costBasis),p.currency)}</dd></div><div><dt>Realized / broker P&L</dt><dd>{money(p.realizedPnl==null?null:Number(p.realizedPnl),p.currency)} / {money(p.brokerPnl==null?null:Number(p.brokerPnl),p.currency)}</dd></div></dl><footer><div>{coverage(p)}</div>{actions(p)}</footer></article>)}</div>
+  </>;
+}

@@ -917,3 +917,5 @@ footer { border-top: 1px solid var(--line); margin-top: 84px; padding: 34px 0 44
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+html[data-stockedby-theme=dark]{color-scheme:dark;background:#151618}html[data-stockedby-theme=dark] body{background:#151618}

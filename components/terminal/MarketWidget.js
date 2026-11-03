@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import d from './marketDashboard.module.css';
+import { useAppearance } from './ThemeToggle';
 const WIDGETS = { chart: 'symbol-overview', heatmap: 'stock-heatmap', screener: 'screener' };
 function WidgetFrame({src,name,type,height,symbol}) {
   const loaded = useRef(false);
@@ -29,21 +30,22 @@ function WidgetFrame({src,name,type,height,symbol}) {
   </div>;
 }
 export default function MarketWidget({ type = 'chart', symbol = 'NASDAQ:AAPL', name = 'Apple', height = 400 }) {
+  const theme = useAppearance();
   const config = type === 'chart' ? {
-      symbols: [[name, `${symbol}|1D`]], chartOnly: false, width: '100%', height: '100%', locale: 'en', colorTheme: 'light', autosize: true,
+      symbols: [[name, `${symbol}|1D`]], chartOnly: false, width: '100%', height: '100%', locale: 'en', colorTheme: theme, autosize: true,
       showVolume: false, showMA: false, hideDateRanges: false, hideMarketStatus: false, hideSymbolLogo: false, scalePosition: 'right', scaleMode: 'Normal',
       fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif', fontSize: '12', noTimeScale: false, valuesTracking: '1', changeMode: 'price-and-percent', chartType: 'area',
-      lineWidth: 2, lineType: 0, lineColor: '#008f56', topColor: 'rgba(0,170,94,0.12)', bottomColor: 'rgba(0,170,94,0)', backgroundColor: '#ffffff',
+      lineWidth: 2, lineType: 0, lineColor: '#d78049', topColor: 'rgba(227,153,99,0.18)', bottomColor: 'rgba(227,153,99,0)', backgroundColor: theme === 'dark' ? '#191a1d' : '#ffffff',
       dateRanges: ['1d|1','1m|30','3m|60','12m|1D','60m|1W','all|1M'], dateFormat: 'MMM dd, yyyy',
     } : type === 'heatmap' ? {
-      exchanges: [], dataSource: 'SPX500', grouping: 'sector', blockSize: 'market_cap_basic', blockColor: 'change', locale: 'en', colorTheme: 'light',
+      exchanges: [], dataSource: 'SPX500', grouping: 'sector', blockSize: 'market_cap_basic', blockColor: 'change', locale: 'en', colorTheme: theme,
       hasTopBar: true, isDataSetEnabled: true, isZoomEnabled: true, hasSymbolTooltip: true, isMonoSize: false, width: '100%', height: '100%',
     } : type === 'screener' ? {
-      width: '100%', height: '100%', defaultColumn: 'overview', defaultScreen: 'most_capitalized', market: 'america', showToolbar: true, colorTheme: 'light', locale: 'en',
+      width: '100%', height: '100%', defaultColumn: 'overview', defaultScreen: 'most_capitalized', market: 'america', showToolbar: true, colorTheme: theme, locale: 'en',
     } : {};
 
   // Use the provider's generated iframe URL directly. Keeping vendor scripts
   // inside their own origin avoids parent-page access and React mount races.
   const src=`https://www.tradingview-widget.com/embed-widget/${WIDGETS[type]}/?locale=en#${encodeURIComponent(JSON.stringify({...config,utm_source:'stockedby.com',utm_medium:'widget',utm_campaign:WIDGETS[type]}))}`;
-  return <WidgetFrame key={`${type}:${symbol}`} src={src} name={name} type={type} height={height} symbol={symbol}/>;
+  return <WidgetFrame key={`${type}:${symbol}:${theme}`} src={src} name={name} type={type} height={height} symbol={symbol}/>;
 }

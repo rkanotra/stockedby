@@ -1,0 +1,5 @@
+.toggle.toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;flex:none;min-height:40px;padding:9px 11px;border:1px solid #e5ddd3;border-radius:22px;background:#fff;color:#685749;font:500 12px system-ui;cursor:pointer;white-space:nowrap}
+.toggle.toggle:hover{background:#faf0e6;border-color:#c9af95}.toggle:focus-visible{outline:3px solid #bd7442;outline-offset:3px}.toggle svg{flex:none}
+:global(html[data-stockedby-theme=dark]) .toggle.toggle{background:#242322;border-color:#48403a;color:#f3c4a1}
+:global(html[data-stockedby-theme=dark]) .toggle.toggle:hover{background:#332b25;border-color:#9f7757}
+@media(max-width:600px){.toggle.toggle{width:40px;height:40px;padding:10px}.toggle span{display:none}}
