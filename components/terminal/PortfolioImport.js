@@ -12,9 +12,19 @@ export default function PortfolioImport({ api, onComplete }) {
   const [preview, setPreview] = useState(null), [checked, setChecked] = useState(false);
   const [account, setAccount] = useState('Default'), [asOf, setAsOf] = useState('');
   const [busy, setBusy] = useState(''), [error, setError] = useState('');
-  const picker = useRef(null), request = useRef(null);
+  const picker = useRef(null), request = useRef(null), review = useRef(null), confirmation = useRef(null);
   useEffect(() => () => request.current?.abort(), []);
   useEffect(() => () => { if (url) URL.revokeObjectURL(url); }, [url]);
+  useEffect(() => {
+    if (!rows.length) return;
+    review.current?.scrollIntoView({ block: 'start', behavior: 'instant' });
+    review.current?.focus({ preventScroll: true });
+  }, [rows.length]);
+  useEffect(() => {
+    if (!preview) return;
+    confirmation.current?.scrollIntoView({ block: 'start', behavior: 'instant' });
+    confirmation.current?.focus({ preventScroll: true });
+  }, [preview]);
   function resetPreview() { setPreview(null); setChecked(false); setError(''); }
   function choose(image) {
     if (busy || !image) return;
@@ -62,7 +72,7 @@ export default function PortfolioImport({ api, onComplete }) {
     <p className={i.intro}>Bring your holdings from ICICI Direct, Wio or another app. Review the details, then save.</p>
     <div className={i.tabs} role="tablist" aria-label="Import format">{[['image', 'Screenshot'], ['csv', 'CSV file']].map(([value, label]) => <button type="button" role="tab" aria-selected={mode === value} disabled={!!busy} key={value} onClick={() => { setMode(value); resetPreview(); }}>{label}</button>)}</div>
     {mode === 'image' ? <>
-      <div className={i.dropzone} tabIndex={0} aria-label="Drop or paste a portfolio screenshot" onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); choose(e.dataTransfer.files[0]); }} onPaste={e => { const image = [...e.clipboardData.files].find(f => f.type.startsWith('image/')); if (image) { e.preventDefault(); choose(image); } }}>
+      <div className={`${i.dropzone} ${rows.length ? i.compact : ''}`} tabIndex={0} aria-label="Drop or paste a portfolio screenshot" onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); choose(e.dataTransfer.files[0]); }} onPaste={e => { const image = [...e.clipboardData.files].find(f => f.type.startsWith('image/')); if (image) { e.preventDefault(); choose(image); } }}>
         {url ? <img src={url} alt="Your selected portfolio screenshot" className={i.previewImage}/> : <span className={i.uploadIcon} aria-hidden="true">↥</span>}
         <strong>{file ? file.name : 'Drop your portfolio screenshot here'}</strong>
         <span>PNG, JPEG or WebP · up to 3 MB · you can also paste an image</span>
@@ -70,9 +80,9 @@ export default function PortfolioImport({ api, onComplete }) {
         <button type="button" disabled={!!busy} onClick={() => picker.current.click()}>{file ? 'Choose another screenshot' : 'Choose screenshot'}</button>
       </div>
       <p className={i.privacy}>“Read screenshot” sends this image to OpenAI to extract holdings. Crop out account numbers and personal details first. StockedBy does not store the image. Nothing is added to your portfolio until you confirm.</p>
-      <button className={s.primary} disabled={!file || !!busy} onClick={readImage}>{busy === 'Reading your screenshot…' ? busy : rows.length ? 'Read screenshot again' : 'Read screenshot with AI'}</button>
+      <button className={rows.length ? undefined : s.primary} disabled={!file || !!busy} onClick={readImage}>{busy === 'Reading your screenshot…' ? busy : rows.length ? 'Read screenshot again' : 'Read screenshot with AI'}</button>
       {warnings.length > 0 && <div className={s.notice}><strong>Check against your screenshot</strong><ul>{warnings.map((warning, n) => <li key={n}>{warning}</li>)}</ul></div>}
-      {rows.length > 0 && <section className={i.rows} aria-label="Review extracted holdings">
+      {rows.length > 0 && <section ref={review} tabIndex={-1} className={i.rows} aria-label="Review extracted holdings">
         <div className={i.sectionHeading}><h3>{rows.length} {rows.length === 1 ? 'holding' : 'holdings'} found</h3><span>Edit any value. Untick rows you don’t want.</span></div>
         <div className={s.formGrid}><label>Account label<input value={account} maxLength={120} disabled={!!busy} placeholder="e.g. Wio US" onChange={e => { setAccount(e.target.value); resetPreview(); }}/></label><label>Snapshot date & time (optional)<input type="datetime-local" value={asOf} disabled={!!busy} onChange={e => { setAsOf(e.target.value); resetPreview(); }}/></label></div>
         {rows.map((row, index) => <article className={i.row} key={index}>
@@ -97,7 +107,7 @@ export default function PortfolioImport({ api, onComplete }) {
       <label>CSV contents<textarea rows={6} value={csv} disabled={!!busy} onChange={e => { setCsv(e.target.value); resetPreview(); }}/></label>
     </>}
     {(mode === 'csv' || rows.length > 0) && <button disabled={!!busy || (mode === 'csv' ? !csv : !rows.some(row => row.selected !== false))} onClick={checkRows}>Check holdings before saving</button>}
-    {preview && <section className={i.confirm}>
+    {preview && <section ref={confirmation} tabIndex={-1} className={i.confirm} aria-label="Confirm portfolio import">
       <h3>{ready} {ready === 1 ? 'holding' : 'holdings'} ready to add</h3>
       <div className={s.tableWrap}><table><thead><tr><th>Holding</th><th>Units</th><th>Result</th></tr></thead><tbody>{preview.preview.map((row, index) => <tr key={index}><td>{row.position?.symbol || `Row ${row.row}`}<small>{row.position?.exchange}</small></td><td>{row.position?.quantity || '—'}</td><td>{row.status}<small>{row.message}</small></td></tr>)}</tbody></table></div>
       <label className={i.rowTitle}><input type="checkbox" checked={checked} disabled={!!busy} onChange={e => setChecked(e.target.checked)}/><span>I checked the tickers, units, currencies and costs against my original.</span></label>

@@ -37,5 +37,8 @@ Fey was considered but excluded: its current site says it joined Wealthsimple an
 - Dark/light desktop inspected. At 390 px, decorative overflow was found and fixed; document width equals viewport width.
 - Default-dark, explicit light and blocked browser storage covered by tests.
 - Existing database tests cover authorization, quotas, version conflicts and portfolio isolation.
+- Production browser verification: paste screenshot → real AI extraction → editable rows → server import preview → explicit review checkbox. Two fictional holdings were recognized; the confirm button stayed disabled until review. The test stopped before saving, leaving the portfolio version unchanged.
+- The automated file chooser was blocked by the Chrome extension's local-file permission; the paste path worked. This restriction does not apply to the user's normal file picker.
+- OCR shares the existing AI server function to stay within Vercel Hobby's function-count limit. Same-origin and signed-in checks were verified on the multipart and JSON paths.
 
 This release does not claim global-best usability or add an automatic broker connection. Prioritize coverage and pilot observation next. See [the feed and company-research plan](../product/india-us-data-and-research.md).
