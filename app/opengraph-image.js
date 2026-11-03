@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-export const alt = "StockedBy — Your investments, in context.";
+export const alt = "StockedBy — Your markets. A clearer signal.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export default function Image() {
@@ -11,8 +11,8 @@ export default function Image() {
         display: "flex",
         flexDirection: "column",
         padding: "62px 72px",
-        background: "#f8f9fc",
-        color: "#192b42",
+        background: "#0b0c10",
+        color: "#f4f4f7",
         fontFamily: "sans-serif",
       }}
     >
@@ -28,8 +28,8 @@ export default function Image() {
         <span
           style={{
             display: "flex",
-            background: "#ad6414",
-            color: "#ffffff",
+            background: "#a998ff",
+            color: "#11101a",
             padding: "0 10px",
             borderRadius: 8,
           }}
@@ -48,21 +48,21 @@ export default function Image() {
           marginTop: 50,
         }}
       >
-        <span>Less noise.</span>
-        <span style={{ color: "#ad6414" }}>More perspective.</span>
+        <span>Your markets.</span>
+        <span style={{ color: "#a998ff" }}>A clearer signal.</span>
       </div>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          borderTop: "1px solid #dce3ec",
+          borderTop: "1px solid #292a34",
           paddingTop: 25,
           marginTop: "auto",
           fontSize: 21,
-          color: "#536279",
+          color: "#a4a5b2",
         }}
       >
-        <span>India. UAE. US. Your investments, in context.</span>
+        <span>India + US. News, holdings and AI research.</span>
         <span>StockedBy Research ↗</span>
       </div>
     </div>,
