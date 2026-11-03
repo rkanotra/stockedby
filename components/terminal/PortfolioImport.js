@@ -2,49 +2,83 @@
 /* eslint-disable @next/next/no-img-element -- Local blob preview must not send a private screenshot to the image optimizer. */
 import { useEffect, useRef, useState } from 'react';
 import { CSV_HEADER } from '@/lib/terminal/domain';
-import { IMAGE_LIMIT, IMPORT_EXCHANGES, imageRowsCSV } from '@/lib/terminal/imageImport';
+import { IMAGE_COUNT_LIMIT, IMPORT_EXCHANGES, imageRowsCSV, validateScreenshotSelection } from '@/lib/terminal/imageImport';
 import s from './terminal.module.css';
 import i from './portfolioImport.module.css';
 
 export default function PortfolioImport({ api, onComplete }) {
-  const [mode, setMode] = useState('image'), [file, setFile] = useState(null), [url, setUrl] = useState('');
-  const [rows, setRows] = useState([]), [warnings, setWarnings] = useState([]), [csv, setCsv] = useState('');
+  const [mode, setMode] = useState('image'), [images, setImages] = useState([]);
+  const [rows, setRows] = useState([]), [csv, setCsv] = useState('');
   const [preview, setPreview] = useState(null), [checked, setChecked] = useState(false);
   const [account, setAccount] = useState('Default'), [asOf, setAsOf] = useState('');
   const [busy, setBusy] = useState(''), [error, setError] = useState('');
   const picker = useRef(null), request = useRef(null), review = useRef(null), confirmation = useRef(null);
+  const objectURLs = useRef(new Set());
   useEffect(() => () => request.current?.abort(), []);
-  useEffect(() => () => { if (url) URL.revokeObjectURL(url); }, [url]);
+  useEffect(() => { const urls = objectURLs.current; return () => { urls.forEach(url => URL.revokeObjectURL(url)); urls.clear(); }; }, []);
   useEffect(() => {
-    if (!rows.length) return;
+    if (!rows.length || busy) return;
     review.current?.scrollIntoView({ block: 'start', behavior: 'instant' });
     review.current?.focus({ preventScroll: true });
-  }, [rows.length]);
+  }, [rows.length, busy]);
   useEffect(() => {
     if (!preview) return;
     confirmation.current?.scrollIntoView({ block: 'start', behavior: 'instant' });
     confirmation.current?.focus({ preventScroll: true });
   }, [preview]);
   function resetPreview() { setPreview(null); setChecked(false); setError(''); }
-  function choose(image) {
-    if (busy || !image) return;
-    resetPreview(); setRows([]); setWarnings([]); setFile(null); setUrl('');
-    if (!/\.(png|jpe?g|webp)$/i.test(image.name) || !['image/png', 'image/jpeg', 'image/webp'].includes(image.type)) { setError('Choose a PNG, JPEG or WebP screenshot.'); return; }
-    if (image.size > IMAGE_LIMIT) { setError('Use a screenshot smaller than 3 MB. Crop to the holdings table.'); return; }
-    setFile(image); setUrl(URL.createObjectURL(image));
-  }
-  async function readImage() {
-    setBusy('Reading your screenshot…'); resetPreview(); setRows([]); setWarnings([]);
-    request.current = new AbortController();
+  function choose(files) {
+    if (busy || !files?.length) return;
     try {
-      const form = new FormData(); form.set('file', file);
-      const response = await fetch('/api/terminal/run', { method: 'POST', body: form, signal: request.current.signal, cache: 'no-store' });
-      const result = await response.json();
-      if (!response.ok) throw Error(result.error || 'The image could not be read. Please retry.');
-      setRows(result.holdings); setWarnings(result.warnings);
-      if (!result.holdings.length) setError('No readable holdings were found. Try a clearer screenshot of the holdings table.');
-    } catch (e) { if (e.name !== 'AbortError') setError(e.message); }
-    finally { setBusy(''); }
+      const selected = validateScreenshotSelection(files, images.length);
+      const additions = selected.map(file => {
+        const url = URL.createObjectURL(file); objectURLs.current.add(url);
+        return { id: crypto.randomUUID(), file, url, status: 'pending', warnings: [], error: '' };
+      });
+      resetPreview(); setImages(current => [...current, ...additions]);
+    } catch (e) { setError(e.message); }
+  }
+  function removeImage(image) {
+    if (busy) return;
+    URL.revokeObjectURL(image.url); objectURLs.current.delete(image.url);
+    setImages(current => current.filter(item => item.id !== image.id));
+    setRows(current => current.filter(row => row.sourceId !== image.id)); resetPreview();
+  }
+  async function readImages() {
+    const pending = images.filter(image => image.status !== 'done');
+    if (!pending.length || busy) return;
+    resetPreview();
+    const controller = new AbortController(); request.current = controller;
+    const update = (id, change) => setImages(current => current.map(image => image.id === id ? { ...image, ...change } : image));
+    let failed = 0;
+    try {
+      // One bounded request per image keeps a 10-image batch within hosting
+      // upload limits and preserves successful results when another image fails.
+      for (const [index, image] of pending.entries()) {
+        if (controller.signal.aborted) break;
+        setBusy(`Reading screenshot ${index + 1} of ${pending.length}…`);
+        update(image.id, { status: 'reading', error: '' });
+        try {
+          const form = new FormData(); form.set('file', image.file);
+          const response = await fetch('/api/terminal/run', { method: 'POST', body: form, signal: controller.signal, cache: 'no-store' });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok) throw Object.assign(Error(result.error || 'This screenshot could not be read. Please retry.'), { status: response.status });
+          if (!Array.isArray(result.holdings) || !result.holdings.length) throw Error('No readable holdings found. Replace this image with a clearer crop.');
+          if (controller.signal.aborted) break;
+          update(image.id, { status: 'done', count: result.holdings.length, warnings: result.warnings || [] });
+          setRows(current => [...current.filter(row => row.sourceId !== image.id), ...result.holdings.map(row => ({ ...row, sourceId: image.id, sourceName: image.file.name }))]);
+        } catch (e) {
+          if (controller.signal.aborted) break;
+          failed += 1; update(image.id, { status: 'error', error: e.message });
+          // Stop on account-wide limits; leave the remaining images queued.
+          if ([401, 403, 409, 429, 503].includes(e.status)) {
+            setError(`${e.message} Your completed results are still available below. The remaining screenshots have not been read.`);
+            return;
+          }
+        }
+      }
+      if (failed) setError(`${failed} ${failed === 1 ? 'screenshot needs' : 'screenshots need'} another try. Review the completed results below, or retry the unread images.`);
+    } finally { if (!controller.signal.aborted) setBusy(''); }
   }
   function edit(index, key, value) {
     resetPreview(); setRows(current => current.map((row, n) => n === index ? { ...row, [key]: value } : row));
@@ -68,25 +102,34 @@ export default function PortfolioImport({ api, onComplete }) {
   }
   const field = (row, index, key, label, props = {}) => <label>{label}<input {...props} disabled={!!busy} aria-label={`${label}, holding ${index + 1}`} value={row[key] || ''} onChange={e => edit(index, key, key === 'symbol' ? e.target.value.toUpperCase() : e.target.value)}/></label>;
   const ready = preview?.preview.filter(row => row.status === 'ready').length || 0;
+  const unread = images.filter(image => image.status !== 'done').length;
+  const warnings = images.flatMap(image => image.warnings.map(warning => `${image.file.name}: ${warning}`));
   return <div className={`${s.form} ${i.importer}`}>
     <p className={i.intro}>Bring your holdings from ICICI Direct, Wio or another app. Review the details, then save.</p>
     <div className={i.tabs} role="tablist" aria-label="Import format">{[['image', 'Screenshot'], ['csv', 'CSV file']].map(([value, label]) => <button type="button" role="tab" aria-selected={mode === value} disabled={!!busy} key={value} onClick={() => { setMode(value); resetPreview(); }}>{label}</button>)}</div>
     {mode === 'image' ? <>
-      <div className={`${i.dropzone} ${rows.length ? i.compact : ''}`} tabIndex={0} aria-label="Drop or paste a portfolio screenshot" onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); choose(e.dataTransfer.files[0]); }} onPaste={e => { const image = [...e.clipboardData.files].find(f => f.type.startsWith('image/')); if (image) { e.preventDefault(); choose(image); } }}>
-        {url ? <img src={url} alt="Your selected portfolio screenshot" className={i.previewImage}/> : <span className={i.uploadIcon} aria-hidden="true">↥</span>}
-        <strong>{file ? file.name : 'Drop your portfolio screenshot here'}</strong>
-        <span>PNG, JPEG or WebP · up to 3 MB · you can also paste an image</span>
-        <input ref={picker} className={i.fileInput} tabIndex={-1} aria-label="Portfolio screenshot" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" disabled={!!busy} onChange={e => { choose(e.target.files[0]); e.target.value = ''; }}/>
-        <button type="button" disabled={!!busy} onClick={() => picker.current.click()}>{file ? 'Choose another screenshot' : 'Choose screenshot'}</button>
+      <div className={i.dropzone} tabIndex={0} aria-label="Drop or paste up to 10 portfolio screenshots" onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); choose(e.dataTransfer.files); }} onPaste={e => { const files = [...e.clipboardData.files].filter(f => f.type.startsWith('image/')); if (files.length) { e.preventDefault(); choose(files); } }}>
+        {!images.length && <span className={i.uploadIcon} aria-hidden="true">↥</span>}
+        <strong>{images.length ? `${images.length} of ${IMAGE_COUNT_LIMIT} screenshots added` : 'Drop your portfolio screenshots here'}</strong>
+        <span>Up to 10 images · PNG, JPEG or WebP · 3 MB each · or paste screenshots</span>
+        <input ref={picker} className={i.fileInput} tabIndex={-1} aria-label="Portfolio screenshots" type="file" multiple accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" disabled={!!busy} onChange={e => { choose(e.target.files); e.target.value = ''; }}/>
+        <button type="button" disabled={!!busy || images.length >= IMAGE_COUNT_LIMIT} onClick={() => picker.current.click()}>{images.length ? 'Add more screenshots' : 'Choose screenshots'}</button>
       </div>
-      <p className={i.privacy}>“Read screenshot” sends this image to OpenAI to extract holdings. Crop out account numbers and personal details first. StockedBy does not store the image. Nothing is added to your portfolio until you confirm.</p>
-      <button className={rows.length ? undefined : s.primary} disabled={!file || !!busy} onClick={readImage}>{busy === 'Reading your screenshot…' ? busy : rows.length ? 'Read screenshot again' : 'Read screenshot with AI'}</button>
+      <p className={i.privacy}>“Read screenshots” sends the selected images to OpenAI, one at a time. Each image uses one AI read from your daily allowance. Crop out account numbers and personal details first. StockedBy does not store the images. Nothing is added until you confirm.</p>
+      <button className={rows.length ? undefined : s.primary} disabled={!unread || !!busy} onClick={readImages}>{busy.startsWith('Reading screenshot') ? busy : !unread && images.length ? 'All screenshots read' : `Read ${unread || ''} ${unread === 1 ? 'screenshot' : 'screenshots'} with AI`}</button>
+      {error && <p role="alert" className={s.error}>{error}</p>}
+      {images.length > 0 && <ul className={i.imageList} tabIndex={0} aria-label="Selected screenshots">{images.map(image => <li className={i.imageItem} key={image.id}>
+        <img src={image.url} alt={`Preview of ${image.file.name}`}/>
+        <div><strong>{image.file.name}</strong><span>{image.status === 'done' ? `${image.count} ${image.count === 1 ? 'holding' : 'holdings'} found` : image.status === 'reading' ? 'Reading…' : image.status === 'error' ? 'Needs another try' : 'Ready to read'}</span>{image.error && <p>{image.error}</p>}</div>
+        <button type="button" aria-label={`Remove ${image.file.name}`} disabled={!!busy} onClick={() => removeImage(image)}>×</button>
+      </li>)}</ul>}
       {warnings.length > 0 && <div className={s.notice}><strong>Check against your screenshot</strong><ul>{warnings.map((warning, n) => <li key={n}>{warning}</li>)}</ul></div>}
       {rows.length > 0 && <section ref={review} tabIndex={-1} className={i.rows} aria-label="Review extracted holdings">
         <div className={i.sectionHeading}><h3>{rows.length} {rows.length === 1 ? 'holding' : 'holdings'} found</h3><span>Edit any value. Untick rows you don’t want.</span></div>
         <div className={s.formGrid}><label>Account label<input value={account} maxLength={120} disabled={!!busy} placeholder="e.g. Wio US" onChange={e => { setAccount(e.target.value); resetPreview(); }}/></label><label>Snapshot date & time (optional)<input type="datetime-local" value={asOf} disabled={!!busy} onChange={e => { setAsOf(e.target.value); resetPreview(); }}/></label></div>
         {rows.map((row, index) => <article className={i.row} key={index}>
           <label className={i.rowTitle}><input type="checkbox" checked={row.selected !== false} disabled={!!busy} onChange={e => edit(index, 'selected', e.target.checked)}/><strong>{row.name || `Holding ${index + 1}`}</strong></label>
+          <span className={i.source}>From {row.sourceName}</span>
           {row.issues.length > 0 && <p className={i.uncertain}>{row.issues.join(' ')}</p>}
           {row.selected !== false && <div className={i.fields}>
             {field(row, index, 'name', 'Name')}{field(row, index, 'symbol', 'Ticker')}
@@ -109,11 +152,12 @@ export default function PortfolioImport({ api, onComplete }) {
     {(mode === 'csv' || rows.length > 0) && <button disabled={!!busy || (mode === 'csv' ? !csv : !rows.some(row => row.selected !== false))} onClick={checkRows}>Check holdings before saving</button>}
     {preview && <section ref={confirmation} tabIndex={-1} className={i.confirm} aria-label="Confirm portfolio import">
       <h3>{ready} {ready === 1 ? 'holding' : 'holdings'} ready to add</h3>
+      {mode === 'image' && unread > 0 && <p className={i.uncertain}>{unread} {unread === 1 ? 'screenshot has' : 'screenshots have'} not been read. This import includes only the completed screenshots.</p>}
       <div className={s.tableWrap}><table><thead><tr><th>Holding</th><th>Units</th><th>Result</th></tr></thead><tbody>{preview.preview.map((row, index) => <tr key={index}><td>{row.position?.symbol || `Row ${row.row}`}<small>{row.position?.exchange}</small></td><td>{row.position?.quantity || '—'}</td><td>{row.status}<small>{row.message}</small></td></tr>)}</tbody></table></div>
       <label className={i.rowTitle}><input type="checkbox" checked={checked} disabled={!!busy} onChange={e => setChecked(e.target.checked)}/><span>I checked the tickers, units, currencies and costs against my original.</span></label>
       <button className={s.primary} disabled={!!busy || !ready || !checked} onClick={save}>Add {ready} {ready === 1 ? 'holding' : 'holdings'} to my portfolio</button>
     </section>}
     {busy && <p role="status">{busy}</p>}
-    {error && <p role="alert" className={s.error}>{error}</p>}
+    {error && mode === 'csv' && <p role="alert" className={s.error}>{error}</p>}
   </div>;
 }
