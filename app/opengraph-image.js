@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-export const alt = "StockedBy — Your product thinking, connected.";
+export const alt = "StockedBy — Your investments, in context.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export default function Image() {
@@ -11,8 +11,8 @@ export default function Image() {
         display: "flex",
         flexDirection: "column",
         padding: "62px 72px",
-        background: "#141a16",
-        color: "#f0f3e9",
+        background: "#f8f9fc",
+        color: "#192b42",
         fontFamily: "sans-serif",
       }}
     >
@@ -28,8 +28,8 @@ export default function Image() {
         <span
           style={{
             display: "flex",
-            background: "#d8f478",
-            color: "#1c2815",
+            background: "#ad6414",
+            color: "#ffffff",
             padding: "0 10px",
             borderRadius: 8,
           }}
@@ -48,22 +48,22 @@ export default function Image() {
           marginTop: 50,
         }}
       >
-        <span>Big thinking.</span>
-        <span style={{ color: "#d8f478" }}>Beautifully connected.</span>
+        <span>Less noise.</span>
+        <span style={{ color: "#ad6414" }}>More perspective.</span>
       </div>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          borderTop: "1px solid #425634",
+          borderTop: "1px solid #dce3ec",
           paddingTop: 25,
           marginTop: "auto",
           fontSize: 21,
-          color: "#a8bd94",
+          color: "#536279",
         }}
       >
-        <span>Your ideas. Your standards. Your workflow.</span>
-        <span>OpenAI powered ↗</span>
+        <span>India. UAE. US. Your investments, in context.</span>
+        <span>StockedBy Research ↗</span>
       </div>
     </div>,
     size,

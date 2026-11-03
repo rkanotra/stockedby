@@ -2,9 +2,9 @@ import "./globals.css";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
 
-const TITLE = "StockedBy — Your product thinking, connected.";
+const TITLE = "StockedBy — Your investments. In context.";
 const DESCRIPTION =
-  "An AI product workspace. Turn ideas and company standards into connected requirements, stories and test plans.";
+  "Source-linked market news, private portfolio tracking and AI investment research across India, UAE and US markets.";
 
 // Root-level defaults — every page below sets its own full metadata export
 // (title/description/canonical/openGraph/twitter, via lib/site.js's

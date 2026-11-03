@@ -72,7 +72,7 @@ export default function GoogleAnalytics({ measurementId }) {
     });
     lastPath.current = path;
   }, [pathname, ready, consent]);
-  if (!valid || pathname === "/ascent" || pathname.startsWith("/ascent/") || pathname === "/studio" || pathname.startsWith("/studio/") || pathname === "/workspace" || pathname.startsWith("/workspace/"))
+  if (!valid || !analyticsPath(pathname))
     return null;
   return (
     <>
@@ -95,7 +95,7 @@ export default function GoogleAnalytics({ measurementId }) {
             <strong>Help us understand what’s useful.</strong>
             <p>
               Allow Google Analytics to measure visits and feature use? Your
-              project contents, prompts and personal details are excluded.{" "}
+              holdings, research prompts and personal details are excluded.{" "}
               <a href="/privacy">Privacy details</a>
             </p>
           </div>

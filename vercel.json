@@ -1,0 +1,6 @@
+{
+  "crons": [
+    { "path": "/api/terminal/job?window=asia", "schedule": "0 6 * * *" },
+    { "path": "/api/terminal/job?window=global", "schedule": "0 15 * * *" }
+  ]
+}
