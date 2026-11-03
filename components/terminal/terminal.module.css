@@ -11,27 +11,29 @@
 
 .stance{max-width:34rem;font-size:13px;line-height:1.6;color:#536279;overflow-wrap:anywhere}.researchCard .panelHead{align-items:flex-start;flex-wrap:wrap}
 
-/* A consistent warm palette across public and private surfaces. */
-.root{--navy:#2b2823;--muted:#7f756a;--line:#e8e1d8;--amber:#f5b58b;background:#faf9f6;color:#2b2823}
-.root .primary{background:#f5b58b;border-color:#e8a77b;color:#542f1a;border-radius:22px}
-.root .primary:hover:not(:disabled){background:#eea677;border-color:#df9766}
+/* The user's orange reference, with accessible text and shared theme tokens. */
+.root{--market-accent:#f65400;--market-accent-hover:#ff681c;--market-on-accent:#20130c;--market-accent-text:#ad3900;--market-accent-soft:#fff0e7;--market-accent-border:#ffc7a8}
+:global(html[data-stockedby-theme=dark]) .root{--market-accent-text:#ff8c53;--market-accent-soft:#3b251b;--market-accent-border:#8e411e}
+.root{--navy:#2b2823;--muted:#7f756a;--line:#e8e1d8;--amber:var(--market-accent);background:#faf9f6;color:#2b2823}
+.root .primary{background:var(--market-accent);border-color:var(--market-accent);color:var(--market-on-accent);border-radius:22px}
+.root .primary:hover:not(:disabled){background:var(--market-accent-hover);border-color:var(--market-accent)}
 .root button:hover:not(:disabled){border-color:#d7c5b0;background:#faf4ed}
-.root input:focus-visible,.root button:focus-visible,.root select:focus-visible,.root textarea:focus-visible,.root a:focus-visible,.root summary:focus-visible{outline-color:#d18b57}
-.root .eyebrow{color:#a17c57!important}.root input[type=checkbox]{accent-color:#bd7745}
+.root input:focus-visible,.root button:focus-visible,.root select:focus-visible,.root textarea:focus-visible,.root a:focus-visible,.root summary:focus-visible{outline-color:var(--market-accent-text)}
+.root .eyebrow{color:#a17c57!important}.root input[type=checkbox]{accent-color:var(--market-accent-text)}
 .root .panel{border-color:#e8e1d8;border-radius:15px}.root .insightPanel{background:#efeaf7;border-color:#e2d9ee}
-.root .chips button[aria-pressed=true]{background:#f9e4d2;color:#a3673b}
+.root .chips button[aria-pressed=true]{background:var(--market-accent);color:var(--market-on-accent)}
 .root .newsMeta span{color:#a56b3d}.root .newsItem h3 a span{color:#bd966e}
-.root .brand span{background:#f5b58b}.root .sidebar nav button[aria-current=page]{background:#fce8db;color:#995d33}
+.root .brand span{background:var(--market-accent)}.root .sidebar nav button[aria-current=page]{background:var(--market-accent);color:var(--market-on-accent)}
 
 /* Dark surfaces preserve the same hierarchy, with warm accents and neutral data. */
-:global(html[data-stockedby-theme=dark]) .root{--navy:#f1ede7;--muted:#b5aea5;--line:#393532;--amber:#edb081;--green:#82c7a7;--red:#ed9999;color-scheme:dark;background:#151618;color:#f1ede7}
+:global(html[data-stockedby-theme=dark]) .root{--navy:#f1ede7;--muted:#b5aea5;--line:#393532;--amber:var(--market-accent);--green:#82c7a7;--red:#ed9999;color-scheme:dark;background:#151618;color:#f1ede7}
 :global(html[data-stockedby-theme=dark]) .root :is(input,select,textarea){background:#232427;border-color:#46413b;color:#f0e9df}
 :global(html[data-stockedby-theme=dark]) .root label{color:#c7bfb4}
 :global(html[data-stockedby-theme=dark]) .root :where(button,.panel,.topbar,.dialog,.dialog header){background:#1e1f22;border-color:#3c3733;color:#e7dfd4}
 :global(html[data-stockedby-theme=dark]) .root button:hover:not(:disabled){background:#302a25;border-color:#80664f}
-:global(html[data-stockedby-theme=dark]) .root .primary{background:#edb081;border-color:#edb081;color:#382316}
+:global(html[data-stockedby-theme=dark]) .root .primary{background:var(--market-accent);border-color:var(--market-accent);color:var(--market-on-accent)}
 :global(html[data-stockedby-theme=dark]) .root :is(.fine,.summary,.stance,.newsMeta){color:#bdb4aa!important}
-:global(html[data-stockedby-theme=dark]) .root :is(.segment,.badge,.chips button[aria-pressed=true]){background:#342b24;color:#e9bc94}
+:global(html[data-stockedby-theme=dark]) .root :is(.segment,.badge){background:#342b24;color:#e9bc94}
 :global(html[data-stockedby-theme=dark]) .root .segment button[aria-pressed=true]{background:#55402f;color:#f2ceb0}
 :global(html[data-stockedby-theme=dark]) .root :is(table,td){background:#1e1f22;color:#e4dfd7;border-color:#3c3733}
 :global(html[data-stockedby-theme=dark]) .root :is(th,tbody tr:nth-child(even)){background:#242529;color:#c5baad;border-color:#3c3733}
@@ -48,3 +50,5 @@
 .login>button{margin-bottom:24px}.login>.eyebrow{display:block;margin-bottom:12px}
 
 :global(html[data-stockedby-theme=dark]) .root .chart svg text{fill:#c5b9ac}:global(html[data-stockedby-theme=dark]) .root .chart svg g line{stroke:#3c3936}
+
+:global(html[data-stockedby-theme=dark]) .root .primary:hover:not(:disabled){background:var(--market-accent-hover);border-color:var(--market-accent)}
