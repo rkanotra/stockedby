@@ -28,7 +28,7 @@ export default function PortfolioImport({ api, onComplete }) {
     request.current = new AbortController();
     try {
       const form = new FormData(); form.set('file', file);
-      const response = await fetch('/api/terminal/import-image', { method: 'POST', body: form, signal: request.current.signal, cache: 'no-store' });
+      const response = await fetch('/api/terminal/run', { method: 'POST', body: form, signal: request.current.signal, cache: 'no-store' });
       const result = await response.json();
       if (!response.ok) throw Error(result.error || 'The image could not be read. Please retry.');
       setRows(result.holdings); setWarnings(result.warnings);
