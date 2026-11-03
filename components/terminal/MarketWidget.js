@@ -3,9 +3,30 @@ import { useEffect, useRef, useState } from 'react';
 import d from './marketDashboard.module.css';
 const WIDGETS = { chart: 'symbol-overview', heatmap: 'stock-heatmap', screener: 'screener' };
 function WidgetFrame({src,name,type,height,symbol}) {
-  const loaded=useRef(false), [failed,setFailed]=useState(false), [ready,setReady]=useState(false), [attempt,setAttempt]=useState(0);
-  useEffect(()=>{loaded.current=false;const timer=setTimeout(()=>{if(!loaded.current)setFailed(true);},20000);return()=>clearTimeout(timer);},[attempt]);
-  return <div className={d.widget} style={{'--widget-height':`${height}px`}}><iframe key={attempt} className={d.widgetHost} src={src} title={`${name} market ${type}`} sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-downloads" referrerPolicy="strict-origin-when-cross-origin" onLoad={()=>{loaded.current=true;setReady(true);setFailed(false);}} onError={()=>setFailed(true)}/>{!ready&&!failed&&<div className={d.widgetLoading} role="status"><span/>Connecting to market data…</div>}{failed&&<div className={d.widgetError}><strong>Chart connection unavailable</strong><p>Your browser or network may be blocking the market provider.</p><button onClick={()=>{setFailed(false);setReady(false);setAttempt(v=>v+1);}}>Retry connection</button><a href="https://www.tradingview.com/markets/" target="_blank" rel="noopener noreferrer">Open TradingView ↗</a></div>}<div className={d.attribution}><a href={type==='chart'?`https://www.tradingview.com/symbols/${symbol.replace(':','-')}/`:type==='heatmap'?'https://www.tradingview.com/heatmap/stock/':'https://www.tradingview.com/screener/'} target="_blank" rel="noopener nofollow">{type==='chart'?`${name} chart`:type==='heatmap'?'Stock Heatmap':'Stock Screener'} by TradingView</a></div></div>;
+  const loaded = useRef(false);
+  const [failed,setFailed] = useState(false);
+  const [ready,setReady] = useState(false);
+  const [attempt,setAttempt] = useState(0);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (loaded.current) return;
+      if (attempt === 0) setAttempt(1);
+      else setFailed(true);
+    }, attempt === 0 ? 8000 : 20000);
+    return () => clearTimeout(timer);
+  }, [attempt]);
+  const retry = () => {
+    loaded.current = false;
+    setFailed(false);
+    setReady(false);
+    setAttempt(value => value + 1);
+  };
+  return <div className={d.widget} style={{'--widget-height':`${height}px`}}>
+    <iframe key={attempt} className={d.widgetHost} src={src} title={`${name} market ${type}`} loading="eager" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-downloads" referrerPolicy="strict-origin-when-cross-origin" onLoad={()=>{loaded.current=true;setReady(true);setFailed(false);}} onError={()=>setFailed(true)}/>
+    {!ready&&!failed&&<div className={d.widgetLoading} role="status"><span/>{attempt?'Reconnecting to market data…':'Connecting to market data…'}</div>}
+    {failed&&<div className={d.widgetError}><strong>Market data is taking longer than usual</strong><p>The provider hasn’t connected. Retry here or open the market view at the source.</p><button onClick={retry}>Retry connection</button><a href="https://www.tradingview.com/markets/" target="_blank" rel="noopener noreferrer">Open TradingView ↗</a></div>}
+    <div className={d.attribution}><a href={type==='chart'?`https://www.tradingview.com/symbols/${symbol.replace(':','-')}/`:type==='heatmap'?'https://www.tradingview.com/heatmap/stock/':'https://www.tradingview.com/screener/'} target="_blank" rel="noopener nofollow">{type==='chart'?`${name} chart`:type==='heatmap'?'Stock Heatmap':'Stock Screener'} by TradingView</a></div>
+  </div>;
 }
 export default function MarketWidget({ type = 'chart', symbol = 'NASDAQ:AAPL', name = 'Apple', height = 400 }) {
   const config = type === 'chart' ? {
