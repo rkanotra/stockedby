@@ -11,7 +11,7 @@ const nextConfig = {
       ...["/studio/:path*","/workspace/:path*","/ascent/:path*"].map(source=>({source,destination:"/terminal",permanent:false})),
       ...["/test/:path*","/audit/:path*","/fix/:path*","/purchase-check/:path*","/agent-store/:path*","/archive/:path*","/blog/:path*","/why","/how"].map(source=>({source,destination:"/",permanent:false})),
       { source: "/login", destination: "/terminal", permanent: false },
-      { source: "/dashboard/:path*", destination: "/", permanent: false },
+      ...["/dashboard/agent-store/:path*","/dashboard/operations/:path*","/dashboard/payments/:path*","/dashboard/purchase-check/:path*"].map(source=>({source,destination:"/",permanent:false})),
       { source: "/checkout/:path*", destination: "/purchase-check", permanent: false },
       { source: "/report/:path*", destination: "/test", permanent: false },
       { source: "/stores/:path*", destination: "/", permanent: false },
