@@ -1,7 +1,7 @@
 import PulseDashboard from '@/components/dashboard/PulseDashboard';
 export const metadata = {
   title: 'Daily dashboard — StockedBy',
-  description: 'Your clock, weather, Sensex, US markets, gold, crypto and the latest market headlines. A compact display for your phone.',
+  description: 'Your clock, weather, Sensex, US markets, gold, silver, crypto, AED to INR and the latest market headlines. A compact display for your phone.',
   alternates: { canonical: '/dashboard' },
   manifest: '/dashboard.webmanifest',
   appleWebApp: { capable: true, title: 'StockedBy', statusBarStyle: 'black-translucent' },

@@ -47,7 +47,13 @@
 .category{font-size:9px;font-weight:600;letter-spacing:1.3px;color:var(--tone)}
 .tile h2{font-size:18px;font-weight:600;letter-spacing:-.35px;margin:0}
 .quote{position:relative;height:80px;margin:1px -8px 0}
-.quote iframe{color-scheme:normal;width:100%;height:80px;border:0;display:block;background:transparent}
+.nativeQuote{height:100%;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:0 8px;min-width:0}
+.price{font-size:32px;line-height:1.1;letter-spacing:-1px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.quoteTiming,.earlier,.quoteChange{font-size:10px;line-height:1.25;color:var(--muted)}
+.earlier{color:var(--violet)}
+.quoteChange{font-size:9px}
+.quoteSource{display:block;font-size:8px;color:var(--muted)!important;opacity:.85;line-height:1.4;margin-top:2px}
+.quoteSource:hover{text-decoration:underline}
 .quotePlaceholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;pointer-events:none}
 .quotePlaceholder a,.quotePlaceholder button{pointer-events:auto}
 .feedError{text-align:center;display:flex;flex-direction:column;gap:8px;font-size:10px;line-height:1.3}
@@ -55,17 +61,35 @@
 .feedError button{border:1px solid var(--border);border-radius:8px;padding:5px 9px;background:var(--button)}
 .feedError a{text-decoration:underline}
 .quoteNote{font-size:10px;color:var(--muted);margin:2px 0 0;white-space:normal}
-.headlines{margin-top:14px;border:1px solid var(--border);border-radius:20px;padding:12px 18px 14px;background:var(--glass);box-shadow:inset 0 1px 0 #ffffff08;min-height:128px}
-.newsTop{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
-.newsTop>span{font-size:10px;font-weight:600;letter-spacing:1.4px;display:flex;align-items:center;gap:8px;color:var(--muted)}
+.fxTile{display:flex;flex-direction:column;justify-content:center;gap:12px;border:1px solid var(--border);border-radius:20px;background:var(--glass);padding:16px;min-width:0}
+.fxConversion{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0}
+.fxConversion label{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
+.fxConversion>span{display:none}
+.fxConversion input{width:92px;min-width:0;border:1px solid var(--border);border-radius:7px;background:var(--button);color:var(--text);font:inherit;font-size:16px;font-variant-numeric:tabular-nums;padding:5px 7px;appearance:textfield}
+.fxConversion input::-webkit-inner-spin-button,.fxConversion input::-webkit-outer-spin-button{appearance:none;margin:0}
+.fxConversion output{font-size:27px;font-weight:650;letter-spacing:-.5px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;max-width:100%}
+.fxConversion output small{font-size:10px;font-weight:400;color:var(--muted)}
+.fxMeta{display:flex;flex-direction:column;align-items:flex-start;font-size:8px;line-height:1.5;color:var(--muted)}
+.fxMeta a{text-decoration:underline;text-underline-offset:2px}
+.fxMeta button{background:var(--button);border:1px solid var(--border);border-radius:6px;padding:4px 8px}
+.headlines{margin-top:14px;border:1px solid var(--border);border-radius:20px;padding:14px 18px 18px;background:var(--glass);box-shadow:inset 0 1px 0 #ffffff08}
+.newsTop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.newsTop>span{font-size:10px;font-weight:600;letter-spacing:1.4px;display:flex;align-items:center;gap:8px;color:var(--muted);white-space:nowrap}
 .newsTop i{width:5px;height:5px;border-radius:50%;background:var(--violet)}
-.newsTop small{letter-spacing:0;font-weight:400;color:var(--violet);font-size:10px}
 .newsTop>div{display:flex;gap:3px}
 .newsTop button{height:30px;min-width:32px}
 .newsTop svg{width:15px;height:15px}
-.headline{display:block;font-size:19px;line-height:1.35;font-weight:550;letter-spacing:-.35px;min-height:26px}
+.newsTop .newsFilters{margin-right:auto;gap:4px}
+.newsFilters button{padding:0 12px;font-size:11px;border:1px solid transparent;color:var(--muted)}
+.newsFilters button[aria-pressed=true]{background:var(--button);border-color:var(--border);color:var(--text)}
+.newsStories{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.newsStory{min-width:0}
+.newsStory+.newsStory{padding-left:22px;border-left:1px solid var(--border)}
+.headline{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:19px;line-height:1.35;font-weight:550;letter-spacing:-.35px}
 .headline span{font-size:14px;color:var(--muted)}
-.newsMeta{margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10px;color:var(--muted)}
+.newsMeta{margin-top:8px;display:flex;align-items:center;gap:8px;font-size:10px;color:var(--muted)}
+.newsRegion{color:var(--violet);font-weight:600;flex-shrink:0}
+.newsNotice{margin:8px 0 0;font-size:10px;color:var(--violet)}
 .emptyNews{font-size:13px;color:var(--muted);padding:10px 0}
 .footer{margin:0;padding:0;border:0;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .providers{display:flex;align-items:center;gap:6px;color:var(--footer-text);font-size:10px;font-weight:500}
@@ -104,7 +128,7 @@
 .srOnly{position:absolute!important;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}
 
 @media(min-width:1100px) and (min-height:900px){.shell{max-width:1180px;gap:20px}
-.day{padding:35px 5px}
+.day{padding:22px 5px}
 .clockLine time{font-size:130px}
 .tile{padding:18px 18px 14px}
 .tile h2{font-size:23px}
@@ -113,7 +137,7 @@
 .headline{font-size:22px}
 }
 
-@media(max-width:600px){.shell{gap:9px;padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+@media(max-width:600px){.fxTile{padding:8px 9px;gap:5px;border-radius:16px}.fxConversion{gap:4px}.fxConversion input{font-size:13px;width:72px;padding:3px 6px}.fxConversion output{font-size:23px}.fxMeta{font-size:7px}.shell{gap:9px;padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
 .toolbar{gap:8px;min-height:36px}
 .brand{font-size:19px;gap:6px}
 .brand svg{width:26px;height:26px}
@@ -121,14 +145,14 @@
 .tools button{height:36px;min-width:34px}
 .tools .fullscreen{padding:0 10px}
 .fullscreen span{display:none}
-.day{padding:8px 3px 8px;gap:10px}
+.day{padding:2px 3px;gap:10px}
 .clock p{font-size:11px;margin:6px 0 0}
 .clockLine{gap:8px}
 .clockLine time{font-size:64px}
 .clockLine>div{gap:3px;padding-top:5px}
 .clockLine>div>span{font-size:16px}
 .clockLine small{font-size:8px}
-.weather{min-width:110px;padding:8px 10px 7px;border-radius:18px}
+.weather{min-width:110px;padding:6px 10px 5px;border-radius:18px}
 .weatherReading{gap:5px}
 .weatherReading strong{font-size:31px}
 .weatherReading strong small{font-size:11px}
@@ -139,18 +163,25 @@
 .markets{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 .tile{padding:7px 9px;border-radius:16px}
 .category{font-size:7px;letter-spacing:.8px}
-.tile header>a{font-size:13px}
+.tile header{height:14px;line-height:1}
+.tile header>a{font-size:13px;line-height:1}
 .tile h2{font-size:15px}
-.quote{height:74px;margin-top:0}
-.quote iframe{height:74px}
+.quote{height:52px;margin-top:0}
+.price{font-size:26px;letter-spacing:-.8px}
+.quoteTiming,.earlier{font-size:8px}
+.quoteChange,.quoteSource{font-size:7px}
 .quoteNote{font-size:8px;line-height:1.2}
-.headlines{margin-top:9px;padding:8px 12px 11px;border-radius:16px;min-height:109px}
-.headline{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:15px;line-height:1.35;min-height:40px}
-.newsTop{margin-bottom:1px}
+.headlines{margin-top:9px;padding:8px 12px 11px;border-radius:16px}
+.newsTop{gap:4px;margin-bottom:6px;flex-wrap:wrap}
 .newsTop>span{font-size:8px;letter-spacing:1px}
-.newsTop small{font-size:9px}
-.newsTop button{min-width:32px;height:32px}
-.newsMeta{font-size:8px;margin-top:6px}
+.newsTop .newsFilters{order:2;flex-basis:100%;justify-content:flex-start;margin-top:2px}
+.newsFilters button{padding:0 12px;font-size:10px;height:26px;min-width:44px}
+.newsTop button{height:26px}
+.newsStories{grid-template-columns:1fr;gap:8px}
+.newsStory+.newsStory{padding:8px 0 0;border-left:0;border-top:1px solid var(--border)}
+.headline{font-size:14px;line-height:1.3;-webkit-line-clamp:2;min-height:0}
+.newsMeta{font-size:8px;margin-top:4px;gap:6px}
+.newsNotice{font-size:8px}
 .footer{flex-direction:column-reverse;gap:8px}
 .providers{font-size:8px;gap:5px}
 .displayControls{width:100%;justify-content:center;gap:12px}
@@ -170,11 +201,11 @@
 .quoteNote{font-size:7px}
 }
 
-@media(max-height:500px) and (min-width:601px){.shell{padding-top:6px;padding-bottom:6px;gap:6px;max-width:1120px;justify-content:center}
+@media(max-height:500px) and (min-width:601px){.fxTile{padding:5px 8px;gap:3px;border-radius:12px}.fxConversion{gap:2px}.fxConversion input{font-size:11px;width:65px;padding:2px 6px}.fxConversion output{font-size:21px}.fxMeta{font-size:7px}.shell{padding-top:6px;padding-bottom:6px;gap:6px;max-width:1120px;justify-content:center}
 .toolbar{min-height:30px}
 .tools button{height:32px}
 .shell>main{display:grid;grid-template-columns:172px minmax(0,1fr);gap:8px}
-.day{padding:16px 4px;flex-direction:column;align-items:flex-start;justify-content:space-evenly;gap:10px}
+.day{padding:8px 4px;flex-direction:column;align-items:flex-start;justify-content:space-evenly;gap:10px}
 .clock p{font-size:10px;margin:5px 0 0}
 .clockLine{gap:6px}
 .clockLine time{font-size:49px}
@@ -191,13 +222,19 @@
 .tile header{height:10px;line-height:1}
 .tile header>a{font-size:11px;line-height:1}
 .tile h2{font-size:13px;line-height:1.2}
-.quote{margin:0 -6px;height:64px}
-.quote iframe{height:64px}
+.quote{margin:0 -6px;height:40px}
+.nativeQuote{gap:2px}
+.quoteSource,.quoteChange{display:none}
+.price{font-size:25px}.quoteTiming,.earlier{font-size:8px}.quoteChange,.quoteSource{font-size:7px}
 .quoteNote{font-size:8px;line-height:1.1;margin:0}
-.headlines{grid-column:1/-1;margin-top:0;padding:4px 12px 7px;min-height:68px}
-.newsTop{margin:0}
-.headline{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;min-height:0;line-height:1.3}
+.headlines{grid-column:1/-1;margin-top:0;padding:4px 12px 7px;min-height:102px}
+.newsTop{margin-bottom:3px;gap:10px}
 .newsTop button{height:24px;min-width:32px}
+.newsTop .newsFilters{gap:3px}
+.newsFilters button{font-size:9px;padding:0 9px}
+.newsStories{gap:14px}
+.newsStory+.newsStory{padding-left:14px}
+.headline{font-size:13px;line-height:1.3;-webkit-line-clamp:2;min-height:0;white-space:normal}
 .newsMeta{margin-top:3px;font-size:8px}
 .footer{gap:6px}
 .providers{font-size:8px}

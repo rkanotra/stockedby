@@ -2,14 +2,13 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { BrandMark } from '@/components/terminal/DeskIcon';
-import { DASHBOARD_MARKETS, WEATHER_CITIES, safeLocation, clockParts, parseWeather, recentHeadlines, ageLabel } from '@/lib/dashboard/display';
+import { WEATHER_CITIES, safeLocation, clockParts, parseWeather, regionalHeadlines, ageLabel } from '@/lib/dashboard/display';
 import s from './pulse.module.css';
+import MarketQuotes from './MarketQuotes';
 const PREFS = 'stockedby-display-v1';
 function subscribeConnection(callback) { window.addEventListener('online',callback); window.addEventListener('offline',callback); return()=>{window.removeEventListener('online',callback);window.removeEventListener('offline',callback);}; }
 const offlineSnapshot=()=>!navigator.onLine;
 const onlineServerSnapshot=()=>false;
-const subscribeHydration=()=>()=>{};
-const hydratedSnapshot=()=>true;
 function Icon({type,...props}) { return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>{type==='expand'?<path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/>:type==='sun'?<><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></>:type==='moon'?<path d="M20 14A8.2 8.2 0 0 1 10 4a8.5 8.5 0 1 0 10 10Z"/>:type==='cloud'||type==='rain'||type==='snow'?<><path d="M7 17a5 5 0 1 1 1.4-9.8A6 6 0 0 1 20 10a3.5 3.5 0 0 1-1 7Z"/>{type==='rain'&&<path d="m8 20-1 2m6-2-1 2m6-2-1 2"/>}{type==='snow'&&<path d="M8 21h.01M13 21h.01M18 21h.01"/>}</>:type==='refresh'?<><path d="M20 6v5h-5M4 18v-5h5"/><path d="M6 7a7 7 0 0 1 12-1l2 5M4 13l2 5a7 7 0 0 0 12-1"/></>:type==='settings'?<><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor"/><circle cx="15" cy="17" r="2" fill="currentColor"/></>:type==='awake'?<><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M10 17h4M12 7v5m-2-3 2-2 2 2"/></>:type==='close'?<path d="m6 6 12 12M6 18 18 6"/>:type==='pause'?<path d="M9 5v14M15 5v14"/>:type==='play'?<path d="m9 5 10 7-10 7Z"/>:type==='next'?<path d="m9 5 7 7-7 7"/>:type==='location'?<><circle cx="12" cy="12" r="6"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/><circle cx="12" cy="12" r="1"/></>:<path d="M12 3v12m-4-4 4 4 4-4M5 15v6h14v-6"/>}</svg>; }
 function Clock({timezone,hour12}) {
   const [now,setNow]=useState(null);
@@ -17,47 +16,17 @@ function Clock({timezone,hour12}) {
   const value=now?clockParts(now,timezone,hour12):null;
   return <div className={s.clock}><p>{value?.date||'Your day, at a glance'}</p><div className={s.clockLine}><time aria-label="Current time" dateTime={now?.toISOString()}>{value?.time||'--:--'}</time><div><span>{value?.seconds||'00'}</span><small>{value?.period||value?.zone||'LOCAL'}</small></div></div></div>;
 }
-function QuoteTile({item,theme,refresh,offline}) {
-  const mounted=useSyncExternalStore(subscribeHydration,hydratedSnapshot,onlineServerSnapshot);
-  const [loaded,setLoaded]=useState(false),[failed,setFailed]=useState(false),[attempt,setAttempt]=useState(0),[size,setSize]=useState({width:220,height:80});
-  const box=useRef(null),frame=useRef(null);
-  useEffect(()=>{const observer=new ResizeObserver(([entry])=>setSize({width:entry.contentRect.width,height:entry.contentRect.height}));observer.observe(box.current);return()=>observer.disconnect();},[]);
-  const scale=Math.min(1,size.width/220);
-  // Fit the complete provider tile, including its attribution, into narrow cards.
-  const frameStyle={width:Math.max(220,size.width),height:size.height/scale,transform:`scale(${scale})`,transformOrigin:'top left'};
-  useEffect(()=>{
-    if(!mounted||offline||loaded)return;
-    // An iframe load also fires for the browser's blocked/error page. Wait for
-    // the provider's own ready message, scoped to this exact frame and origin.
-    let completed=false;
-    const receive=event=>{
-      if(event.origin!=='https://www.tradingview-widget.com'||event.source!==frame.current?.contentWindow)return;
-      if(event.data?.name==='tv-widget-ready'){completed=true;setLoaded(true);setFailed(false);}
-      if(event.data?.name==='tv-widget-no-data'){completed=true;setLoaded(false);setFailed(true);}
-    };
-    window.addEventListener('message',receive);
-    const timer=setTimeout(()=>{
-      if(completed)return;
-      if(attempt===0&&!offline)setAttempt(1);
-      else setFailed(true);
-    },12000);
-    return()=>{clearTimeout(timer);window.removeEventListener('message',receive);};
-  },[mounted,attempt,offline,loaded]);
-  const retry=()=>{setLoaded(false);setFailed(false);setAttempt(n=>n+1);};
-  const config={symbol:item.symbol,width:'100%',colorTheme:theme,isTransparent:true,locale:'en',utm_source:'stockedby.com',utm_medium:'widget',utm_campaign:'single-quote'};
-  const source=`https://www.tradingview.com/symbols/${item.symbol.replace(':','-')}/`;
-  return <article className={`${s.tile} ${s[item.tone]}`} aria-label={`${item.name} quote`}>
-    <header><span className={s.category}>{item.category}</span><a href={source} target="_blank" rel="noreferrer" aria-label={`Open ${item.name} at source`}>↗</a></header><h2>{item.name}</h2>
-    <div className={s.quote} ref={box} data-feed-state={failed?'unavailable':loaded?'ready':'loading'}>{mounted&&<iframe ref={frame} style={{...frameStyle,visibility:loaded?'visible':'hidden'}} key={`${refresh}:${attempt}`} title={`${item.name} value and change`} src={`https://www.tradingview-widget.com/embed-widget/single-quote/?locale=en#${encodeURIComponent(JSON.stringify(config))}`} sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" referrerPolicy="strict-origin-when-cross-origin" onError={()=>setFailed(true)}/>}{!loaded&&<div className={s.quotePlaceholder}>{failed?<div className={s.feedError}><span>Price connection unavailable</span><div><button onClick={retry} aria-label={`Retry ${item.name} price`}>Retry</button><a href={source} target="_blank" rel="noreferrer">Open source ↗</a></div></div>:<span>{attempt?'Reconnecting…':'Connecting…'}</span>}</div>}</div>
-    <p className={s.quoteNote}>{offline?'Offline · quote may be old':item.note}</p>
-  </article>;
-}
 function Headlines({wire,error,paused,setPaused}) {
-  const [index,setIndex]=useState(0),[now,setNow]=useState(Date.now);
-  const items=recentHeadlines(wire,now),item=items[index%Math.max(items.length,1)];
-  useEffect(()=>{const timer=setInterval(()=>{setNow(Date.now());if(!paused&&!document.hidden)setIndex(i=>i+1);},15000);return()=>clearInterval(timer);},[paused]);
-  return <section className={s.headlines} aria-label="Latest market headlines"><div className={s.newsTop}><span><i/> THE LATEST <small>{item?.topic==='Markets'?item.market:item?.topic}</small></span><div><button aria-label={paused?'Resume headlines':'Pause headlines'} onClick={()=>setPaused(!paused)}><Icon type={paused?'play':'pause'}/></button><button aria-label="Next headline" onClick={()=>setIndex(i=>i+1)}><Icon type="next"/></button></div></div>
-    {item?<><a className={s.headline} title={item.title} href={item.url} target="_blank" rel="noreferrer">{item.title} <span>↗</span></a><div className={s.newsMeta}><span>{item.publisher} · {ageLabel(item.publishedAt,now)}</span><span>{error||wire?.stale?'Update unavailable · earlier news':`${index%items.length+1} / ${items.length}`}</span></div></>:<div className={s.emptyNews}>{error||wire?.stale?'Headlines are temporarily unavailable. Try refresh.':'Finding the latest market headlines…'}</div>}
+  const [index,setIndex]=useState(0),[now,setNow]=useState(Date.now),[region,setRegion]=useState('All');
+  const items=regionalHeadlines(wire,region,now);
+  const visible=items.length?[items[index%items.length],...(items.length>1?[items[(index+1)%items.length]]:[])]:[];
+  useEffect(()=>{const timer=setInterval(()=>{setNow(Date.now());if(!paused&&!document.hidden)setIndex(i=>i+2);},15000);return()=>clearInterval(timer);},[paused]);
+  const country=value=>value==='US'?'USA':value;
+  const missing=wire?.failures?.length?wire.failures.map(country).join(', '):'';
+  return <section className={s.headlines} aria-label="Latest regional headlines">
+    <div className={s.newsTop}><span><i/> LATEST NEWS</span><div className={s.newsFilters} role="group" aria-label="News region">{['All','India','UAE','US','Fintech'].map(value=><button key={value} aria-pressed={region===value} onClick={()=>{setRegion(value);setIndex(0);}}>{country(value)}</button>)}</div><div><button aria-label={paused?'Resume headlines':'Pause headlines'} onClick={()=>setPaused(!paused)}><Icon type={paused?'play':'pause'}/></button><button aria-label="Next headlines" onClick={()=>setIndex(i=>i+2)}><Icon type="next"/></button></div></div>
+    {visible.length?<div className={s.newsStories}>{visible.map(item=><div className={s.newsStory} key={item.url}><a className={s.headline} title={item.title} href={item.url} target="_blank" rel="noreferrer">{item.title} <span>↗</span></a><div className={s.newsMeta}><span className={s.newsRegion}>{item.topic==='Fintech'?'Fintech':country(item.market)}</span><span>{item.publisher} · {ageLabel(item.publishedAt,now)}</span></div></div>)}</div>:<div className={s.emptyNews}>{error||wire?'No recent headlines available for this region. Try refresh.':'Finding the latest headlines…'}</div>}
+    {(error||wire?.stale||missing)&&<p className={s.newsNotice}>{error||wire?.stale?'Update unavailable · showing earlier headlines':`News temporarily unavailable: ${missing}`}</p>}
   </section>;
 }
 export default function PulseDashboard() {
@@ -101,15 +70,15 @@ export default function PulseDashboard() {
     <header className={s.toolbar}><Link className={s.brand} href="/" aria-label="StockedBy home"><BrandMark/><span>stockedby<span className={s.brandDot}>.</span></span></Link><span className={s.displayName}>DAILY DASHBOARD</span><div className={s.tools}><button onClick={reload} aria-label="Refresh dashboard" title="Refresh dashboard"><Icon type="refresh"/></button><button onClick={()=>setSettings(true)} aria-label="Display settings" title="Display settings"><Icon type="settings"/></button><button className={s.fullscreen} onClick={toggleFull} aria-label={full?'Exit full screen':'Enter full screen'} title={full?'Exit full screen':'Full screen'}><Icon type="expand"/><span>{full?'Exit':'Full screen'}</span></button></div></header>
     <main><h1 className={s.srOnly}>Your daily market dashboard</h1><section className={s.day} aria-label="Date, time and weather"><Clock timezone={timezone} hour12={hour12}/><button className={s.weather} onClick={()=>setSettings(true)} aria-label={`Weather location: ${city.name}. Change city`}><div className={s.weatherReading}><Icon type={currentWeather?.icon||'cloud'}/><strong>{temperature===null?'—':temperature}°<small>{unit}</small></strong></div><span>{city.name} <span aria-hidden="true">⌄</span></span><small>{currentWeather?.description||weatherError||'Checking weather…'}</small><small className={s.weatherTime}>{currentWeather?`${weatherError||offline?'Earlier reading · ':''}${ageLabel(currentWeather.asOf)}`:'Choose a city or use location'}</small></button></section>
     {offline&&<p className={s.warning} role="status">You’re offline. The clock continues; market values and weather may be old.</p>}
-    <section className={s.markets} aria-label="Market values">{DASHBOARD_MARKETS.map(item=><QuoteTile key={`${item.symbol}:${theme}:${refresh}`} item={item} theme={theme} refresh={refresh} offline={offline}/>)}</section>
+    <MarketQuotes refresh={refresh} offline={offline}/>
     <Headlines wire={wire} error={newsError} paused={paused} setPaused={setPaused}/>
-    </main><footer className={s.footer}><div className={s.providers}><a href="https://www.tradingview.com/" target="_blank" rel="noreferrer">Quotes by TradingView</a><span>·</span><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Weather by Open-Meteo</a></div><div className={s.displayControls}><button onClick={()=>setAwake(v=>!v)} aria-pressed={awake}><Icon type="awake"/>{held?'Screen stays on':awake?'Requesting…':'Keep awake'}</button><button onClick={()=>setSettings(true)}><Icon type="install"/>Home screen</button></div></footer>
+    </main><footer className={s.footer}><div className={s.providers}><span>Prices include delays</span><span>·</span><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Weather by Open-Meteo</a></div><div className={s.displayControls}><button onClick={()=>setAwake(v=>!v)} aria-pressed={awake}><Icon type="awake"/>{held?'Screen stays on':awake?'Requesting…':'Keep awake'}</button><button onClick={()=>setSettings(true)}><Icon type="install"/>Home screen</button></div></footer>
     {message&&!settings&&<p className={s.toast} role="status">{message}<button aria-label="Dismiss message" onClick={()=>setMessage('')}>×</button></p>}
     <dialog ref={dialog} className={s.dialog} onCancel={()=>setSettings(false)} onClose={()=>setSettings(false)} onClick={e=>{if(e.target===dialog.current)setSettings(false);}}><div className={s.settings}><header><div><span>MAKE IT YOURS</span><h2>Display settings</h2></div><button onClick={()=>setSettings(false)} aria-label="Close display settings"><Icon type="close"/></button></header>
       <label>Weather & clock location<select aria-label="Weather & clock location" value={city.id} onChange={e=>setCity(WEATHER_CITIES.find(c=>c.id===e.target.value)||city)}>{city.id==='location'&&<option value="location">Your location</option>}{WEATHER_CITIES.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></label><button className={s.locationButton} onClick={useLocation} disabled={locating}><Icon type="location"/>{locating?'Finding your location…':'Use my location'}</button><p className={s.hint}>Only requested when you tap. Approximate coordinates are sent to Open-Meteo for weather; your choice stays on this device.</p>
       <div className={s.preferenceRow}><label>Temperature<select aria-label="Temperature" value={unit} onChange={e=>setUnit(e.target.value)}><option value="C">Celsius °C</option><option value="F">Fahrenheit °F</option></select></label><label>Clock<select aria-label="Clock" value={hour12?'12':'24'} onChange={e=>setHour12(e.target.value==='12')}><option value="24">24 hour</option><option value="12">12 hour</option></select></label><div><span>Appearance</span><button className={s.appearanceToggle} onClick={()=>setTheme(value=>value==='dark'?'light':'dark')} aria-label={`Switch to ${theme==='dark'?'light':'dark'} mode`}><Icon type={theme==='dark'?'moon':'sun'}/>{theme==='dark'?'Sunset':'Light'}</button></div></div>
       <section className={s.install}><h3>A dashboard, without the browser.</h3><p><strong>iPhone:</strong> open in Safari → Share → Add to Home Screen. Open the saved StockedBy icon.</p><p><strong>Android:</strong> open Chrome’s menu → Add to Home screen or Install app.</p><p>Use <strong>Keep awake</strong> to leave the display running where your browser supports it. An internet connection is needed for updates.</p></section>
-      <details><summary>Sources & update timing</summary><p>Sensex: BSE end-of-day. US 500 and Nasdaq 100: FOREX.com index CFDs, not the cash indices. Gold: OANDA spot USD per troy ounce. Bitcoin and Ethereum: Coinbase USD quotes. Quotes update inside TradingView’s widgets; provider delays and market hours apply. A loaded tile does not guarantee a fresh quote. If price panels fail, use Retry or Open source. Weather and headlines can still work when the separate price connection is unavailable.</p><p>Weather uses Open-Meteo model data and checks every 15 minutes. News checks every 10 minutes and rotates every 15 seconds. Each headline shows its publisher and age. Pause rotation whenever you want.</p><p>No account or paid AI run is needed for this display. <a href="/terminal">Open your private portfolio ↗</a></p></details>{message&&<p className={s.warning} role="status">{message}</p>}
+      <details><summary>Sources & update timing</summary><p>Prices are fetched through StockedBy, without embedded price widgets. Sensex is a dated daily close from TigZig (Yahoo Finance). Nasdaq is an index level from XAUS (Yahoo Finance), using the latest available 5-minute bar, not the earlier CFD instrument. Observation times are shown in UTC; these are not guaranteed real-time quotes. Gold, silver and Bitcoin use indicative USD prices from Gold API; metals are per troy ounce.</p><p>The page checks prices every minute while visible. Sources have their own update schedules: Sensex is checked every 15 minutes and Nasdaq every 2 minutes. AED → INR uses Exchange Rate API’s daily reference rate, checked hourly. Enter an AED amount to convert; bank and remittance fees are not included. During an outage, a previously received value stays visible with its original date and a “Saved value” label. Spot values expire after 24 hours, FX after 3 days and index values after 7 days. No missing prices are estimated.</p><p>Weather uses Open-Meteo model data and checks every 15 minutes. News covers India, UAE, USA and global fintech (payments, digital banking, funding, open finance and regulation), checks every 10 minutes and rotates every 15 seconds. Choose a country to focus the feed. Each headline shows its publisher and age. Pause rotation whenever you want.</p><p>No account or paid AI run is needed for this display. <a href="/terminal">Open your private portfolio ↗</a></p></details>{message&&<p className={s.warning} role="status">{message}</p>}
     </div></dialog>
   </div></div>;
 }
