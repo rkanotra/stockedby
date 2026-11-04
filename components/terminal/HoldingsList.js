@@ -2,9 +2,9 @@
 import d from './desk.module.css';
 
 const money=(n,c)=>n==null?'—':new Intl.NumberFormat(c==='INR'?'en-IN':'en-GB',{style:'currency',currency:c,maximumFractionDigits:2}).format(n);
-export default function HoldingsList({rows,currency,archived,busy,onSelect,onEdit,onArchive}) {
+export default function HoldingsList({rows,currency,archived,busy,onSelect,onEdit,onArchive,onNews}) {
   if(!rows.length)return <div className={d.noHoldings}><h3>{archived?'No archived positions':'No matching positions'}</h3><p>{archived?'Positions you archive will appear here.':'Try another search or market, or add your first holding.'}</p></div>;
-  const actions=p=><div className={d.rowActions}><button onClick={()=>onEdit(p)}>Edit</button><button disabled={busy} onClick={()=>onArchive(p)}>{archived?'Restore':'Archive'}</button></div>;
+  const actions=p=><div className={d.rowActions}>{!archived&&onNews&&<button onClick={()=>onNews(p)}>News</button>}<button onClick={()=>onEdit(p)}>Edit</button><button disabled={busy} onClick={()=>onArchive(p)}>{archived?'Restore':'Archive'}</button></div>;
   const name=p=><button className={d.holdingName} onClick={()=>onSelect(p)}><span className={d.assetAvatar}>{p.symbol.slice(0,2)}</span><span><strong>{p.symbol}</strong><small>{p.name}</small><small>{p.exchange} · {p.account}{p.lot?` / ${p.lot}`:''}</small></span></button>;
   const pnlClass=p=>p.pnl==null?d.neutral:p.pnl<0?d.negative:d.positive;
   const coverage=p=><><span className={d.coverageBadge}>{archived?'Archived':p.status==='unresolved'?'Confirm listing':p.status==='missing'?'Price unavailable':p.status||'Not priced'}</span><small>{p.quote?.asOf?new Date(p.quote.asOf).toLocaleDateString('en-GB',{timeZone:'Asia/Dubai',day:'numeric',month:'short'}):'No quote yet'}</small></>;

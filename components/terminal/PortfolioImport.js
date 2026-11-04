@@ -95,8 +95,8 @@ export default function PortfolioImport({ api, onComplete }) {
   async function save() {
     setBusy('Saving your holdings…'); setError('');
     try {
-      await api('', { action: 'import_commit', csv: preview.csv, version: preview.version, rows: preview.preview.filter(row => row.status === 'ready').map(row => row.row) });
-      await onComplete();
+      const result = await api('', { action: 'import_commit', csv: preview.csv, version: preview.version, rows: preview.preview.filter(row => row.status === 'ready').map(row => row.row) });
+      await onComplete(result);
     } catch (e) { setError(e.message); if (e.status === 409) setPreview(null); }
     finally { setBusy(''); }
   }
@@ -155,6 +155,7 @@ export default function PortfolioImport({ api, onComplete }) {
       {mode === 'image' && unread > 0 && <p className={i.uncertain}>{unread} {unread === 1 ? 'screenshot has' : 'screenshots have'} not been read. This import includes only the completed screenshots.</p>}
       <div className={s.tableWrap}><table><thead><tr><th>Holding</th><th>Units</th><th>Result</th></tr></thead><tbody>{preview.preview.map((row, index) => <tr key={index}><td>{row.position?.symbol || `Row ${row.row}`}<small>{row.position?.exchange}</small></td><td>{row.position?.quantity || '—'}</td><td>{row.status}<small>{row.message}</small></td></tr>)}</tbody></table></div>
       <label className={i.rowTitle}><input type="checkbox" checked={checked} disabled={!!busy} onChange={e => setChecked(e.target.checked)}/><span>I checked the tickers, units, currencies and costs against my original.</span></label>
+      <p className={i.privacy}>Saving starts a news check for your India and US holdings and enables daily tracking, unless you paused it in Settings. Only company names and tickers are used for news research. Quantities and account details stay private.</p>
       <button className={s.primary} disabled={!!busy || !ready || !checked} onClick={save}>Add {ready} {ready === 1 ? 'holding' : 'holdings'} to my portfolio</button>
     </section>}
     {busy && <p role="status">{busy}</p>}

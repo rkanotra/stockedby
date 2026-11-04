@@ -40,3 +40,13 @@ These are patterns to implement with authorized sources, not permission to copy 
 5. Change tracking: guidance versus results, filing revisions, corporate actions and deduplicated source-based alerts.
 
 The current release has public chart/screener widgets, source-linked news, private holdings, imported metrics/history, conditional AI research, scheduled scans and reviewed screenshot imports. It does **not** yet have the full Screener financial dataset, live ICICI connection, Wio holdings API or consolidated real-time US portfolio pricing.
+
+## Portfolio news tracking — 4 November 2026
+
+Confirming an import saves the holdings first, starts a background company-news check, and enables daily tracking unless the user has explicitly paused it. The portfolio opens its holdings-news view immediately. Results are saved online and checked again in the India window (10:00–10:59 GST) and US window (19:00–19:59 GST), including when the site is closed. Settings can pause or resume the schedule.
+
+Each supported story separates the reported fact from the possible business impact on held securities, with the source, publication date, direct/indirect connection, uncertainty and what to watch next. Company-name searches can work before an exchange match is confirmed; those matches remain visibly unconfirmed and are not used as live prices. AI receives public company names and tickers for this check, not balances, quantities, cost bases or account labels.
+
+Pilot limits: 40 distinct stocks per check, oldest checked first, at most 12 explained stories per AI response, and the existing 12 daily AI-run allowance (shared with screenshot reading and research). Coverage is visible per stock; source/AI failures retain dated earlier results and offer retry. The scheduler remains limited to three opted-in pilot accounts. Imported quantities do not sync with brokers, and stock prices still require a connected authorized feed.
+
+Validation: 287 automated tests, desktop/mobile browser checks with fictional data, and one live OpenAI news check for fictional Apple/Reliance holdings. The live check produced five sourced holding connections; no test positions were saved to a real portfolio.

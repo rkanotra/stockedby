@@ -71,6 +71,7 @@ try {
     await page.screenshot({ path: `/tmp/stockedby-ten-images-review-${width}.png`, fullPage: false });
     await add.click(); await page.getByRole('dialog').waitFor({ state: 'hidden' });
     assert.equal(commits, 1); assert.equal(state.document.positions.length, 9);
+    await page.getByRole('region', { name: 'News affecting your holdings' }).getByRole('heading', { name: 'What matters to your portfolio.', exact: true }).waitFor();
     // Account-wide failures stop the queue and preserve completed results for retry.
     state.document.positions = []; calls.length = 0; failure = 'quota';
     await open(); await picker.setInputFiles(files.slice(0, 3));
