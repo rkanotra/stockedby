@@ -7,5 +7,5 @@ export const metadata = {
   appleWebApp: { capable: true, title: 'StockedBy', statusBarStyle: 'black-translucent' },
   icons: { apple: '/dashboard-icon-192.png' },
 };
-export const viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', themeColor: '#090a0f' };
+export const viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', themeColor: '#222b50' };
 export default function DashboardPage() { return <PulseDashboard/>; }

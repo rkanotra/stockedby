@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { BrandMark } from '@/components/terminal/DeskIcon';
-import ThemeToggle, { useAppearance } from '@/components/terminal/ThemeToggle';
 import { DASHBOARD_MARKETS, WEATHER_CITIES, safeLocation, clockParts, parseWeather, recentHeadlines, ageLabel } from '@/lib/dashboard/display';
 import s from './pulse.module.css';
 const PREFS = 'stockedby-display-v1';
@@ -20,18 +19,36 @@ function Clock({timezone,hour12}) {
 }
 function QuoteTile({item,theme,refresh,offline}) {
   const mounted=useSyncExternalStore(subscribeHydration,hydratedSnapshot,onlineServerSnapshot);
-  const [loaded,setLoaded]=useState(false),[failed,setFailed]=useState(false),[size,setSize]=useState({width:220,height:80});
-  const box=useRef(null);
+  const [loaded,setLoaded]=useState(false),[failed,setFailed]=useState(false),[attempt,setAttempt]=useState(0),[size,setSize]=useState({width:220,height:80});
+  const box=useRef(null),frame=useRef(null);
   useEffect(()=>{const observer=new ResizeObserver(([entry])=>setSize({width:entry.contentRect.width,height:entry.contentRect.height}));observer.observe(box.current);return()=>observer.disconnect();},[]);
   const scale=Math.min(1,size.width/220);
   // Fit the complete provider tile, including its attribution, into narrow cards.
   const frameStyle={width:Math.max(220,size.width),height:size.height/scale,transform:`scale(${scale})`,transformOrigin:'top left'};
-  useEffect(()=>{const timer=setTimeout(()=>setFailed(true),18000);return()=>clearTimeout(timer);},[]);
+  useEffect(()=>{
+    if(!mounted||offline||loaded)return;
+    // An iframe load also fires for the browser's blocked/error page. Wait for
+    // the provider's own ready message, scoped to this exact frame and origin.
+    let completed=false;
+    const receive=event=>{
+      if(event.origin!=='https://www.tradingview-widget.com'||event.source!==frame.current?.contentWindow)return;
+      if(event.data?.name==='tv-widget-ready'){completed=true;setLoaded(true);setFailed(false);}
+      if(event.data?.name==='tv-widget-no-data'){completed=true;setLoaded(false);setFailed(true);}
+    };
+    window.addEventListener('message',receive);
+    const timer=setTimeout(()=>{
+      if(completed)return;
+      if(attempt===0&&!offline)setAttempt(1);
+      else setFailed(true);
+    },12000);
+    return()=>{clearTimeout(timer);window.removeEventListener('message',receive);};
+  },[mounted,attempt,offline,loaded]);
+  const retry=()=>{setLoaded(false);setFailed(false);setAttempt(n=>n+1);};
   const config={symbol:item.symbol,width:'100%',colorTheme:theme,isTransparent:true,locale:'en',utm_source:'stockedby.com',utm_medium:'widget',utm_campaign:'single-quote'};
   const source=`https://www.tradingview.com/symbols/${item.symbol.replace(':','-')}/`;
   return <article className={`${s.tile} ${s[item.tone]}`} aria-label={`${item.name} quote`}>
     <header><span className={s.category}>{item.category}</span><a href={source} target="_blank" rel="noreferrer" aria-label={`Open ${item.name} at source`}>↗</a></header><h2>{item.name}</h2>
-    <div className={s.quote} ref={box}>{mounted&&<iframe style={frameStyle} key={refresh} title={`${item.name} value and change`} src={`https://www.tradingview-widget.com/embed-widget/single-quote/?locale=en#${encodeURIComponent(JSON.stringify(config))}`} sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" referrerPolicy="strict-origin-when-cross-origin" onLoad={()=>{setLoaded(true);setFailed(false);}} onError={()=>setFailed(true)}/>}{!loaded&&<div className={s.quotePlaceholder}>{failed?<a href={source} target="_blank" rel="noreferrer">Feed unavailable · open source ↗</a>:<span>Connecting…</span>}</div>}</div>
+    <div className={s.quote} ref={box} data-feed-state={failed?'unavailable':loaded?'ready':'loading'}>{mounted&&<iframe ref={frame} style={{...frameStyle,visibility:loaded?'visible':'hidden'}} key={`${refresh}:${attempt}`} title={`${item.name} value and change`} src={`https://www.tradingview-widget.com/embed-widget/single-quote/?locale=en#${encodeURIComponent(JSON.stringify(config))}`} sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" referrerPolicy="strict-origin-when-cross-origin" onError={()=>setFailed(true)}/>}{!loaded&&<div className={s.quotePlaceholder}>{failed?<div className={s.feedError}><span>Price connection unavailable</span><div><button onClick={retry} aria-label={`Retry ${item.name} price`}>Retry</button><a href={source} target="_blank" rel="noreferrer">Open source ↗</a></div></div>:<span>{attempt?'Reconnecting…':'Connecting…'}</span>}</div>}</div>
     <p className={s.quoteNote}>{offline?'Offline · quote may be old':item.note}</p>
   </article>;
 }
@@ -44,7 +61,7 @@ function Headlines({wire,error,paused,setPaused}) {
   </section>;
 }
 export default function PulseDashboard() {
-  const theme=useAppearance(),[city,setCity]=useState(WEATHER_CITIES[0]),[hour12,setHour12]=useState(false),[unit,setUnit]=useState('C'),[weather,setWeather]=useState(null),[weatherError,setWeatherError]=useState(''),[wire,setWire]=useState(null),[newsError,setNewsError]=useState(false),[refresh,setRefresh]=useState(0),[settings,setSettings]=useState(false),[full,setFull]=useState(false),[awake,setAwake]=useState(false),[held,setHeld]=useState(false),[message,setMessage]=useState(''),[locating,setLocating]=useState(false),[paused,setPaused]=useState(false),[ready,setReady]=useState(false);
+  const [theme,setTheme]=useState('dark'),[city,setCity]=useState(WEATHER_CITIES[0]),[hour12,setHour12]=useState(false),[unit,setUnit]=useState('C'),[weather,setWeather]=useState(null),[weatherError,setWeatherError]=useState(''),[wire,setWire]=useState(null),[newsError,setNewsError]=useState(false),[refresh,setRefresh]=useState(0),[settings,setSettings]=useState(false),[full,setFull]=useState(false),[awake,setAwake]=useState(false),[held,setHeld]=useState(false),[message,setMessage]=useState(''),[locating,setLocating]=useState(false),[paused,setPaused]=useState(false),[ready,setReady]=useState(false);
   const dialog=useRef(null),lastRefresh=useRef(0);
   const offline=useSyncExternalStore(subscribeConnection,offlineSnapshot,onlineServerSnapshot);
   const locationKey=`${city.latitude}:${city.longitude}`;
@@ -52,8 +69,8 @@ export default function PulseDashboard() {
   const timezone=currentWeather?.timezone||city.timezone||Intl.DateTimeFormat().resolvedOptions().timeZone;
   // Browser-only preferences hydrate once after the server-rendered default.
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(()=>{try{const p=JSON.parse(localStorage.getItem(PREFS)||'{}');setCity(safeLocation(p.city));setHour12(p.hour12===true);setUnit(p.unit==='F'?'F':'C');}catch{}setReady(true);},[]);
-  useEffect(()=>{if(ready)try{localStorage.setItem(PREFS,JSON.stringify({city,hour12,unit}));}catch{}},[city,hour12,unit,ready]);
+  useEffect(()=>{try{const p=JSON.parse(localStorage.getItem(PREFS)||'{}');setCity(safeLocation(p.city));setHour12(p.hour12===true);setUnit(p.unit==='F'?'F':'C');setTheme(p.theme==='light'?'light':'dark');}catch{}setReady(true);},[]);
+  useEffect(()=>{if(ready)try{localStorage.setItem(PREFS,JSON.stringify({city,hour12,unit,theme}));}catch{}},[city,hour12,unit,theme,ready]);
   useEffect(()=>{
     const connection=()=>{if(navigator.onLine)setRefresh(n=>n+1);};const fullscreen=()=>setFull(!!document.fullscreenElement);
     window.addEventListener('online',connection);window.addEventListener('offline',connection);document.addEventListener('fullscreenchange',fullscreen);
@@ -90,9 +107,9 @@ export default function PulseDashboard() {
     {message&&!settings&&<p className={s.toast} role="status">{message}<button aria-label="Dismiss message" onClick={()=>setMessage('')}>×</button></p>}
     <dialog ref={dialog} className={s.dialog} onCancel={()=>setSettings(false)} onClose={()=>setSettings(false)} onClick={e=>{if(e.target===dialog.current)setSettings(false);}}><div className={s.settings}><header><div><span>MAKE IT YOURS</span><h2>Display settings</h2></div><button onClick={()=>setSettings(false)} aria-label="Close display settings"><Icon type="close"/></button></header>
       <label>Weather & clock location<select aria-label="Weather & clock location" value={city.id} onChange={e=>setCity(WEATHER_CITIES.find(c=>c.id===e.target.value)||city)}>{city.id==='location'&&<option value="location">Your location</option>}{WEATHER_CITIES.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></label><button className={s.locationButton} onClick={useLocation} disabled={locating}><Icon type="location"/>{locating?'Finding your location…':'Use my location'}</button><p className={s.hint}>Only requested when you tap. Approximate coordinates are sent to Open-Meteo for weather; your choice stays on this device.</p>
-      <div className={s.preferenceRow}><label>Temperature<select aria-label="Temperature" value={unit} onChange={e=>setUnit(e.target.value)}><option value="C">Celsius °C</option><option value="F">Fahrenheit °F</option></select></label><label>Clock<select aria-label="Clock" value={hour12?'12':'24'} onChange={e=>setHour12(e.target.value==='12')}><option value="24">24 hour</option><option value="12">12 hour</option></select></label><div><span>Appearance</span><ThemeToggle/></div></div>
+      <div className={s.preferenceRow}><label>Temperature<select aria-label="Temperature" value={unit} onChange={e=>setUnit(e.target.value)}><option value="C">Celsius °C</option><option value="F">Fahrenheit °F</option></select></label><label>Clock<select aria-label="Clock" value={hour12?'12':'24'} onChange={e=>setHour12(e.target.value==='12')}><option value="24">24 hour</option><option value="12">12 hour</option></select></label><div><span>Appearance</span><button className={s.appearanceToggle} onClick={()=>setTheme(value=>value==='dark'?'light':'dark')} aria-label={`Switch to ${theme==='dark'?'light':'dark'} mode`}><Icon type={theme==='dark'?'moon':'sun'}/>{theme==='dark'?'Sunset':'Light'}</button></div></div>
       <section className={s.install}><h3>A dashboard, without the browser.</h3><p><strong>iPhone:</strong> open in Safari → Share → Add to Home Screen. Open the saved StockedBy icon.</p><p><strong>Android:</strong> open Chrome’s menu → Add to Home screen or Install app.</p><p>Use <strong>Keep awake</strong> to leave the display running where your browser supports it. An internet connection is needed for updates.</p></section>
-      <details><summary>Sources & update timing</summary><p>Sensex: BSE end-of-day. US 500 and Nasdaq 100: FOREX.com index CFDs, not the cash indices. Gold: OANDA spot USD per troy ounce. Bitcoin and Ethereum: Coinbase USD quotes. Quotes update inside TradingView’s widgets; provider delays and market hours apply. A loaded tile does not guarantee a fresh quote.</p><p>Weather uses Open-Meteo model data and checks every 15 minutes. News checks every 10 minutes and rotates every 15 seconds. Each headline shows its publisher and age. Pause rotation whenever you want.</p><p>No account or paid AI run is needed for this display. <a href="/terminal">Open your private portfolio ↗</a></p></details>{message&&<p className={s.warning} role="status">{message}</p>}
+      <details><summary>Sources & update timing</summary><p>Sensex: BSE end-of-day. US 500 and Nasdaq 100: FOREX.com index CFDs, not the cash indices. Gold: OANDA spot USD per troy ounce. Bitcoin and Ethereum: Coinbase USD quotes. Quotes update inside TradingView’s widgets; provider delays and market hours apply. A loaded tile does not guarantee a fresh quote. If price panels fail, use Retry or Open source. Weather and headlines can still work when the separate price connection is unavailable.</p><p>Weather uses Open-Meteo model data and checks every 15 minutes. News checks every 10 minutes and rotates every 15 seconds. Each headline shows its publisher and age. Pause rotation whenever you want.</p><p>No account or paid AI run is needed for this display. <a href="/terminal">Open your private portfolio ↗</a></p></details>{message&&<p className={s.warning} role="status">{message}</p>}
     </div></dialog>
   </div></div>;
 }
