@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { chromium, devices } from 'playwright';
 const base=process.env.DASHBOARD_TEST_URL||'http://localhost:3004';
 const live=process.env.DASHBOARD_LIVE==='1';
-const quoteFixture=()=>({version:1,quotes:['SENSEX','XAG','NASDAQ','XAU','BTC','AEDINR'].map((id,i)=>({id,price:id==='AEDINR'?25.8:[76500,50,25000,4000,78000,2300][i],asOf:new Date(Date.now()-60000).toISOString()}))});
+const quoteFixture=()=>({version:1,quotes:['SENSEX','XAG','NASDAQ','XAU','BTC','AEDINR'].map((id,i)=>({id,price:id==='AEDINR'?25.8:[76500,50,25000,4000,78000,2300][i],asOf:new Date(Date.now()-60000).toISOString(),...id==='AEDINR'?{}:{movement:{basis:id==='SENSEX'?'close':id==='NASDAQ'?'session':'update',price:[75000,51,25500,4000,77000][i],asOf:new Date(Date.now()-(['SENSEX','NASDAQ'].includes(id)?86400000:120000)).toISOString()}}}))});
 const browser=await chromium.launch({headless:true,channel:'chrome'});
 try{
  for(const [width,height] of [[390,844],[844,390],[1440,1000]]){
@@ -36,6 +36,13 @@ try{
   await page.screenshot({path:`/tmp/stockedby-dashboard-${live?'live':'mock'}-${width}.png`,fullPage:true});
   console.log('Size',width,height,'document',await page.evaluate(()=>({width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight})), 'frames',page.frames().length);
   if(!live){
+   assert.equal(await page.locator('article[data-direction=up]').count(),2);
+   assert.equal(await page.locator('article[data-direction=down]').count(),2);
+   assert.equal(await page.locator('article[data-direction=flat]').count(),1);
+   await page.getByLabel(/Sensex up .*vs previous close/).waitFor();
+   await page.getByLabel(/Silver down .*since last update/).waitFor();
+   await page.getByLabel(/Nasdaq down .*prior session/).waitFor();
+   await page.getByText('24/7 market',{exact:true}).waitFor();
    await page.getByRole('button',{name:'UAE',exact:true}).click();assert.equal(await page.getByRole('link',{name:/UAE: Fictional/}).count(),1);
    assert.equal(await page.getByRole('link',{name:/India: Fictional/}).count(),0);
    await page.getByRole('button',{name:'USA',exact:true}).click();assert.equal(await page.getByRole('link',{name:/US: Fictional/}).count(),1);
@@ -55,7 +62,10 @@ try{
    await page.reload();await page.getByRole('button',{name:'Weather location: Mumbai. Change city',exact:true}).waitFor();
    await page.getByRole('button',{name:'Display settings',exact:true}).click();assert.equal(await page.getByLabel('Temperature',{exact:true}).inputValue(),'F');assert.equal(await page.getByLabel('Clock',{exact:true}).inputValue(),'12');
    await page.keyboard.press('Escape');await page.getByRole('dialog').waitFor({state:'hidden'});
-   await context.setOffline(true);await page.getByRole('status').filter({hasText:'offline'}).waitFor();await context.setOffline(false);
+   await context.setOffline(true);await page.getByRole('status').filter({hasText:'offline'}).waitFor();
+   assert.equal(await page.getByText('Spot updates',{exact:true}).count(),0);
+   assert.equal(await page.getByText('Last spot',{exact:true}).count(),2);
+   await context.setOffline(false);
    await page.getByRole('status').filter({hasText:'offline'}).waitFor({state:'hidden'});
    assert.equal(await page.locator('[data-theme]').getAttribute('data-theme'),'light');
    const manifest=await page.request.get(base+'/dashboard.webmanifest');assert.equal(manifest.status(),200);assert.equal((await manifest.json()).start_url,'/dashboard');
