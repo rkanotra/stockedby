@@ -8,7 +8,7 @@ import { trackingIdentity } from '@/lib/terminal/holdingNews';
 import { queuePortfolioTracking } from '@/lib/terminal/trackingServer';
 export const maxDuration = 300;
 export async function GET() {
-  try { const { db, user, owner } = await requireTerminalUser(); return json({ ...(await terminalStore(db)('load')), user: { email: user.email, owner }, feeds: FEED_COVERAGE, aiConfigured: !!(process.env.OPENAI_API_KEY || process.env.GEMINI_API_KEY), schedulerConfigured: !!process.env.CRON_SECRET }); } catch (e) { return terminalFailure(e); }
+  try { const { db, user, owner } = await requireTerminalUser(); const { data: usage } = await db.rpc('terminal_usage'); return json({ ...(await terminalStore(db)('load')), usage, user: { email: user.email, owner }, feeds: FEED_COVERAGE, aiConfigured: !!(process.env.OPENAI_API_KEY || process.env.GEMINI_API_KEY), schedulerConfigured: !!process.env.CRON_SECRET }); } catch (e) { return terminalFailure(e); }
 }
 export async function POST(request) {
   try {
