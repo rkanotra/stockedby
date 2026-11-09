@@ -1,8 +1,13 @@
 import "./globals.css";
+import "./brand.css";
+import { Manrope, Outfit } from "next/font/google";
 import Script from "next/script";
 import { themeBootstrap } from "@/lib/terminal/appearance";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { SITE_URL, buildOpenGraph, buildTwitter } from "@/lib/site";
+
+const bodyFont = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
+const displayFont = Outfit({ subsets: ["latin"], variable: "--font-outfit", display: "swap" });
 
 const TITLE = "StockedBy — Your investments. In context.";
 const DESCRIPTION =
@@ -33,20 +38,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-stockedby-theme="dark" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`} data-stockedby-theme="dark" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <Script id="stockedby-appearance" strategy="beforeInteractive">{themeBootstrap}</Script>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font -- App Router root layout is the correct place for global fonts */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        />
       </head>
       <body>
         {children}

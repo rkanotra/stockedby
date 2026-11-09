@@ -6,25 +6,24 @@
   max-width: 830px;
   margin: auto;
   z-index: 100;
-  background: #fff;
-  border: 1px solid #cbd0c4;
+  background: var(--sb-surface);
+  border: 1px solid var(--sb-line);
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 10px 40px #25272515;
+  box-shadow: var(--sb-shadow);
   display: flex;
   gap: 24px;
   align-items: center;
   font:
-    13px/1.6 "Plus Jakarta Sans",
-    sans-serif;
-  color: #252725;
+    13px/1.6 var(--font-body);
+  color: var(--sb-text);
 }
 .banner p {
   margin: 6px 0 0;
-  color: #626660;
+  color: var(--sb-muted);
 }
 .banner a {
-  color: #a5442d;
+  color: var(--sb-accent);
   text-decoration: underline;
 }
 .actions {
@@ -35,20 +34,19 @@
 .actions button,
 .settings {
   font:
-    12px/1.5 "Plus Jakarta Sans",
-    sans-serif;
-  border: 1px solid #b5b9b0;
-  background: #fafaf8;
-  color: #252725;
+    12px/1.5 var(--font-body);
+  border: 1px solid var(--sb-line);
+  background: var(--sb-surface);
+  color: var(--sb-text);
   border-radius: 7px;
   min-height: 44px;
   padding: 10px 12px;
   cursor: pointer;
 }
 .actions button:last-child {
-  background: #a5442d;
-  color: white;
-  border-color: #a5442d;
+  background: var(--sb-accent);
+  color: var(--sb-on-accent);
+  border-color: var(--sb-accent);
 }
 .settings {
   position: fixed;
@@ -61,7 +59,7 @@
 }
 .banner button:focus-visible,
 .settings:focus-visible {
-  outline: 3px solid #a5442d;
+  outline: 3px solid var(--sb-accent);
   outline-offset: 3px;
 }
 @media (max-width: 700px) {

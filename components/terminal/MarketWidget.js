@@ -35,7 +35,7 @@ export default function MarketWidget({ type = 'chart', symbol = 'NASDAQ:AAPL', n
       symbols: [[name, `${symbol}|1D`]], chartOnly: false, width: '100%', height: '100%', locale: 'en', colorTheme: theme, autosize: true,
       showVolume: false, showMA: false, hideDateRanges: false, hideMarketStatus: false, hideSymbolLogo: false, scalePosition: 'right', scaleMode: 'Normal',
       fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif', fontSize: '12', noTimeScale: false, valuesTracking: '1', changeMode: 'price-and-percent', chartType: 'area',
-      lineWidth: 2, lineType: 0, lineColor: '#9c8dff', topColor: 'rgba(156,141,255,0.20)', bottomColor: 'rgba(156,141,255,0)', backgroundColor: theme === 'dark' ? '#101116' : '#ffffff',
+      lineWidth: 2, lineType: 0, lineColor: theme === 'dark' ? '#f28b6d' : '#10245e', topColor: theme === 'dark' ? 'rgba(242,139,109,0.20)' : 'rgba(16,36,94,0.15)', bottomColor: 'rgba(242,139,109,0)', backgroundColor: theme === 'dark' ? '#111e48' : '#fffcf8',
       dateRanges: ['1d|1','1m|30','3m|60','12m|1D','60m|1W','all|1M'], dateFormat: 'MMM dd, yyyy',
     } : type === 'heatmap' ? {
       exchanges: [], dataSource: 'SPX500', grouping: 'sector', blockSize: 'market_cap_basic', blockColor: 'change', locale: 'en', colorTheme: theme,

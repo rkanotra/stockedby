@@ -52,8 +52,17 @@ try{
    await page.getByLabel('Amount in AED',{exact:true}).fill('1');
    await page.getByRole('button',{name:'Keep awake',exact:true}).click();await page.getByRole('button',{name:'Screen stays on',exact:true}).waitFor();
    await page.getByRole('button',{name:'Pause headlines',exact:true}).click();await page.getByRole('button',{name:'Resume headlines',exact:true}).waitFor();
-   await page.getByRole('button',{name:'Enter full screen',exact:true}).click();assert.equal(await page.evaluate(()=>!!document.fullscreenElement),true);
-   await page.getByRole('button',{name:'Exit full screen',exact:true}).click();
+   await page.getByRole('button',{name:'Enter full screen',exact:true}).click();
+   await page.waitForFunction(()=>!!document.fullscreenElement||document.querySelector('dialog')?.open);
+   if(await page.evaluate(()=>!!document.fullscreenElement)){
+    await page.getByRole('button',{name:'Exit full screen',exact:true}).click();
+    await page.waitForFunction(()=>!document.fullscreenElement);
+   }else{
+    // Some managed Chrome environments reject requestFullscreen with "not granted".
+    // The user must receive actionable Home Screen guidance in that case.
+    await page.getByText('Full screen is unavailable here. Add this page to your Home Screen instead.',{exact:true}).waitFor();
+    await page.getByRole('button',{name:'Close display settings',exact:true}).click();
+   }
    await page.getByRole('button',{name:'Display settings',exact:true}).click();await page.getByRole('dialog').waitFor();
    await page.getByRole('button',{name:'Switch to light mode',exact:true}).click();assert.equal(await page.locator('[data-theme]').getAttribute('data-theme'),'light');
    await page.getByLabel('Temperature',{exact:true}).selectOption('F');await page.getByLabel('Clock',{exact:true}).selectOption('12');

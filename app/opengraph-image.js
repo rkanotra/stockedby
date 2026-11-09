@@ -11,8 +11,8 @@ export default function Image() {
         display: "flex",
         flexDirection: "column",
         padding: "62px 72px",
-        background: "#0b0c10",
-        color: "#f4f4f7",
+        background: "linear-gradient(115deg, #d96549, #dc684d 85%, #ed795b)",
+        color: "#fff8f0",
         fontFamily: "sans-serif",
       }}
     >
@@ -28,8 +28,8 @@ export default function Image() {
         <span
           style={{
             display: "flex",
-            background: "#a998ff",
-            color: "#11101a",
+            background: "#091849",
+            color: "#fff8f0",
             padding: "0 10px",
             borderRadius: 8,
           }}
@@ -45,21 +45,22 @@ export default function Image() {
           fontSize: 76,
           lineHeight: 1.12,
           letterSpacing: -3,
+          fontWeight: 800,
           marginTop: 50,
         }}
       >
         <span>Your markets.</span>
-        <span style={{ color: "#a998ff" }}>A clearer signal.</span>
+        <span style={{ color: "#091849" }}>A clearer signal.</span>
       </div>
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          borderTop: "1px solid #292a34",
+          borderTop: "1px solid #09184933",
           paddingTop: 25,
           marginTop: "auto",
           fontSize: 21,
-          color: "#a4a5b2",
+          color: "#091849",
         }}
       >
         <span>India + US. News, holdings and AI research.</span>
