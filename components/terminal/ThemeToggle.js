@@ -4,12 +4,12 @@ import t from './theme.module.css';
 
 import { APPEARANCE_KEY as KEY } from '@/lib/terminal/appearance';
 const EVENT = 'stockedby-appearance-change';
-const snapshot = () => document.documentElement.dataset.stockedbyTheme === 'light' ? 'light' : 'dark';
-const serverSnapshot = () => 'dark';
+const snapshot = () => document.documentElement.dataset.stockedbyTheme === 'dark' ? 'dark' : 'light';
+const serverSnapshot = () => 'light';
 function subscribe(callback) {
   const sync = event => {
     if (event.key !== KEY && event.key !== null) return;
-    document.documentElement.dataset.stockedbyTheme = event.newValue === 'light' ? 'light' : 'dark';
+    document.documentElement.dataset.stockedbyTheme = event.newValue === 'dark' ? 'dark' : 'light';
     callback();
   };
   window.addEventListener(EVENT, callback);

@@ -64,6 +64,8 @@ try{
     await page.getByRole('button',{name:'Close display settings',exact:true}).click();
    }
    await page.getByRole('button',{name:'Display settings',exact:true}).click();await page.getByRole('dialog').waitFor();
+   assert.equal(await page.locator('[data-theme]').getAttribute('data-theme'),'light');
+   await page.getByRole('button',{name:'Switch to dark mode',exact:true}).click();assert.equal(await page.locator('[data-theme]').getAttribute('data-theme'),'dark');
    await page.getByRole('button',{name:'Switch to light mode',exact:true}).click();assert.equal(await page.locator('[data-theme]').getAttribute('data-theme'),'light');
    await page.getByLabel('Temperature',{exact:true}).selectOption('F');await page.getByLabel('Clock',{exact:true}).selectOption('12');
    await page.getByLabel('Weather & clock location',{exact:true}).selectOption('mumbai');

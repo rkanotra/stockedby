@@ -38,7 +38,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`} data-stockedby-theme="dark" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`} data-stockedby-theme="light" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <Script id="stockedby-appearance" strategy="beforeInteractive">{themeBootstrap}</Script>
       </head>

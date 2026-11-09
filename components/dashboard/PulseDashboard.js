@@ -30,7 +30,7 @@ function Headlines({wire,error,paused,setPaused}) {
   </section>;
 }
 export default function PulseDashboard() {
-  const [theme,setTheme]=useState('dark'),[city,setCity]=useState(WEATHER_CITIES[0]),[hour12,setHour12]=useState(false),[unit,setUnit]=useState('C'),[weather,setWeather]=useState(null),[weatherError,setWeatherError]=useState(''),[wire,setWire]=useState(null),[newsError,setNewsError]=useState(false),[refresh,setRefresh]=useState(0),[settings,setSettings]=useState(false),[full,setFull]=useState(false),[awake,setAwake]=useState(false),[held,setHeld]=useState(false),[message,setMessage]=useState(''),[locating,setLocating]=useState(false),[paused,setPaused]=useState(false),[ready,setReady]=useState(false);
+  const [theme,setTheme]=useState('light'),[city,setCity]=useState(WEATHER_CITIES[0]),[hour12,setHour12]=useState(false),[unit,setUnit]=useState('C'),[weather,setWeather]=useState(null),[weatherError,setWeatherError]=useState(''),[wire,setWire]=useState(null),[newsError,setNewsError]=useState(false),[refresh,setRefresh]=useState(0),[settings,setSettings]=useState(false),[full,setFull]=useState(false),[awake,setAwake]=useState(false),[held,setHeld]=useState(false),[message,setMessage]=useState(''),[locating,setLocating]=useState(false),[paused,setPaused]=useState(false),[ready,setReady]=useState(false);
   const dialog=useRef(null),lastRefresh=useRef(0);
   const offline=useSyncExternalStore(subscribeConnection,offlineSnapshot,onlineServerSnapshot);
   const locationKey=`${city.latitude}:${city.longitude}`;
@@ -38,7 +38,7 @@ export default function PulseDashboard() {
   const timezone=currentWeather?.timezone||city.timezone||Intl.DateTimeFormat().resolvedOptions().timeZone;
   // Browser-only preferences hydrate once after the server-rendered default.
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(()=>{try{const p=JSON.parse(localStorage.getItem(PREFS)||'{}');setCity(safeLocation(p.city));setHour12(p.hour12===true);setUnit(p.unit==='F'?'F':'C');setTheme(p.theme==='light'?'light':'dark');}catch{}setReady(true);},[]);
+  useEffect(()=>{try{const p=JSON.parse(localStorage.getItem(PREFS)||'{}');setCity(safeLocation(p.city));setHour12(p.hour12===true);setUnit(p.unit==='F'?'F':'C');setTheme(p.theme==='dark'?'dark':'light');}catch{}setReady(true);},[]);
   useEffect(()=>{if(ready)try{localStorage.setItem(PREFS,JSON.stringify({city,hour12,unit,theme}));}catch{}},[city,hour12,unit,theme,ready]);
   useEffect(()=>{
     const connection=()=>{if(navigator.onLine)setRefresh(n=>n+1);};const fullscreen=()=>setFull(!!document.fullscreenElement);
