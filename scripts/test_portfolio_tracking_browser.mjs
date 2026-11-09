@@ -37,7 +37,7 @@ try{
   await page.getByRole('button',{name:'All holding news'}).click();
   const panel=page.getByRole('region',{name:'News affecting your holdings'});
   await panel.getByRole('heading',{name:'What matters to your portfolio.',exact:true}).waitFor();
-  assert.equal(await panel.getByText('How it could affect the business',{exact:true}).count(),2);
+  assert.equal(await panel.getByText('How it could affect your holding',{exact:true}).count(),2);
   await panel.getByLabel('Holding',{exact:true}).selectOption('INR:INDIA');
   assert.equal(await panel.getByRole('heading',{name:'Fictional American quarterly results'}).count(),0);
   assert.equal(await panel.getByRole('heading',{name:'Fictional Indian operating update'}).count(),1);

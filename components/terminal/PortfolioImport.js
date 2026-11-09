@@ -1,16 +1,17 @@
 'use client';
 /* eslint-disable @next/next/no-img-element -- Local blob preview must not send a private screenshot to the image optimizer. */
 import { useEffect, useRef, useState } from 'react';
-import { CSV_HEADER } from '@/lib/terminal/domain';
+import { CSV_HEADER, exchangeLabel } from '@/lib/terminal/domain';
 import { IMAGE_COUNT_LIMIT, IMPORT_EXCHANGES, imageRowsCSV, validateScreenshotSelection } from '@/lib/terminal/imageImport';
 import s from './terminal.module.css';
 import i from './portfolioImport.module.css';
 
-export default function PortfolioImport({ api, onComplete }) {
+export default function PortfolioImport({ api, onComplete, market = 'All' }) {
+  const [destination, setDestination] = useState(market);
   const [mode, setMode] = useState('image'), [images, setImages] = useState([]);
   const [rows, setRows] = useState([]), [csv, setCsv] = useState('');
   const [preview, setPreview] = useState(null), [checked, setChecked] = useState(false);
-  const [account, setAccount] = useState('Default'), [asOf, setAsOf] = useState('');
+  const [account, setAccount] = useState(market === 'All' ? 'Default' : `${market} portfolio`), [asOf, setAsOf] = useState('');
   const [busy, setBusy] = useState(''), [error, setError] = useState('');
   const picker = useRef(null), request = useRef(null), review = useRef(null), confirmation = useRef(null);
   const objectURLs = useRef(new Set());
@@ -87,7 +88,7 @@ export default function PortfolioImport({ api, onComplete }) {
     setBusy('Checking for duplicates…'); setError(''); setPreview(null);
     try {
       const content = mode === 'image' ? imageRowsCSV(rows, account, asOf ? new Date(asOf).toISOString() : '') : csv;
-      const result = await api('', { action: 'import_preview', csv: content });
+      const result = await api('', { action: 'import_preview', csv: content, market: destination });
       setPreview({ ...result, csv: content }); setChecked(false);
     } catch (e) { setError(e.message); }
     finally { setBusy(''); }
@@ -95,7 +96,7 @@ export default function PortfolioImport({ api, onComplete }) {
   async function save() {
     setBusy('Saving your holdings…'); setError('');
     try {
-      const result = await api('', { action: 'import_commit', csv: preview.csv, version: preview.version, rows: preview.preview.filter(row => row.status === 'ready').map(row => row.row) });
+      const result = await api('', { action: 'import_commit', market: destination, csv: preview.csv, version: preview.version, rows: preview.preview.filter(row => row.status === 'ready').map(row => row.row) });
       await onComplete(result);
     } catch (e) { setError(e.message); if (e.status === 409) setPreview(null); }
     finally { setBusy(''); }
@@ -106,7 +107,7 @@ export default function PortfolioImport({ api, onComplete }) {
   const warnings = images.flatMap(image => image.warnings.map(warning => `${image.file.name}: ${warning}`));
   return <div className={`${s.form} ${i.importer}`}>
     <p className={i.intro}>Bring your holdings from ICICI Direct, Wio or another app. Review the details, then save.</p>
-    <div className={i.tabs} role="tablist" aria-label="Import format">{[['image', 'Screenshot'], ['csv', 'CSV file']].map(([value, label]) => <button type="button" role="tab" aria-selected={mode === value} disabled={!!busy} key={value} onClick={() => { setMode(value); resetPreview(); }}>{label}</button>)}</div>
+    <label>Save into portfolio<select aria-label="Save into portfolio" disabled={!!busy} value={destination} onChange={e => { setDestination(e.target.value); resetPreview(); }}><option value="US">US portfolio · USD</option><option value="India">India portfolio · INR</option><option value="All">Automatically split by market</option></select></label><p className={i.privacy}>Stocks, ETFs and mutual funds. Each holding keeps its native currency. Rows from another market must be imported into the matching portfolio.</p><div className={i.tabs} role="tablist" aria-label="Import format">{[['image', 'Screenshot'], ['csv', 'CSV file']].map(([value, label]) => <button type="button" role="tab" aria-selected={mode === value} disabled={!!busy} key={value} onClick={() => { setMode(value); resetPreview(); }}>{label}</button>)}</div>
     {mode === 'image' ? <>
       <div className={i.dropzone} tabIndex={0} aria-label="Drop or paste up to 10 portfolio screenshots" onDragOver={e => e.preventDefault()} onDrop={e => { e.preventDefault(); choose(e.dataTransfer.files); }} onPaste={e => { const files = [...e.clipboardData.files].filter(f => f.type.startsWith('image/')); if (files.length) { e.preventDefault(); choose(files); } }}>
         {!images.length && <span className={i.uploadIcon} aria-hidden="true">↥</span>}
@@ -132,10 +133,10 @@ export default function PortfolioImport({ api, onComplete }) {
           <span className={i.source}>From {row.sourceName}</span>
           {row.issues.length > 0 && <p className={i.uncertain}>{row.issues.join(' ')}</p>}
           {row.selected !== false && <div className={i.fields}>
-            {field(row, index, 'name', 'Name')}{field(row, index, 'symbol', 'Ticker')}
-            <label>Exchange<select aria-label={`Exchange, holding ${index + 1}`} value={row.exchange} disabled={!!busy} onChange={e => edit(index, 'exchange', e.target.value)}>{IMPORT_EXCHANGES.map(x => <option value={x} key={x}>{x === 'UNRESOLVED' ? 'Not known yet' : x}</option>)}</select></label>
+            {field(row, index, 'name', 'Name')}{field(row, index, 'symbol', row.assetClass === 'mutual_fund' ? 'Fund ticker / scheme code / ISIN' : 'Ticker')}
+            <label>Exchange<select aria-label={`Exchange, holding ${index + 1}`} value={row.exchange} disabled={!!busy} onChange={e => edit(index, 'exchange', e.target.value)}>{IMPORT_EXCHANGES.map(x => <option value={x} key={x}>{exchangeLabel(x)}</option>)}</select></label>
             <label>Currency<select aria-label={`Currency, holding ${index + 1}`} value={row.currency} disabled={!!busy} onChange={e => edit(index, 'currency', e.target.value)}><option value="">Choose…</option><option>INR</option><option>USD</option></select></label>
-            <label>Asset type<select aria-label={`Asset type, holding ${index + 1}`} value={row.assetClass} disabled={!!busy} onChange={e => edit(index, 'assetClass', e.target.value)}><option value="">Choose…</option><option value="equity">Stock</option><option value="etf">ETF</option></select></label>
+            <label>Asset type<select aria-label={`Asset type, holding ${index + 1}`} value={row.assetClass} disabled={!!busy} onChange={e => edit(index, 'assetClass', e.target.value)}><option value="">Choose…</option><option value="equity">Stock</option><option value="etf">ETF</option><option value="mutual_fund">Mutual fund</option></select></label>
             {field(row, index, 'quantity', 'Shares / units', { inputMode: 'decimal' })}
             {field(row, index, 'costBasis', 'Total invested cost (optional)', { inputMode: 'decimal' })}
             {field(row, index, 'snapshotValue', 'Snapshot value (optional)', { inputMode: 'decimal' })}
@@ -144,7 +145,7 @@ export default function PortfolioImport({ api, onComplete }) {
         <p className={i.privacy}>Use total invested cost, not average price. Screenshot values are historical snapshots, never live prices. Listing matches remain unverified until you confirm them in your portfolio.</p>
       </section>}
     </> : <>
-      <p>Use the template columns. You can correct the CSV below before importing.</p>
+      <p>Use assetClass mutual_fund for funds, INMF / USMF for the fund registry, and the exact fund ticker, scheme code or ISIN in symbol. Use the template columns. You can correct the CSV below before importing.</p>
       <a href={`data:text/csv;charset=utf-8,${encodeURIComponent(CSV_HEADER + '\n')}`} download="stockedby-template.csv">Download CSV template ↗</a>
       <label>Choose CSV<input type="file" accept=".csv,text/csv" disabled={!!busy} onChange={async e => { const f = e.target.files[0]; if (!f) return; resetPreview(); if (f.size > 500000) { setError('Use a CSV under 500 KB.'); return; } setCsv(await f.text()); }}/></label>
       <label>CSV contents<textarea rows={6} value={csv} disabled={!!busy} onChange={e => { setCsv(e.target.value); resetPreview(); }}/></label>
@@ -155,8 +156,8 @@ export default function PortfolioImport({ api, onComplete }) {
       {mode === 'image' && unread > 0 && <p className={i.uncertain}>{unread} {unread === 1 ? 'screenshot has' : 'screenshots have'} not been read. This import includes only the completed screenshots.</p>}
       <div className={s.tableWrap}><table><thead><tr><th>Holding</th><th>Units</th><th>Result</th></tr></thead><tbody>{preview.preview.map((row, index) => <tr key={index}><td>{row.position?.symbol || `Row ${row.row}`}<small>{row.position?.exchange}</small></td><td>{row.position?.quantity || '—'}</td><td>{row.status}<small>{row.message}</small></td></tr>)}</tbody></table></div>
       <label className={i.rowTitle}><input type="checkbox" checked={checked} disabled={!!busy} onChange={e => setChecked(e.target.checked)}/><span>I checked the tickers, units, currencies and costs against my original.</span></label>
-      <p className={i.privacy}>Saving starts a news check for your India and US holdings and enables daily tracking, unless you paused it in Settings. Only company names and tickers are used for news research. Quantities and account details stay private.</p>
-      <button className={s.primary} disabled={!!busy || !ready || !checked} onClick={save}>Add {ready} {ready === 1 ? 'holding' : 'holdings'} to my portfolio</button>
+      <p className={i.privacy}>Saving starts a news check for your India and US holdings and enables daily tracking, unless you paused it in Settings. Only company/fund names and identifiers are used for news research. Quantities and account details stay private.</p>
+      <button className={s.primary} disabled={!!busy || !ready || !checked} onClick={save}>Add {ready} {ready === 1 ? 'holding' : 'holdings'} to {destination === 'All' ? 'my portfolios' : `my ${destination} portfolio`}</button>
     </section>}
     {busy && <p role="status">{busy}</p>}
     {error && mode === 'csv' && <p role="alert" className={s.error}>{error}</p>}

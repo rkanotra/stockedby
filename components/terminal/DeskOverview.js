@@ -6,26 +6,27 @@ import d from './desk.module.css';
 const money=(n,c)=>n==null?'—':new Intl.NumberFormat(c==='INR'?'en-IN':'en-GB',{style:'currency',currency:c,maximumFractionDigits:2}).format(n);
 const percent=n=>`${(n*100).toFixed(1)}%`;
 
-export default function DeskOverview({portfolio,currency,state,onImport,onAdd,onGo,onSelect}) {
+export default function DeskOverview({portfolio,currency,state,market='All',onImport,onAdd,onGo,onSelect}) {
   const empty=!portfolio.count;
   const latest=state.runs.find(run=>run.result?.research?.length);
+  const snapshots=Object.entries(portfolio.rows.reduce((totals,p)=>{if(p.snapshotValue!=null){const entry=totals[p.currency]||{value:0,count:0};entry.value+=Number(p.snapshotValue);entry.count++;totals[p.currency]=entry;}return totals;},{}));
   const pending=portfolio.count-portfolio.priced;
   return <div className={d.overviewGrid}>
     <div>
       {empty?<section className={d.welcome}>
-        <div className={d.welcomeTag}><DeskIcon type="Lock" size={15}/> YOUR PRIVATE PORTFOLIO</div>
-        <h2>Your investments.<br/>One clear view.</h2>
-        <p>Drop in a screenshot from Wio or ICICI Direct. Let AI read your holdings, then make them yours.</p>
+        <div className={d.welcomeTag}><DeskIcon type="Lock" size={15}/> {market==='All'?'YOUR PRIVATE PORTFOLIOS':`YOUR ${market.toUpperCase()} PORTFOLIO`}</div>
+        <h2>{market==='All'?'Two markets.':`${market} investments.`}<br/>{market==='All'?'Your own perspective.':'One focused view.'}</h2>
+        <p>{market==='US'?'Import your US stocks and mutual funds in USD.':market==='India'?'Import your Indian stocks and mutual funds in INR.':'Choose a US or India portfolio above, then import your holdings.'} Start with screenshots, a CSV or a manual entry.</p>
         <div className={d.actions}><button className={d.orangeButton} onClick={onImport}><DeskIcon type="Upload" size={17}/> Import portfolio</button><button className={d.textButton} onClick={onAdd}>Add a position <DeskIcon type="Arrow" size={16}/></button></div>
         <div className={d.welcomeMarkets}><span>IN</span><span>US</span><small>Across markets. All yours.</small></div>
       </section>:<section className={d.balanceCard}>
-        <div className={d.cardEyebrow}>YOUR PRICED HOLDINGS <span>{currency}</span></div>
+        <div className={d.cardEyebrow}>{market==='All'?'ALL PRICED HOLDINGS':`${market.toUpperCase()} PRICED HOLDINGS`} <span>{currency}</span></div>
         <strong className={d.balance}>{money(portfolio.total,currency)}</strong>
         <p className={portfolio.pnl==null?d.neutral:portfolio.pnl<0?d.negative:d.positive}>{portfolio.pnl==null?'Return unavailable':`${portfolio.pnl>=0?'+':''}${money(portfolio.pnl,currency)}`} <span>unrealized P&L · translated</span></p>
         <div className={d.balanceMetrics}><div><b>{portfolio.count}</b><span>Active positions</span></div><div><b>{portfolio.concentration==null?'—':percent(portfolio.concentration)}</b><span>Largest priced position</span></div><div><b>{portfolio.pnlCount}</b><span>Priced with known cost</span></div></div>
         <div className={d.coverageTrack}><span style={{width:`${portfolio.count?portfolio.priced/portfolio.count*100:0}%`}}/></div>
         <div className={d.coverageLabel}><span>{portfolio.priced} of {portfolio.count} positions priced</span><button onClick={()=>onGo('Portfolio')}>{pending?`${pending} need attention`:'View holdings'} <DeskIcon type="Arrow" size={14}/></button></div>
-        <small>Unpriced holdings are excluded from this total. Available FX rates are used for translation.</small>
+        <small>Unpriced holdings are excluded from this total. Available FX rates are used for translation.</small>{snapshots.length>0&&<div className={d.snapshotSummary}><strong>Reported snapshots</strong>{snapshots.map(([c,v])=><p key={c}>{money(v.value,c)} <span>· {v.count} holdings</span></p>)}<small>Imported values may have different dates. These are not current prices or returns.</small></div>}
       </section>}
       {empty?<section className={d.startSteps}><h2>A simple place to start.</h2>{[
         ['01','Bring what you own','Upload a screenshot or CSV. Review, then confirm.','Import holdings',onImport],

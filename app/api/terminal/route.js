@@ -21,7 +21,7 @@ export async function POST(request) {
       return json({ ...saved, tracking });
     }
     if (body.action === 'import_preview' || body.action === 'import_commit') {
-      const state = await store('load'), preview = importPreview(String(body.csv || ''), state.document.positions);
+      const state = await store('load'), preview = importPreview(String(body.csv || ''), state.document.positions, { market: body.market || 'All' });
       if (body.action === 'import_preview') return json({ preview, version: state.version });
       if (body.version !== state.version) return json({ error: 'Your portfolio changed. Preview this import again.' }, 409);
       const rows = preview.filter(r => r.status === 'ready' && Array.isArray(body.rows) && body.rows.includes(r.row));
@@ -31,7 +31,10 @@ export async function POST(request) {
       const tracking = await queuePortfolioTracking(store, { ...state, document }, after, { enableSchedule: true });
       return json({ ...saved, tracking });
     }
-    if (body.action === 'track') return json({ tracking: await queuePortfolioTracking(store, await store('load'), after) });
+    if (body.action === 'track') {
+      if (body.market && !['All', 'US', 'India'].includes(body.market)) return json({ error: 'Choose a supported portfolio.' }, 400);
+      return json({ tracking: await queuePortfolioTracking(store, await store('load'), after, { market: body.market || 'All' }) });
+    }
     if (body.action === 'read_alerts') return json(await store('read_alerts'));
     if (body.action === 'schedule') {
       if (!process.env.CRON_SECRET) return json({ error: 'Scheduled scans are awaiting server configuration.' }, 503);

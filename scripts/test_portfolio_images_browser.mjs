@@ -63,7 +63,7 @@ try {
     await page.getByRole('button', { name: 'Check holdings before saving' }).click();
     await page.getByRole('heading', { name: '9 holdings ready to add', exact: true }).waitFor();
     await page.getByRole('cell', { name: /^conflict/ }).waitFor();
-    const add = page.getByRole('button', { name: 'Add 9 holdings to my portfolio', exact: true });
+    const add = page.getByRole('button', { name: 'Add 9 holdings to my portfolios', exact: true });
     assert.equal(await add.isDisabled(), true); assert.equal(commits, 0);
     await page.getByLabel('I checked the tickers, units, currencies and costs against my original.').check();
     assert.equal(await add.isEnabled(), true);
@@ -108,7 +108,7 @@ try {
     await page.getByLabel('CSV contents').fill('name,symbol,exchange,currency,quantity\nFictional CSV,CSVTEST,NASDAQ,USD,2');
     await page.getByRole('button', { name: 'Check holdings before saving' }).click();
     await page.getByRole('heading', { name: '1 holding ready to add', exact: true }).waitFor();
-    assert.equal(await page.getByRole('button', { name: 'Add 1 holding to my portfolio' }).isDisabled(), true);
+    assert.equal(await page.getByRole('button', { name: 'Add 1 holding to my portfolios' }).isDisabled(), true);
     await context.close();
     console.log(`Passed ${width}px: ten images, limit, removal, partial failure, retry, preserved edits, duplicate/conflict review, confirmation, quota stop/resume, drop, paste, CSV.`);
   }
