@@ -65,7 +65,7 @@ try {
     await page.getByRole('cell', { name: /^conflict/ }).waitFor();
     const add = page.getByRole('button', { name: 'Add 9 holdings to my portfolios', exact: true });
     assert.equal(await add.isDisabled(), true); assert.equal(commits, 0);
-    await page.getByLabel('I checked the tickers, units, currencies and costs against my original.').check();
+    await page.getByLabel('I checked the matched listings, fund plans, units, currencies and costs against my original.').check();
     assert.equal(await add.isEnabled(), true);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     await page.screenshot({ path: `/tmp/stockedby-ten-images-review-${width}.png`, fullPage: false });

@@ -1,8 +1,12 @@
 'use client';
 /* eslint-disable @next/next/no-img-element -- Local blob preview must not send a private screenshot to the image optimizer. */
 import { useEffect, useRef, useState } from 'react';
-import { CSV_HEADER, exchangeLabel } from '@/lib/terminal/domain';
+import { CSV_HEADER, exchangeLabel, instrumentId } from '@/lib/terminal/domain';
 import { IMAGE_COUNT_LIMIT, IMPORT_EXCHANGES, imageRowsCSV, validateScreenshotSelection } from '@/lib/terminal/imageImport';
+import usePortfolioPrices from './usePortfolioPrices';
+import CurrentValue from './CurrentValue';
+import ListingFinder from './ListingFinder';
+import { currentValue } from '@/lib/terminal/prices';
 import s from './terminal.module.css';
 import i from './portfolioImport.module.css';
 
@@ -10,11 +14,12 @@ export default function PortfolioImport({ api, onComplete, market = 'All' }) {
   const [destination, setDestination] = useState(market);
   const [mode, setMode] = useState('image'), [images, setImages] = useState([]);
   const [rows, setRows] = useState([]), [csv, setCsv] = useState('');
-  const [preview, setPreview] = useState(null), [checked, setChecked] = useState(false);
+  const [preview, setPreview] = useState(null), [checked, setChecked] = useState(false), [approvedQuotes, setApprovedQuotes] = useState({});
   const [account, setAccount] = useState(market === 'All' ? 'Default' : `${market} portfolio`), [asOf, setAsOf] = useState('');
   const [busy, setBusy] = useState(''), [error, setError] = useState('');
   const picker = useRef(null), request = useRef(null), review = useRef(null), confirmation = useRef(null);
   const objectURLs = useRef(new Set());
+  const quoteLookup = usePortfolioPrices(mode === 'image' ? rows : preview?.preview?.map(row => row.position).filter(Boolean));
   useEffect(() => () => request.current?.abort(), []);
   useEffect(() => { const urls = objectURLs.current; return () => { urls.forEach(url => URL.revokeObjectURL(url)); urls.clear(); }; }, []);
   useEffect(() => {
@@ -94,9 +99,16 @@ export default function PortfolioImport({ api, onComplete, market = 'All' }) {
     finally { setBusy(''); }
   }
   async function save() {
+    if (!checked || !preview) return;
     setBusy('Saving your holdings…'); setError('');
     try {
-      const result = await api('', { action: 'import_commit', market: destination, csv: preview.csv, version: preview.version, rows: preview.preview.filter(row => row.status === 'ready').map(row => row.row) });
+      const additions = preview.preview.filter(row => row.status === 'ready').map(row => {
+        const p = row.position;
+        return { ...p, mapping: currentValue(p, approvedQuotes[instrumentId(p)]) !== null ? 'confirmed' : p.mapping };
+      });
+      const escape = value => `"${String(value ?? '').replaceAll('"', '""')}"`;
+      const confirmedCSV = [CSV_HEADER, ...additions.map(p => CSV_HEADER.split(',').map(key => escape(p[key])).join(','))].join('\n');
+      const result = await api('', { action: 'import_commit', market: destination, csv: confirmedCSV, version: preview.version, rows: additions.map((_, index) => index + 2) });
       await onComplete(result);
     } catch (e) { setError(e.message); if (e.status === 409) setPreview(null); }
     finally { setBusy(''); }
@@ -139,10 +151,10 @@ export default function PortfolioImport({ api, onComplete, market = 'All' }) {
             <label>Asset type<select aria-label={`Asset type, holding ${index + 1}`} value={row.assetClass} disabled={!!busy} onChange={e => edit(index, 'assetClass', e.target.value)}><option value="">Choose…</option><option value="equity">Stock</option><option value="etf">ETF</option><option value="mutual_fund">Mutual fund</option></select></label>
             {field(row, index, 'quantity', 'Shares / units', { inputMode: 'decimal' })}
             {field(row, index, 'costBasis', 'Total invested cost (optional)', { inputMode: 'decimal' })}
-            {field(row, index, 'snapshotValue', 'Snapshot value (optional)', { inputMode: 'decimal' })}
+            <ListingFinder position={row} onChoose={p => { resetPreview(); setRows(current => current.map((old,n) => n === index ? { ...old, symbol:p.symbol, exchange:p.exchange, currency:p.currency, assetClass:p.assetClass } : old)); }}/><CurrentValue position={row} data={quoteLookup.prices[instrumentId(row)]} loading={quoteLookup.loading} error={quoteLookup.error}/><details className={i.snapshot}><summary>Original screenshot value · reference only</summary>{field(row, index, 'snapshotValue', 'Value in uploaded screenshot (optional)', { inputMode: 'decimal' })}</details>
           </div>}
         </article>)}
-        <p className={i.privacy}>Use total invested cost, not average price. Screenshot values are historical snapshots, never live prices. Listing matches remain unverified until you confirm them in your portfolio.</p>
+        <p className={i.privacy}>Current value uses the latest available price × your units. Stocks may be delayed; funds use daily NAV. Check the matched investment name and fund plan before confirming. Original screenshot values are kept separately. Missing prices stay unavailable.</p>
       </section>}
     </> : <>
       <p>Use assetClass mutual_fund for funds, INMF / USMF for the fund registry, and the exact fund ticker, scheme code or ISIN in symbol. Use the template columns. You can correct the CSV below before importing.</p>
@@ -150,12 +162,13 @@ export default function PortfolioImport({ api, onComplete, market = 'All' }) {
       <label>Choose CSV<input type="file" accept=".csv,text/csv" disabled={!!busy} onChange={async e => { const f = e.target.files[0]; if (!f) return; resetPreview(); if (f.size > 500000) { setError('Use a CSV under 500 KB.'); return; } setCsv(await f.text()); }}/></label>
       <label>CSV contents<textarea rows={6} value={csv} disabled={!!busy} onChange={e => { setCsv(e.target.value); resetPreview(); }}/></label>
     </>}
+    {rows.length > 0 && <button type="button" disabled={quoteLookup.loading} onClick={quoteLookup.refresh}>{quoteLookup.loading ? 'Fetching latest prices…' : 'Refresh prices'}</button>}
     {(mode === 'csv' || rows.length > 0) && <button disabled={!!busy || (mode === 'csv' ? !csv : !rows.some(row => row.selected !== false))} onClick={checkRows}>Check holdings before saving</button>}
     {preview && <section ref={confirmation} tabIndex={-1} className={i.confirm} aria-label="Confirm portfolio import">
       <h3>{ready} {ready === 1 ? 'holding' : 'holdings'} ready to add</h3>
       {mode === 'image' && unread > 0 && <p className={i.uncertain}>{unread} {unread === 1 ? 'screenshot has' : 'screenshots have'} not been read. This import includes only the completed screenshots.</p>}
-      <div className={s.tableWrap}><table><thead><tr><th>Holding</th><th>Units</th><th>Result</th></tr></thead><tbody>{preview.preview.map((row, index) => <tr key={index}><td>{row.position?.symbol || `Row ${row.row}`}<small>{row.position?.exchange}</small></td><td>{row.position?.quantity || '—'}</td><td>{row.status}<small>{row.message}</small></td></tr>)}</tbody></table></div>
-      <label className={i.rowTitle}><input type="checkbox" checked={checked} disabled={!!busy} onChange={e => setChecked(e.target.checked)}/><span>I checked the tickers, units, currencies and costs against my original.</span></label>
+      <div className={s.tableWrap}><table><thead><tr><th>Holding</th><th>Units</th><th>Current value</th><th>Result</th></tr></thead><tbody>{preview.preview.map((row, index) => <tr key={index}><td>{row.position?.symbol || `Row ${row.row}`}<small>{row.position?.exchange}</small></td><td>{row.position?.quantity || '—'}</td><td>{row.position && <CurrentValue position={row.position} data={quoteLookup.prices[instrumentId(row.position)]} loading={quoteLookup.loading} error={quoteLookup.error}/>}</td><td>{row.status}<small>{row.message}</small></td></tr>)}</tbody></table></div>
+      <label className={i.rowTitle}><input type="checkbox" checked={checked} disabled={!!busy} onChange={e => { setChecked(e.target.checked); setApprovedQuotes(e.target.checked ? quoteLookup.prices : {}); }}/><span>I checked the matched listings, fund plans, units, currencies and costs against my original.</span></label>
       <p className={i.privacy}>Saving starts a news check for your India and US holdings and enables daily tracking, unless you paused it in Settings. Only company/fund names and identifiers are used for news research. Quantities and account details stay private.</p>
       <button className={s.primary} disabled={!!busy || !ready || !checked} onClick={save}>Add {ready} {ready === 1 ? 'holding' : 'holdings'} to {destination === 'All' ? 'my portfolios' : `my ${destination} portfolio`}</button>
     </section>}

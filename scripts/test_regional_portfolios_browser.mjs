@@ -63,7 +63,7 @@ try {
   await dialog.getByLabel('CSV contents').fill('name,symbol,exchange,currency,assetClass,quantity\nFictional US import,WRONG,NASDAQ,USD,equity,1\nFictional India import,NEW,NSE,INR,equity,3');
   await dialog.getByRole('button',{name:'Check holdings before saving'}).click();
   await dialog.getByRole('cell',{name:/belongs to US, not the India portfolio/}).waitFor();
-  await dialog.getByLabel('I checked the tickers, units, currencies and costs against my original.').check();
+  await dialog.getByLabel('I checked the matched listings, fund plans, units, currencies and costs against my original.').check();
   await dialog.getByRole('button',{name:'Add 1 holding to my India portfolio',exact:true}).click();
   await dialog.waitFor({state:'hidden'});
   assert.equal(state.document.positions.length,6);assert.ok(!state.document.positions.some(p=>p.symbol==='WRONG'));
