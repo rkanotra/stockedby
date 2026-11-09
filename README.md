@@ -1,10 +1,12 @@
 # StockedBy
 
-An investment research desk for India, UAE and US markets, plus metals and crypto.
+An investment research desk for India and US holdings, with a separate public daily dashboard for markets, weather and headlines.
 
 - `/` — light public website.
 - `/brief` — public, region/topic-filtered market headlines, IPO and fund discovery.
 - `/terminal` — invited users' private portfolios, watchlists, source-linked AI research, daily history, screens and alerts.
+- `/terminal#Screener` — market discovery beyond owned holdings, with dated catalysts, risk flags, US movers and search-attention topics.
+- `/dashboard` — mobile/full-screen clock, weather, Sensex, Nasdaq, metals, Bitcoin, FX and regional news.
 
 Older commerce, product-studio and Ascent entry points redirect to the new site. Their records remain intact. Their APIs return 410; the existing authentication callback and mail webhook remain available.
 
@@ -23,14 +25,24 @@ Required server-only variables: `STUDIO_SUPABASE_URL`, `STUDIO_SUPABASE_PUBLISHA
 
 Set a random `CRON_SECRET` of at least 40 characters in Vercel. Enable tracking for an account in Settings: only its hash is stored in Supabase. Jobs can read/cache/scan configured accounts but cannot edit holdings, invite people or enable themselves. The pilot scheduler supports at most three accounts; expansion requires a durable queue.
 
-`vercel.json` invokes two separate daily jobs at 06:00 and 15:00 UTC. On Vercel Hobby they run during 10:00–10:59 and 19:00–19:59 Asia/Dubai, respectively. One bounded regional research request runs per account per window. Daily account limit: 12 research runs; all runs: 30/hour. These are request limits, not guarantees of a fixed dollar bill. Check provider billing and project-wide quotas separately. Alerts are in-app only.
+`vercel.json` invokes two separate daily jobs at 06:00 and 15:00 UTC. On Vercel Hobby they run during 10:00–10:59 and 19:00–19:59 Asia/Dubai, respectively. Each window checks regional holdings and then runs regional market discovery; an empty portfolio does not disable discovery. This uses up to four AI requests per account per day, plus manual requests. They run sequentially because each owner has a single database run lease. Scheduled provider retries are disabled to reserve time within the 300-second function deadline. Daily account limit: 12 research runs; all runs: 30/hour. These are request limits, not guarantees of a fixed dollar bill. Check provider billing and project-wide quotas separately. Alerts are in-app only.
+
+## Market discovery and company research
+
+The scanner combines bounded US mover screens, Google News leads, Google Trending Now topics and web-search-backed analysis. Company signals need a returned source URL, publication/event dates, an identifiable listing, a business mechanism, contrary evidence and a next check. Insider purchase signals require an SEC/exchange filing and an open-market purchase classification; they remain search-based, not an exhaustive transaction monitor. General search topics are never relabelled as company search-growth signals.
+
+Ranking prioritizes corroborated urgent risks, held-company relevance and multiple signal types. It is not a probability of profit or a backtested trading strategy. Source validation establishes traceability, not independent verification of every extracted claim. India-wide quantitative ranking and historical company Google Trends data are not connected; coverage status remains visible.
+
+Researching a discovered company is authorized only by a recent signal saved in that user's private scan. The provider must confirm the exact listing. This creates a research file, never a position. Deep reviews combine financial statements, adjusted price history, technical indicators, dated sources, optional investment thesis and a conditional Buy/Hold/Sell/Wait stance. The case, countercase, confidence, invalidation and missing evidence stay attached to the conclusion. Evidence saves before the AI stage so an AI failure cannot hide financials or the chart. Prior versions remain available.
+
+Manual combined scans and scheduled regional scans merge by each region's latest analysis and feed timestamps. No saved snapshot is relabelled as a fresh scan. Actual execution and backtested/forward-tested investment performance are not part of this release.
 
 ## Data coverage and limitations
 
 - Headlines: selected Google News RSS lanes, publisher links, timestamps, deduplication and one-hour cache. Not exhaustive; IPO headlines are not a verified subscription calendar.
 - FX: ExchangeRate-API open feed, daily indicative conversions with attribution; rates older than 72 hours are unavailable.
 - Crypto: Coinbase Exchange USD spot and up to 299 completed daily bars, restricted to the original owner's personal research. Not redistributed publicly or sent to AI.
-- Equities/ETFs: no licensed automated quote/fundamentals feed yet. Sourced OHLCV and ratio CSV imports are supported. Missing, stale and unmapped positions are excluded from totals, never priced at zero.
+- Equities/ETFs: current integrations provide delayed public quotes and financial evidence where available; these are not licensed exchange-wide real-time feeds. Sourced OHLCV and ratio CSV imports remain supported. Missing, stale and unmapped positions are excluded from totals, never priced at zero.
 - Metals: broker product and unit must be confirmed. A spot quote is not substituted for a broker product.
 - Technical observations use verified adjustment basis. Common-date comparisons are native-currency price returns, excluding dividends. Corporate actions do not automatically alter user quantities.
 - Research shares security identifiers and optional research preferences, not account labels, position quantities or balances. AI statements remain analysis; a returned source URL does not establish that every claim is true. Unknown dates and unsupported facts remain gaps. Public research was exercised with OpenAI on 3 November 2026; Gemini returned depleted-credit status.
