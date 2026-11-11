@@ -1,8 +1,10 @@
 import { json, readBody } from '@/lib/team/server';
 import { requireTerminalUser, terminalStore, terminalFailure } from '@/lib/terminal/server';
-import { instrumentId, WATCH } from '@/lib/terminal/domain';
+import { instrumentId, isListingResolved, WATCH } from '@/lib/terminal/domain';
 import { fetchFX, importHistory, keepLastValid } from '@/lib/terminal/feeds';
 import { fetchPrices, findListings, priceIdentity, priceKey } from '@/lib/terminal/prices';
+import { bestSeries } from '@/lib/terminal/seriesCache';
+import { fetchMarketHistory } from '@/lib/terminal/marketHistory';
 import { fundamentalPreview } from '@/lib/terminal/screener';
 export const maxDuration = 300;
 export async function POST(request) {
@@ -31,6 +33,17 @@ export async function POST(request) {
     }
     if(body.mode==='fundamentals') { const rows=fundamentalPreview(String(body.csv||''));if(!body.confirm)return json({preview:rows});for(const row of rows)await store('cache',{key:`fund:${row.exchange}:${row.symbol}`,data:row});return json({ok:true}); }
     const p = [...state.document.positions, ...(state.document.watchlist||[]), ...WATCH].find(p => instrumentId(p) === body.instrumentId);
+    if (body.mode === 'history') {
+      if (!p) return json({ error: 'Select a holding or watchlist security from this desk.' }, 404);
+      if(!isListingResolved(p,state.cache[instrumentId(p)])) return json({error:'Match the exact listing in Portfolio before loading its daily history.'},422);
+      try {
+        const key='market-series:'+instrumentId(p), saved=state.cache[key];
+        const history=bestSeries(saved,await fetchMarketHistory(p));
+        if (history!==saved && (history.fetchedAt!==saved?.fetchedAt || history.bars.length!==saved?.bars?.length)) await store('cache',{key,data:history});
+        return json({instrumentId:instrumentId(p),history});
+      }
+      catch (e) { return json({ error: e.message }, 422); }
+    }
     if (!p) return json({ error: 'Add this security before importing its history.' }, 400);
     const data = importHistory(String(body.csv || ''), p, body);
     await store('cache', { key: instrumentId(p), data }); return json({ ok: true });

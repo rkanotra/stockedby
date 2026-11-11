@@ -47,14 +47,14 @@ function Scenario() {
 }
 
 function RiskHistory({ evidence }) {
-  const risk = historicalRisk(evidence?.technical?.series, { asOf: evidence?.fetchedAt });
+  const risk = historicalRisk(evidence?.technical?.adjustment==='unknown'?null:evidence?.technical?.series, { asOf: evidence?.fetchedAt });
   const source = evidence?.sources?.find(source => source.id === 'technical');
   const id = useId();
   const worst = risk.available ? Math.max(1, Math.abs(risk.maxDrawdown)) : 1;
   const path = risk.drawdowns?.map((p, i) => `${i ? 'L' : 'M'}${(i / (risk.count - 1) * 940 + 10).toFixed(1)},${(12 + Math.abs(p.value) / worst * 120).toFixed(1)}`).join(' ');
   return <section className={`${s.lab} ${s.history}`} aria-labelledby={id}>
     <div className={s.historyHead}><div><span className={s.kicker}>MEASURE THE DOWNSIDE</span><h3 id={id}>What holding this has felt like.</h3></div>{source?.url && <a href={source.url} target="_blank" rel="noreferrer">Price history source ↗</a>}</div>
-    {!risk.available ? <p>{risk.reason} No historical risk estimate is shown.</p> : <>
+    {!risk.available ? <p>{evidence?.technical?.adjustment==='unknown'?'The exchange closes have no verified adjustment basis.':risk.reason} No historical risk estimate is shown.</p> : <>
       <p className={s.caption}>{risk.count} observed closes · {day(risk.start)} – {day(risk.end)} · calculated from the saved evidence</p>
       {risk.stale && <p className={s.warning}>The last price is more than seven days older than this evidence snapshot. Refresh before treating this as current context.</p>}
       {risk.gaps > 0 && <p className={s.warning}>{risk.gaps} gaps exceed seven calendar days. Windows spanning those gaps are excluded; daily volatility may be unavailable.</p>}
