@@ -6,13 +6,13 @@ import s from './terminal.module.css';
 
 // Results belong to a single listing. Late responses from a previous selection
 // must never supply another holding's prices or benchmark.
-function useSeries(id, saved, imported) {
+function useSeries(id, saved, imported, now) {
   const [result,setResult]=useState(null),[attempt,setAttempt]=useState(0);
   const t=saved?.technical;
   const seeded=t?.adjustment && t.series?.length>1 ? {bars:t.series,adjustment:t.adjustment,provider:t.provider,source:t.source,returnType:t.basis,fetchedAt:saved.fetchedAt} : null;
   const initial=bestSeries(imported,seeded);
-  const today=new Date().toISOString().slice(0,10);
-  const current=initial?.fetchedAt?.slice(0,10)===today&&initial.bars.at(-1).date>=new Date(Date.now()-7*86400000).toISOString().slice(0,10);
+  const today=new Date(now).toISOString().slice(0,10);
+  const current=initial?.fetchedAt?.slice(0,10)===today&&initial.bars.at(-1).date>=new Date(now-7*86400000).toISOString().slice(0,10);
   useEffect(()=>{
     if(!id||(!attempt&&current))return;
     const controller=new AbortController();let active=true;
@@ -31,12 +31,14 @@ function useSeries(id, saved, imported) {
   return {history,error:own?.error,retry:()=>setAttempt(x=>x+1),waiting:!!id&&!own&&!current};
 }
 export default function MarketSeries({security,currency,benchmark,cache,Chart,onResearch}) {
+  const [now,setNow]=useState(()=>Date.now());
+  useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),60000);return()=>clearInterval(timer);},[]);
   const getSaved=id=>cache['dossier:'+id]?.evidence;
   const getHistory=id=>{const q=cache[id];return bestSeries(cache['market-series:'+id],q?.history&&{...q.history,provider:q.history.provider||(q.ownerSupplied?q.provider:'Saved history'),source:q.history.source||(q.ownerSupplied?q.source:null),fetchedAt:q.history.fetchedAt||(q.ownerSupplied?q.fetchedAt:null)});};
-  const stock=useSeries(security,getSaved(security),getHistory(security));
-  const other=useSeries(benchmark===security?'':benchmark,getSaved(benchmark),getHistory(benchmark));
+  const stock=useSeries(security,getSaved(security),getHistory(security),now);
+  const other=useSeries(benchmark===security?'':benchmark,getSaved(benchmark),getHistory(benchmark),now);
   const {history}=stock,metrics=indicators(history),metricsList=[['SMA 20',metrics.sma20],['SMA 50',metrics.sma50],['SMA 200',metrics.sma200],['RSI 14',metrics.rsi14],['Volume / prior 20',metrics.relativeVolume]];
-  const stale=history&&Date.now()-Date.parse(metrics.end)>7*86400000;
+  const stale=history&&now-Date.parse(metrics.end)>7*86400000;
   return <><section className={s.panel} aria-label={'Price history for '+security}><div className={s.panelHead}><h2>Price history</h2><span>{security}</span></div>
     {history?<Chart key={security+'|'+benchmark} data={{history,currency,provider:history.provider}} benchmark={{history:benchmark===security?null:other.history}}/>:<p role="status">{stock.waiting?'Loading completed daily prices…':stock.error||'No verified daily history is available.'}</p>}
     {stock.error&&<p>{history?'Showing saved history. ':''}<button onClick={stock.retry}>Retry daily history</button></p>}
