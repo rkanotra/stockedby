@@ -1,5 +1,6 @@
 'use client';
 import { ASSET_LABELS, exchangeLabel } from '@/lib/terminal/domain';
+import { quoteLabel, supportsUsIntraday } from '@/lib/terminal/usQuotes';
 import d from './desk.module.css';
 
 const money=(n,c)=>n==null?'—':new Intl.NumberFormat(c==='INR'?'en-IN':'en-GB',{style:'currency',currency:c,maximumFractionDigits:2}).format(n);
@@ -8,7 +9,24 @@ export default function HoldingsList({rows,currency,archived,busy,onSelect,onEdi
   const actions=p=><div className={d.rowActions}>{!archived&&onResearch&&<button onClick={()=>onResearch(p)}>Research</button>}{!archived&&onNews&&<button onClick={()=>onNews(p)}>News</button>}<button onClick={()=>onEdit(p)}>Edit</button><button disabled={busy} onClick={()=>onArchive(p)}>{archived?'Restore':'Archive'}</button></div>;
   const name=p=><button className={d.holdingName} onClick={()=>onSelect(p)}><span className={d.assetAvatar}>{p.symbol.slice(0,2)}</span><span><strong>{p.symbol}</strong><small>{p.listingName||p.name}</small><small>{ASSET_LABELS[p.assetClass]} · {exchangeLabel(p.exchange)} · {p.account}{p.lot?` / ${p.lot}`:''}</small></span></button>;
   const pnlClass=p=>p.pnl==null?d.neutral:p.pnl<0?d.negative:d.positive;
-  const coverage=p=><>{p.status==='unresolved'&&!archived?<button className={d.coverageBadge} onClick={()=>onEdit(p)}>Choose listing →</button>:<span className={d.coverageBadge}>{archived?'Archived':p.status==='missing'?(p.assetClass==='mutual_fund'?'NAV unavailable':'Price unavailable'):p.status||'Not priced'}</span>}{p.automaticallyMatched&&<small>Listing matched automatically</small>}<small>{p.quote?.asOf?new Date(p.quote.asOf).toLocaleString('en-GB',{timeZone:'Asia/Dubai',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+' GST':'No quote yet'}</small>{p.priceSource&&<small><a href={p.priceSource} target="_blank" rel="noreferrer">Price source ↗</a></small>}{p.priceError&&<small>{p.priceError}</small>}</>;
+  function coverage(p) {
+    const us = supportsUsIntraday(p);
+    const zone = us ? 'America/New_York' : 'Asia/Dubai';
+    const timestamp = p.quote?.asOf && new Date(p.quote.asOf).toLocaleString('en-GB', {
+      timeZone: zone, day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+    }) + (us ? ' ET' : ' GST');
+    let label = quoteLabel(p, p.quote, p.status) || 'Not priced';
+    if (p.status === 'missing') label = p.assetClass === 'mutual_fund' ? 'NAV unavailable' : 'Price unavailable';
+    return <>
+      {p.status === 'unresolved' && !archived
+        ? <button className={d.coverageBadge} onClick={()=>onEdit(p)}>Choose listing →</button>
+        : <span className={d.coverageBadge}>{archived ? 'Archived' : label}</span>}
+      <small>{timestamp || 'No quote yet'}</small>
+      {p.automaticallyMatched && <small>Listing matched automatically</small>}
+      {p.priceSource && <small><a href={p.priceSource} target="_blank" rel="noreferrer">Price source ↗</a></small>}
+      {p.priceError && <small>{p.priceError}</small>}
+    </>;
+  }
   const calculation=p=>p.nativeValue!=null&&<small>{money(p.quote.price,p.currency)} × {p.quantity} {p.unit} = {money(p.nativeValue,p.currency)}</small>;
   const snapshot=p=>p.snapshotValue!=null&&<details><summary>Imported snapshot</summary><small>{money(Number(p.snapshotValue),p.currency)} · {p.snapshotAt&&Number.isFinite(Date.parse(p.snapshotAt))?new Date(p.snapshotAt).toLocaleDateString('en-GB'):'date not supplied'}. Not a current quote.</small></details>;
   return <>
