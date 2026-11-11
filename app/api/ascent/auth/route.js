@@ -29,7 +29,7 @@ export async function POST(request) {
         email: body.email.trim().toLowerCase(),
         options: {
           shouldCreateUser: false,
-          emailRedirectTo: new URL('/api/team/auth/callback', request.url).href,
+          emailRedirectTo: new URL('/api/team/auth/callback', request.headers.get('origin')).href,
         },
       });
       if (error) throw error;

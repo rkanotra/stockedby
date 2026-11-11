@@ -3,6 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Icon from "../studio/Icon";
 import Programme from "./Programme";
+import SalesStudy from "./SalesStudy";
+import { SALES_CASES, findSalesCase } from "@/lib/ascent/sales";
 import Account from "./Account";
 import { studioLocation, studioHash } from "@/lib/ascent/navigation";
 import {
@@ -25,6 +27,7 @@ import s from "./ascent.module.css";
 const NAV = [
   ["home", "Your studio", "layers"],
   ["programme", "Practice programme", "flow"],
+  ["sales", "Sales & P&L", "brief"],
   ["scenario", "Executive scenarios", "brief"],
   ["story", "Storytelling", "stories"],
   ["recording", "Recording studio", "play"],
@@ -595,7 +598,10 @@ export default function Ascent({ email, initialData = null }) {
           } catch (e) {
             if (active) { setView("history"); setError(e.message); }
           }
-        } else if (active) setView(location.view);
+        } else if (active) {
+          if (location.caseId) setScenarioId(location.caseId);
+          setView(location.view);
+        }
         if (active) setRestored(true);
       })
       .catch((e) => {
@@ -609,9 +615,9 @@ export default function Ascent({ email, initialData = null }) {
     selectedStatus = selected?.status;
   useEffect(() => {
     if (!restored) return;
-    const hash = studioHash(view, selectedId);
+    const hash = studioHash(view, selectedId, parent ? null : scenarioId);
     window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}${hash}`);
-  }, [restored, view, selectedId]);
+  }, [restored, view, selectedId, scenarioId, parent]);
   useEffect(() => {
     if (!selectedId || !ACTIVE.includes(selectedStatus)) return;
     let active = true;
@@ -666,11 +672,12 @@ export default function Ascent({ email, initialData = null }) {
   const coverage = completedExerciseKeys(data?.progress || []);
   const storyAssignment = STORY_ASSIGNMENTS.find(x => x.id === storyAssignmentId);
   const recordingAssignment = RECORDING_ASSIGNMENTS.find(x => x.id === recordingAssignmentId);
+  const salesCase = view === "scenario" && findSalesCase(scenarioId);
   const latest = done[0],
     chosen =
       view === "interview"
         ? INTERVIEWS.find((x) => x.id === interviewId)
-        : SCENARIOS.find((x) => x.id === scenarioId);
+        : salesCase || SCENARIOS.find((x) => x.id === scenarioId);
   const navigate = (target) => {
     if (uploadProgress !== null) {
       setError("Cancel or finish the upload before switching views.");
@@ -684,7 +691,8 @@ export default function Ascent({ email, initialData = null }) {
   };
   const go = (target) => {
     setView(target);
-    if (["home", "history", "programme"].includes(target)) load().catch(e => setError(e.message));
+    if (target === "scenario" && findSalesCase(scenarioId)) setScenarioId(SCENARIOS[0].id);
+    if (["home", "history", "programme", "sales"].includes(target)) load().catch(e => setError(e.message));
     setSelected(null);
     setParent(null);
     setRelation(null);
@@ -1247,6 +1255,7 @@ export default function Ascent({ email, initialData = null }) {
                 </>
               )}
               {view === "programme" && <Programme progress={data.progress} onStart={startExercise} />}
+              {view === "sales" && <SalesStudy progress={data.progress} onStart={startExercise} />}
               {["scenario", "story", "interview"].includes(view) && (
                 <>
                   <div className={s.pageHeading}>
@@ -1260,7 +1269,7 @@ export default function Ascent({ email, initialData = null }) {
                       </span>
                       <h1>
                         {view === "scenario"
-                          ? "The executive response."
+                          ? salesCase ? "Sales & P&L practice" : "The executive response."
                           : view === "story"
                             ? "A story worth hearing."
                             : "The CDO conversation."}
@@ -1272,7 +1281,7 @@ export default function Ascent({ email, initialData = null }) {
                       </p>
                     </div>
                   </div>
-                  <div className={s.programmeToolbar}><span>50 exercises · Foundation to boardroom</span><button className={s.textButton} onClick={() => navigate("programme")}>Browse all exercises →</button></div>
+                  <div className={s.programmeToolbar}><span>{salesCase ? salesCase.title : "50 exercises · Foundation to boardroom"}</span><button className={s.textButton} onClick={() => navigate(salesCase ? "sales" : "programme")}>{salesCase ? "Back to Sales & P&L" : "Browse all exercises →"}</button></div>
                   <div className={s.practiceGrid}>
                     <section className={s.exercise}>
                       <span className={s.kicker}>
@@ -1331,7 +1340,7 @@ export default function Ascent({ email, initialData = null }) {
                             >
                               {(view === "interview"
                                 ? INTERVIEWS
-                                : SCENARIOS
+                                : salesCase ? SALES_CASES : SCENARIOS
                               ).map((c) => (
                                 <option key={c.id} value={c.id}>
                                   {c.role} · {c.title}
