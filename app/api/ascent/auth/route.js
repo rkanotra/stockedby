@@ -1,9 +1,10 @@
 import { cookies } from 'next/headers';
 import { teamClient, readBody, json } from '@/lib/team/server';
 import { requireAscentUser } from '@/lib/ascent/server';
+import { isAscentOwnerEmail } from '@/lib/ascent/access';
 import { signInAscent, passwordUpdate, passwordError } from '@/lib/ascent/passwordAuth';
 import { checkAndConsume, getClientIp } from '@/lib/rateLimit';
-import { TEAM_RETURN_COOKIE } from '@/lib/auth/teamReturn';
+import { TEAM_RETURN_COOKIE, TEAM_RETURN_COOKIE_OPTIONS } from '@/lib/auth/teamReturn';
 export const runtime = 'nodejs';
 function failed(error) {
   const status = [400, 401, 403, 429].includes(error?.status) ? error.status : 503;
@@ -12,6 +13,29 @@ function failed(error) {
 export async function POST(request) {
   try {
     const body = await readBody(request, 3000);
+    if (body.action === 'signout') {
+      const db = await teamClient();
+      const { error } = await db.auth.signOut({ scope: 'local' });
+      if (error) throw error;
+      (await cookies()).delete(TEAM_RETURN_COOKIE);
+      return json({ ok: true });
+    }
+    if (body.action === 'recover') {
+      if (!checkAndConsume(getClientIp(request), { namespace: 'ascent-password-recovery', limit: 10 }).allowed)
+        return json({ error: 'Too many setup requests. Please try again later.' }, 429);
+      if (!isAscentOwnerEmail(body.email)) return json({ error: 'Use your authorised Ascent email address.' }, 403);
+      const db = await teamClient();
+      const { error } = await db.auth.signInWithOtp({
+        email: body.email.trim().toLowerCase(),
+        options: {
+          shouldCreateUser: false,
+          emailRedirectTo: new URL('/api/team/auth/callback', request.url).href,
+        },
+      });
+      if (error) throw error;
+      (await cookies()).set(TEAM_RETURN_COOKIE, '/ascent#view=account', TEAM_RETURN_COOKIE_OPTIONS);
+      return json({ ok: true });
+    }
     if (!checkAndConsume(getClientIp(request), { namespace: 'ascent-password-login', limit: 20 }).allowed)
       return json({ error: 'Too many sign-in attempts. Please try again later.' }, 429);
     const result = await signInAscent(await teamClient(), body);

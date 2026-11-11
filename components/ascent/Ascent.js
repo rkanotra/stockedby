@@ -145,10 +145,10 @@ export function AscentGate({ denied = false, unavailable = false, authError = fa
                 setBusy(true);
                 setError("");
                 try {
-                  const r = await fetch(recover ? "/api/team/auth" : "/api/ascent/auth", {
+                  const r = await fetch("/api/ascent/auth", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(recover ? { action: "signin", email, returnTo: "/ascent#view=account" } : { email, password }),
+                    body: JSON.stringify(recover ? { action: "recover", email } : { email, password }),
                   });
                   const d = await r.json();
                   if (!r.ok) throw Error(d.error);
@@ -190,7 +190,7 @@ export function AscentGate({ denied = false, unavailable = false, authError = fa
             {error}
           </p>
         )}
-        <Link href="/workspace">
+        <Link href="/">
           Return to StockedBy <span>↗</span>
         </Link>
       </section>
@@ -998,8 +998,8 @@ export default function Ascent({ email, initialData = null }) {
             <small>Only you have access</small>
           </div>
         </div>
-        <Link className={s.back} href="/workspace">
-          ← StockedBy workspace
+        <Link className={s.back} href="/">
+          ← StockedBy home
         </Link>
       </aside>
       {mobileNav && (

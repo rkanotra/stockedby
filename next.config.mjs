@@ -8,7 +8,7 @@ const nextConfig = {
   // Retired product entry points route to the investment site; saved records remain intact.
   async redirects() {
     return [
-      ...["/studio/:path*","/workspace/:path*","/ascent/:path*"].map(source=>({source,destination:"/terminal",permanent:false})),
+      ...["/studio/:path*","/workspace/:path*"].map(source=>({source,destination:"/terminal",permanent:false})),
       ...["/test/:path*","/audit/:path*","/fix/:path*","/purchase-check/:path*","/agent-store/:path*","/archive/:path*","/blog/:path*","/why","/how"].map(source=>({source,destination:"/",permanent:false})),
       { source: "/login", destination: "/terminal", permanent: false },
       ...["/dashboard/agent-store/:path*","/dashboard/operations/:path*","/dashboard/payments/:path*","/dashboard/purchase-check/:path*"].map(source=>({source,destination:"/",permanent:false})),

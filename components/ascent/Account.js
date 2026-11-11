@@ -17,7 +17,7 @@ export default function Account({email}) {
         <button className={s.primary} disabled={busy}>{busy?'Saving…':'Save password'}</button>
       </form>}
       {error&&<p role="alert" className={s.error}>{error}</p>}
-      <div className={s.accountFooter}><p>Signing out here also signs out of the StockedBy team workspace in this browser.</p><button className={s.secondary} disabled={busy} onClick={async()=>{setBusy(true);setError('');try{const r=await fetch('/api/team/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'signout'})});if(!r.ok)throw Error('Could not sign out. Please retry.');window.history.replaceState(window.history.state,'','/ascent');window.location.reload();}catch(e){setError(e.message);setBusy(false);}}}>Sign out</button></div>
+      <div className={s.accountFooter}><p>Signing out here also signs you out of the StockedBy investment desk in this browser.</p><button className={s.secondary} disabled={busy} onClick={async()=>{setBusy(true);setError('');try{const r=await fetch('/api/ascent/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'signout'})});if(!r.ok)throw Error('Could not sign out. Please retry.');window.history.replaceState(window.history.state,'','/ascent');window.location.reload();}catch(e){setError(e.message);setBusy(false);}}}>Sign out</button></div>
     </section>
   </>;
 }
