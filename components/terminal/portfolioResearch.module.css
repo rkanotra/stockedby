@@ -6,3 +6,11 @@
 
 .root .header{padding-bottom:12px;gap:16px}.root .header h2{font-size:20px;margin:4px 0}.root .company{padding:16px 0 8px;align-items:center}.root .company h2{margin:7px 0}.root .company p{font-size:12px;margin:6px 0}.root .tabs{margin-top:12px;margin-bottom:8px;padding-bottom:8px}.root .thesis{padding:8px 12px}.root .thesis summary{font-size:12px;min-height:24px}.root .fine{margin:8px 0 12px}.root .chartHead strong small{margin-top:4px}.root .decision{padding:20px}
 @media(max-width:800px){.root .header,.root .company{align-items:stretch;gap:12px}.root .header label{width:100%}}
+
+.indexFilters {display:flex;flex-wrap:wrap;gap:6px;margin:20px 0 12px;}
+.root .indexFilters button[aria-pressed=true] {background:var(--sb-text);color:var(--sb-surface);}
+.indexFilters span {font-variant-numeric:tabular-nums;margin-left:3px;}
+.root .indexList {list-style:none;padding:0;margin:0;}
+.indexList li {display:grid;grid-template-columns:minmax(125px,.35fr) 1fr;gap:24px;padding:16px 0;border-top:1px solid var(--sb-line);}
+.indexList li>div>small {display:block;color:var(--sb-muted);font-size:12px;margin-top:5px;}
+@media(max-width:600px){.indexList li{grid-template-columns:1fr;gap:3px;}}
