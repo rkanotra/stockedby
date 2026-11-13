@@ -17,7 +17,7 @@ const sourceLabel=s=>{if(s.title&&!/^https?:/.test(s.title))return s.title;try{r
 const sections={business:'The business',moat:'Moat & competition',capitalAllocation:'Management & capital allocation',decision:'The investment decision',financialHealth:'Financial health',valuation:'Valuation',bullCase:'What could go right',bearCase:'What could go wrong',thesisCheck:'Your thesis, challenged',watchNext:'What to watch next'};
 function Section({report,name}){const item=report?.[name];if(!item)return null;if(name==='financialHealth'&&financialAmountIssues(item.text,report.evidence).length)return <article className={c.analysis}><h3>{sections[name]}</h3><p className={c.error}>This saved section contains an amount that does not match its source table. Use the Financials tab for the figures and create a new review.</p></article>;const sources=[...(item.sourceURLs||[]).map(url=>report.sources.find(s=>s.url===url)),...(item.evidenceIds||[]).map(id=>report.evidence.sources.find(s=>s.id===id))].filter(Boolean);return <article className={c.analysis}><h3>{sections[name]}</h3><p>{item.text}</p><div className={c.sources}>{[...new Map(sources.map(s=>[s.url||s.id,s])).values()].map((s,i)=>s.url?<a key={i} href={s.url} target="_blank" rel="noreferrer">{sourceLabel(s)} ↗</a>:<span key={i}>{s.title}</span>)}</div></article>;}
 function Financials({rows,title,currency}){return <section><h3>{title}</h3>{rows.length?<div className={c.table}><table><caption>Amounts in {currency||'currency not supplied by provider'} · periods reported by Yahoo Finance. “—” means missing, not zero.</caption><thead><tr><th>Period end</th><th>Revenue</th><th>Operating margin</th><th>Net income</th><th>Operating cash</th><th>Free cash flow</th><th>Debt</th><th>Cash</th></tr></thead><tbody>{rows.map(r=><tr key={r.date}><th>{date(r.date)}</th>{['revenue','operatingMargin','netIncome','operatingCash','freeCashFlow','debt','cash'].map(k=><td key={k}>{format(r[k])}{k==='operatingMargin'&&r[k]!=null?'%':''}</td>)}</tr>)}</tbody></table></div>:<p>No usable statement periods returned.</p>}</section>;}
-export default function PortfolioResearch({positions,cache,api,onReload,onEdit,onImport,initialSecurity='',usage}){
+export default function PortfolioResearch({positions,cache,api,onReload,onEdit,onImport,initialSecurity='',usage,scheduled=false}){
   const holdings=researchHoldings(positions),[selected,setSelected]=useState(initialSecurity||instrumentId(holdings[0]||{}));
   const [indexOpen,setIndexOpen]=useState(initialSecurity==='portfolio'||!initialSecurity),[filter,setFilter]=useState('All');
   const queue = useMissingReviews({ holdings, cache, usage, api, onReload, indexOpen });
@@ -27,13 +27,15 @@ export default function PortfolioResearch({positions,cache,api,onReload,onEdit,o
     const research=holdings.map(p=>({p,stance:holdingDecision(cache,instrumentId(p))?.stance||'Not reviewed'}));
     const filtered=research.filter(row=>filter==='All'||row.stance===filter);
     return <section className={c.root} aria-label="Portfolio research">
-      <h2>Portfolio research</h2>
+      <header className={c.researchMast}><span className={c.autoMode}>{scheduled?'Automatic reviews on':'Automatic reviews off'}</span>
+        <h2>Portfolio research</h2><p>{scheduled?'New holdings enter the review queue when saved. If major news changes a rating, Activity shows the reason and source.':'Use Review stock below, or enable automatic reviews in Settings.'}</p>
+      </header>
       <p>{research.filter(r=>r.stance!=='Not reviewed').length} of {holdings.length} holdings reviewed. Select a rating to see the evidence.</p>
       <ReviewMissing queue={queue}/>
       <div className={c.indexFilters} aria-label="Filter by research stance">{['All',...researchStances,'Not reviewed'].map(f=><button key={f} aria-pressed={f===filter} onClick={()=>setFilter(f)}>{f} <span>{f==='All'?research.length:research.filter(r=>r.stance===f).length}</span></button>)}</div>
       {filtered.length ? <ul className={c.indexList}>{filtered.map(({p,stance})=><li key={instrumentId(p)}>
         <div><strong>{p.symbol}</strong><small>{p.exchange} · {cache[instrumentId(p)]?.name||p.name}</small></div>
-        <ResearchSummary holding={p} cache={cache} expanded onOpen={()=>{setSelected(instrumentId(p));setIndexOpen(false);window.scrollTo({top:0});}}/>
+        <ResearchSummary holding={p} cache={cache} automatic={scheduled} expanded onOpen={()=>{setSelected(instrumentId(p));setIndexOpen(false);window.scrollTo({top:0});}}/>
         {stance!=='Not reviewed' && <button className={c.reviewStock} aria-label={`Read review for ${p.symbol}`}
           onClick={()=>{setSelected(instrumentId(p));setIndexOpen(false);window.scrollTo({top:0});}}>Read review</button>}
         {stance==='Not reviewed' && isListingResolved(p,cache[instrumentId(p)]) && <button

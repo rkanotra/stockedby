@@ -64,7 +64,7 @@ iframe.widgetHost{border:0;display:block;border-radius:8px}
 @media(prefers-reduced-transparency:reduce){.dashboard .search{backdrop-filter:none;background:var(--sb-surface)}}
 
 /* Coral foreground, sculpted navy detail, warm white type. */
-.heading { padding:34px; min-height:246px; border-radius:26px; background:linear-gradient(110deg,var(--sb-hero) 32%,var(--sb-hero-edge)); border:1px solid var(--sb-accent-border); box-shadow:var(--sb-shadow); }
+.heading { padding:34px; min-height:246px; border-radius:26px; background:var(--sb-hero-gradient); border:1px solid var(--sb-accent-border); box-shadow:var(--sb-shadow); }
 .dashboard .heading h1 { font-family:var(--font-display); font-size:clamp(40px,4.4vw,62px); font-weight:780; letter-spacing:-.045em; line-height:1.02; color:var(--sb-text); margin:13px 0; }
 .dashboard .heading h1 span { color:var(--sb-accent-text); }
 .heading p,.heading .eyebrow { color:var(--sb-text); }
@@ -82,9 +82,9 @@ iframe.widgetHost{border:0;display:block;border-radius:8px}
 .dashboard .regionTabs button[aria-pressed=true] .regionMark { color:inherit; background:#ffffff22; }
 .dashboard .watchRow[aria-pressed=true] { background:var(--sb-accent-soft); }
 .dashboard .viewTabs button[aria-selected=true] { color:var(--sb-accent-text); }
-.dashboard .portfolioCard { background:var(--brand-coral-gradient); border:0; box-shadow:inset 0 1px 0 #ffffff50; }
-.dashboard .portfolioCard h2 { font-weight:750; font-size:32px; line-height:1.02; color:var(--brand-navy); }
-.dashboard .portfolioCard p,.dashboard .portfolioCard>small,.portfolioTop,.portfolioIllustration>b { color:#492d35; }
+.dashboard .portfolioCard { background:var(--sb-hero-gradient); border:0; box-shadow:inset 0 1px 0 #ffffff50; }
+.dashboard .portfolioCard h2 { font-weight:750; font-size:32px; line-height:1.02; color:var(--sb-hero-ink); }
+.dashboard .portfolioCard p,.dashboard .portfolioCard>small,.portfolioTop,.portfolioIllustration>b { color:var(--sb-hero-muted); }
 .portfolioTop { font-weight:750; }
 .portfolioCard>a { background:var(--brand-navy); color:var(--brand-cream); border:0; border-radius:999px; font-weight:750; }
 .portfolioCard>a:hover { background:#1d3269; }

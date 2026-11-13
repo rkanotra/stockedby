@@ -23,7 +23,7 @@
 .site .navButton { border-radius:999px; padding-inline:20px; font-weight:750; }
 .brandDot { color:var(--brand-coral); }
 .aiLink span { color:var(--sb-accent-text); }
-.site .briefHeading { background:linear-gradient(110deg,var(--sb-hero) 32%,var(--sb-hero-edge)); border:1px solid var(--sb-accent-border); border-radius:26px; padding:32px; color:var(--sb-text); }
+.site .briefHeading { background:var(--sb-hero-gradient); border:1px solid var(--sb-accent-border); border-radius:26px; padding:32px; color:var(--sb-text); }
 .site .briefHeading h1 { font-size:clamp(36px,4vw,54px); font-weight:750; color:var(--sb-text); }
 .site .briefHeading>p:last-child,.site .briefHeading p:first-child { color:var(--sb-text)!important; }
 .site .guide h1 { font-weight:750; font-size:clamp(38px,5vw,62px); line-height:1.04; }

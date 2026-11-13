@@ -68,13 +68,13 @@
 .desk .primaryAction,.desk .orangeButton,.desk .secondaryAction { border-radius:999px; font-weight:750; }
 .desk .sidebar nav button[aria-current=page] { background:var(--sb-accent-soft); color:var(--sb-accent-text); box-shadow:inset 3px 0 var(--sb-accent-border); }
 .desk .sidebar nav button[aria-current=page]:hover { background:var(--sb-accent-soft); }
-.desk .welcome { background:var(--brand-coral-gradient); border-color:#f2a389; box-shadow:inset 0 1px 0 #ffffff45; }
+.desk .welcome { background:var(--sb-hero-gradient); border-color:var(--sb-accent-border); box-shadow:inset 0 1px 0 #ffffff45; }
 .welcome:before { background:repeating-linear-gradient(100deg,transparent 0,transparent 60px,#aa422316 61px,#ffd1ad22 75px,transparent 76px); }
-.desk .welcome h2 { color:var(--brand-navy); font-family:var(--font-display); font-weight:750; letter-spacing:-.04em; }
-.desk .welcome>p,.welcomeTag,.desk .welcomeMarkets small { color:#492d35; }
+.desk .welcome h2 { color:var(--sb-hero-ink); font-family:var(--font-display); font-weight:750; letter-spacing:-.04em; }
+.desk .welcome>p,.welcomeTag,.desk .welcomeMarkets small { color:var(--sb-hero-muted); }
 .desk .welcome .primaryAction, .desk .welcome .orangeButton { background:var(--brand-navy); border-color:var(--brand-navy); color:var(--brand-cream); }
 .desk .welcome .primaryAction:hover, .desk .welcome .orangeButton:hover { background:#203471; }
-.desk .welcome .textButton { color:var(--brand-navy); }
+.desk .welcome .textButton { color:var(--sb-hero-ink); }
 .welcomeMarkets span { background:#fff3e6!important; color:var(--brand-navy)!important; border-color:#ef9275!important; }
 .desk .researchFeature,.desk .researchTools { background:var(--sb-surface); border-color:var(--sb-line); box-shadow:var(--sb-shadow); }
 .desk .researchFeature h2,.desk .researchTools h2 { font-weight:700; color:var(--sb-text); }
@@ -84,9 +84,9 @@
 .desk .balance { font-family:var(--font-display); font-weight:650; }
 .desk .positive { color:var(--sb-up)!important; }.desk .negative { color:var(--sb-down)!important; }
 .desk .balanceCard,.desk .allocationCard,.desk .startSteps,.desk .radar { box-shadow:var(--sb-shadow); }
-.desk .signinArtwork { background:var(--brand-coral-gradient); }
-.desk .signinArtwork h2 { color:var(--brand-navy)!important; font-weight:750; font-size:34px!important; }
-.desk .signinArtwork>p { color:#492d35!important; }
+.desk .signinArtwork { background:var(--sb-hero-gradient); }
+.desk .signinArtwork h2 { color:var(--sb-hero-ink)!important; font-weight:750; font-size:34px!important; }
+.desk .signinArtwork>p { color:var(--sb-hero-muted)!important; }
 .desk .secondaryAction { background:var(--sb-surface); color:var(--sb-text); }
 
 /* The selected portfolio is visible before any totals or actions. */
@@ -131,7 +131,7 @@
   padding: clamp(18px, 2.1vw, 32px);
   border: 1px solid var(--sb-accent-border);
   border-radius: 18px;
-  background: linear-gradient(110deg, var(--sb-hero) 50%, var(--sb-hero-edge));
+  background: var(--sb-hero-gradient);
 }
 .portfolioHeading::before {
   content: "";
@@ -160,7 +160,7 @@
   font-variant-numeric: tabular-nums;
   margin: 4px 0;
 }
-.portfolioMetrics dt span, .portfolioMetrics small { color: var(--sb-muted); }
+.portfolioMetrics dt span, .portfolioMetrics small { color: var(--sb-hero-muted); }
 .desk .priceStatus { margin: 10px 0 18px; }
 .desk .priceStatus details { margin: 0; flex: 1 1 200px; }
 .desk .priceStatus summary { font-weight: 650; color: var(--sb-text); }
@@ -180,3 +180,6 @@
   .portfolioTitle .headerActions button { font-size: 12px; padding: 8px 12px; }
   .portfolioMetrics { column-gap: 24px; }
 }
+
+.desk .portfolioHeading {color:var(--sb-hero-ink);}
+.desk .portfolioMetrics dd:is(.positive,.negative) {background:var(--sb-surface);border-radius:8px;padding:1px 8px;width:fit-content;}

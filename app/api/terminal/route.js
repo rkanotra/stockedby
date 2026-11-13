@@ -2,7 +2,8 @@ import { createHash } from 'node:crypto';
 import { after } from 'next/server';
 import { json, readBody } from '@/lib/team/server';
 import { requireTerminalUser, terminalStore, terminalFailure } from '@/lib/terminal/server';
-import { normalizeState, importPreview } from '@/lib/terminal/domain';
+import { normalizeState, importPreview, instrumentId } from '@/lib/terminal/domain';
+import { researchHoldings } from '@/lib/terminal/dossierData';
 import { FEED_COVERAGE } from '@/lib/terminal/feeds';
 import { trackingIdentity } from '@/lib/terminal/holdingNews';
 import { queuePortfolioTracking } from '@/lib/terminal/trackingServer';
@@ -16,8 +17,10 @@ export async function POST(request) {
     if (body.action === 'save') {
       const previous = await store('load'), document = normalizeState(body.document);
       const saved = await store('save', { document, version: body.version });
-      const changed = trackingIdentity(document.positions) !== trackingIdentity(previous.document.positions);
-      const tracking = changed ? await queuePortfolioTracking(store, { ...previous, document }, after, { enableSchedule: true }) : null;
+      const oldKeys = new Set(researchHoldings(previous.document.positions).map(instrumentId));
+      const preferred = researchHoldings(document.positions).map(instrumentId).filter(k=>!oldKeys.has(k));
+      const changed = preferred.length > 0 || trackingIdentity(document.positions) !== trackingIdentity(previous.document.positions);
+      const tracking = changed ? await queuePortfolioTracking(store, { ...previous, document }, after, { enableSchedule: true, preferred }) : null;
       return json({ ...saved, tracking });
     }
     if (body.action === 'import_preview' || body.action === 'import_commit') {
@@ -28,7 +31,7 @@ export async function POST(request) {
       if (!rows.length) return json({ error: 'Select at least one ready row.' }, 400);
       const document = normalizeState({ ...state.document, positions: [...state.document.positions, ...rows.map(r => r.position)] });
       const saved = await store('save', { document, version: state.version });
-      const tracking = await queuePortfolioTracking(store, { ...state, document }, after, { enableSchedule: true });
+      const tracking = await queuePortfolioTracking(store, { ...state, document }, after, { enableSchedule: true, preferred: researchHoldings(rows.map(r=>r.position)).map(instrumentId) });
       return json({ ...saved, tracking });
     }
     if (body.action === 'track') {

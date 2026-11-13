@@ -12,7 +12,7 @@
   --up-wash: color-mix(in srgb, var(--up) 14%, transparent);
   --down-wash: color-mix(in srgb, var(--down) 14%, transparent);
   min-height: 100dvh;
-  background: radial-gradient(ellipse at top right, var(--sb-hero-edge), transparent 55%), var(--sb-bg);
+  background: var(--sb-bg);
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.4;
@@ -308,3 +308,7 @@
 .toolbar button:focus-visible,.toolbar a:focus-visible{outline-color:var(--sb-text)}
 .clockLine time{letter-spacing:-.055em}
 .tile,.fxTile,.weather,.headlines{box-shadow:inset 0 1px 0 #ffffff12,0 7px 24px #411b1820}
+
+.root .day {background:var(--sb-hero-gradient);color:var(--sb-hero-ink);padding:clamp(10px,2.4vw,26px);border-radius:18px;}
+.root .clockLine small,.root .clockLine span {color:var(--sb-hero-muted);}
+@media(max-height:540px) and (orientation:landscape){.root .day{padding:5px 12px;}}

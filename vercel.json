@@ -1,6 +1,36 @@
 {
   "crons": [
-    { "path": "/api/terminal/job?window=asia", "schedule": "0 6 * * *" },
-    { "path": "/api/terminal/job?window=global", "schedule": "0 15 * * *" }
+    {
+      "path": "/api/terminal/job?window=asia",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/terminal/job?window=global",
+      "schedule": "0 15 * * *"
+    },
+    {
+      "path": "/api/terminal/job?window=india-reviews-1",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/terminal/job?window=india-reviews-2",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/terminal/job?window=india-reviews-3",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/terminal/job?window=us-reviews-1",
+      "schedule": "0 16 * * *"
+    },
+    {
+      "path": "/api/terminal/job?window=us-reviews-2",
+      "schedule": "0 18 * * *"
+    },
+    {
+      "path": "/api/terminal/job?window=us-reviews-3",
+      "schedule": "0 21 * * *"
+    }
   ]
 }
