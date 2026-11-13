@@ -22,17 +22,26 @@ export function useMissingReviews({ holdings, cache, usage, api, onReload, index
     stop.current = false;
     setRunning(true);
     let completed = 0;
+    const failed = [];
     try {
       for (const holding of selection) {
         if (stop.current) break;
         const security = instrumentId(holding);
-        setProgress(`Reviewing ${holding.symbol} · ${completed + 1} of ${selection.length}`);
-        await api('/run', { kind: 'dossier', mode: 'review_missing', security });
+        setProgress(`Reviewing ${holding.symbol} · ${completed + failed.length + 1} of ${selection.length}`);
+        try {
+          await api('/run', { kind: 'dossier', mode: 'review_missing', security });
+        } catch (error) {
+          if (error.status !== 502 || !/report section|source table|citation formatting|could not be validated/i.test(error.message)) throw error;
+          failed.push(holding.symbol);
+          await onReload();
+          continue;
+        }
         const saved = await onReload();
         if (!holdingDecision(saved.cache, security)) throw Error(`No saved decision yet for ${holding.symbol}. Check Activity before resuming.`);
         completed++;
       }
-      setProgress(`${completed} of ${selection.length} reviews saved.`);
+      const outcome = failed.length ? ` Source checks failed for ${failed.join(', ')}.` : '';
+      setProgress(`${completed} of ${selection.length} reviews saved.${outcome}`);
     } catch (error) {
       await onReload().catch(() => {});
       setProgress(`Review batch paused. ${error.message || 'Check Activity and resume the missing reviews.'}`);
