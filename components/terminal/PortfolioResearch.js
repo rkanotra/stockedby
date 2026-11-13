@@ -7,6 +7,7 @@ import c from './portfolioResearch.module.css';
 import DecisionLab, { ResearchChallenge } from './DecisionLab';
 import { financialAmountIssues } from '@/lib/terminal/researchAmounts';
 import ResearchSummary from './ResearchSummary';
+import ReviewMissing, { useMissingReviews } from './ReviewMissing';
 import { reviewShelf, holdingDecision, researchStances } from '@/lib/terminal/reviewShelf';
 import { requestDossier } from '@/lib/terminal/researchRequest';
 
@@ -19,18 +20,23 @@ function Financials({rows,title,currency}){return <section><h3>{title}</h3>{rows
 export default function PortfolioResearch({positions,cache,api,onReload,onEdit,onImport,initialSecurity='',usage}){
   const holdings=researchHoldings(positions),[selected,setSelected]=useState(initialSecurity||instrumentId(holdings[0]||{}));
   const [indexOpen,setIndexOpen]=useState(initialSecurity==='portfolio'||!initialSecurity),[filter,setFilter]=useState('All');
+  const queue = useMissingReviews({ holdings, cache, usage, api, onReload, indexOpen });
   const holding=holdings.find(p=>instrumentId(p)===selected)||holdings[0];
   if(!holding)return <section className={c.root}><span className={c.eyebrow}>PORTFOLIO RESEARCH</span><h2>Start with what you own.</h2><p>Import your India or US holdings to build a research file for each investment.</p><button className={c.primary} onClick={onImport}>Import portfolio →</button></section>;
   if(indexOpen) {
     const research=holdings.map(p=>({p,stance:holdingDecision(cache,instrumentId(p))?.stance||'Not reviewed'}));
     const filtered=research.filter(row=>filter==='All'||row.stance===filter);
     return <section className={c.root} aria-label="Portfolio research">
-      <span className={c.eyebrow}>YOUR HOLDINGS</span><h2>Portfolio research</h2>
-      <p>{research.filter(r=>r.stance!=='Not reviewed').length} of {holdings.length} investments have a saved research view. Select a stance to read its evidence.</p>
+      <h2>Portfolio research</h2>
+      <p>{research.filter(r=>r.stance!=='Not reviewed').length} of {holdings.length} holdings reviewed. Select a rating to see the evidence.</p>
+      <ReviewMissing queue={queue}/>
       <div className={c.indexFilters} aria-label="Filter by research stance">{['All',...researchStances,'Not reviewed'].map(f=><button key={f} aria-pressed={f===filter} onClick={()=>setFilter(f)}>{f} <span>{f==='All'?research.length:research.filter(r=>r.stance===f).length}</span></button>)}</div>
-      {filtered.length ? <ul className={c.indexList}>{filtered.map(({p})=><li key={instrumentId(p)}>
+      {filtered.length ? <ul className={c.indexList}>{filtered.map(({p,stance})=><li key={instrumentId(p)}>
         <div><strong>{p.symbol}</strong><small>{p.exchange} · {cache[instrumentId(p)]?.name||p.name}</small></div>
         <ResearchSummary holding={p} cache={cache} expanded onOpen={()=>{setSelected(instrumentId(p));setIndexOpen(false);window.scrollTo({top:0});}}/>
+        {stance==='Not reviewed' && isListingResolved(p,cache[instrumentId(p)]) && <button
+          className={c.reviewStock} aria-label={`Review stock ${p.symbol}`} disabled={queue.running || queue.remaining<=0}
+          onClick={()=>queue.reviewMissing([p])}>Review stock</button>}
       </li>)}</ul>:<p role="status">No holdings in this portfolio have this research view.</p>}
     </section>;
   }
@@ -41,7 +47,7 @@ export function Dossier({holding,quoteData,saved,audit,api,onReload,onEdit,usage
   const attempted=useRef(false), reloadRef=useRef(onReload);
   useEffect(()=>{reloadRef.current=onReload;},[onReload]);
   useEffect(()=>{if(!busy)return;const id=setInterval(()=>reloadRef.current().catch(()=>{}),6000);return()=>clearInterval(id);},[busy]);
-  const reports=reviewShelf(saved,audit),report=(view==='History'?reports.find(r=>r.id===historyId):null)||reports[0],evidence=view==='History'?report?.evidence:saved?.evidence;
+  const reports=reviewShelf(saved,audit),report=(view==='History'?reports.find(r=>r.id===historyId):null)||reports[0],evidence=view==='History'?report?.evidence:(saved?.evidence||report?.evidence);
   const confirmed=candidate||isListingResolved(holding,quoteData),dirty=thesis!==(saved?.thesis||'')||horizon!==(saved?.horizon||'3–5 years');
   const run=useCallback(async (mode,extra={})=>{setBusy(mode);setError('');setMessage('');try{const result=await requestDossier({api,reload:onReload,key:dossierKey(holding),input:{kind:'dossier',security:instrumentId(holding),mode,thesis,horizon,discovery:candidate,...extra},previous:saved,onRecover:()=>setMessage('Connection interrupted. Checking for your saved review; no additional AI request is being sent.')});if(result.existing){setMessage('This request was already recorded. Your saved result is shown below; check Activity if it is still running.');}else{setMessage(mode==='reflection'?'Answer saved online. Reassess when you want AI to test it.':mode==='thesis'?'Thesis saved online.':mode==='refresh'?'Evidence updated. Your previous AI reviews are preserved.':result.reused?'The evidence and thesis are unchanged. Showing the saved review.':'Review saved online.');if(mode==='review'){setView('Overview');setHistoryId('');}}}catch(e){setMessage('');setError(e.message);}finally{setBusy('');}},[api,onReload,holding,thesis,horizon,candidate,saved]);
   useEffect(()=>{if(confirmed&&!saved?.evidence&&!attempted.current){attempted.current=true;run('refresh');}},[confirmed,saved?.evidence,run]);

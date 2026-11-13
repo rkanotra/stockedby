@@ -5,9 +5,10 @@
 .badge { display:inline-block; font-size:12px; line-height:1.4; font-weight:650; border-radius:6px; padding:3px 8px; color:var(--sb-muted); background:var(--sb-inset); }
 .badge[data-stance=Buy] { color:var(--sb-up); background:color-mix(in srgb,var(--sb-up) 12%,var(--sb-surface)); }
 .badge[data-stance=Sell] { color:var(--sb-down); background:color-mix(in srgb,var(--sb-down) 11%,var(--sb-surface)); }
-.badge[data-stance=Hold] { color:var(--sb-text); background:color-mix(in srgb,var(--sb-text) 10%,var(--sb-surface)); }
 .reason { color:var(--sb-text); font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
 .summary[data-expanded=false] .reason { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; }
 .meta { font-size:11px; line-height:1.45; color:var(--sb-muted); }
 .summary[data-expanded=true] { width:auto; }
 @media(max-width:900px){.summary { width:auto; }.summary .link { min-height:42px; }}
+.badge[data-stance=Wait] { color:var(--sb-warning); background:var(--sb-warning-bg); }
+.badge[data-stance=Hold] { color:var(--sb-violet); background:var(--sb-violet-bg); }

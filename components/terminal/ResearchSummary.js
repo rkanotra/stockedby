@@ -15,6 +15,6 @@ export default function ResearchSummary({holding, cache, onOpen, expanded = fals
     {decision ? <>
       <span className={c.reason}>{decision.reason}</span>
       <span className={c.meta}>{[date, decision.confidence && decision.confidence+' confidence', decision.changed && 'Newer evidence available'].filter(Boolean).join(' · ')}</span>
-    </> : <span className={c.meta}>Open research to create a review.</span>}
+    </> : <span className={c.meta}>No saved assessment yet.</span>}
   </div>;
 }
